@@ -1,0 +1,135 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldTitle,
+} from "@/components/ui/field";
+
+import UseUserStore from "@/store/user.store.js";
+
+const Register = () => {
+  const registerFunction = UseUserStore((s) => s.register);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    await registerFunction(data);
+  };
+
+  return (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <Card className="flex w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-center">
+            <h1 className="text-2xl font-bold underline">Register</h1>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldSet>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="username">User Name</FieldLabel>
+                  <Input
+                    id="username"
+                    placeholder="bob"
+                    {...register("username", {
+                      required: "User Name is required",
+                      minLength: {
+                        value: 3,
+                        message: "User Name must be at least 3 characters",
+                      },
+                    })}
+                  />
+                  {errors.username && (
+                    <FieldError>{errors.username.message}</FieldError>
+                  )}
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <Input
+                    id="email"
+                    placeholder="abc@example.com"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <FieldError>{errors.email.message}</FieldError>
+                  )}
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <Input
+                    type="password"
+                    id="password"
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                    })}
+                  />
+                  {errors.password && (
+                    <FieldError>{errors.password.message}</FieldError>
+                  )}
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+            <Button type="submit" className="w-full mt-5">
+              Register
+            </Button>
+
+            <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
+
+            <Button variant="outline" className="w-full">
+              Register with Google
+            </Button>
+          </form>
+        </CardContent>
+
+        <CardFooter className="flex flex-col">
+          <p className="text-center">
+            have an account?
+            <Link to="/login" className="underline text-blue-600">
+              Login
+            </Link>
+          </p>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+};
+
+export default Register;
