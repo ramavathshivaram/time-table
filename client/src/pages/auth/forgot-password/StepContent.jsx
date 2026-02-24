@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Mail, ShieldCheck, Lock, Check } from "lucide-react";
 
 const steps = [Mail, ShieldCheck, Lock];
@@ -39,4 +39,4 @@ const StepContent = ({ currentStep }) => {
   );
 };
 
-export default StepContent;
+export default memo(StepContent);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -69,4 +69,4 @@ const ForgotPasswordEmail = ({ onNext, onPrev, setFormData }) => {
   );
 };
 
-export default ForgotPasswordEmail;
+export default memo(ForgotPasswordEmail);

@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import useUserStore from "@/store/user.store.js";
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import NotFound from "./pages/NotFound";
-import ForgotPassword from "./pages/auth/forgot-password/ForgotPassword";
-
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
-import Dashboard from "./pages/Dashboard";
-import Landing from "./pages/Landing";
+/* ===== Lazy Imports ===== */
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const ForgotPassword = lazy(() =>
+  import("./pages/auth/forgot-password/ForgotPassword")
+);
+
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Landing = lazy(() => import("./pages/Landing"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
   const authCheck = useUserStore((s) => s.authCheck);
@@ -19,19 +22,21 @@ const App = () => {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Landing />} />
 
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

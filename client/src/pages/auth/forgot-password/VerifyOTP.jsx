@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 
@@ -92,4 +92,4 @@ const VerifyOTP = ({ onNext, onPrev, setFormData, formData }) => {
   );
 };
 
-export default VerifyOTP;
+export default memo(VerifyOTP);

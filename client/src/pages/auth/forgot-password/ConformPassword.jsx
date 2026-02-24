@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -90,4 +90,4 @@ const ConformPassword = ({ onNext, onPrev, formData }) => {
   );
 };
 
-export default ConformPassword;
+export default memo(ConformPassword);
