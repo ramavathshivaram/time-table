@@ -1,7 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
 import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import ApiError from "../lib/ApiError.js";
-import { generateTokens, hashPassword } from "../lib/utils.js";
+import {
+  generateAccessToken,
+  generateTokens,
+  hashPassword,
+} from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 
 const login = asyncHandler(async (req, res) => {
@@ -19,26 +25,7 @@ const login = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid password");
   }
 
-  const { accessToken, refreshToken } = generateTokens(user._id);
-
-  user.refreshToken = refreshToken;
-  await user.save();
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
-
-  res.json({
-    message: "Login successful",
-    success: true,
-    data: {
-      username: user.username,
-      email: user.email,
-    },
-  });
+  return await responseWithCookie(user, res, "login successful");
 });
 
 const register = asyncHandler(async (req, res) => {
@@ -58,26 +45,7 @@ const register = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  const { accessToken, refreshToken } = generateTokens(user._id);
-
-  user.refreshToken = refreshToken;
-  await user.save();
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
-
-  res.json({
-    message: "Registration successful",
-    success: true,
-    data: {
-      username: user.username,
-      email: user.email,
-    },
-  });
+  return await responseWithCookie(user, res, "Registration successful");
 });
 
 const logout = asyncHandler(async (req, res) => {
@@ -91,8 +59,47 @@ const logout = asyncHandler(async (req, res) => {
   });
 });
 
+const authCheck = asyncHandler(async (req, res) => {
+  const accessToken = generateAccessToken(req.userId);
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
+  });
+
+  res.json({
+    success: true,
+  });
+});
+
+const responseWithCookie = async (user, res, msg) => {
+  const { accessToken, refreshToken } = generateTokens(user._id);
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
+  });
+
+  res.json({
+    message: msg,
+    success: true,
+    data: {
+      username: user.username,
+      email: user.email,
+    },
+  });
+};
+
 export default {
   login,
   register,
   logout,
+  authCheck,
 };

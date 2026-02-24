@@ -14,29 +14,26 @@ const authSchema = new mongoose.Schema({
     select: false,
   },
 
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+
   tokenVersion: {
     type: Number,
     default: 0,
   },
 
-  refreshToken: {
-    type: String,
-  },
+  refreshToken: String,
 
-  otp: {
-    type: String,
-  },
+  otp: String,
 
-  otpExpiry: {
-    type: Date,
-  },
+  otpExpiry: Date,
 });
-authSchema.methods.isPasswordMatched = async (password) => {
-  return await bcrypt.compare(password, this.password);
-};
 
-authSchema.methods.isOtpMatched = async (otp) => {
-  return await bcrypt.compare(otp, this.otp);
+// PASSWORD CHECK
+authSchema.methods.isPasswordMatched = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
 const AuthModel = mongoose.model("auth", authSchema);

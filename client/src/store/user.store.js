@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import {
   authCheckApi,
+  googleLoginApi,
+  googleRegisterApi,
   loginApi,
   logoutApi,
   registerApi,
@@ -11,34 +13,63 @@ const useUserStore = create((set) => ({
 
   isAuthenticated: false,
 
+  isCheckingAuth: true,
+
   setUser: (user) => set({ user }),
 
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
-  login: async (user) => {
+  login: async (userData) => {
     try {
-      const response = await loginApi(user);
+      const user = await loginApi(userData);
 
-      console.log(response);
+      console.log(user);
 
-      set({ user: response, isAuthenticated: true });
+      set({ user: user, isAuthenticated: true });
     } catch (error) {
       set({ user: null, isAuthenticated: false });
 
       console.error(error);
+
+      throw error;
     }
   },
 
-  register: async (user) => {
+  googleLogin: async (accessToken) => {
     try {
-      console.log(user);
-      const response = await registerApi(user);
+      const user = await googleLoginApi({ accessToken });
 
-      set({ user: response.data.user, isAuthenticated: true });
+      console.log(user);
+
+      set({ user: user, isAuthenticated: true });
     } catch (error) {
       set({ user: null, isAuthenticated: false });
 
       console.error(error);
+
+      throw error;
+    }
+  },
+
+  register: async (userData) => {
+    try {
+      const user = await registerApi(userData);
+
+      set({ user: user, isAuthenticated: true });
+    } catch (error) {
+      set({ user: null, isAuthenticated: false });
+      throw error;
+    }
+  },
+
+  googleRegister: async (accessToken) => {
+    try {
+      const user = await googleRegisterApi({ accessToken });
+
+      set({ user: user, isAuthenticated: true });
+    } catch (error) {
+      set({ user: null, isAuthenticated: false });
+      throw error;
     }
   },
 
@@ -54,11 +85,13 @@ const useUserStore = create((set) => ({
 
   authCheck: async () => {
     try {
-      const response = await authCheckApi();
-      set({ user: response.data.user, isAuthenticated: true });
+      await authCheckApi();
+      set({ isAuthenticated: true });
     } catch (error) {
       console.log(error);
       set({ user: null, isAuthenticated: false });
+    } finally {
+      set({ isCheckingAuth: false });
     }
   },
 }));

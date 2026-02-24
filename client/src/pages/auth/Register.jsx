@@ -24,10 +24,14 @@ import {
   FieldTitle,
 } from "@/components/ui/field";
 
+import { useNavigate } from "react-router-dom";
+
 import UseUserStore from "@/store/user.store.js";
+import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
 const Register = () => {
   const registerFunction = UseUserStore((s) => s.register);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -36,8 +40,12 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    await registerFunction(data);
+    try {
+      await registerFunction(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -55,9 +63,9 @@ const Register = () => {
                 <Field>
                   <FieldLabel htmlFor="username">User Name</FieldLabel>
                   <Input
-                    id="username"
+                    id="userName"
                     placeholder="bob"
-                    {...register("username", {
+                    {...register("userName", {
                       required: "User Name is required",
                       minLength: {
                         value: 3,
@@ -65,8 +73,8 @@ const Register = () => {
                       },
                     })}
                   />
-                  {errors.username && (
-                    <FieldError>{errors.username.message}</FieldError>
+                  {errors.userName && (
+                    <FieldError>{errors.userName.message}</FieldError>
                   )}
                 </Field>
 
@@ -113,9 +121,7 @@ const Register = () => {
 
             <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
 
-            <Button variant="outline" className="w-full">
-              Register with Google
-            </Button>
+            <GoogleRegisterBtn />
           </form>
         </CardContent>
 

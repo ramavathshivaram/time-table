@@ -26,8 +26,12 @@ import {
 
 import UseUserStore from "@/store/user.store.js";
 
+import { useNavigate } from "react-router-dom";
+import GoogleLoginBtn from "./GoogleLoginBtn";
+
 const Login = () => {
   const login = UseUserStore((s) => s.login);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -36,7 +40,12 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await login(data);
+    try {
+      await login(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -95,9 +104,8 @@ const Login = () => {
 
             <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
 
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
+            <GoogleLoginBtn />
+            
           </form>
         </CardContent>
         <CardFooter className="flex flex-col">

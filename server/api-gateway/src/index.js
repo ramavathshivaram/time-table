@@ -22,7 +22,15 @@ app.get("/", (req, res) => {
   res.send("API Gateway");
 });
 
-app.use("/api/auth", proxy(MICROSERVICES.auth));
+app.use(
+  "/api/auth",
+  proxy(MICROSERVICES.auth, {
+    proxyReqOptDecorator(proxyReqOpts) {
+      proxyReqOpts.headers["X-Forwarded-Host"] = "localhost:3000";
+      return proxyReqOpts;
+    },
+  }),
+);
 
 app.use((err, req, res, next) => {
   console.error("Gateway Error:", err);
