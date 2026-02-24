@@ -31,11 +31,6 @@ const authSchema = new mongoose.Schema({
   otpExpiry: Date,
 });
 
-// PASSWORD CHECK
-authSchema.methods.isPasswordMatched = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
-
 const AuthModel = mongoose.model("auth", authSchema);
 
 export default AuthModel;

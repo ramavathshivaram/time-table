@@ -105,7 +105,6 @@ const Login = () => {
             <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
 
             <GoogleLoginBtn />
-            
           </form>
         </CardContent>
         <CardFooter className="flex flex-col">
@@ -113,6 +112,11 @@ const Login = () => {
             Don't have an account?
             <Link to="/register" className="underline text-blue-600">
               Register
+            </Link>
+          </p>
+          <p>
+            <Link to="/forgot-password" className="underline text-blue-600">
+              Forgot password?
             </Link>
           </p>
         </CardFooter>

@@ -12,19 +12,19 @@ const forgotPassword = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(404, "User not found");
   }
+
   // generate otp
   const otp = generateOTP();
 
-  // send otp to user email
+  // send otp email
   await sendOTPEmail(email, otp);
 
-  // update otp in db
-  await AuthModel.findOneAndUpdate(
-    { email },
-    { otp, otpExpiry: Date.now() + 15 * 60 * 1000 },
-  );
+  // update otp in DB (reuse existing user object)
+  user.otp = otp;
+  user.otpExpiry = Date.now() + 15 * 60 * 1000; // 15 mins
 
-  // send response
+  await user.save();
+
   return res.json({
     message: "OTP sent to your email",
     success: true,
@@ -40,7 +40,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  if (user.otp !== otp || user.otpExpiry < Date.now()) {
+  if (user.otp !== otp || !user.otpExpiry || user.otpExpiry < Date.now()) {
     throw new ApiError(400, "Invalid OTP");
   }
 
@@ -56,17 +56,18 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  if (user.otp !== otp || user.otpExpiry < Date.now()) {
+  if (user.otp !== otp || !user.otpExpiry || user.otpExpiry < Date.now()) {
     throw new ApiError(400, "Invalid OTP");
   }
 
   const hashedPassword = await hashPassword(password);
 
   user.password = hashedPassword;
-
   user.tokenVersion += 1;
-
   user.refreshToken = null;
+
+  user.otp = null;
+  user.otpExpiry = null;
 
   await user.save();
 

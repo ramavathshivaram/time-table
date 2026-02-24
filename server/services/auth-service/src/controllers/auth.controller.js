@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+
 import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import ApiError from "../lib/ApiError.js";
@@ -7,6 +8,9 @@ import {
   generateAccessToken,
   generateTokens,
   hashPassword,
+  isPasswordMatched,
+  verifyToken,
+  getTokenDataSafe,
 } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 
@@ -19,28 +23,26 @@ const login = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const isPasswordMatched = await user.isPasswordMatched(password);
-
-  if (!isPasswordMatched) {
+  if (!(await isPasswordMatched(password, user.password))) {
     throw new ApiError(401, "Invalid password");
   }
 
-  return await responseWithCookie(user, res, "login successful");
+  return await responseWithCookie(user, res, "Login successful");
 });
 
 const register = asyncHandler(async (req, res) => {
-  const { userName, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  const userExits = await AuthModel.findOne({ email });
+  const userExists = await AuthModel.findOne({ email });
 
-  if (userExits) {
+  if (userExists) {
     throw new ApiError(400, "User already exists");
   }
 
   const hashedPassword = await hashPassword(password);
 
   const user = await AuthModel.create({
-    userName,
+    username,
     email,
     password: hashedPassword,
   });
@@ -48,8 +50,67 @@ const register = asyncHandler(async (req, res) => {
   return await responseWithCookie(user, res, "Registration successful");
 });
 
+const refreshTokenController = asyncHandler(async (req, res) => {
+  const accessToken = req.cookies.accessToken;
+
+  if (!accessToken) {
+    throw new ApiError(401, "Access token not found");
+  }
+
+  const accessData = getTokenDataSafe(accessToken);
+
+  if (!accessData) {
+    throw new ApiError(401, "Invalid or expired access token");
+  }
+
+  const { userId, tokenVersion: accessTokenVersion } = accessData;
+
+  const user = await AuthModel.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const refreshToken = user.refreshToken;
+
+  if (!refreshToken) {
+    throw new ApiError(401, "Refresh token not found");
+  }
+
+  const refreshData = verifyToken(refreshToken);
+
+  if (!refreshData) {
+    throw new ApiError(401, "Refresh token expired");
+  }
+
+  const { tokenVersion: refreshTokenVersion } = refreshData;
+
+  if (
+    refreshTokenVersion !== accessTokenVersion ||
+    refreshTokenVersion !== user.tokenVersion
+  ) {
+    throw new ApiError(401, "Invalid refresh token");
+  }
+
+  const newAccessToken = generateAccessToken(userId, accessTokenVersion);
+
+  res.cookie("accessToken", newAccessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Access token refreshed successfully",
+  });
+});
+
 const logout = asyncHandler(async (req, res) => {
-  await AuthModel.findOneAndUpdate({ _id: req.userId }, { refreshToken: null });
+  await AuthModel.findByIdAndUpdate(req.userId, {
+    refreshToken: null,
+  });
 
   res.clearCookie("accessToken");
 
@@ -60,22 +121,16 @@ const logout = asyncHandler(async (req, res) => {
 });
 
 const authCheck = asyncHandler(async (req, res) => {
-  const accessToken = generateAccessToken(req.userId);
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
-
-  res.json({
+  res.status(200).json({
     success: true,
   });
 });
 
 const responseWithCookie = async (user, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(user._id);
+  const { accessToken, refreshToken } = generateTokens(
+    user._id,
+    user.tokenVersion,
+  );
 
   user.refreshToken = refreshToken;
   await user.save();
@@ -102,4 +157,5 @@ export default {
   register,
   logout,
   authCheck,
+  refreshTokenController,
 };

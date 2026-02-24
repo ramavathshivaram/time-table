@@ -46,3 +46,8 @@ export const authCheckApi = async () => {
   const res = await api.get("/auth/auth-check");
   return res.data;
 };
+
+export const refreshTokenApi = async () => {
+  const res = await api.get("/auth/refresh-token");
+  return res.data;
+};

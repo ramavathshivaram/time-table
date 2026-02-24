@@ -4,11 +4,20 @@ import axios from "axios";
 import ApiError from "../lib/ApiError.js";
 import { generateTokens, hashPassword } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
+import crypto from "crypto";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
 
+  if (!accessToken) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
   const userData = await getUserData(accessToken);
+
+  if (!userData?.email) {
+    throw new ApiError(400, "Google email not found");
+  }
 
   const user = await AuthModel.findOne({ email: userData.email });
 
@@ -16,13 +25,21 @@ const googleLogin = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  return await responseWithCookie(user, res, "login successful");
+  return await responseWithCookie(user, res, "Login successful");
 });
 
 const googleRegister = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
 
+  if (!accessToken) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
   const userData = await getUserData(accessToken);
+
+  if (!userData?.email) {
+    throw new ApiError(400, "Google email not found");
+  }
 
   const user = await AuthModel.findOne({ email: userData.email });
 
@@ -30,7 +47,9 @@ const googleRegister = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User already exists");
   }
 
-  const hashedPassword = await hashPassword(userData.email);
+  // random secure password (instead of email)
+  const randomPassword = crypto.randomBytes(16).toString("hex");
+  const hashedPassword = await hashPassword(randomPassword);
 
   const newUser = await AuthModel.create({
     username: userData.name,
@@ -42,7 +61,10 @@ const googleRegister = asyncHandler(async (req, res) => {
 });
 
 const responseWithCookie = async (user, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(user._id);
+  const { accessToken, refreshToken } = generateTokens(
+    user._id,
+    user.tokenVersion,
+  );
 
   user.refreshToken = refreshToken;
   await user.save();
@@ -75,11 +97,9 @@ const getUserData = async (accessToken) => {
       },
     );
 
-    console.log("Google User:", res.data);
-
     return res.data;
   } catch (err) {
-    console.error(err);
+    throw new ApiError(401, "Invalid Google token");
   }
 };
 
