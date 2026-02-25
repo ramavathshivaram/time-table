@@ -13,6 +13,7 @@ import {
   getTokenDataSafe,
 } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
+import { createUser } from "../services/user.services.js";
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -31,7 +32,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const register = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { userName, email, password } = req.body;
 
   const userExists = await AuthModel.findOne({ email });
 
@@ -42,10 +43,13 @@ const register = asyncHandler(async (req, res) => {
   const hashedPassword = await hashPassword(password);
 
   const user = await AuthModel.create({
-    username,
+    userName,
     email,
     password: hashedPassword,
   });
+
+  // event to be emitted for create user
+  await createUser({ userName, email, authId: user._id });
 
   return await responseWithCookie(user, res, "Registration successful");
 });

@@ -4,14 +4,14 @@ dotEnv.config();
 import connectDB from "./configs/mongoDB.js";
 import app from "./app.js";
 
-const port = 3001;
+const port = 3002;
 
-const authInit = async () => {
+const userInit = async () => {
   await connectDB();
 
   app.listen(port, () => {
-    console.log(`auth server started on ${port}`);
+    console.log(`user server started on ${port}`);
   });
 };
 
-authInit();
+userInit();

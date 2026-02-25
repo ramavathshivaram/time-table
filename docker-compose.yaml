@@ -1,4 +1,20 @@
 services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "5173:5173"
+
+  api-gateway:
+    build:
+      context: ./server/api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+
   auth-service:
     build:
       context: ./server/services/auth-service
@@ -6,3 +22,11 @@ services:
     container_name: auth-service
     ports:
       - "3001:3001"
+
+  user-service:
+    build:
+      context: ./server/services/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "3002:3002"
