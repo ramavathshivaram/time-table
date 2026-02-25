@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarDays, Users, BookOpen, Clock3 } from "lucide-react";
+import { useGetUserDetails } from "../hooks/react-query/user.query.js";
 
 const Dashboard = () => {
   const stats = [
@@ -25,6 +26,10 @@ const Dashboard = () => {
       icon: Clock3,
     },
   ];
+
+  const { data } = useGetUserDetails()
+
+  console.log(data)
 
   return (
     <div className="min-h-screen bg-background p-6">

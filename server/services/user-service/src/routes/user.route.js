@@ -5,7 +5,7 @@ import { createUserSchema } from "../lib/zodSchema.js";
 
 const router = express.Router();
 
-router.get("/", userController.getUserDetails);
+router.get("/details", userController.getUserDetails);
 
 router.post(
   "/create",
