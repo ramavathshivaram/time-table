@@ -7,26 +7,10 @@ services:
     ports:
       - "5173:5173"
 
-  api-gateway:
+  server:
     build:
-      context: ./server/api-gateway
+      context: ./server
       dockerfile: Dockerfile
-    container_name: api-gateway
+    container_name: server
     ports:
-      - "3000:3000"
-
-  auth-service:
-    build:
-      context: ./server/services/auth-service
-      dockerfile: Dockerfile
-    container_name: auth-service
-    ports:
-      - "3001:3001"
-
-  user-service:
-    build:
-      context: ./server/services/user-service
-      dockerfile: Dockerfile
-    container_name: user-service
-    ports:
-      - "3002:3002"
+      - "8080:8080"
