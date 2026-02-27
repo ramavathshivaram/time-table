@@ -2,7 +2,7 @@ import axios from "axios";
 import { refreshTokenApi } from "./apis/auth.api.js";
 import { toast } from "sonner";
 
-const BACKEND_URL = "http://localhost:3000/api";
+const BACKEND_URL = "http://localhost:8080";
 
 const api = axios.create({
   baseURL: BACKEND_URL,
@@ -20,10 +20,7 @@ api.interceptors.response.use(
       error?.message ||
       "Something went wrong";
 
-    if (
-      error?.response?.status === 427 &&
-      !originalRequest._retry
-    ) {
+    if (error?.response?.status === 427 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -43,7 +40,7 @@ api.interceptors.response.use(
     toast.error(message);
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

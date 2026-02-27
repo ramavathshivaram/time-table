@@ -4,7 +4,7 @@ dotEnv.config();
 import connectDB from "./configs/mongoDB.js";
 import app from "./app.js";
 
-const port = 3001;
+const port = 8080;
 
 const serverInit = async () => {
   await connectDB();
