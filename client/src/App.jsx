@@ -2,12 +2,13 @@ import React, { useEffect, lazy, Suspense } from "react";
 import useUserStore from "@/store/user.store.js";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import LoadingHeader from "./components/common/LoadingHeader";
 
 /* ===== Lazy Imports ===== */
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
-const ForgotPassword = lazy(() =>
-  import("./pages/auth/forgot-password/ForgotPassword")
+const ForgotPassword = lazy(
+  () => import("./pages/auth/forgot-password/ForgotPassword"),
 );
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -22,7 +23,7 @@ const App = () => {
   }, []);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingHeader />}>
       <Routes>
         <Route path="/" element={<Landing />} />
 

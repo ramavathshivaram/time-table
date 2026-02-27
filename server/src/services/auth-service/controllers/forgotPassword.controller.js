@@ -1,7 +1,7 @@
 import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import ApiError from "../lib/ApiError.js";
-import sendOTPEmail from "../services/sendMail.js";
+// import sendOTPEmail from "../services/sendMail.js";
 import { hashPassword } from "../lib/utils.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
@@ -17,7 +17,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const otp = generateOTP();
 
   // send otp email
-  await sendOTPEmail(email, otp);
+  // await sendOTPEmail(email, otp);
 
   // update otp in DB (reuse existing user object)
   user.otp = otp;

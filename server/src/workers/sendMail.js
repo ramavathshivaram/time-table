@@ -1,4 +1,4 @@
-import brevo from "../configs/brevo.js";
+import brevo from "./configs/brevo.js";
 import ejs from "ejs";
 import path from "path";
 

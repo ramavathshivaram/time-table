@@ -1,10 +1,10 @@
 import dotEnv from "dotenv";
 dotEnv.config();
 
-import connectDB from "./configs/mongoDB.js";
-import app from "./app.js";
+import connectDB from "./shared/configs/mongoDB.js";
+import app from "./services/app.js";
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const serverInit = async () => {
   await connectDB();

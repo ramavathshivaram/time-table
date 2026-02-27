@@ -1,29 +1,28 @@
 import express from "express";
+
+//! shared
+import validateRequest from "../../../shared/middlewares/validateRequest.js";
+import verifyJwtToken from "../../../shared/middlewares/verifyJwtToken.js";
+
 import authController from "../controllers/auth.controller.js";
 import googleController from "../controllers/google.controller.js";
 import forgotPasswordController from "../controllers/forgotPassword.controller.js";
-import validateRequest from "../middlewares/validateRequest.js";
-import {
-  loginSchema,
-  registerSchema,
-  forgotPasswordSchema,
-  verifyOTPSchema,
-  resetPasswordSchema,
-  googleLoginSchema,
-  googleRegisterSchema,
-} from "../lib/zodSchema.js";
 
-import verifyJwtToken from "../middlewares/verifyJwtToken.js";
+import zodSchema from "../lib/zodSchema.js";
 
 const router = express.Router();
 
 router.post(
   "/register",
-  validateRequest(registerSchema),
+  validateRequest(zodSchema.registerSchema),
   authController.register,
 );
 
-router.post("/login", validateRequest(loginSchema), authController.login);
+router.post(
+  "/login",
+  validateRequest(zodSchema.loginSchema),
+  authController.login,
+);
 
 router.get("/auth-check", verifyJwtToken, authController.authCheck);
 
@@ -33,31 +32,31 @@ router.get("/logout", authController.logout);
 
 router.post(
   "/google-login",
-  validateRequest(googleLoginSchema),
+  validateRequest(zodSchema.googleLoginSchema),
   googleController.googleLogin,
 );
 
 router.post(
   "/google-register",
-  validateRequest(googleRegisterSchema),
+  validateRequest(zodSchema.googleRegisterSchema),
   googleController.googleRegister,
 );
 
 router.post(
   "/forgot-password",
-  validateRequest(forgotPasswordSchema),
+  validateRequest(zodSchema.forgotPasswordSchema),
   forgotPasswordController.forgotPassword,
 );
 
 router.post(
   "/verify-otp",
-  validateRequest(verifyOTPSchema),
+  validateRequest(zodSchema.verifyOTPSchema),
   forgotPasswordController.verifyOTP,
 );
 
 router.post(
   "/reset-password",
-  validateRequest(resetPasswordSchema),
+  validateRequest(zodSchema.resetPasswordSchema),
   forgotPasswordController.resetPassword,
 );
 
