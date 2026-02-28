@@ -28,7 +28,7 @@ router.get("/auth-check", verifyJwtToken, authController.authCheck);
 
 router.get("/refresh-token", authController.refreshTokenController);
 
-router.get("/logout", authController.logout);
+router.post("/logout", authController.logout);
 
 router.post(
   "/google-login",

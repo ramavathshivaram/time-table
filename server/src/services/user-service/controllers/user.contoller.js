@@ -11,4 +11,14 @@ const getUserById = asyncHandler(async (req, res) => {
   });
 });
 
-export default { getUserById };
+const updateDarkMode = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+  const { darkMode } = req.body;
+  const user = await userRepository.updateDarkMode(userId, darkMode);
+  return res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+export default { getUserById,updateDarkMode };

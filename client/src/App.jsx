@@ -3,6 +3,7 @@ import useAuthStore from "@/store/auth.store.js";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import LoadingHeader from "./components/common/LoadingHeader";
+import RootLayout from "./pages/RootLayout";
 
 /* ===== Lazy Imports ===== */
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -28,7 +29,9 @@ const App = () => {
         <Route path="/" element={<Landing />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<RootLayout />}>
+            <Route path="/home" element={<Home />} />
+          </Route>
         </Route>
 
         <Route path="/login" element={<Login />} />

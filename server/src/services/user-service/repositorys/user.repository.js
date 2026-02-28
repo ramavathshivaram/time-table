@@ -17,4 +17,14 @@ const getUserIdByEmail = async (email) => {
   return user._id;
 };
 
-export default { createUser, getUserByAuthId, getUserById, getUserIdByEmail };
+const updateDarkMode = async (userId, darkMode) => {
+  return await UserModel.findByIdAndUpdate(userId, { settings: { darkMode } });
+};
+
+export default {
+  createUser,
+  getUserByAuthId,
+  getUserById,
+  getUserIdByEmail,
+  updateDarkMode,
+};
