@@ -1,18 +1,18 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
-import useUserStore from "../../store/user.store.js";
+import useAuthStore from "../../store/auth.store.js";
 import { useNavigate } from "react-router-dom";
 
 const GoogleRegisterBtn = () => {
-   const navigate = useNavigate();
-  const googleRegister = useUserStore((s) => s.googleRegister);
+  const navigate = useNavigate();
+  const googleRegister = useAuthStore((s) => s.googleRegister);
 
   const handleRegister = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         await googleRegister(tokenResponse.access_token);
-        navigate("/dashboard");
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }

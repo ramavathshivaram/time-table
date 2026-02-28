@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import useUserStore from "@/store/user.store.js";
+import useAuthStore from "@/store/auth.store.js";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import LoadingHeader from "./components/common/LoadingHeader";
@@ -11,12 +11,12 @@ const ForgotPassword = lazy(
   () => import("./pages/auth/forgot-password/ForgotPassword"),
 );
 
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Home = lazy(() => import("./pages/Home"));
 const Landing = lazy(() => import("./pages/Landing"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
-  const authCheck = useUserStore((s) => s.authCheck);
+  const authCheck = useAuthStore((s) => s.authCheck);
 
   useEffect(() => {
     authCheck();
@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/" element={<Landing />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/home" element={<Home />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, Clock3, Sparkles } from "lucide-react";
-import useUserStore from "../store/user.store.js";
+import useAuthStore from "../store/auth.store.js";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
-  const isAuthenticated = useUserStore((s) => s.isAuthenticated);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/home");
     }
   }, [isAuthenticated]);
 

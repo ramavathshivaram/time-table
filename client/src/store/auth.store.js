@@ -8,7 +8,7 @@ import {
   registerApi,
 } from "../lib/apis/auth.api.js";
 
-const useUserStore = create((set) => ({
+const useAuthStore = create((set) => ({
   user: null,
 
   isAuthenticated: false,
@@ -96,4 +96,4 @@ const useUserStore = create((set) => ({
   },
 }));
 
-export default useUserStore;
+export default useAuthStore;

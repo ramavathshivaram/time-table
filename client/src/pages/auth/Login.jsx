@@ -13,24 +13,20 @@ import {
 
 import {
   Field,
-  FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldTitle,
 } from "@/components/ui/field";
 
-import UseUserStore from "@/store/user.store.js";
+import useAuthStore from "@/store/auth.store.js";
 
 import { useNavigate } from "react-router-dom";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
 const Login = () => {
-  const login = UseUserStore((s) => s.login);
+  const login = useAuthStore((s) => s.login);
   const navigate = useNavigate();
 
   const {
@@ -42,7 +38,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       await login(data);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (error) {
       console.log(error);
     }

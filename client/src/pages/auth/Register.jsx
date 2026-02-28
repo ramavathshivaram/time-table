@@ -13,24 +13,20 @@ import {
 
 import {
   Field,
-  FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldTitle,
 } from "@/components/ui/field";
 
 import { useNavigate } from "react-router-dom";
 
-import UseUserStore from "@/store/user.store.js";
+import useAuthStore from "@/store/auth.store.js";
 import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
 const Register = () => {
-  const registerFunction = UseUserStore((s) => s.register);
+  const registerFunction = useAuthStore((s) => s.register);
   const navigate = useNavigate();
 
   const {
@@ -42,7 +38,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       await registerFunction(data);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (error) {
       console.log(error);
     }

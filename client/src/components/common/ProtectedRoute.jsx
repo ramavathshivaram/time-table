@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import useUserStore from "@/store/user.store.js";
+import useAuthStore from "@/store/auth.store.js";
 
 const ProtectedRoute = () => {
-  const isAuthenticated = useUserStore((s) => s.isAuthenticated);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
-  const isCheckingAuth = useUserStore((s) => s.isCheckingAuth);
+  const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
   useEffect(() => {}, [isAuthenticated, isCheckingAuth]);
 

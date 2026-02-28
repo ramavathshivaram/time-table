@@ -1,18 +1,18 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
-import useUserStore from "../../store/user.store.js";
+import useAuthStore from "../../store/auth.store.js";
 import { useNavigate } from "react-router-dom";
 
 const GoogleLoginBtn = () => {
   const navigate = useNavigate();
-  const googleLogin = useUserStore((s) => s.googleLogin);
+  const googleLogin = useAuthStore((s) => s.googleLogin);
 
   const handleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         await googleLogin(tokenResponse.access_token);
-        navigate("/dashboard");
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }
