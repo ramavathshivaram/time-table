@@ -16,7 +16,7 @@ const verifyJwtToken = (req, res, next) => {
     throw new ApiError(427, "Unauthorized");
   }
 
-  req.userId = decoded.userId;
+  req.userId = decoded.authId;
   next();
 };
 

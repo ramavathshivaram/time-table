@@ -17,6 +17,7 @@ const Profile = () => {
 
   const notifications = user?.notifications || [];
 
+
   return (
     <HoverCard openDelay={100} closeDelay={150}>
       <HoverCardTrigger asChild>

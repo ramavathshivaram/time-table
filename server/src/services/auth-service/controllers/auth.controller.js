@@ -94,9 +94,9 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid or expired access token");
   }
 
-  const { userId, tokenVersion: accessTokenVersion } = accessData;
+  const { authId, tokenVersion: accessTokenVersion } = accessData;
 
-  const user = await authRepository.findUserById(userId);
+  const user = await authRepository.findUserById(authId);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -123,7 +123,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh token");
   }
 
-  const newAccessToken = generateAccessToken(userId, accessTokenVersion);
+  const newAccessToken = generateAccessToken(authId, accessTokenVersion);
 
   res.cookie("accessToken", newAccessToken, {
     httpOnly: true,

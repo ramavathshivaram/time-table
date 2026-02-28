@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/button";
 import { updateDarkModeApi } from "@/lib/apis/user.api.js";
 
 const DarkMode = () => {
-  const user = useUserStore((s) => s.user);
-  const setUser = useUserStore((s) => s.setUser); // adjust if your store uses another action
-
-  const darkMode = user?.settings?.darkMode ?? false;
+  const darkMode = useUserStore((s) => s.darkMode);
+  const setDarkMode = useUserStore((s) => s.setDarkMode);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -20,13 +18,7 @@ const DarkMode = () => {
   }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setUser({
-      ...user,
-      settings: {
-        ...user?.settings,
-        darkMode: !darkMode,
-      },
-    });
+    setDarkMode(!darkMode);
 
     updateDarkModeApi({ darkMode: !darkMode });
   };

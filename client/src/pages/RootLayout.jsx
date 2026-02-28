@@ -5,13 +5,11 @@ import Navbar from "@/components/layouts/Navbar";
 
 const RootLayout = () => {
   const fetchUser = useUserStore((s) => s.fetchUser);
-  const user = useUserStore((s) => s.user);
+  const darkMode = useUserStore((s) => s.darkMode);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
-
-  const darkMode = user?.settings?.darkMode ?? false;
 
   useEffect(() => {
     const html = document.documentElement;
