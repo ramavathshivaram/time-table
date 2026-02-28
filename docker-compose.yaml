@@ -14,12 +14,16 @@ services:
     container_name: server
     ports:
       - "8080:8080"
+    depends_on:
+      - redis
 
   worker:
     build:
       context: ./server
       dockerfile: Dockerfile.worker
     container_name: worker
+    depends_on:
+      - redis
 
   redis:
     image: redis:7-alpine

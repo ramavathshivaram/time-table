@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import ApiError from "../../../shared/lib/ApiError.js";
 import {
