@@ -5,6 +5,7 @@ import ApiError from "../lib/ApiError.js";
 import { generateTokens, hashPassword } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 import crypto from "crypto";
+import authRepository from "../repositorys/auth.repository.js";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
@@ -19,7 +20,7 @@ const googleLogin = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Google email not found");
   }
 
-  const user = await AuthModel.findOne({ email: userData.email });
+  const user = await authRepository.getUserByEmail(userData.email);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -41,13 +42,14 @@ const googleRegister = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Google email not found");
   }
 
-  const user = await AuthModel.findOne({ email: userData.email });
+  const user = await authRepository.getUserByEmail(userData.email);
+
+  //! save the user
 
   if (user) {
     throw new ApiError(400, "User already exists");
   }
 
-  // random secure password (instead of email)
   const randomPassword = crypto.randomBytes(16).toString("hex");
   const hashedPassword = await hashPassword(randomPassword);
 

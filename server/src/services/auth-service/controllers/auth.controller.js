@@ -10,14 +10,17 @@ import {
   hashPassword,
   isPasswordMatched,
   verifyToken,
-  getTokenDataSafe,
+  decodeTokenPayload,
 } from "../lib/utils.js";
+
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
+
+import authRepository from "../repositorys/auth.repository.js";
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await AuthModel.findOne({ email }).select("+password");
+  const user = await authRepository.getUserWithPasswordByEmail(email);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -33,7 +36,7 @@ const login = asyncHandler(async (req, res) => {
 const register = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
 
-  const userExists = await AuthModel.findOne({ email });
+  const userExists = await authRepository.getUserByEmail(email);
 
   if (userExists) {
     throw new ApiError(400, "User already exists");
@@ -41,11 +44,13 @@ const register = asyncHandler(async (req, res) => {
 
   const hashedPassword = await hashPassword(password);
 
-  const user = await AuthModel.create({
+  const user = await authRepository.createUser({
     userName,
     email,
     password: hashedPassword,
   });
+
+  //! save to user model
 
   return await responseWithCookie(user, res, "Registration successful");
 });
@@ -57,7 +62,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Access token not found");
   }
 
-  const accessData = getTokenDataSafe(accessToken);
+  const accessData = decodeTokenPayload(accessToken);
 
   if (!accessData) {
     throw new ApiError(401, "Invalid or expired access token");
@@ -65,7 +70,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 
   const { userId, tokenVersion: accessTokenVersion } = accessData;
 
-  const user = await AuthModel.findById(userId);
+  const user = await authRepository.findUserById(userId);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -108,7 +113,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-  await AuthModel.findByIdAndUpdate(req.userId, {
+  await authRepository.findUserByIdAndUpdate(req.userId, {
     refreshToken: null,
   });
 

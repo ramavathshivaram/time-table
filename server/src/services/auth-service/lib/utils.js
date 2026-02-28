@@ -46,7 +46,7 @@ export const generateRefreshToken = (userId, tokenVersion) => {
   return refreshToken;
 };
 
-export const getTokenDataSafe = (token) => {
+export const decodeTokenPayload = (token) => {
   if (!token) return null;
 
   try {
@@ -68,12 +68,8 @@ export const verifyToken = (token) => {
   }
 };
 
-export const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
-};
+export const hashPassword = async (password) =>
+  await bcrypt.hash(password, salt);
 
-export const isPasswordMatched = async function (password, hashedPassword) {
-  return await bcrypt.compare(password, hashedPassword);
-};
+export const isPasswordMatched = async (password, hashedPassword) =>
+  await bcrypt.compare(password, hashedPassword);

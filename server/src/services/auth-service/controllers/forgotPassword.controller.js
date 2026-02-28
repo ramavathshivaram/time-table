@@ -1,13 +1,14 @@
-import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import ApiError from "../lib/ApiError.js";
+import crypto from "crypto";
 // import sendOTPEmail from "../services/sendMail.js";
 import { hashPassword } from "../lib/utils.js";
+import authRepository from "../repositorys/auth.repository.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  const user = await AuthModel.findOne({ email });
+  const user = await authRepository.getUserByEmail(email);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -16,12 +17,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
   // generate otp
   const otp = generateOTP();
 
-  // send otp email
+  //! send otp email
   // await sendOTPEmail(email, otp);
 
   // update otp in DB (reuse existing user object)
   user.otp = otp;
-  user.otpExpiry = Date.now() + 15 * 60 * 1000; // 15 mins
+  user.otpExpiry = Date.now() + 15 * 60 * 1000; //// 15 mins
 
   await user.save();
 
@@ -34,7 +35,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const verifyOTP = asyncHandler(async (req, res) => {
   const { otp, email } = req.body;
 
-  const user = await AuthModel.findOne({ email });
+  const user = await authRepository.getUserByEmail(email);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -50,7 +51,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { otp, password, email } = req.body;
 
-  const user = await AuthModel.findOne({ email });
+  const user = await authRepository.getUserByEmail(email);
 
   if (!user) {
     throw new ApiError(404, "User not found");
@@ -74,18 +75,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   return res.json({ message: "Password reset successful", success: true });
 });
 
-const generateOTP = () => {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  let otp = "";
-
-  for (let i = 0; i < 6; i++) {
-    otp += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  return otp;
-};
+const generateOTP = () => crypto.randomBytes(3).toString("hex");
 
 export default {
   forgotPassword,
