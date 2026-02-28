@@ -5,6 +5,10 @@ import crypto from "crypto";
 import { hashPassword } from "../lib/utils.js";
 import authRepository from "../repositorys/auth.repository.js";
 
+import { sendOtpEmailQueue } from "../queues/emailQueue.js";
+
+import { queueConst } from "../lib/const.js";
+
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -18,7 +22,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const otp = generateOTP();
 
   //! send otp email
-  // await sendOTPEmail(email, otp);
+  await sendOtpEmailQueue.add(queueConst.SEND_OTP_EMAIL, { email, otp });
 
   // update otp in DB (reuse existing user object)
   user.otp = otp;

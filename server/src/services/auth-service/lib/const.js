@@ -6,3 +6,8 @@ export const OTP_EXPIRES_IN = 15 * 60 * 1000; //! 15 minutes
 export const COOKIE_EXPIRES_IN = 24 * 60 * 60 * 1000; //! 1 day
 
 export const USER_API_URL = "http://localhost:3002";
+
+
+export const queueConst = {
+  SEND_OTP_EMAIL: "SEND_OTP_EMAIL",
+};
