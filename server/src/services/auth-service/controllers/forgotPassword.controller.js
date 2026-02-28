@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import ApiError from "../lib/ApiError.js";
+import ApiError from "../../../shared/lib/ApiError.js";
 import crypto from "crypto";
 // import sendOTPEmail from "../services/sendMail.js";
 import { hashPassword } from "../lib/utils.js";

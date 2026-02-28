@@ -1,7 +1,7 @@
 import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import axios from "axios";
-import ApiError from "../lib/ApiError.js";
+import ApiError from "../../../shared/lib/ApiError.js";
 import { generateTokens, hashPassword } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 import crypto from "crypto";

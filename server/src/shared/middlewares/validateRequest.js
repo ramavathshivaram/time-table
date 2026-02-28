@@ -1,8 +1,10 @@
+import ApiError from "../lib/ApiError.js";
+
 const validateRequest = (scheme) => {
   return (req, res, next) => {
     const result = scheme.parse(req.body);
     if (result.error) {
-      return res.status(400).json({ message: result.error.details[0].message });
+      throw new ApiError(400, result.error.details[0].message);
     }
     next();
   };
