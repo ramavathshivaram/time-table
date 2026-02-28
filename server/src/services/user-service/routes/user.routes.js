@@ -1,14 +1,10 @@
 import express from "express";
 import userContoller from "../controllers/user.contoller.js";
-import emitter from "../../../shared/configs/emitter.js";
 
-//! emitter
-emitter.on("createUser", (user) => {
-  userContoller.createUser(user);
-});
+import getUserId from "../middlewares/getUserId.js";
 
 const router = express.Router();
 
-router.get("/", userContoller.getUserById);
+router.get("/", getUserId, userContoller.getUserById);
 
 export default router;

@@ -6,7 +6,11 @@ import { generateTokens, hashPassword } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 import crypto from "crypto";
 import authRepository from "../repositorys/auth.repository.js";
-import emitter from "../../../shared/configs/emitter.js";
+
+import {
+  createUserGRPC,
+  getUserIdByEmailGRPC,
+} from "../../user-service/routes/grpcFunctions.js";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
@@ -26,6 +30,15 @@ const googleLogin = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(404, "User not found");
   }
+
+  const id = await getUserIdByEmailGRPC(email);
+  // save id cookie
+  res.cookie("userId", id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
+  });
 
   return await responseWithCookie(user, res, "Login successful");
 });
@@ -59,11 +72,19 @@ const googleRegister = asyncHandler(async (req, res) => {
   });
 
   //! save to user model
-  emitter.emit("createUser", {
+  const id = await createUserGRPC({
     userName: userData.name,
     email: userData.email,
     authId: newUser._id,
     avatar: userData.picture,
+  });
+
+  // save id cookie
+  res.cookie("userId", id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
   });
 
   return await responseWithCookie(newUser, res, "Registration successful");

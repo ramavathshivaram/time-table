@@ -16,7 +16,11 @@ import {
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 
 import authRepository from "../repositorys/auth.repository.js";
-import emitter from "../../../shared/configs/emitter.js";
+
+import {
+  createUserGRPC,
+  getUserIdByEmailGRPC,
+} from "../../user-service/routes/grpcFunctions.js";
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -30,6 +34,15 @@ const login = asyncHandler(async (req, res) => {
   if (!(await isPasswordMatched(password, user.password))) {
     throw new ApiError(401, "Invalid password");
   }
+
+  const id = await getUserIdByEmailGRPC(email);
+  // save id cookie
+  res.cookie("userId", id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
+  });
 
   return await responseWithCookie(user, res, "Login successful");
 });
@@ -52,10 +65,18 @@ const register = asyncHandler(async (req, res) => {
   });
 
   //! save to user model
-  emitter.emit("createUser", {
+  const id = await createUserGRPC({
     userName,
     email,
     authId: user._id,
+  });
+
+  // save id cookie
+  res.cookie("userId", id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: COOKIE_EXPIRES_IN,
   });
 
   return await responseWithCookie(user, res, "Registration successful");

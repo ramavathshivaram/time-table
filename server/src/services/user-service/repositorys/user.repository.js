@@ -8,4 +8,13 @@ const getUserByAuthId = async (authId) => {
   return await UserModel.findOne({ authId });
 };
 
-export default { createUser, getUserByAuthId };
+const getUserById = async (id) => {
+  return await UserModel.findById(id);
+};
+
+const getUserIdByEmail = async (email) => {
+  const user = await UserModel.findOne({ email });
+  return user._id;
+};
+
+export default { createUser, getUserByAuthId, getUserById, getUserIdByEmail };
