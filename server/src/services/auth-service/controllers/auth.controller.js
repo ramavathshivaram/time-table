@@ -16,6 +16,7 @@ import {
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 
 import authRepository from "../repositorys/auth.repository.js";
+import emitter from "../../../shared/configs/emitter.js";
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -51,6 +52,11 @@ const register = asyncHandler(async (req, res) => {
   });
 
   //! save to user model
+  emitter.emit("createUser", {
+    userName,
+    email,
+    authId: user._id,
+  });
 
   return await responseWithCookie(user, res, "Registration successful");
 });

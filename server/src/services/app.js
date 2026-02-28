@@ -8,8 +8,10 @@ import cors from "cors";
 
 import errorHandler from "../shared/middlewares/errorHandler.js";
 import notFoundRoute from "../shared/middlewares/notFoundRoute.js";
+import verifyJwtToken from "../shared/middlewares/verifyJwtToken.js";
 
 import authRouter from "./auth-service/routes/auth.route.js";
+import userRouter from "./user-service/routes/user.routes.js";
 
 const corsOptions = {
   origin: process.env.ORIGIN || "http://localhost:5173",
@@ -28,6 +30,9 @@ app.use(cookieParser());
 
 //! Auth Routes
 app.use("/auth", authRouter);
+
+//! User Routes
+app.use("/user", verifyJwtToken, userRouter);
 
 //! Route not found
 app.use(notFoundRoute);

@@ -6,6 +6,7 @@ import { generateTokens, hashPassword } from "../lib/utils.js";
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
 import crypto from "crypto";
 import authRepository from "../repositorys/auth.repository.js";
+import emitter from "../../../shared/configs/emitter.js";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
@@ -44,8 +45,6 @@ const googleRegister = asyncHandler(async (req, res) => {
 
   const user = await authRepository.getUserByEmail(userData.email);
 
-  //! save the user
-
   if (user) {
     throw new ApiError(400, "User already exists");
   }
@@ -57,6 +56,14 @@ const googleRegister = asyncHandler(async (req, res) => {
     username: userData.name,
     email: userData.email,
     password: hashedPassword,
+  });
+
+  //! save to user model
+  emitter.emit("createUser", {
+    userName: userData.name,
+    email: userData.email,
+    authId: newUser._id,
+    avatar: userData.picture,
   });
 
   return await responseWithCookie(newUser, res, "Registration successful");
@@ -98,7 +105,6 @@ const getUserData = async (accessToken) => {
         },
       },
     );
-
     return res.data;
   } catch (err) {
     throw new ApiError(401, "Invalid Google token");
