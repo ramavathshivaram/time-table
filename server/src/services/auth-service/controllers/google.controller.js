@@ -10,7 +10,7 @@ import authRepository from "../repositorys/auth.repository.js";
 import {
   createUserGRPC,
   getUserIdByEmailGRPC,
-} from "../../user-service/routes/grpcFunctions.js";
+} from "../../user-service/routes/user.grpc.js";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;

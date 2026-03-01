@@ -19,7 +19,7 @@ import authRepository from "../repositorys/auth.repository.js";
 import {
   createUserGRPC,
   getUserIdByEmailGRPC,
-} from "../../user-service/routes/grpcFunctions.js";
+} from "../../user-service/routes/user.grpc.js";
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

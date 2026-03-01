@@ -12,6 +12,7 @@ import verifyJwtToken from "../shared/middlewares/verifyJwtToken.js";
 
 import authRouter from "./auth-service/routes/auth.route.js";
 import userRouter from "./user-service/routes/user.routes.js";
+import workflowRouter from "./workflow-service/routes/workflow.route.js";
 
 const corsOptions = {
   origin: process.env.ORIGIN || "http://localhost:5173",
@@ -33,6 +34,9 @@ app.use("/auth", authRouter);
 
 //! User Routes
 app.use("/user", verifyJwtToken, userRouter);
+
+//! Workflow Routes
+app.use("/workflow", verifyJwtToken, workflowRouter);
 
 //! Route not found
 app.use(notFoundRoute);

@@ -24,8 +24,6 @@ const useUserStore = create((set) => ({
   fetchUser: async () => {
     const user = await getUserDetailsApi();
 
-    console.log(user);
-
     set({
       user,
       notifications: user.notifications,

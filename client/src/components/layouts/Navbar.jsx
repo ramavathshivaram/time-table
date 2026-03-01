@@ -1,6 +1,6 @@
 import React from "react";
 import Profile from "../sections/navbar/Profile";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 
 const links = [
@@ -10,9 +10,15 @@ const links = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleCreate = () => {
+    navigate("/workflow?newWorkflow=true");
+  };
+
   return (
     <nav
-      className="fixed top-0 left-0 right-0 w-full z-50 px-4 py-3 
+      className="fixed top-0 left-0 right-0 w-full z-50 px-4 py-1 
     bg-white/80 dark:bg-black/70 backdrop-blur-md 
     flex items-center justify-between"
     >
@@ -43,7 +49,9 @@ const Navbar = () => {
           </li>
         ))}
 
-        <Button size="sm">Create</Button>
+        <Button size="sm" onClick={handleCreate}>
+          Create
+        </Button>
       </ul>
 
       {/* Profile */}
