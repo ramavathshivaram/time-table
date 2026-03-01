@@ -2,7 +2,7 @@ import axios from "axios";
 import { refreshTokenApi } from "./apis/auth.api.js";
 import { toast } from "sonner";
 
-const BACKEND_URL = "http://localhost:8080";
+const BACKEND_URL = import.meta.env.VITE_SERVER_URL;
 
 const api = axios.create({
   baseURL: BACKEND_URL,

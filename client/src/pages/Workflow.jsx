@@ -1,15 +1,27 @@
-import React from "react";
+import useSocket from "@/hooks/socket/useSocket.js";
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const Workflow = () => {
-  const newWorkflow = useSearchParams()[0].get("newWorkflow");
-  const workflowId = useSearchParams()[0].get("workflowId");
+  const [searchParams] = useSearchParams();
 
-  if (workflowId) {
-    return <div>workflow {workflowId}</div>;
-  }
+  const newWorkflow = searchParams.get("newWorkflow");
+  const workflowId = searchParams.get("workflowId");
 
-  // use sockets
+  const { socket, connectSocket, disconnectSocket } = useSocket();
+
+  useEffect(() => {
+    connectSocket();
+
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
+
+    return () => {
+      socket.off("connect");
+      disconnectSocket();
+    };
+  }, []);
 
   return (
     <div>
