@@ -1,0 +1,88 @@
+import {
+  Play,
+  GitBranch,
+  Calendar,
+  Layers,
+  Home,
+  BookOpen,
+  User,
+  FlaskConical,
+  School,
+} from "lucide-react";
+
+ const nodeTypes = [
+  {
+    type: "start",
+    title: "Start",
+    icon: Play,
+    description: "Workflow trigger",
+    color: "text-green-500",
+    bg: "bg-green-100",
+  },
+  {
+    type: "college",
+    title: "College",
+    icon: School,
+    description: "College selection",
+    color: "text-blue-500",
+    bg: "bg-blue-100",
+  },
+  {
+    type: "branch",
+    title: "Branch",
+    icon: GitBranch,
+    description: "Conditional logic",
+    color: "text-purple-500",
+    bg: "bg-purple-100",
+  },
+  {
+    type: "year",
+    title: "Year",
+    icon: Calendar,
+    description: "Academic year",
+    color: "text-orange-500",
+    bg: "bg-orange-100",
+  },
+  {
+    type: "section",
+    title: "Section",
+    icon: Layers,
+    description: "Class sections",
+    color: "text-pink-500",
+    bg: "bg-pink-100",
+  },
+  {
+    type: "room",
+    title: "Room",
+    icon: Home,
+    description: "Room allocation",
+    color: "text-teal-500",
+    bg: "bg-teal-100",
+  },
+  {
+    type: "subject",
+    title: "Subject",
+    icon: BookOpen,
+    description: "Course subjects",
+    color: "text-indigo-500",
+    bg: "bg-indigo-100",
+  },
+  {
+    type: "faculty",
+    title: "Faculty",
+    icon: User,
+    description: "Teacher assignment",
+    color: "text-yellow-500",
+    bg: "bg-yellow-100",
+  },
+  {
+    type: "lab",
+    title: "Lab",
+    icon: FlaskConical,
+    description: "Laboratory sessions",
+    color: "text-red-500",
+    bg: "bg-red-100",
+  },
+];
+
+export default nodeTypes;

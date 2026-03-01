@@ -1,3 +1,4 @@
+import WorkflowEditor from "@/components/workflow/WorkflowEditor";
 import useSocket from "@/hooks/socket/useSocket.js";
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -25,8 +26,7 @@ const Workflow = () => {
 
   return (
     <div>
-      workflow
-      {newWorkflow && "new workflow"}
+      <WorkflowEditor />
     </div>
   );
 };

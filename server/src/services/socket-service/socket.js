@@ -22,14 +22,6 @@ const socketInit = (server) => {
     //! Init workflow socket
     workflowSocketInit(io, socket);
 
-    // Listen event from client
-    socket.on("message", (data) => {
-      console.log("Message:", data);
-
-      // Send to all clients
-      io.emit("message", data);
-    });
-
     socket.on("disconnect", () => {
       onlineUsers.removeUserBySocketId(socket.id);
       console.log("User disconnected:", socket.userId, socket.id);
