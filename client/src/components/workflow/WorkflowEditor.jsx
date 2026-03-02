@@ -7,14 +7,14 @@ import WorkflowTitle from "./panels/WorkflowTitle";
 import WorkflowControls from "./panels/WorkflowControls";
 import GenerateTimeTable from "./panels/GenerateTimeTable";
 
-const WorkflowEditor = () => {
+const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   return (
     <div className="w-screen h-screen">
       <ReactFlow proOptions={{ hideAttribution: true }}>
         <Background />
 
         <Panel position="top-left">
-          <WorkflowTitle />
+          <WorkflowTitle initialWorkflowTitle={initialWorkflowData.title} workflowId={workflowId} />
         </Panel>
 
         <Panel position="top-center">

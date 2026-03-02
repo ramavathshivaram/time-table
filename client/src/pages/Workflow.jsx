@@ -1,32 +1,22 @@
 import WorkflowEditor from "@/components/workflow/WorkflowEditor";
-import useSocket from "@/hooks/socket/useSocket.js";
-import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useGetWorkflowDetails } from "@/hooks/react-query/workflow.query.js";
+import React from "react";
+import { useParams } from "react-router-dom";
 
 const Workflow = () => {
-  const [searchParams] = useSearchParams();
+  const workflowId = useParams().workflowId;
 
-  const newWorkflow = searchParams.get("newWorkflow");
-  const workflowId = searchParams.get("workflowId");
+  const { data: initialWorkflowData, isLoading } =
+    useGetWorkflowDetails(workflowId);
 
-  const { socket, connectSocket, disconnectSocket } = useSocket();
-
-  useEffect(() => {
-    connectSocket();
-
-    socket.on("connect", () => {
-      console.log("Socket connected:", socket.id);
-    });
-
-    return () => {
-      socket.off("connect");
-      disconnectSocket();
-    };
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div>
-      <WorkflowEditor />
+      <WorkflowEditor
+        initialWorkflowData={initialWorkflowData}
+        workflowId={workflowId}
+      />
     </div>
   );
 };

@@ -34,7 +34,7 @@ const App = () => {
             <Route path="/home" element={<Home />} />
           </Route>
 
-          <Route path="/workflow" element={<Workflow />} />
+          <Route path="/workflow/:workflowId" element={<Workflow />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

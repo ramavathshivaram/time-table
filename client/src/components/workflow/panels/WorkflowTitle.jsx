@@ -1,25 +1,36 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, useEffect, memo, useMemo } from "react";
+import { updateWorkflowApi } from "@/lib/apis/workflow.api.js";
+import debounce from "lodash.debounce";
 
-const WorkflowTitle = () => {
-  const [workflowTitle, setWorkflowTitle] = useState("jvdbajdbdjbvdf");
+const WorkflowTitle = ({ initialWorkflowTitle, workflowId }) => {
+  const [workflowTitle, setWorkflowTitle] = useState(initialWorkflowTitle);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
 
-  // Auto focus when editing starts
   useEffect(() => {
-    if (isEditing) {
-      inputRef.current?.focus();
-    }
+    if (isEditing) inputRef.current?.focus();
   }, [isEditing]);
 
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce((value) => {
+        updateWorkflowApi(workflowId, { title: value });
+      }, 500),
+    [workflowId],
+  );
+
+  useEffect(() => {
+    return () => debouncedUpdate.cancel();
+  }, [debouncedUpdate]);
+
   const handleTitleChange = (e) => {
-    setWorkflowTitle(e.target.value);
+    const value = e.target.value;
+    setWorkflowTitle(value);
+    debouncedUpdate(value);
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      setIsEditing(false);
-    }
+    if (e.key === "Enter") setIsEditing(false);
   };
 
   return (
@@ -28,11 +39,10 @@ const WorkflowTitle = () => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Workflow Title"
           value={workflowTitle}
           onChange={handleTitleChange}
-          onBlur={() => setIsEditing(false)} // click outside
-          onKeyDown={handleKeyDown} // press Enter
+          onBlur={() => setIsEditing(false)}
+          onKeyDown={handleKeyDown}
           className="w-full border-none rounded-md text-lg font-semibold outline-none underline underline-offset-4"
         />
       ) : (

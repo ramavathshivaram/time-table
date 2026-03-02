@@ -6,4 +6,10 @@ const router = express.Router();
 
 router.get("/", getUserId, workflowController.getAllUserWorkflows);
 
+router.post("/create-workflow", getUserId, workflowController.createWorkflow);
+
+router.get("/:workflowId", workflowController.getWorkflowById);
+
+router.put("/:workflowId", workflowController.updateWorkflow);
+
 export default router;
