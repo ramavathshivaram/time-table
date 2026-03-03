@@ -1,6 +1,6 @@
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
-import { ReactFlow, Background } from "@xyflow/react";
+import { ReactFlow, Background, Controls } from "@xyflow/react";
 import ReactflowPanels from "./panels/ReactflowPanels";
 import useDnD from "./workflows-hooks/useDnd.js";
 import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
@@ -16,8 +16,8 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     onEdgesChange,
     onConnect,
     autoArrangement,
-    duplicateSelected
-  } = useWorkflowInteractions(initialWorkflowData,workflowId, reactFlowInstanceRef);
+    duplicateSelected,
+  } = useWorkflowInteractions(initialWorkflowData, workflowId);
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
     setNodes,
@@ -45,6 +45,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         fitView
       >
         <Background />
+        <Controls />
 
         <ReactflowPanels
           workflowId={workflowId}

@@ -4,11 +4,7 @@ import useAutoArrange from "./useAutoArrange.js";
 import useDuplicateSelected from "./useDuplicateSelected.js";
 import useDebounceSave from "./useDebounceSave.js";
 
-const useWorkflowInteractions = (
-  initialWorkflowData,
-  workflowId,
-  reactFlowInstanceRef,
-) => {
+const useWorkflowInteractions = (initialWorkflowData, workflowId) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(
     initialWorkflowData.nodes,
   );

@@ -1,9 +1,5 @@
 import { useCallback } from "react";
 import dagre from "dagre";
-import { toast } from "sonner";
-
-const nodeWidth = 100;
-const nodeHeight = 30;
 
 export default function useAutoArrange(nodes, edges, setNodes) {
   return useCallback(() => {
@@ -15,12 +11,15 @@ export default function useAutoArrange(nodes, edges, setNodes) {
     dagreGraph.setGraph({
       rankdir: "TB",
       ranksep: 150,
-      nodesep: 20,
+      nodesep: 40,
     });
 
     // Add nodes
     nodes.forEach((node) => {
-      dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+      const width = node.measured?.width || 150;
+      const height = node.measured?.height || 50;
+
+      dagreGraph.setNode(node.id, { width, height });
     });
 
     // Add edges
@@ -30,19 +29,40 @@ export default function useAutoArrange(nodes, edges, setNodes) {
 
     dagre.layout(dagreGraph);
 
-    // Update node positions
     const arranged = nodes.map((node) => {
+      const width = node.measured?.width || 150;
+      const height = node.measured?.height || 50;
+
       const pos = dagreGraph.node(node.id);
+
+      if (!pos) return node; // safety
+
       return {
         ...node,
         position: {
-          x: pos.x - nodeWidth / 2,
-          y: pos.y - nodeHeight / 2,
+          x: pos.x - width / 2,
+          y: pos.y - height / 2,
         },
-        dragging: false,
+        style: {
+          ...node.style,
+          transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        },
       };
     });
 
     setNodes(arranged);
+
+    // 🔥 Remove transition after animation
+    setTimeout(() => {
+      setNodes((nds) =>
+        nds.map((n) => ({
+          ...n,
+          style: {
+            ...n.style,
+            transition: undefined,
+          },
+        }))
+      );
+    }, 350);
   }, [nodes, edges, setNodes]);
 }
