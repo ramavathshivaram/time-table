@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
   // Drag start
@@ -22,12 +23,12 @@ const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
       if (!type) return;
 
       const position = reactFlowInstanceRef.current.screenToFlowPosition({
-        x: e.clientX-70,
-        y: e.clientY-20,
+        x: e.clientX - 70,
+        y: e.clientY - 20,
       });
 
       const newNode = {
-        id: generateNodeId(),
+        id: `node_${uuidv4()}`,
         type: "default",
         position,
         data: {
@@ -42,10 +43,6 @@ const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
   );
 
   return { onDragStart, onDragOver, onDrop };
-};
-
-const generateNodeId = () => {
-  return `node_${Math.random().toString(36).substring(2, 10)}`;
 };
 
 export default useDnD;

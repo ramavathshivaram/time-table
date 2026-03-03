@@ -5,6 +5,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import ejs from "ejs";
 import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
 
 import errorHandler from "../shared/middlewares/errorHandler.js";
 import notFoundRoute from "../shared/middlewares/notFoundRoute.js";
@@ -25,9 +27,17 @@ app.set("view engine", "ejs");
 
 //! Middlewares
 app.use(morgan("dev"));
+app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  compression({
+    threshold: 1024,
+    level: 6,
+  }),
+);
 
 //! Auth Routes
 app.use("/auth", authRouter);

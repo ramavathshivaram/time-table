@@ -1,23 +1,23 @@
-import React, { useRef } from "react";
-import {
-  ReactFlow,
-  Background,
-  useEdgesState,
-  useNodesState,
-} from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import React, { useRef } from "react";
+import { ReactFlow, Background } from "@xyflow/react";
 import ReactflowPanels from "./panels/ReactflowPanels";
 import useDnD from "./workflows-hooks/useDnd.js";
+import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const reactFlowInstanceRef = useRef(null);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(
-    initialWorkflowData.nodes,
-  );
-  const [edges, setEdges, onEdgesChange] = useEdgesState(
-    initialWorkflowData.edges,
-  );
+  const {
+    nodes,
+    setNodes,
+    onNodesChange,
+    edges,
+    onEdgesChange,
+    onConnect,
+    autoArrangement,
+    duplicateSelected
+  } = useWorkflowInteractions(initialWorkflowData, reactFlowInstanceRef);
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
     setNodes,
@@ -31,12 +31,18 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
         // drag and drop
         onDragOver={onDragOver}
         onDrop={onDrop}
+        colorMode="light"
+        deleteKeyCode={["Delete", "Backspace"]}
+        selectionKeyCode={["Shift", "Meta"]}
+        multiSelectionKeyCode={["Shift", "Control"]}
         // init
         onInit={(instance) => (reactFlowInstanceRef.current = instance)}
         proOptions={{ hideAttribution: true }}
+        fitView
       >
         <Background />
 
@@ -44,6 +50,8 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
           workflowId={workflowId}
           title={initialWorkflowData.title}
           onDragStart={onDragStart}
+          autoArrangement={autoArrangement}
+          duplicateSelected={duplicateSelected}
         />
       </ReactFlow>
     </div>

@@ -7,7 +7,7 @@ import WorkflowTitle from "./WorkflowTitle";
 import WorkflowControls from "./WorkflowControls";
 import GenerateTimeTable from "./GenerateTimeTable";
 
-const ReactflowPanels = ({ workflowId, title, onDragStart }) => {
+const ReactflowPanels = ({ workflowId, title, onDragStart, autoArrangement,duplicateSelected }) => {
   return (
     <>
       <Panel position="top-left">
@@ -18,7 +18,7 @@ const ReactflowPanels = ({ workflowId, title, onDragStart }) => {
       </Panel>
 
       <Panel position="top-center">
-        <WorkflowControls />
+        <WorkflowControls   autoArrangement={autoArrangement} duplicateSelected={duplicateSelected} />
       </Panel>
 
       <Panel position="top-right">
