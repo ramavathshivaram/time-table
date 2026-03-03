@@ -32,7 +32,7 @@ const Login = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -45,8 +45,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Card className="flex w-full max-w-md">
+    <div className="flex h-screen w-screen items-center justify-center bg-gray-50/50">
+      <Card className="flex w-full max-w-md bg-white">
         <CardHeader>
           <CardTitle className="text-center">
             <h1 className="text-2xl font-bold underline">Login</h1>
@@ -94,8 +94,12 @@ const Login = () => {
               </FieldGroup>
             </FieldSet>
 
-            <Button type="submit" className="w-full mt-5">
-              Login
+            <Button
+              type="submit"
+              className="w-full mt-5"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
 
             <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
@@ -103,18 +107,25 @@ const Login = () => {
             <GoogleLoginBtn />
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col">
-          <p className="text-center">
-            Don't have an account?
-            <Link to="/register" className="underline text-blue-600">
-              Register
+        <CardFooter className="flex flex-col gap-2">
+          <div className="text-sm text-center text-muted-foreground">
+            <span>Don't have an account? </span>
+            <Link
+              to="/register"
+              className="font-medium text-primary hover:underline hover:text-primary/80 transition"
+            >
+              Create one
             </Link>
-          </p>
-          <p>
-            <Link to="/forgot-password" className="underline text-blue-600">
-              Forgot password?
+          </div>
+
+          <div className="text-center">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-muted-foreground hover:text-primary transition"
+            >
+              Forgot your password?
             </Link>
-          </p>
+          </div>
         </CardFooter>
       </Card>
     </div>

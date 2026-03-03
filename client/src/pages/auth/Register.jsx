@@ -32,7 +32,7 @@ const Register = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -45,8 +45,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Card className="flex w-full max-w-md">
+    <div className="flex h-screen w-screen items-center justify-center bg-gray-50/50">
+      <Card className="flex w-full max-w-md bg-white">
         <CardHeader>
           <CardTitle className="text-center">
             <h1 className="text-2xl font-bold underline">Register</h1>
@@ -111,8 +111,12 @@ const Register = () => {
                 </Field>
               </FieldGroup>
             </FieldSet>
-            <Button type="submit" className="w-full mt-5">
-              Register
+            <Button
+              type="submit"
+              className="w-full mt-5"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Registering..." : "Register"}
             </Button>
 
             <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
@@ -121,13 +125,16 @@ const Register = () => {
           </form>
         </CardContent>
 
-        <CardFooter className="flex flex-col">
-          <p className="text-center">
-            have an account?
-            <Link to="/login" className="underline text-blue-600">
-              Login
+        <CardFooter className="w-full">
+          <div className="text-center w-full text-sm text-muted-foreground">
+            <span>Already have an account? </span>
+            <Link
+              to="/login"
+              className="font-medium text-primary hover:underline hover:text-primary/80 transition"
+            >
+              Sign in
             </Link>
-          </p>
+          </div>
         </CardFooter>
       </Card>
     </div>

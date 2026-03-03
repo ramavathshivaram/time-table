@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import useAuthStore from "../../store/auth.store.js";
 import { useNavigate } from "react-router-dom";
+import { Globe } from "lucide-react";
 
 const GoogleLoginBtn = () => {
   const navigate = useNavigate();
@@ -20,8 +21,16 @@ const GoogleLoginBtn = () => {
   });
 
   return (
-    <Button variant="outline" className="w-full" onClick={handleLogin}>
-      Login with Google
+    <Button
+      variant="outline"
+      onClick={handleLogin}
+      className="w-full h-11 flex items-center justify-center gap-3
+             bg-white border border-gray-300
+             hover:bg-gray-50 hover:shadow-sm
+             transition-all duration-200"
+    >
+      <Globe className="w-5 h-5 text-blue-500" />
+      <span className="font-medium text-gray-700">Continue with Google</span>
     </Button>
   );
 };
