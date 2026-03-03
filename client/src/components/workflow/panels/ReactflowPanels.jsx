@@ -7,18 +7,24 @@ import WorkflowTitle from "./WorkflowTitle";
 import WorkflowControls from "./WorkflowControls";
 import GenerateTimeTable from "./GenerateTimeTable";
 
-const ReactflowPanels = ({ workflowId, title, onDragStart, autoArrangement,duplicateSelected }) => {
+const ReactflowPanels = ({
+  workflowId,
+  title,
+  onDragStart,
+  autoArrangement,
+  duplicateSelected,
+}) => {
   return (
     <>
       <Panel position="top-left">
-        <WorkflowTitle
-          title={title}
-          workflowId={workflowId}
-        />
+        <WorkflowTitle title={title} workflowId={workflowId} />
       </Panel>
 
       <Panel position="top-center">
-        <WorkflowControls   autoArrangement={autoArrangement} duplicateSelected={duplicateSelected} />
+        <WorkflowControls
+          autoArrangement={autoArrangement}
+          duplicateSelected={duplicateSelected}
+        />
       </Panel>
 
       <Panel position="top-right">

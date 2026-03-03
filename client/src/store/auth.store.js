@@ -22,9 +22,7 @@ const useAuthStore = create((set) => ({
   login: async (userData) => {
     try {
       const user = await loginApi(userData);
-
-      console.log(user);
-
+      
       set({ user: user, isAuthenticated: true });
     } catch (error) {
       set({ user: null, isAuthenticated: false });

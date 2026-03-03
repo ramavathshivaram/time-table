@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import useAuthStore from "@/store/auth.store.js";
+import LoadingHeader from "./LoadingHeader";
 
 const ProtectedRoute = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
-  useEffect(() => {}, [isAuthenticated, isCheckingAuth]);
-
-  if (isCheckingAuth) return <div>Loading...</div>;
+  if (isCheckingAuth) return <LoadingHeader />;
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };

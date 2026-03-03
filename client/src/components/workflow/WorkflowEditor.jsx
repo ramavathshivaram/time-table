@@ -1,11 +1,16 @@
 import "@xyflow/react/dist/style.css";
+import useUserStore from "@/store/user.store.js";
 import React, { useRef } from "react";
 import { ReactFlow, Background, Controls } from "@xyflow/react";
 import ReactflowPanels from "./panels/ReactflowPanels";
 import useDnD from "./workflows-hooks/useDnd.js";
 import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
 
+import CollegeNode from "./nodeTypes/CollegeNode";
+import DefaultNode from "./nodeTypes/DefaultNode";
+
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
+  const darkMode = useUserStore((s) => s.darkMode);
   const reactFlowInstanceRef = useRef(null);
 
   const {
@@ -24,6 +29,17 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     reactFlowInstanceRef,
   });
 
+  const nodeTypes = {
+    college: CollegeNode,
+    branch: DefaultNode,
+    year: DefaultNode,
+    section: DefaultNode,
+    room: DefaultNode,
+    subject: DefaultNode,
+    faculty: DefaultNode,
+    lab: DefaultNode,
+  };
+
   return (
     <div className="w-screen h-screen">
       <ReactFlow
@@ -32,14 +48,16 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        // drag and drop
+        //? node types
+        nodeTypes={nodeTypes}
+        //? drag and drop
         onDragOver={onDragOver}
         onDrop={onDrop}
-        colorMode="light"
+        colorMode={darkMode ? "dark" : "light"}
         deleteKeyCode={["Delete", "Backspace"]}
         selectionKeyCode={["Shift", "Meta"]}
         multiSelectionKeyCode={["Shift", "Control"]}
-        // init
+        //? init
         onInit={(instance) => (reactFlowInstanceRef.current = instance)}
         proOptions={{ hideAttribution: true }}
         fitView

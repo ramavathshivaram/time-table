@@ -1,5 +1,4 @@
 import {
-  Play,
   GitBranch,
   Calendar,
   Layers,
@@ -10,15 +9,9 @@ import {
   School,
 } from "lucide-react";
 
- const nodeTypes = [
-  {
-    type: "start",
-    title: "Start",
-    icon: Play,
-    description: "Workflow trigger",
-    color: "text-green-500",
-    bg: "bg-green-100",
-  },
+
+
+const nodeTypes = [
   {
     type: "college",
     title: "College",

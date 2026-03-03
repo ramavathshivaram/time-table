@@ -26,8 +26,8 @@ const NodeLibrary = ({ onDragStart }) => {
                       onDragStart={(e) => onDragStart(e, node.type)}
                       className="flex items-center gap-2 cursor-grab p-1 rounded-lg border border-gray-200/60 shadow-sm transition-all hover:bg-muted"
                     >
-                      <div className="w-8 h-8 flex items-center justify-center rounded-md shrink-0">
-                        <Icon className="w-6 h-6" />
+                      <div className={`p-0.5 rounded-md ${node.bg}`}>
+                        <Icon className={`size-7 ${node.color}`} />
                       </div>
                     </div>
                   </TooltipTrigger>

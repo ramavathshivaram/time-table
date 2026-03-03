@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { nanoid } from 'nanoid'
+
 
 const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
   // Drag start
@@ -28,12 +29,12 @@ const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
       });
 
       const newNode = {
-        id: `node_${uuidv4()}`,
-        type: "default",
+        id: `NODE_${nanoid()}`,
+        type: type,
         position,
         data: {
           label: `${type} node`,
-          nodeType: type,
+          type,
         },
       };
 

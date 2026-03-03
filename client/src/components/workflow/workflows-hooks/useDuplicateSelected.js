@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { nanoid } from "nanoid";
 
 const useDuplicateSelected = ({ nodes, edges, setNodes, setEdges }) => {
   return useCallback(() => {
@@ -12,7 +12,7 @@ const useDuplicateSelected = ({ nodes, edges, setNodes, setEdges }) => {
 
     // 1️⃣ Duplicate nodes
     const duplicatedNodes = selectedNodes.map((node) => {
-      const newId = `node_${uuidv4()}`;
+      const newId = `NODE_${nanoid()}`;
       nodeIdMap.set(node.id, newId);
 
       return {
@@ -26,6 +26,8 @@ const useDuplicateSelected = ({ nodes, edges, setNodes, setEdges }) => {
       };
     });
 
+    console.log(duplicatedNodes);
+
     // 2️⃣ Duplicate edges ONLY if both nodes are duplicated
     const duplicatedEdges = selectedEdges
       .filter(
@@ -33,7 +35,7 @@ const useDuplicateSelected = ({ nodes, edges, setNodes, setEdges }) => {
       )
       .map((edge) => ({
         ...edge,
-        id: `edge_${uuidv4()}`,
+        id: `EDGE_${nanoid()}`,
         source: nodeIdMap.get(edge.source),
         target: nodeIdMap.get(edge.target),
         selected: false,

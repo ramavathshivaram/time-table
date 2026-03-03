@@ -4,7 +4,7 @@ import { updateWorkflowQueue } from "../queues/update.workflow.queue.js";
 
 const createWorkflow = asyncHandler(async (req, res) => {
   const createdWorkflow = await workflowRepository.createWorkflow({
-    title: `Workflow ${Date.now().toFixed(5)}`,
+    title: `Workflow ${Date.now().toString().substring(0, 5)}`,
     userId: req.userId,
   });
 

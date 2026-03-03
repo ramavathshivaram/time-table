@@ -10,8 +10,8 @@ export default function useAutoArrange(nodes, edges, setNodes) {
 
     dagreGraph.setGraph({
       rankdir: "TB",
-      ranksep: 150,
-      nodesep: 40,
+      ranksep: 40,
+      nodesep: 25,
     });
 
     // Add nodes
