@@ -13,8 +13,7 @@ const getWorkflowById = async (workflowId) => {
 };
 
 const updateWorkflowById = async (workflowId, data) => {
-  const workflow = await workflowModel.findByIdAndUpdate(workflowId, data);
-  console.log(workflow);
+  await workflowModel.findByIdAndUpdate(workflowId, data);
 };
 
 export default {

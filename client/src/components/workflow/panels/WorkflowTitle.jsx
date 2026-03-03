@@ -1,32 +1,23 @@
-import React, { useState, useRef, useEffect, memo, useMemo } from "react";
-import { updateWorkflowApi } from "@/lib/apis/workflow.api.js";
-import debounce from "lodash.debounce";
+import React, { useState, useRef, useEffect, memo } from "react";
+import useDebounceSave from "../workflows-hooks/useDebounceSave.js";
 
 const WorkflowTitle = ({ title, workflowId }) => {
   const [workflowTitle, setWorkflowTitle] = useState(title);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
 
+  const debouncedSave = useDebounceSave(workflowId);
+
   useEffect(() => {
     if (isEditing) inputRef.current?.focus();
   }, [isEditing]);
 
-  const debouncedUpdate = useMemo(
-    () =>
-      debounce((value) => {
-        updateWorkflowApi(workflowId, { title: value });
-      }, 500),
-    [workflowId],
-  );
-
-  useEffect(() => {
-    return () => debouncedUpdate.cancel();
-  }, [debouncedUpdate]);
-
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setWorkflowTitle(value);
-    debouncedUpdate(value);
+    debouncedSave({
+      title: value,
+    });
   };
 
   const handleKeyDown = (e) => {

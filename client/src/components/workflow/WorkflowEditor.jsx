@@ -17,7 +17,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     onConnect,
     autoArrangement,
     duplicateSelected
-  } = useWorkflowInteractions(initialWorkflowData, reactFlowInstanceRef);
+  } = useWorkflowInteractions(initialWorkflowData,workflowId, reactFlowInstanceRef);
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
     setNodes,

@@ -1,16 +1,29 @@
 import { useEdgesState, useNodesState, addEdge } from "@xyflow/react";
-
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useAutoArrange from "./useAutoArrange.js";
 import useDuplicateSelected from "./useDuplicateSelected.js";
+import useDebounceSave from "./useDebounceSave.js";
 
-const useWorkflowInteractions = (initialWorkflowData, reactFlowInstanceRef) => {
+const useWorkflowInteractions = (
+  initialWorkflowData,
+  workflowId,
+  reactFlowInstanceRef,
+) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(
     initialWorkflowData.nodes,
   );
   const [edges, setEdges, onEdgesChange] = useEdgesState(
     initialWorkflowData.edges,
   );
+
+  const debouncedSave = useDebounceSave(workflowId);
+
+  useEffect(() => {
+    debouncedSave({
+      nodes,
+      edges,
+    });
+  }, [nodes, edges, debouncedSave]);
 
   const onConnect = useCallback(
     (connection) => {
@@ -35,6 +48,7 @@ const useWorkflowInteractions = (initialWorkflowData, reactFlowInstanceRef) => {
     setNodes,
     setEdges,
   });
+
   return {
     nodes,
     setNodes,

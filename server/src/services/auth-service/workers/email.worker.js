@@ -24,25 +24,9 @@ const emailJob = async (job) => {
   await sendEmail(email, "OTP Verification", html);
 };
 
-const worker = new Worker(queueConst.SEND_OTP_EMAIL, emailJob, {
-  connection: redis,
-});
-
-worker.on("completed", (job) => {
-  console.log(`Job ${job.id} completed`);
-});
-
-worker.on("failed", (job, err) => {
-  console.log(`Job failed`, err);
-});
-
-worker.on("error", (err) => {
-  console.log(`Worker error`, err);
-});
-
-worker.on("ready", () => {
-  console.log("Email worker is ready");
-});
-
+const worker = () =>
+  new Worker(queueConst.SEND_OTP_EMAIL, emailJob, {
+    connection: redis,
+  });
 
 export default worker;
