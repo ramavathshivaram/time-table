@@ -6,9 +6,11 @@ import connectDB from "./shared/configs/mongoDB.js";
 import app from "./services/app.js";
 
 import socketInit from "./services/socket-service/socket.js";
+import mongoose from "mongoose";
 
 const server = http.createServer(app);
 
+// Init socket
 socketInit(server);
 
 const port = process.env.PORT || 8080;
@@ -17,8 +19,24 @@ const serverInit = async () => {
   await connectDB();
 
   server.listen(port, () => {
-    console.log(`auth server started on ${port}`);
+    console.log(`Server started on ${port}`);
   });
 };
 
 serverInit();
+
+const gracefulShutdown = () => {
+  console.log("shutting down server...");
+
+  server.close(() => {
+    console.log("server closed");
+
+    mongoose.connection.close(() => {
+      console.log("MongoDB connection closed");
+    });
+    process.exit(0);
+  });
+};
+
+process.on("SIGINT", gracefulShutdown);
+process.on("SIGTERM", gracefulShutdown);

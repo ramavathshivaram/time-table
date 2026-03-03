@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect, memo, useMemo } from "react";
 import { updateWorkflowApi } from "@/lib/apis/workflow.api.js";
 import debounce from "lodash.debounce";
 
-const WorkflowTitle = ({ initialWorkflowTitle, workflowId }) => {
-  const [workflowTitle, setWorkflowTitle] = useState(initialWorkflowTitle);
+const WorkflowTitle = ({ title, workflowId }) => {
+  const [workflowTitle, setWorkflowTitle] = useState(title);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
 

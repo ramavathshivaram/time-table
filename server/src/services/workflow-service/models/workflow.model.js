@@ -16,6 +16,10 @@ const workflowSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+
+    nodes: [{}],
+
+    edges: [{}],
   },
   {
     timestamps: true,

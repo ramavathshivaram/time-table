@@ -1,33 +1,50 @@
-import React from "react";
-import { ReactFlow, Background, Panel } from "@xyflow/react";
+import React, { useRef } from "react";
+import {
+  ReactFlow,
+  Background,
+  useEdgesState,
+  useNodesState,
+} from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-
-import NodeLibrary from "./panels/NodeLibrary";
-import WorkflowTitle from "./panels/WorkflowTitle";
-import WorkflowControls from "./panels/WorkflowControls";
-import GenerateTimeTable from "./panels/GenerateTimeTable";
+import ReactflowPanels from "./panels/ReactflowPanels";
+import useDnD from "./workflows-hooks/useDnd.js";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
+  const reactFlowInstanceRef = useRef(null);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    initialWorkflowData.nodes,
+  );
+  const [edges, setEdges, onEdgesChange] = useEdgesState(
+    initialWorkflowData.edges,
+  );
+
+  const { onDragOver, onDrop, onDragStart } = useDnD({
+    setNodes,
+    reactFlowInstanceRef,
+  });
+
   return (
     <div className="w-screen h-screen">
-      <ReactFlow proOptions={{ hideAttribution: true }}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        // drag and drop
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        // init
+        onInit={(instance) => (reactFlowInstanceRef.current = instance)}
+        proOptions={{ hideAttribution: true }}
+      >
         <Background />
 
-        <Panel position="top-left">
-          <WorkflowTitle initialWorkflowTitle={initialWorkflowData.title} workflowId={workflowId} />
-        </Panel>
-
-        <Panel position="top-center">
-          <WorkflowControls />
-        </Panel>
-
-        <Panel position="top-right">
-          <GenerateTimeTable />
-        </Panel>
-
-        <Panel position="left">
-          <NodeLibrary />
-        </Panel>
+        <ReactflowPanels
+          workflowId={workflowId}
+          title={initialWorkflowData.title}
+          onDragStart={onDragStart}
+        />
       </ReactFlow>
     </div>
   );

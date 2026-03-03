@@ -4,7 +4,21 @@ dotenv.config({
 });
 
 // import auth workers
-import "./services/auth-service/workers/index.js";
+import authWorkers from "./services/auth-service/workers/index.js";
 
 // import workflow workers
-import "./services/workflow-service/workers/index.js";
+import workflowWorkers from "./services/workflow-service/workers/index.js";
+
+const workers = [...authWorkers, ...workflowWorkers];
+
+const gracefulShutdown = async () => {
+  console.log("Shutting down email worker...");
+  for (const worker of workers) {
+    await worker.close();
+  }
+  console.log("All workers shut down. Exiting process.");
+  process.exit(0);
+};
+
+process.on("SIGINT", gracefulShutdown);
+process.on("SIGTERM", gracefulShutdown);

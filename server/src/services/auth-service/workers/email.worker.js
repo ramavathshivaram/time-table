@@ -44,4 +44,5 @@ worker.on("ready", () => {
   console.log("Email worker is ready");
 });
 
+
 export default worker;

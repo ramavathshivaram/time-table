@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB");
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.log("Disconnected from MongoDB");
+});
+
+mongoose.connection.on("error", (error) => {
+  console.error("MongoDB connection error:", error);
+});
+
 const mongoOptions = {
   minPoolSize: 5,
   maxPoolSize: 10,
@@ -11,10 +23,8 @@ const connectDB = async () => {
       process.env.MONGODB_URI || "mongodb://localhost:27017/timeTable";
 
     await mongoose.connect(MONGODB_URI, mongoOptions);
-
-    console.log("Connected to MongoDB");
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Failed to connect to MongoDB:", error);
   }
 };
 
