@@ -52,6 +52,7 @@ const useWorkflowInteractions = (initialWorkflowData, workflowId) => {
     edges,
     setEdges,
     onEdgesChange,
+    // interactions
     onConnect,
     autoArrangement,
     duplicateSelected,

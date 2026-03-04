@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import workflowRepository from "../repositorys/workflow.repository.js";
 import { updateWorkflowQueue } from "../queues/update.workflow.queue.js";
+import { queueConst } from "../lib/const.js";
 
 const createWorkflow = asyncHandler(async (req, res) => {
   const createdWorkflow = await workflowRepository.createWorkflow({
@@ -38,7 +39,7 @@ const getAllUserWorkflows = asyncHandler(async (req, res) => {
 const updateWorkflow = asyncHandler(async (req, res) => {
   const workflowId = req.params.workflowId;
 
-  await updateWorkflowQueue.add("updateWorkflow", {
+  await updateWorkflowQueue.add(queueConst.UPDATE_WORKFLOW, {
     workflowId,
     data: req.body,
   });

@@ -33,7 +33,6 @@ const WorkflowControls = ({
   undo,
   redo,
 }) => {
-
   const { zoomIn, zoomOut, fitView } = useReactFlow();
 
   const controls = [

@@ -11,7 +11,7 @@ const SubjectNode = ({ data, isConnectable }) => {
     <div className="relative group">
 
       {/* Node */}
-      <Card className="min-w-[150px] border border-gray-700 px-3 py-2 rounded-xl shadow-sm bg-background hover:shadow-md transition-all">
+      <Card className="min-w-37.5 border border-gray-700 px-3 py-2 rounded-md shadow-sm bg-background hover:shadow-md transition-all">
         <div className="flex items-center gap-2">
 
           {/* Icon */}
