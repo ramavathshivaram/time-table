@@ -2,7 +2,17 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Copy, ArrowDownNarrowWide, Trash2 } from "lucide-react";
+
+import {
+  Copy,
+  ArrowDownNarrowWide,
+  Trash2,
+  ZoomIn,
+  ZoomOut,
+  Maximize,
+  Undo2,
+  Redo2,
+} from "lucide-react";
 
 import {
   Tooltip,
@@ -12,11 +22,20 @@ import {
 } from "@/components/ui/tooltip";
 
 import { toast } from "sonner";
+import { useReactFlow } from "@xyflow/react";
 
 const iconBtnClass =
   "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
 
-const WorkflowControls = ({ autoArrangement, duplicateSelected }) => {
+const WorkflowControls = ({
+  autoArrangement,
+  duplicateSelected,
+  undo,
+  redo,
+}) => {
+
+  const { zoomIn, zoomOut, fitView } = useReactFlow();
+
   const controls = [
     {
       icon: Trash2,
@@ -39,12 +58,47 @@ const WorkflowControls = ({ autoArrangement, duplicateSelected }) => {
         "text-purple-500 border-purple-200 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300",
       onClick: autoArrangement,
     },
+    {
+      icon: ZoomIn,
+      label: "Zoom In",
+      className:
+        "text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-800",
+      onClick: zoomIn,
+    },
+    {
+      icon: ZoomOut,
+      label: "Zoom Out",
+      className:
+        "text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-800",
+      onClick: zoomOut,
+    },
+    {
+      icon: Maximize,
+      label: "Fit View",
+      className:
+        "text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600",
+      onClick: fitView,
+    },
+    {
+      icon: Undo2,
+      label: "Undo",
+      className:
+        "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600",
+      onClick: undo,
+    },
+    {
+      icon: Redo2,
+      label: "Redo",
+      className:
+        "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600",
+      onClick: redo,
+    },
   ];
 
   return (
     <TooltipProvider delayDuration={150}>
       <Card className="flex items-center p-1 shadow-md bg-white border">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {controls.map((control) => {
             const Icon = control.icon;
 

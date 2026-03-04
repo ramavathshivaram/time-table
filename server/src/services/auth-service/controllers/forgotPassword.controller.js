@@ -24,7 +24,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   //! send otp email
   await sendOtpEmailQueue.add(queueConst.SEND_OTP_EMAIL, { email, otp });
 
-  // update otp in DB (reuse existing user object)
+  // update otp in DB
   user.otp = otp;
   user.otpExpiry = Date.now() + 15 * 60 * 1000; //// 15 mins
 

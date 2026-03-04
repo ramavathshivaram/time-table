@@ -1,24 +1,34 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { createWorkflowApi } from "@/lib/apis/workflow.api.js";
+import { useCreateWorkflow } from "@/hooks/react-query/workflow.query.js";
+import { Plus } from "lucide-react";
 
 const CreateWorkflowBtn = () => {
   const navigate = useNavigate();
 
+  const { mutateAsync: createWorkflow, isPending } = useCreateWorkflow();
+
   const handleCreate = async () => {
-    const workflow = await createWorkflowApi();
+    try {
+      const workflow = await createWorkflow();
 
-    console.log(workflow);
-
-    navigate(`/workflow/${workflow.id}`);
+      navigate(`/workflow/${workflow.id}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
-    <div>
-      <Button size="sm" onClick={handleCreate}>
-        Create
-      </Button>
-    </div>
+    <Button
+      size="sm"
+      onClick={handleCreate}
+      disabled={isPending}
+      className="flex items-center gap-2 shadow-sm hover:shadow-md transition-all"
+    >
+      <Plus size={16} />
+      {isPending ? "Creating..." : "Create"}
+    </Button>
   );
 };
 

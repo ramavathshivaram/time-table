@@ -1,7 +1,7 @@
+import React from "react";
+import { School } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
-import { School } from "lucide-react";
-import React from "react";
 
 const CollegeNode = ({ data, isConnectable }) => {
 

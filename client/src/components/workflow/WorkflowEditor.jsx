@@ -1,13 +1,14 @@
 import "@xyflow/react/dist/style.css";
 import useUserStore from "@/store/user.store.js";
 import React, { useRef } from "react";
-import { ReactFlow, Background, Controls } from "@xyflow/react";
+import { ReactFlow, Background } from "@xyflow/react";
 import ReactflowPanels from "./panels/ReactflowPanels";
 import useDnD from "./workflows-hooks/useDnd.js";
 import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
 
 import CollegeNode from "./nodeTypes/CollegeNode";
 import DefaultNode from "./nodeTypes/DefaultNode";
+import SubjectNode from "./nodeTypes/SubjectNode";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
@@ -35,7 +36,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     year: DefaultNode,
     section: DefaultNode,
     room: DefaultNode,
-    subject: DefaultNode,
+    subject: SubjectNode,
     faculty: DefaultNode,
     lab: DefaultNode,
   };
@@ -63,7 +64,6 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         fitView
       >
         <Background />
-        <Controls />
 
         <ReactflowPanels
           workflowId={workflowId}
