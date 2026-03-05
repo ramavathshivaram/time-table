@@ -34,7 +34,6 @@ const workerEventHandlers = (worker) => {
 const startWorkers = async () => {
   try {
     await connectDB();
-    console.log("🟢 Worker MongoDB connected");
 
     workers = workerFactories.map((createWorker) => {
       const worker = createWorker();

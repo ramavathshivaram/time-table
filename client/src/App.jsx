@@ -5,6 +5,8 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import LoadingHeader from "./components/common/LoadingHeader";
 import RootLayout from "./pages/RootLayout";
 import Workflow from "./pages/Workflow";
+import { applyDarkMode } from "./lib/theme.js";
+import useUserStore from "./store/user.store";
 
 /* ===== Lazy Imports ===== */
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -19,10 +21,18 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
   const authCheck = useAuthStore((s) => s.authCheck);
+  const darkMode = useUserStore((s) => s.darkMode);
+
+  console.log(darkMode)
 
   useEffect(() => {
     authCheck();
   }, []);
+
+  useEffect(() => {
+
+    applyDarkMode(darkMode);
+  }, [darkMode]);
 
   return (
     <Suspense fallback={<LoadingHeader />}>

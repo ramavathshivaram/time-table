@@ -1,8 +1,16 @@
 import { useCallback } from "react";
 import dagre from "dagre";
 
-export default function useAutoArrange(nodes, edges, setNodes) {
+export default function useAutoArrange({
+  getNodes,
+  getEdges,
+  setNodes,
+}) {
   return useCallback(() => {
+
+    const nodes = getNodes();
+    const edges = getEdges();
+
     if (!nodes.length) return;
 
     const dagreGraph = new dagre.graphlib.Graph();
@@ -29,13 +37,12 @@ export default function useAutoArrange(nodes, edges, setNodes) {
 
     dagre.layout(dagreGraph);
 
-    const arranged = nodes.map((node) => {
+    const arrangedNodes = nodes.map((node) => {
       const width = node.measured?.width || 150;
       const height = node.measured?.height || 50;
 
       const pos = dagreGraph.node(node.id);
-
-      if (!pos) return node; // safety
+      if (!pos) return node;
 
       return {
         ...node,
@@ -45,24 +52,22 @@ export default function useAutoArrange(nodes, edges, setNodes) {
         },
         style: {
           ...node.style,
-          transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: "transform 0.35s cubic-bezier(0.4,0,0.2,1)",
         },
       };
     });
 
-    setNodes(arranged);
+    setNodes(() => arrangedNodes);
 
-    // 🔥 Remove transition after animation
+    // Remove transition after animation
     setTimeout(() => {
       setNodes((nds) =>
         nds.map((n) => ({
           ...n,
-          style: {
-            ...n.style,
-            transition: undefined,
-          },
+          style: { ...n.style, transition: undefined },
         }))
       );
     }, 350);
-  }, [nodes, edges, setNodes]);
+
+  }, [getNodes, getEdges, setNodes]);
 }

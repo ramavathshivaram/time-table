@@ -9,8 +9,6 @@ import {
   School,
 } from "lucide-react";
 
-
-
 const nodeTypes = [
   {
     type: "college",
@@ -19,6 +17,7 @@ const nodeTypes = [
     description: "College selection",
     color: "text-blue-500",
     bg: "bg-blue-100",
+    parent: null,
   },
   {
     type: "branch",
@@ -27,6 +26,7 @@ const nodeTypes = [
     description: "Conditional logic",
     color: "text-purple-500",
     bg: "bg-purple-100",
+    parent: "college",
   },
   {
     type: "year",
@@ -35,6 +35,7 @@ const nodeTypes = [
     description: "Academic year",
     color: "text-orange-500",
     bg: "bg-orange-100",
+    parent: "branch",
   },
   {
     type: "section",
@@ -43,6 +44,8 @@ const nodeTypes = [
     description: "Class sections",
     color: "text-pink-500",
     bg: "bg-pink-100",
+    parent: "year",
+
   },
   {
     type: "room",

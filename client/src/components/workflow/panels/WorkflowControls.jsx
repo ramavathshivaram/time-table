@@ -24,16 +24,28 @@ import {
 import { toast } from "sonner";
 import { useReactFlow } from "@xyflow/react";
 
+import useDuplicateSelected from "../workflows-hooks/useDuplicateSelected.js";
+import useAutoArrange from "../workflows-hooks/useAutoArrange.js";
+
 const iconBtnClass =
   "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
 
-const WorkflowControls = ({
-  autoArrangement,
-  duplicateSelected,
-  undo,
-  redo,
-}) => {
-  const { zoomIn, zoomOut, fitView } = useReactFlow();
+const WorkflowControls = () => {
+  const { zoomIn, zoomOut, fitView, getNodes, setNodes, getEdges, setEdges } =
+    useReactFlow();
+
+  const duplicateSelected = useDuplicateSelected({
+    getNodes,
+    getEdges,
+    setNodes,
+    setEdges,
+  });
+
+  const autoArrangement = useAutoArrange({
+    getNodes,
+    getEdges,
+    setNodes,
+  });
 
   const controls = [
     {
@@ -83,20 +95,20 @@ const WorkflowControls = ({
       label: "Undo",
       className:
         "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600",
-      onClick: undo,
+      onClick: () => toast.error("Undo not implemented"),
     },
     {
       icon: Redo2,
       label: "Redo",
       className:
         "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600",
-      onClick: redo,
+      onClick: () => toast.error("Redo not implemented"),
     },
   ];
 
   return (
     <TooltipProvider delayDuration={150}>
-      <Card className="flex items-center p-1 shadow-md bg-white border">
+      <Card className="flex items-center p-1 shadow-md border">
         <div className="flex items-center gap-2 flex-wrap">
           {controls.map((control) => {
             const Icon = control.icon;

@@ -14,16 +14,8 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
   const reactFlowInstanceRef = useRef(null);
 
-  const {
-    nodes,
-    setNodes,
-    onNodesChange,
-    edges,
-    onEdgesChange,
-    onConnect,
-    autoArrangement,
-    duplicateSelected,
-  } = useWorkflowInteractions(initialWorkflowData, workflowId);
+  const { nodes, setNodes, onNodesChange, edges, onEdgesChange, onConnect } =
+    useWorkflowInteractions(initialWorkflowData, workflowId);
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
     setNodes,
@@ -69,8 +61,6 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
           workflowId={workflowId}
           title={initialWorkflowData.title}
           onDragStart={onDragStart}
-          autoArrangement={autoArrangement}
-          duplicateSelected={duplicateSelected}
         />
       </ReactFlow>
     </div>

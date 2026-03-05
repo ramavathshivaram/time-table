@@ -3,11 +3,15 @@ import { School } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
 
-const CollegeNode = ({ data, isConnectable }) => {
-
+const CollegeNode = ({ data, isConnectable, selected }) => {
   return (
     <div className="relative group">
-      <Card className=" shadow-md border border-gray-700 rounded-lg p-1 bg-white hover:shadow-md transition-all">
+      <Card
+        className={`
+          shadow-md border rounded-lg p-1  transition-all
+          ${selected ? "ring-1 ring-blue-500 border-blue-500" : "border-gray-700"}
+        `}
+      >
         {/* Header */}
         <div className="flex items-center gap-2">
           <div className="p-1 bg-blue-100 rounded-md">

@@ -11,8 +11,6 @@ const ReactflowPanels = ({
   workflowId,
   title,
   onDragStart,
-  autoArrangement,
-  duplicateSelected,
 }) => {
   return (
     <>
@@ -21,10 +19,7 @@ const ReactflowPanels = ({
       </Panel>
 
       <Panel position="top-center">
-        <WorkflowControls
-          autoArrangement={autoArrangement}
-          duplicateSelected={duplicateSelected}
-        />
+        <WorkflowControls />
       </Panel>
 
       <Panel position="top-right">

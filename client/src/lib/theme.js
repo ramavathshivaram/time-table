@@ -3,6 +3,7 @@ export const applyDarkMode = (darkMode) => {
 
   if (darkMode) {
     html.classList.add("dark");
+
   } else {
     html.classList.remove("dark");
   }

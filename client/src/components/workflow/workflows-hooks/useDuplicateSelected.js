@@ -1,50 +1,52 @@
+import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 import { useCallback } from "react";
-import { nanoid } from "nanoid";
 
-const useDuplicateSelected = ({ nodes, edges, setNodes, setEdges }) => {
+const useDuplicateSelected = ({
+  getNodes,
+  getEdges,
+  setNodes,
+  setEdges,
+}) => {
   return useCallback(() => {
-    const selectedNodes = nodes.filter((n) => n.selected);
-    const selectedEdges = edges.filter((e) => e.selected);
+    const nodes = getNodes();
+    const edges = getEdges();
 
+    const selectedNodes = nodes.filter((n) => n.selected);
     if (!selectedNodes.length) return;
 
     const nodeIdMap = new Map();
 
-    // 1️⃣ Duplicate nodes
     const duplicatedNodes = selectedNodes.map((node) => {
-      const newId = `NODE_${nanoid()}`;
+      const newId = generateNodeId();
       nodeIdMap.set(node.id, newId);
 
       return {
         ...node,
         id: newId,
         position: {
-          x: node.position.x + 40,
-          y: node.position.y + 40,
+          x: node.position.x + 60,
+          y: node.position.y + 60,
         },
         selected: false,
       };
     });
 
-    console.log(duplicatedNodes);
-
-    // 2️⃣ Duplicate edges ONLY if both nodes are duplicated
-    const duplicatedEdges = selectedEdges
+    const duplicatedEdges = edges
       .filter(
         (edge) => nodeIdMap.has(edge.source) && nodeIdMap.has(edge.target),
       )
       .map((edge) => ({
         ...edge,
-        id: `EDGE_${nanoid()}`,
+        id: generateEdgeId(),
         source: nodeIdMap.get(edge.source),
         target: nodeIdMap.get(edge.target),
         selected: false,
       }));
 
-    // 3️⃣ Update state
+    // 5️⃣ Update state
     setNodes((nds) => [...nds, ...duplicatedNodes]);
     setEdges((eds) => [...eds, ...duplicatedEdges]);
-  }, [nodes, edges, setNodes, setEdges]);
+  }, [getNodes, getEdges, setNodes, setEdges]);
 };
 
 export default useDuplicateSelected;
