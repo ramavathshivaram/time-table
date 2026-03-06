@@ -67,7 +67,9 @@ const WorkflowControls = () => {
       label: "Auto Arrange",
       className:
         "text-purple-500 border-purple-200 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300",
-      onClick: autoArrangement,
+      onClick: () => {
+        (autoArrangement(), fitView());
+      },
     },
     {
       icon: ZoomIn,

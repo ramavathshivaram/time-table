@@ -23,14 +23,11 @@ const App = () => {
   const authCheck = useAuthStore((s) => s.authCheck);
   const darkMode = useUserStore((s) => s.darkMode);
 
-  console.log(darkMode)
-
   useEffect(() => {
     authCheck();
-  }, []);
+  }, [authCheck]);
 
   useEffect(() => {
-
     applyDarkMode(darkMode);
   }, [darkMode]);
 

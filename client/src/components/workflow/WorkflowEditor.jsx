@@ -3,19 +3,33 @@ import useUserStore from "@/store/user.store.js";
 import React, { useRef } from "react";
 import { ReactFlow, Background } from "@xyflow/react";
 import ReactflowPanels from "./panels/ReactflowPanels";
-import useDnD from "./workflows-hooks/useDnd.js";
+import useDnD from "./workflows-hooks/useDnD.js";
 import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
 
 import CollegeNode from "./nodeTypes/CollegeNode";
 import DefaultNode from "./nodeTypes/DefaultNode";
 import SubjectNode from "./nodeTypes/SubjectNode";
+import Madal from "./Modal.jsx";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
   const reactFlowInstanceRef = useRef(null);
 
-  const { nodes, setNodes, onNodesChange, edges, onEdgesChange, onConnect } =
-    useWorkflowInteractions(initialWorkflowData, workflowId);
+  const {
+    nodes,
+    setNodes,
+    onNodesChange,
+    edges,
+    onEdgesChange,
+    onConnect,
+    isValidConnection,
+    onNodeDoubleClick,
+    onConnectEnd
+  } = useWorkflowInteractions(
+    initialWorkflowData,
+    workflowId,
+    reactFlowInstanceRef,
+  );
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
     setNodes,
@@ -51,6 +65,9 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         selectionKeyCode={["Shift", "Meta"]}
         multiSelectionKeyCode={["Shift", "Control"]}
         //? init
+        isValidConnection={isValidConnection}
+        onNodeDoubleClick={onNodeDoubleClick}
+        onConnectEnd={onConnectEnd}
         onInit={(instance) => (reactFlowInstanceRef.current = instance)}
         proOptions={{ hideAttribution: true }}
         fitView
@@ -63,6 +80,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
           onDragStart={onDragStart}
         />
       </ReactFlow>
+      <Madal />
     </div>
   );
 };

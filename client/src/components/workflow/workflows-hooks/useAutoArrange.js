@@ -1,13 +1,8 @@
 import { useCallback } from "react";
 import dagre from "dagre";
 
-export default function useAutoArrange({
-  getNodes,
-  getEdges,
-  setNodes,
-}) {
+export default function useAutoArrange({ getNodes, getEdges, setNodes }) {
   return useCallback(() => {
-
     const nodes = getNodes();
     const edges = getEdges();
 
@@ -65,9 +60,8 @@ export default function useAutoArrange({
         nds.map((n) => ({
           ...n,
           style: { ...n.style, transition: undefined },
-        }))
+        })),
       );
     }, 350);
-
   }, [getNodes, getEdges, setNodes]);
 }

@@ -1,8 +1,16 @@
 import { useEdgesState, useNodesState, addEdge } from "@xyflow/react";
 import { useCallback, useEffect } from "react";
 import useDebounceSave from "./useDebounceSave.js";
+import nodeTypes from "../nodeTypes.js";
+import useModalStore from "@/store/modal.store.js";
+import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 
-const useWorkflowInteractions = (initialWorkflowData, workflowId) => {
+const useWorkflowInteractions = (
+  initialWorkflowData,
+  workflowId,
+  reactFlowInstanceRef,
+) => {
+  const openModal = useModalStore((s) => s.openModal);
   const [nodes, setNodes, onNodesChangeRF] = useNodesState(
     initialWorkflowData.nodes,
   );
@@ -87,6 +95,76 @@ const useWorkflowInteractions = (initialWorkflowData, workflowId) => {
     [onEdgesChangeRF],
   );
 
+  const isValidConnection = useCallback(
+    (connection) => {
+      const sourceNode = nodes.find((n) => n.id === connection.source);
+      const targetNode = nodes.find((n) => n.id === connection.target);
+
+      const targetType = nodeTypes.find((n) => n.type === targetNode.data.type);
+
+      if (sourceNode.type === targetType.parent) {
+        return true;
+      }
+
+      return false;
+    },
+    [nodes],
+  );
+
+  const onNodeDoubleClick = (event, node) => {
+    const rf = reactFlowInstanceRef.current;
+
+    const screen = rf.flowToScreenPosition({
+      x: node.position.x + node.width / 2,
+      y: node.position.y + node.height / 2,
+    });
+
+    openModal(node, screen);
+  };
+
+  const onConnectEnd = (event, connectionState) => {
+    const rf = reactFlowInstanceRef.current;
+
+    if (!rf) return;
+
+    // if connected to existing node → do nothing
+    if (connectionState?.toNode || connectionState?.toHandle) {
+      return;
+    }
+
+    const node = nodeTypes.find(
+      (n) => n?.parent === connectionState?.fromNode?.type,
+    );
+
+    if (!node) return;
+
+    // convert pointer → flow coordinates
+    const position = rf.screenToFlowPosition({
+      x: connectionState.pointer.x,
+      y: connectionState.pointer.y,
+    });
+
+    const newNodeId = generateNodeId();
+
+    const newNode = {
+      id: newNodeId,
+      type: node.type,
+      position,
+      data: { type: node.type },
+    };
+
+    setNodes((nds) => nds.concat(newNode));
+
+    const edge = {
+      id: generateEdgeId(),
+      source: connectionState.fromNode.id,
+      target: newNodeId,
+      type: "bezier",
+    };
+
+    setEdges((eds) => eds.concat(edge));
+  };
+
   return {
     nodes,
     setNodes,
@@ -97,6 +175,9 @@ const useWorkflowInteractions = (initialWorkflowData, workflowId) => {
     onEdgesChange,
 
     onConnect,
+    isValidConnection,
+    onNodeDoubleClick,
+    onConnectEnd,
   };
 };
 
