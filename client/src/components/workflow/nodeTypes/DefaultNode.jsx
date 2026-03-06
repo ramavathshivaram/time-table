@@ -3,8 +3,10 @@ import { Handle, Position } from "@xyflow/react";
 import React from "react";
 import nodeTypes from "../nodeTypes.js";
 
-const DefaultNode = ({ data, isConnectable, selected }) => {
-  const node = nodeTypes.find((n) => n.type === data.type) || {};
+const DefaultNode = ({ data, isConnectable, type }) => {
+  const node = nodeTypes.find((n) => n.type === type) || {};
+
+  console.log(node);
 
   const Icon = node.icon;
 

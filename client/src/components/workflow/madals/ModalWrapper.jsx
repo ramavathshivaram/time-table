@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import useModalStore from "@/store/modal.store.js";
 import React from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-const Modal = () => {
+const ModalWrapper = () => {
   const { origin, activeNode, isModalOpen, closeModal } = useModalStore();
 
-  if (!activeNode) return null;
+  if (!isModalOpen || !activeNode) return null;
 
   const startX = origin.x - window.innerWidth / 2;
   const startY = origin.y - window.innerHeight / 2;
@@ -38,16 +40,16 @@ const Modal = () => {
         stiffness: 220,
         damping: 22,
       }}
-      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-6 z-50"
+      className="fixed inset-0 flex items-center justify-center backdrop-blur bg-white/70 z-50"
     >
-      <h2>{activeNode.data.label}</h2>
-
-      <p>ID: {activeNode.id}</p>
-      <p>Description: {activeNode.data.description}</p>
-
-      <button onClick={closeModal}>Close</button>
+      <Card className="shadow-md border border-gray-700 rounded-lg p-4">
+        <h2 className="text-lg font-semibold mb-2">{activeNode.data.label}</h2>
+        <p className="text-sm text-gray-600 mb-4">ID: {activeNode.id}</p>
+        <p className="text-sm text-gray-800">{activeNode.data.description}</p>
+        <Button onClick={closeModal}>Close</Button>
+      </Card>
     </motion.div>
   );
 };
 
-export default Modal;
+export default ModalWrapper;

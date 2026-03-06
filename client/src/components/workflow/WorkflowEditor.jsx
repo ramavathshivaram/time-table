@@ -8,8 +8,8 @@ import useWorkflowInteractions from "./workflows-hooks/useWorkflowStates.js";
 
 import CollegeNode from "./nodeTypes/CollegeNode";
 import DefaultNode from "./nodeTypes/DefaultNode";
-import SubjectNode from "./nodeTypes/SubjectNode";
-import Madal from "./Modal.jsx";
+import Madal from "./madals/ModalWrapper.jsx";
+import SectionNode from "./nodeTypes/SectionNode";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
@@ -40,9 +40,9 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     college: CollegeNode,
     branch: DefaultNode,
     year: DefaultNode,
-    section: DefaultNode,
+    section: SectionNode,
     room: DefaultNode,
-    subject: SubjectNode,
+    subject: DefaultNode,
     faculty: DefaultNode,
     lab: DefaultNode,
   };

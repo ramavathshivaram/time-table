@@ -100,7 +100,7 @@ const useWorkflowInteractions = (
       const sourceNode = nodes.find((n) => n.id === connection.source);
       const targetNode = nodes.find((n) => n.id === connection.target);
 
-      const targetType = nodeTypes.find((n) => n.type === targetNode.data.type);
+      const targetType = nodeTypes.find((n) => n.type === targetNode.type);
 
       if (sourceNode.type === targetType.parent) {
         return true;
@@ -127,7 +127,6 @@ const useWorkflowInteractions = (
 
     if (!rf) return;
 
-    // if connected to existing node → do nothing
     if (connectionState?.toNode || connectionState?.toHandle) {
       return;
     }
@@ -138,10 +137,9 @@ const useWorkflowInteractions = (
 
     if (!node) return;
 
-    // convert pointer → flow coordinates
     const position = rf.screenToFlowPosition({
-      x: connectionState.pointer.x,
-      y: connectionState.pointer.y,
+      x: connectionState.pointer.x - 75,
+      y: connectionState.pointer.y - 40,
     });
 
     const newNodeId = generateNodeId();
@@ -150,8 +148,10 @@ const useWorkflowInteractions = (
       id: newNodeId,
       type: node.type,
       position,
-      data: { type: node.type },
+      data: { label: node.type },
     };
+
+    console.log(node, newNode);
 
     setNodes((nds) => nds.concat(newNode));
 
@@ -166,14 +166,15 @@ const useWorkflowInteractions = (
   };
 
   return {
+    // nodes
     nodes,
     setNodes,
     onNodesChange,
-
+    // edges
     edges,
     setEdges,
     onEdgesChange,
-
+    // interactions
     onConnect,
     isValidConnection,
     onNodeDoubleClick,
