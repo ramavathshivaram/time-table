@@ -13,6 +13,9 @@ const updateWorkflowJob = async (job) => {
 const updateWorkflowWorker = () =>
   new Worker(queueConst.UPDATE_WORKFLOW, updateWorkflowJob, {
     connection: redis,
+    deleteOnComplete: {
+      count: 1000,
+    },
   });
 
 export default updateWorkflowWorker;

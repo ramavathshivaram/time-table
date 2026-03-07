@@ -34,11 +34,11 @@ const WorkflowTitle = ({ title, workflowId }) => {
           onChange={handleTitleChange}
           onBlur={() => setIsEditing(false)}
           onKeyDown={handleKeyDown}
-          className="w-full border-none rounded-md text-lg font-semibold outline-none underline underline-offset-4 px-2"
+          className="roboto w-full border-none rounded-md text-xl font-semibold outline-none underline underline-offset-4 px-2"
         />
       ) : (
         <h1
-          className="text-lg font-semibold cursor-pointer underline underline-offset-4 px-2"
+          className="roboto text-xl font-semibold cursor-pointer underline underline-offset-4 px-2"
           onClick={() => setIsEditing(true)}
         >
           {workflowTitle}

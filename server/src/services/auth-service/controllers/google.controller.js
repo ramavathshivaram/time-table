@@ -31,7 +31,7 @@ const googleLogin = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const id = await getUserIdByEmailGRPC(email);
+  const id = await getUserIdByEmailGRPC(user.email);
   // save id cookie
   res.cookie("userId", id, {
     httpOnly: true,

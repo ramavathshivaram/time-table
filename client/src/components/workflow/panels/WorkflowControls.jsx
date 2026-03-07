@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 import {
+  CheckSquare,
   Copy,
   ArrowDownNarrowWide,
   Trash2,
@@ -26,6 +27,9 @@ import { useReactFlow } from "@xyflow/react";
 
 import useDuplicateSelected from "../workflows-hooks/useDuplicateSelected.js";
 import useAutoArrange from "../workflows-hooks/useAutoArrange.js";
+import useDeleteSelected from "../workflows-hooks/useDeleteSelected.js";
+import { cn } from "@/lib/utils.js";
+import useSelectAll from "../workflows-hooks/useSelectAll.js";
 
 const iconBtnClass =
   "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
@@ -47,13 +51,32 @@ const WorkflowControls = () => {
     setNodes,
   });
 
+  const deleteSelected = useDeleteSelected({
+    getNodes,
+    getEdges,
+    setNodes,
+    setEdges,
+  });
+
+  const handleSelectAll = useSelectAll({
+    setNodes,
+    setEdges,
+  });
+
   const controls = [
+    {
+      icon: CheckSquare,
+      label: "Select All",
+      className:
+        "text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600 hover:border-green-300",
+      onClick: handleSelectAll,
+    },
     {
       icon: Trash2,
       label: "Delete Selected",
       className:
         "text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 hover:border-red-300",
-      onClick: () => toast.error("Delete not implemented"),
+      onClick: deleteSelected,
     },
     {
       icon: Copy,
@@ -108,9 +131,28 @@ const WorkflowControls = () => {
     },
   ];
 
+  useEffect(() => {
+    let timer;
+
+    const handleResize = () => {
+      clearTimeout(timer);
+
+      timer = setTimeout(() => {
+        fitView();
+      }, 250);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
+    };
+  }, [fitView]);
+
   return (
     <TooltipProvider delayDuration={150}>
-      <Card className="flex items-center p-1 shadow-md border">
+      <Card className="flex items-center p-1 relative -top-2 shadow-md border">
         <div className="flex items-center gap-2 flex-wrap">
           {controls.map((control) => {
             const Icon = control.icon;
@@ -121,7 +163,7 @@ const WorkflowControls = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    className={`${iconBtnClass} ${control.className}`}
+                    className={cn(iconBtnClass, control.className)}
                     onClick={control.onClick}
                   >
                     <Icon className="size-4" />

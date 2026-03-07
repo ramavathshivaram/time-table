@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import dagre from "dagre";
 
-export default function useAutoArrange({ getNodes, getEdges, setNodes }) {
+const useAutoArrange=({ getNodes, getEdges, setNodes })=> {
   return useCallback(() => {
     const nodes = getNodes();
     const edges = getEdges();
@@ -65,3 +65,6 @@ export default function useAutoArrange({ getNodes, getEdges, setNodes }) {
     }, 350);
   }, [getNodes, getEdges, setNodes]);
 }
+
+
+export default useAutoArrange;

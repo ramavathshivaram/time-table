@@ -11,15 +11,13 @@ const links = [
 
 const Navbar = () => {
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-lg px-6 py-2 flex items-center justify-between"
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-lg px-6 py-2 flex items-center justify-between">
       {/* Logo */}
       <NavLink
         to="/"
-        className="text-xl font-semibold tracking-tight flex items-center gap-2"
+        className="roboto animate-pulse text-xl font-semibold tracking-tight flex items-center gap-2"
       >
-        IntelliSchedule
+        Intelli Schedule
       </NavLink>
 
       {/* Navigation */}

@@ -151,9 +151,7 @@ const useWorkflowInteractions = (
       data: { label: node.type },
     };
 
-    console.log(node, newNode);
-
-    setNodes((nds) => nds.concat(newNode));
+    setNodes((nds) => [...nds, newNode]);
 
     const edge = {
       id: generateEdgeId(),
@@ -162,7 +160,7 @@ const useWorkflowInteractions = (
       type: "bezier",
     };
 
-    setEdges((eds) => eds.concat(edge));
+    setEdges((eds) => [...eds, edge]);
   };
 
   return {

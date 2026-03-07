@@ -32,7 +32,7 @@ const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
         type: type,
         position,
         data: {
-          label: `${type} node`,
+          label: type,
           type,
         },
       };

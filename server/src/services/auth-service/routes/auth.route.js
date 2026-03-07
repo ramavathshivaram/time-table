@@ -4,32 +4,29 @@ import express from "express";
 import validateRequest from "../../../shared/middlewares/validateRequest.js";
 import verifyJwtToken from "../../../shared/middlewares/verifyJwtToken.js";
 
-import authController from "../controllers/auth.controller.js";
+import localController from "../controllers/local.controller.js";
 import googleController from "../controllers/google.controller.js";
+import authController from "../controllers/auth.controller.js";
 import forgotPasswordController from "../controllers/forgotPassword.controller.js";
 
 import zodSchema from "../lib/zodSchema.js";
 
 const router = express.Router();
 
+//! local auth routes
 router.post(
   "/register",
   validateRequest(zodSchema.registerSchema),
-  authController.register,
+  localController.register,
 );
 
 router.post(
   "/login",
   validateRequest(zodSchema.loginSchema),
-  authController.login,
+  localController.login,
 );
 
-router.get("/auth-check", verifyJwtToken, authController.authCheck);
-
-router.get("/refresh-token", authController.refreshTokenController);
-
-router.post("/logout", authController.logout);
-
+//! google auth routes
 router.post(
   "/google-login",
   validateRequest(zodSchema.googleLoginSchema),
@@ -42,6 +39,14 @@ router.post(
   googleController.googleRegister,
 );
 
+//! common auth routes
+router.get("/auth-check", verifyJwtToken, authController.authCheck);
+
+router.get("/refresh-token", authController.refreshTokenController);
+
+router.post("/logout", verifyJwtToken, authController.logout);
+
+//! forgot password routes
 router.post(
   "/forgot-password",
   validateRequest(zodSchema.forgotPasswordSchema),

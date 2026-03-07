@@ -43,7 +43,6 @@ const useDuplicateSelected = ({
         selected: false,
       }));
 
-    // 5️⃣ Update state
     setNodes((nds) => [...nds, ...duplicatedNodes]);
     setEdges((eds) => [...eds, ...duplicatedEdges]);
   }, [getNodes, getEdges, setNodes, setEdges]);
