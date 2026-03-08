@@ -59,7 +59,7 @@ const ModalWrapper = () => {
           ease: "easeInOut",
         }}
       >
-        <Card className="shadow-xl border border-gray-700 rounded-xl p-6 w-[420px] bg-background">
+        <Card className="shadow-xl border border-gray-700 rounded-xl p-6 w-105 bg-background">
           <ModalComponent
             activeNode={activeNode}
             setNodes={setNodes}

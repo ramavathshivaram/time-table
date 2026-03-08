@@ -15,6 +15,7 @@ const useModalStore = create((set) => ({
   closeModal: () =>
     set({
       isModalOpen: false,
+      activeNode: null,
     }),
 }));
 

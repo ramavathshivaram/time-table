@@ -8,3 +8,12 @@ export function cn(...inputs) {
 
 export const generateNodeId = () => `NODE_${nanoid()}`;
 export const generateEdgeId = () => `EDGE_${nanoid()}`;
+
+export const getNodePosition = (rf, pointer, width = 150, height = 80) => {
+  if (!rf || !pointer) return { x: 0, y: 0 };
+
+  return rf.screenToFlowPosition({
+    x: pointer.x - width / 2,
+    y: pointer.y - height / 2,
+  });
+};

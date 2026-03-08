@@ -1,5 +1,6 @@
 import WorkflowEditor from "@/components/workflow/WorkflowEditor";
 import { useGetWorkflowDetails } from "@/hooks/react-query/workflow.query.js";
+import { ReactFlowProvider } from "@xyflow/react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -13,10 +14,12 @@ const Workflow = () => {
 
   return (
     <div>
-      <WorkflowEditor
-        initialWorkflowData={initialWorkflowData}
-        workflowId={workflowId}
-      />
+      <ReactFlowProvider>
+        <WorkflowEditor
+          initialWorkflowData={initialWorkflowData}
+          workflowId={workflowId}
+        />
+      </ReactFlowProvider>
     </div>
   );
 };

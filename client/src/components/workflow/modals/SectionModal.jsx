@@ -22,7 +22,7 @@ const SectionModal = ({ activeNode, setNodes, closeModal }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 w-[300px]">
+    <div className="flex flex-col gap-3 w-75">
       <h2 className="text-lg font-semibold">Section Settings</h2>
 
       <input

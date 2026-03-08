@@ -17,7 +17,7 @@ const SectionNode = ({ data, type, selected }) => {
       {/* Node */}
       <Card
         className={cn(
-          "border border-gray-700 px-3 py-2 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
+          "border border-gray-700 px-2 py-1 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
           selected && "border-blue-500 shadow-md",
         )}
       >
@@ -25,19 +25,19 @@ const SectionNode = ({ data, type, selected }) => {
           {/* Icon */}
           <div
             className={cn(
-              "flex items-center justify-center w-8 h-8 rounded-lg",
+              "flex items-center justify-center w-6 h-6 rounded-sm",
               node.bg,
             )}
           >
-            {Icon && <Icon className={cn("w-4 h-4", node.color)} />}
+            {Icon && <Icon className={cn("w-5 h-5", node.color)} />}
           </div>
 
           {/* Label */}
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground">Section</span>
-            <span className="text-sm font-semibold leading-none">
+            <span className="text-sm font-semibold leading-none capitalize">
               {data.label || "Untitled"}
             </span>
+            <span className="text-[10px] text-muted-foreground">Section</span>
           </div>
         </div>
       </Card>

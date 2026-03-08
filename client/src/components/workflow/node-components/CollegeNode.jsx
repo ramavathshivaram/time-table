@@ -10,22 +10,22 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
       {/* Node */}
       <Card
         className={cn(
-          "border border-gray-700 px-3 py-2 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
+          "border border-gray-700 px-2 py-1 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
           selected && "border-blue-500 shadow-md",
         )}
       >
         <div className="flex items-center gap-2">
           {/* Icon */}
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
-            <School className="w-4 h-4 text-blue-600" />
+          <div className="flex items-center justify-center w-6 h-6 rounded-sm bg-blue-100">
+            <School className="w-5 h-5 text-blue-600" />
           </div>
 
           {/* Label */}
           <div className="flex flex-col">
-            <span className="text-sm font-semibold leading-none">
+            <span className="text-sm font-semibold leading-none capitalize">
               {data.label || "Untitled"}
             </span>
-            <span className="text-xs text-muted-foreground">College</span>
+            <span className="text-[10px] text-muted-foreground">College</span>
           </div>
         </div>
       </Card>

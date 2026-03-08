@@ -5,6 +5,7 @@ import nodeTypes from "../nodeTypes.js";
 import { cn } from "@/lib/utils.js";
 
 const DefaultNode = ({ data, isConnectable, type, selected }) => {
+  console.log("DefaultNode");
   const node = nodeTypes.find((n) => n.type === type) || {};
   const Icon = node.icon;
 
@@ -13,7 +14,7 @@ const DefaultNode = ({ data, isConnectable, type, selected }) => {
       {/* Node */}
       <Card
         className={cn(
-          "border border-gray-700 px-3 py-2 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
+          "border border-gray-700 px-2 py-1 rounded-md shadow-sm bg-background transition-all hover:shadow-md",
           selected && "border-blue-500 shadow-md",
         )}
       >
@@ -21,21 +22,22 @@ const DefaultNode = ({ data, isConnectable, type, selected }) => {
           {/* Icon */}
           <div
             className={cn(
-              "flex items-center justify-center w-8 h-8 rounded-lg",
+              "flex items-center justify-center w-6 h-6 rounded-sm",
               node.bg,
             )}
           >
-            {Icon && <Icon className={cn("w-4 h-4", node.color)} />}
+            {Icon && <Icon className={cn("w-5 h-5", node.color)} />}
           </div>
 
           {/* Label */}
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground">
-              {node.label || node.title}
+
+            <span className="text-sm font-semibold leading-none capitalize">
+              {data.label || "Untitled"}
             </span>
 
-            <span className="text-sm font-semibold leading-none">
-              {data.label || "Untitled"}
+            <span className="text-[10px] text-muted-foreground">
+              {node.label || node.title}
             </span>
           </div>
         </div>

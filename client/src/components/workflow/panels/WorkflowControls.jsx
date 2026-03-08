@@ -25,11 +25,11 @@ import {
 import { toast } from "sonner";
 import { useReactFlow } from "@xyflow/react";
 
-import useDuplicateSelected from "../workflows-hooks/useDuplicateSelected.js";
-import useAutoArrange from "../workflows-hooks/useAutoArrange.js";
-import useDeleteSelected from "../workflows-hooks/useDeleteSelected.js";
+import useDuplicateSelected from "../workflows-hooks/controllers/useDuplicateSelected.js";
+import useAutoArrange from "../workflows-hooks/controllers/useAutoArrange.js";
+import useDeleteSelected from "../workflows-hooks/controllers/useDeleteSelected.js";
 import { cn } from "@/lib/utils.js";
-import useSelectAll from "../workflows-hooks/useSelectAll.js";
+import useSelectAll from "../workflows-hooks/controllers/useSelectAll.js";
 
 const iconBtnClass =
   "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
