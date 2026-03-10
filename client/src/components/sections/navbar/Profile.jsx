@@ -4,18 +4,16 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-
 import { Button } from "@/components/ui/button";
-import Notifications from "./Notifications";
 
 import ProfileAvatar from "./ProfileAvatar";
 import LogoutButton from "./LogoutButton";
 import DarkMode from "./DarkMode";
 import useUserStore from "@/store/user.store";
+import Notifications from "./Notifications";
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
-  const notifications = user?.notifications || [];
 
   return (
     <HoverCard openDelay={80} closeDelay={120}>
@@ -49,8 +47,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Notifications */}
-        <Notifications notifications={notifications} />
+        <Notifications/>
 
         {/* Settings */}
         <div className="px-4 py-3 border-t flex flex-col gap-2">

@@ -12,7 +12,6 @@ const useUserStore = create(
       setUser: (user) =>
         set({
           user,
-          notifications: user?.notifications || [],
           darkMode: user?.settings?.darkMode || false,
         }),
 

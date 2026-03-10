@@ -35,33 +35,6 @@ const userSchema = new mongoose.Schema(
         default: false,
       },
     },
-
-    notifications: [
-      {
-        title: {
-          type: String,
-          required: true,
-        },
-
-        desc: String,
-
-        type: {
-          type: String,
-          enum: ["info", "warning", "success", "error"],
-          default: "info",
-        },
-
-        date: {
-          type: Date,
-          default: Date.now,
-        },
-
-        read: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
   },
   { timestamps: true },
 );

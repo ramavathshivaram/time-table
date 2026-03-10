@@ -6,12 +6,9 @@ import NodeLibrary from "./NodeLibrary";
 import WorkflowTitle from "./WorkflowTitle";
 import WorkflowControls from "./WorkflowControls";
 import GenerateTimeTable from "./GenerateTimeTable";
+import AIChatBot from "./AIChatBot";
 
-const ReactflowPanels = ({
-  workflowId,
-  title,
-  onDragStart,
-}) => {
+const ReactflowPanels = ({ workflowId, title, onDragStart }) => {
   return (
     <>
       <Panel position="top-left">
@@ -28,6 +25,10 @@ const ReactflowPanels = ({
 
       <Panel position="left">
         <NodeLibrary onDragStart={onDragStart} />
+      </Panel>
+
+      <Panel position="bottom-right">
+        <AIChatBot />
       </Panel>
     </>
   );

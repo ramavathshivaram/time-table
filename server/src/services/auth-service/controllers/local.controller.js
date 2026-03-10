@@ -53,7 +53,7 @@ const register = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  //! save to user model
+  //todo create userId, emit event to create user
   const userId = await createUserGRPC({
     userName,
     email,

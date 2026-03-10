@@ -2,9 +2,10 @@ import React from "react";
 import Profile from "../sections/navbar/Profile";
 import { NavLink } from "react-router-dom";
 import CreateWorkflowBtn from "../sections/navbar/CreateWorkflowBtn";
+import { cn } from "@/lib/utils.js";
 
 const links = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "/home" },
   { name: "Timetable", path: "/timetable" },
   { name: "About", path: "/about" },
 ];
@@ -30,12 +31,10 @@ const Navbar = () => {
             <NavLink
               to={link.path}
               className={({ isActive }) =>
-                `relative transition-colors
-                ${
-                  isActive
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`
+                cn(
+                  "relative transition-colors text-muted-foreground hover:text-foreground",
+                  isActive && "text-primary",
+                )
               }
             >
               {link.name}

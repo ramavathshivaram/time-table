@@ -15,6 +15,7 @@ import authenticate from "../shared/middlewares/authenticate.js";
 import authRouter from "./auth-service/routes/auth.route.js";
 import userRouter from "./user-service/routes/user.routes.js";
 import workflowRouter from "./workflow-service/routes/workflow.route.js";
+import notificationRouter from "./user-service/routes/notification.route.js";
 
 const corsOptions = {
   origin: process.env.ORIGIN || "http://localhost:5173",
@@ -46,8 +47,10 @@ app.get("/health", async (req, res) => res.send("Healthy"));
 //! Auth Routes
 app.use("/auth", authRouter);
 
+
 //! User Routes
 app.use("/user", authenticate, userRouter);
+app.use("/notifications", authenticate, notificationRouter);
 
 //! Workflow Routes
 app.use("/workflow", authenticate, workflowRouter);
