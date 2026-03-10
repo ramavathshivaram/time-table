@@ -1,7 +1,7 @@
 import ApiError from "../lib/ApiError.js";
 import jwt from "jsonwebtoken";
 
-const verifyJwtToken = (req, res, next) => {
+const authenticate = (req, res, next) => {
   const token = req.cookies.accessToken;
 
   if (!token) {
@@ -16,8 +16,9 @@ const verifyJwtToken = (req, res, next) => {
     throw new ApiError(427, "Unauthorized");
   }
 
-  req.userId = decoded.authId;
+  req.authId = decoded.authId;
+  req.userId = decoded.userId;
   next();
 };
 
-export default verifyJwtToken;
+export default authenticate;

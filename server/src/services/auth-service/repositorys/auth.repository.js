@@ -8,7 +8,11 @@ const getUserByEmail = async (email) => {
   return await AuthModel.findOne({ email });
 };
 
-const createUser = async (user) => {
+const checkAuthExists = async (user) => {
+  return await AuthModel.exists(user);
+};
+
+const createAuth = async (user) => {
   return await AuthModel.create(user);
 };
 
@@ -20,10 +24,16 @@ const findUserByIdAndUpdate = async (id, user) => {
   return await AuthModel.findByIdAndUpdate(id, user);
 };
 
+const findUserByEmailAndUpdate = async (email, user) => {
+  return await AuthModel.findOneAndUpdate({ email }, user);
+};
+
 export default {
   getUserWithPasswordByEmail,
   getUserByEmail,
-  createUser,
+  createAuth,
   findUserById,
-  findUserByIdAndUpdate
+  findUserByIdAndUpdate,
+  checkAuthExists,
+  findUserByEmailAndUpdate
 };

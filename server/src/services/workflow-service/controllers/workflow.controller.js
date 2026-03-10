@@ -28,8 +28,27 @@ const getWorkflowById = asyncHandler(async (req, res) => {
 
 const getAllUserWorkflows = asyncHandler(async (req, res) => {
   const userId = req.userId;
-  const workflows =
-    await workflowRepository.getAllUserWorkflowsByUserId(userId);
+
+  const page = Number(req.query.pageParam) || 0;
+  const limit = Number(req.query.limit) || 10;
+
+  const skip = page * limit;
+
+  const workflows = await workflowRepository.getAllUserWorkflowsByUserId(
+    userId,
+    { skip, limit },
+  );
+
+  return res.status(200).json({
+    success: true,
+    data: workflows,
+    pageParam: page + 1,
+  });
+});
+
+const getRecentWorkflows = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+  const workflows = await workflowRepository.getRecentWorkflowsByUserId(userId);
   return res.status(200).json({
     success: true,
     data: workflows,
@@ -54,4 +73,5 @@ export default {
   createWorkflow,
   getWorkflowById,
   updateWorkflow,
+  getRecentWorkflows,
 };

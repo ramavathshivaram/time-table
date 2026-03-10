@@ -19,28 +19,23 @@ const googleLogin = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized");
   }
 
-  const userData = await getUserData(accessToken);
+  const googleUserData = await getUserDataFromGoogle(accessToken);
 
-  if (!userData?.email) {
+  if (!googleUserData?.email) {
     throw new ApiError(400, "Google email not found");
   }
 
-  const user = await authRepository.getUserByEmail(userData.email);
+  const auth = await authRepository.checkAuthExists({
+    email: googleUserData.email,
+  });
 
-  if (!user) {
+  if (!auth) {
     throw new ApiError(404, "User not found");
   }
 
-  const id = await getUserIdByEmailGRPC(user.email);
-  // save id cookie
-  res.cookie("userId", id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
+  const userId = await getUserIdByEmailGRPC(auth.email);
 
-  return await responseWithCookie(user, res, "Login successful");
+  return await responseWithCookie(auth, userId, res, "Login successful");
 });
 
 const googleRegister = asyncHandler(async (req, res) => {
@@ -50,54 +45,54 @@ const googleRegister = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized");
   }
 
-  const userData = await getUserData(accessToken);
+  const googleUserData = await getUserDataFromGoogle(accessToken);
 
-  if (!userData?.email) {
+  if (!googleUserData?.email) {
     throw new ApiError(400, "Google email not found");
   }
 
-  const user = await authRepository.getUserByEmail(userData.email);
+  const auth = await authRepository.checkAuthExists({
+    email: googleUserData.email,
+  });
 
-  if (user) {
+  if (auth) {
     throw new ApiError(400, "User already exists");
   }
 
   const randomPassword = crypto.randomBytes(16).toString("hex");
   const hashedPassword = await hashPassword(randomPassword);
 
-  const newUser = await AuthModel.create({
-    username: userData.name,
-    email: userData.email,
+  const newAuth = await AuthModel.create({
+    username: googleUserData.name,
+    email: googleUserData.email,
     password: hashedPassword,
   });
 
   //! save to user model
-  const id = await createUserGRPC({
-    userName: userData.name,
-    email: userData.email,
+  const userId = await createUserGRPC({
+    userName: googleUserData.name,
+    email: googleUserData.email,
     authId: newUser._id,
-    avatar: userData.picture,
+    avatar: googleUserData.picture,
   });
 
-  // save id cookie
-  res.cookie("userId", id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
-
-  return await responseWithCookie(newUser, res, "Registration successful");
+  return await responseWithCookie(
+    newAuth,
+    userId,
+    res,
+    "Registration successful",
+  );
 });
 
-const responseWithCookie = async (user, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(
-    user._id,
-    user.tokenVersion,
-  );
+const responseWithCookie = async (auth, userId, res, msg) => {
+  const { accessToken, refreshToken } = generateTokens({
+    authId: auth._id,
+    tokenVersion: auth.tokenVersion,
+    userId: userId,
+  });
 
-  user.refreshToken = refreshToken;
-  await user.save();
+  auth.refreshToken = refreshToken;
+  await auth.save();
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
@@ -110,13 +105,13 @@ const responseWithCookie = async (user, res, msg) => {
     message: msg,
     success: true,
     data: {
-      username: user.username,
-      email: user.email,
+      userName: auth.userName,
+      email: auth.email,
     },
   });
 };
 
-const getUserData = async (accessToken) => {
+const getUserDataFromGoogle = async (accessToken) => {
   try {
     const res = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",

@@ -1,7 +1,7 @@
 import api from "../axios.js";
 
-export const getAllUserWorkflowsApi = async () => {
-  const res = await api.get("/workflow");
+export const getWorkflowsApi = async ({ pageParam = 0 }) => {
+  const res = await api.get("/workflow?pageParam=" + pageParam);
   return res.data.data;
 };
 
@@ -12,6 +12,11 @@ export const createWorkflowApi = async () => {
 
 export const getWorkflowDetailsApi = async (workflowId) => {
   const res = await api.get(`/workflow/${workflowId}`);
+  return res.data.data;
+};
+
+export const getRecentWorkflowsApi = async () => {
+  const res = await api.get("/workflow/recent");
   return res.data.data;
 };
 

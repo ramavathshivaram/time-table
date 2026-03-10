@@ -21,32 +21,25 @@ import {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await authRepository.getUserWithPasswordByEmail(email);
+  const auth = await authRepository.getUserWithPasswordByEmail(email);
 
-  if (!user) {
+  if (!auth) {
     throw new ApiError(404, "User not found");
   }
 
-  if (!(await isPasswordMatched(password, user.password))) {
+  if (!(await isPasswordMatched(password, auth.password))) {
     throw new ApiError(401, "Invalid password");
   }
 
-  const id = await getUserIdByEmailGRPC(email);
-  // save id cookie
-  res.cookie("userId", id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
+  const userId = await getUserIdByEmailGRPC(email);
 
-  return await responseWithCookie(user, res, "Login successful");
+  return await responseWithCookie(auth, userId, res, "Login successful");
 });
 
 const register = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
 
-  const userExists = await authRepository.getUserByEmail(email);
+  const userExists = await authRepository.checkAuthExists({ email });
 
   if (userExists) {
     throw new ApiError(400, "User already exists");
@@ -54,38 +47,31 @@ const register = asyncHandler(async (req, res) => {
 
   const hashedPassword = await hashPassword(password);
 
-  const user = await authRepository.createUser({
+  const auth = await authRepository.createAuth({
     userName,
     email,
     password: hashedPassword,
   });
 
   //! save to user model
-  const id = await createUserGRPC({
+  const userId = await createUserGRPC({
     userName,
     email,
-    authId: user._id,
+    authId: auth._id,
   });
 
-  // save id cookie
-  res.cookie("userId", id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
-
-  return await responseWithCookie(user, res, "Registration successful");
+  return await responseWithCookie(auth, userId, res, "Registration successful");
 });
 
-const responseWithCookie = async (user, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(
-    user._id,
-    user.tokenVersion,
-  );
+const responseWithCookie = async (auth, userId, res, msg) => {
+  const { accessToken, refreshToken } = generateTokens({
+    authId: auth._id,
+    tokenVersion: auth.tokenVersion,
+    userId: userId,
+  });
 
-  user.refreshToken = refreshToken;
-  await user.save();
+  auth.refreshToken = refreshToken;
+  await auth.save();
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
@@ -98,8 +84,8 @@ const responseWithCookie = async (user, res, msg) => {
     message: msg,
     success: true,
     data: {
-      username: user.username,
-      email: user.email,
+      userName: auth.userName,
+      email: auth.email,
     },
   });
 };

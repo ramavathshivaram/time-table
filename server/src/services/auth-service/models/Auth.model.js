@@ -25,10 +25,6 @@ const authSchema = new mongoose.Schema({
   },
 
   refreshToken: String,
-
-  otp: String,
-
-  otpExpiry: Date,
 });
 
 const AuthModel = mongoose.model("auth", authSchema);

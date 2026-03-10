@@ -2,7 +2,7 @@ import express from "express";
 
 //! shared
 import validateRequest from "../../../shared/middlewares/validateRequest.js";
-import verifyJwtToken from "../../../shared/middlewares/verifyJwtToken.js";
+import authenticate from "../../../shared/middlewares/authenticate.js";
 
 import localController from "../controllers/local.controller.js";
 import googleController from "../controllers/google.controller.js";
@@ -40,11 +40,11 @@ router.post(
 );
 
 //! common auth routes
-router.get("/auth-check", verifyJwtToken, authController.authCheck);
+router.get("/auth-check", authenticate, authController.authCheck);
 
 router.get("/refresh-token", authController.refreshTokenController);
 
-router.post("/logout", verifyJwtToken, authController.logout);
+router.post("/logout", authenticate, authController.logout);
 
 //! forgot password routes
 router.post(

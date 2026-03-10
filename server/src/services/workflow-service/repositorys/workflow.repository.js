@@ -1,7 +1,18 @@
 import workflowModel from "../models/workflow.model.js";
 
-const getAllUserWorkflowsByUserId = async (userId) => {
-  return await workflowModel.find({ userId });
+const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
+  const { skip = 0, limit = 10, sort = { title: 1 } } = options;
+
+  return workflowModel
+    .find({ userId })
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .lean();
+};
+
+const getRecentWorkflowsByUserId = async (userId) => {
+  return workflowModel.find({ userId }).sort({ updatedAt: -1 }).limit(5).lean();
 };
 
 const createWorkflow = async (workflow) => {
@@ -21,4 +32,5 @@ export default {
   createWorkflow,
   getWorkflowById,
   updateWorkflowById,
+  getRecentWorkflowsByUserId,
 };

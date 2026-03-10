@@ -1,15 +1,33 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 
 import {
-  getAllUserWorkflowsApi,
+  getWorkflowsApi,
   getWorkflowDetailsApi,
   createWorkflowApi,
+  getRecentWorkflowsApi
 } from "@/lib/apis/workflow.api.js";
 
-export const useGetAllUserWorkflows = () => {
-  return useQuery({
+export const useGetWorkflows = () => {
+  return useInfiniteQuery({
     queryKey: ["workflows"],
-    queryFn: getAllUserWorkflowsApi,
+    queryFn: getWorkflowsApi,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length === 0) return undefined;
+      return pages.length;
+    },
+  });
+};
+
+export const useGetRecentWorkflows = () => {
+  return useQuery({
+    queryKey: ["recent-workflows"],
+    queryFn: getRecentWorkflowsApi,
     staleTime: 5 * 60 * 1000,
   });
 };

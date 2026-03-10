@@ -7,10 +7,7 @@ import {
 } from "../lib/utils.js";
 
 import { COOKIE_EXPIRES_IN } from "../lib/const.js";
-
 import authRepository from "../repositorys/auth.repository.js";
-
-import { getUserIdByEmailGRPC } from "../../user-service/routes/user.grpc.js";
 
 const refreshTokenController = asyncHandler(async (req, res) => {
   const accessToken = req.cookies.accessToken;
@@ -27,13 +24,13 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 
   const { authId, tokenVersion: accessTokenVersion } = accessData;
 
-  const user = await authRepository.findUserById(authId);
+  const auth = await authRepository.findUserById(authId);
 
-  if (!user) {
+  if (!auth) {
     throw new ApiError(404, "User not found");
   }
 
-  const refreshToken = user.refreshToken;
+  const refreshToken = auth.refreshToken;
 
   if (!refreshToken) {
     throw new ApiError(401, "Refresh token not found");
@@ -49,20 +46,15 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 
   if (
     refreshTokenVersion !== accessTokenVersion ||
-    refreshTokenVersion !== user.tokenVersion
+    refreshTokenVersion !== auth.tokenVersion
   ) {
     throw new ApiError(401, "Invalid refresh token");
   }
 
-  const newAccessToken = generateAccessToken(authId, accessTokenVersion);
-
-  const id = await getUserIdByEmailGRPC(user.email);
-  // save id cookie
-  res.cookie("userId", id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
+  const newAccessToken = generateAccessToken({
+    authId,
+    tokenVersion: accessTokenVersion,
+    userId: refreshData.userId,
   });
 
   res.cookie("accessToken", newAccessToken, {
@@ -79,7 +71,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-  await authRepository.findUserByIdAndUpdate(req.userId, {
+  await authRepository.findUserByIdAndUpdate(req.authId, {
     refreshToken: null,
   });
 

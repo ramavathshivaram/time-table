@@ -10,7 +10,7 @@ import compression from "compression";
 
 import errorHandler from "../shared/middlewares/errorHandler.js";
 import notFoundRoute from "../shared/middlewares/notFoundRoute.js";
-import verifyJwtToken from "../shared/middlewares/verifyJwtToken.js";
+import authenticate from "../shared/middlewares/authenticate.js";
 
 import authRouter from "./auth-service/routes/auth.route.js";
 import userRouter from "./user-service/routes/user.routes.js";
@@ -39,14 +39,18 @@ app.use(
   }),
 );
 
+app.get("/", async (req, res) => res.send("Hello World"));
+
+app.get("/health", async (req, res) => res.send("Healthy"));
+
 //! Auth Routes
 app.use("/auth", authRouter);
 
 //! User Routes
-app.use("/user", verifyJwtToken, userRouter);
+app.use("/user", authenticate, userRouter);
 
 //! Workflow Routes
-app.use("/workflow", verifyJwtToken, workflowRouter);
+app.use("/workflow", authenticate, workflowRouter);
 
 //! Route not found
 app.use(notFoundRoute);

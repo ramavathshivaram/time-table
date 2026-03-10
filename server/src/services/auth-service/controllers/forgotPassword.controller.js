@@ -1,20 +1,18 @@
 import asyncHandler from "express-async-handler";
 import ApiError from "../../../shared/lib/ApiError.js";
 import crypto from "crypto";
-// import sendOTPEmail from "../services/sendMail.js";
 import { hashPassword } from "../lib/utils.js";
 import authRepository from "../repositorys/auth.repository.js";
-
 import { sendOtpEmailQueue } from "../queues/emailQueue.js";
-
 import { queueConst } from "../lib/const.js";
+import redis from "../../../shared/configs/redis.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  const user = await authRepository.getUserByEmail(email);
+  const auth = await authRepository.checkAuthExists({ email });
 
-  if (!user) {
+  if (!auth) {
     throw new ApiError(404, "User not found");
   }
 
@@ -24,11 +22,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
   //! send otp email
   await sendOtpEmailQueue.add(queueConst.SEND_OTP_EMAIL, { email, otp });
 
-  // update otp in DB
-  user.otp = otp;
-  user.otpExpiry = Date.now() + 15 * 60 * 1000; //// 15 mins
-
-  await user.save();
+  // save otp to redis
+  redis.set(`otp:${email}`, otp, "EX", 900); //// 15 mins
 
   return res.json({
     message: "OTP sent to your email",
@@ -39,14 +34,10 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const verifyOTP = asyncHandler(async (req, res) => {
   const { otp, email } = req.body;
 
-  const user = await authRepository.getUserByEmail(email);
+  const otpFromRedis = await redis.get(`otp:${email}`);
 
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-
-  if (user.otp !== otp || !user.otpExpiry || user.otpExpiry < Date.now()) {
-    throw new ApiError(400, "Invalid OTP");
+  if (!otpFromRedis || otpFromRedis !== otp) {
+    throw new ApiError(404, "Invalid OTP");
   }
 
   return res.json({ message: "OTP verified", success: true });
@@ -55,26 +46,19 @@ const verifyOTP = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { otp, password, email } = req.body;
 
-  const user = await authRepository.getUserByEmail(email);
+  const otpFromRedis = await redis.get(email);
 
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-
-  if (user.otp !== otp || !user.otpExpiry || user.otpExpiry < Date.now()) {
-    throw new ApiError(400, "Invalid OTP");
+  if (!otpFromRedis || otpFromRedis !== otp) {
+    throw new ApiError(404, "Invalid OTP");
   }
 
   const hashedPassword = await hashPassword(password);
 
-  user.password = hashedPassword;
-  user.tokenVersion += 1;
-  user.refreshToken = null;
-
-  user.otp = null;
-  user.otpExpiry = null;
-
-  await user.save();
+  await authRepository.findUserByEmailAndUpdate(email, {
+    password: hashedPassword,
+    refreshToken: null,
+    $inc: { tokenVersion: 1 },
+  });
 
   return res.json({ message: "Password reset successful", success: true });
 });

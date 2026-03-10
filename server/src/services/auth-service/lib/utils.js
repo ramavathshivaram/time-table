@@ -2,9 +2,9 @@ import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from "./const.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-export const generateTokens = (authId, tokenVersion) => {
+export const generateTokens = ({ authId, tokenVersion, userId }) => {
   const accessToken = jwt.sign(
-    { authId, tokenVersion },
+    { authId, tokenVersion, userId },
     process.env.JWT_SECRET,
     {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
@@ -12,7 +12,7 @@ export const generateTokens = (authId, tokenVersion) => {
   );
 
   const refreshToken = jwt.sign(
-    { authId, tokenVersion },
+    { authId, tokenVersion, userId },
     process.env.JWT_SECRET,
     {
       expiresIn: REFRESH_TOKEN_EXPIRES_IN,
@@ -22,9 +22,9 @@ export const generateTokens = (authId, tokenVersion) => {
   return { accessToken, refreshToken };
 };
 
-export const generateAccessToken = (authId, tokenVersion) => {
+export const generateAccessToken = ({ authId, tokenVersion, userId }) => {
   const accessToken = jwt.sign(
-    { authId, tokenVersion },
+    { authId, tokenVersion, userId },
     process.env.JWT_SECRET,
     {
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
@@ -34,9 +34,9 @@ export const generateAccessToken = (authId, tokenVersion) => {
   return accessToken;
 };
 
-export const generateRefreshToken = (authId, tokenVersion) => {
+export const generateRefreshToken = ({ authId, tokenVersion, userId }) => {
   const refreshToken = jwt.sign(
-    { authId, tokenVersion },
+    { authId, tokenVersion, userId },
     process.env.JWT_SECRET,
     {
       expiresIn: REFRESH_TOKEN_EXPIRES_IN,

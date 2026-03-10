@@ -48,8 +48,8 @@ const ForgotPassword = () => {
   ];
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-gray-50/50">
-      <Card className="flex w-full max-w-md bg-white">
+    <div className="flex h-screen w-screen items-center justify-center ">
+      <Card className="flex w-full max-w-md ">
         <CardHeader>
           <CardTitle className="text-center">
             <StepContent currentStep={currentStep} />
