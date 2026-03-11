@@ -47,7 +47,6 @@ app.get("/health", async (req, res) => res.send("Healthy"));
 //! Auth Routes
 app.use("/auth", authRouter);
 
-
 //! User Routes
 app.use("/user", authenticate, userRouter);
 app.use("/notifications", authenticate, notificationRouter);

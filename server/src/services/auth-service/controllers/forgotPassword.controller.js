@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
-import ApiError from "../../../shared/lib/ApiError.js";
-import crypto from "crypto";
-import { hashPassword } from "../lib/utils.js";
+import ApiError from "#shared/lib/ApiError.js";
+import { hashPassword, generateOTP } from "../services/password.service.js";
 import authRepository from "../repositorys/auth.repository.js";
 import { sendOtpEmailQueue } from "../queues/emailQueue.js";
 import { queueConst } from "../lib/const.js";
@@ -46,7 +45,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { otp, password, email } = req.body;
 
-  const otpFromRedis = await redis.get(email);
+  const otpFromRedis =  await redis.get(`otp:${email}`);
 
   if (!otpFromRedis || otpFromRedis !== otp) {
     throw new ApiError(404, "Invalid OTP");
@@ -62,8 +61,6 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   return res.json({ message: "Password reset successful", success: true });
 });
-
-const generateOTP = () => crypto.randomBytes(3).toString("hex");
 
 export default {
   forgotPassword,

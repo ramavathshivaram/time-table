@@ -6,9 +6,15 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "devWorker": "nodemon src/worker.js",
-    "startWorker": "node src/worker.js",
-    "loadTest":"node src/loadTest.js"
+    "worker-dev": "nodemon src/worker.js",
+    "worker": "node src/worker.js",
+    "load-test": "node src/loadTest.js"
+  },
+  "imports": {
+    "#configs/*": "./src/shared/configs/*",
+    "#shared/*": "./src/shared/*",
+    "#lib/*": "./src/shared/lib/*",
+    "#middlewares/*": "./src/shared/middlewares/*"
   },
   "keywords": [],
   "author": "Ramavath Shiva ram",

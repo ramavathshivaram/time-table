@@ -4,14 +4,16 @@ dotenv.config();
 import asyncHandler from "express-async-handler";
 import ApiError from "../../../shared/lib/ApiError.js";
 import {
-  generateTokens,
   hashPassword,
   isPasswordMatched,
-} from "../lib/utils.js";
+} from "../services/password.service.js";
 
-import { COOKIE_EXPIRES_IN } from "../lib/const.js";
+import { generateTokens } from "../services/token.service.js";
 
 import authRepository from "../repositorys/auth.repository.js";
+
+import { setCookie } from "../services/cookie.service.js";
+import { sendRegisterEmailQueue } from "../queues/emailQueue.js";
 
 import {
   createUserGRPC,
@@ -60,25 +62,25 @@ const register = asyncHandler(async (req, res) => {
     authId: auth._id,
   });
 
+  await sendRegisterEmailQueue.add("registerSuccess", {
+    email,
+    userName,
+  });
+
   return await responseWithCookie(auth, userId, res, "Registration successful");
 });
 
 const responseWithCookie = async (auth, userId, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens({
-    authId: auth._id,
-    tokenVersion: auth.tokenVersion,
-    userId: userId,
-  });
+  const { accessToken, refreshToken } = generateTokens(
+    userId,
+    auth._id,
+    auth.tokenVersion,
+  );
 
   auth.refreshToken = refreshToken;
   await auth.save();
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
+  setCookie(res, "accessToken", accessToken);
 
   res.json({
     message: msg,

@@ -7,6 +7,7 @@ import app from "./services/app.js";
 
 import socketInit from "./services/socket-service/socket.js";
 import mongoose from "mongoose";
+import redis from "#configs/redis.js";
 
 const server = http.createServer(app);
 
@@ -28,10 +29,12 @@ serverInit();
 const gracefulShutdown = () => {
   console.log("shutting down server...");
 
-  server.close(() => {
-    console.log("server closed");
+  server.close(async () => {
+    await redis.disconnect();
 
-    mongoose.disconnect();
+    await mongoose.disconnect();
+
+    console.log("server closed");
     process.exit(0);
   });
 };

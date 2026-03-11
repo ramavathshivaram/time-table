@@ -6,6 +6,7 @@ import connectDB from "./shared/configs/mongoDB.js";
 
 import authWorkerFactories from "./services/auth-service/workers/index.js";
 import workflowWorkerFactories from "./services/workflow-service/workers/index.js";
+import redis from "#configs/redis.js";
 
 const workerFactories = [...authWorkerFactories, ...workflowWorkerFactories];
 
@@ -56,6 +57,7 @@ const gracefulShutdown = async () => {
       await worker.close();
     }
 
+    await redis.disconnect();
     await mongoose.disconnect();
 
     console.log("All workers shut down cleanly.");

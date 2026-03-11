@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connection.on("connected", () => {
+mongoose.connection.on("connected", ( ) => {
   console.log("Connected to MongoDB");
 });
 

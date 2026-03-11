@@ -4,10 +4,9 @@ import {
   generateAccessToken,
   verifyToken,
   decodeTokenPayload,
-} from "../lib/utils.js";
-
-import { COOKIE_EXPIRES_IN } from "../lib/const.js";
+} from "../services/token.service.js";
 import authRepository from "../repositorys/auth.repository.js";
+import { clearCookie, setCookie } from "../services/cookie.service.js";
 
 const refreshTokenController = asyncHandler(async (req, res) => {
   const accessToken = req.cookies.accessToken;
@@ -36,7 +35,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Refresh token not found");
   }
 
-  const refreshData = verifyToken(refreshToken);
+  const refreshData = verifyToken(refreshToken, false);
 
   if (!refreshData) {
     throw new ApiError(401, "Refresh token expired");
@@ -51,18 +50,13 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh token");
   }
 
-  const newAccessToken = generateAccessToken({
+  const newAccessToken = generateAccessToken(
+    refreshData.userId,
     authId,
-    tokenVersion: accessTokenVersion,
-    userId: refreshData.userId,
-  });
+    accessTokenVersion,
+  );
 
-  res.cookie("accessToken", newAccessToken, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: COOKIE_EXPIRES_IN,
-  });
+  setCookie(res, "accessToken", newAccessToken);
 
   res.status(200).json({
     success: true,
@@ -75,7 +69,7 @@ const logout = asyncHandler(async (req, res) => {
     refreshToken: null,
   });
 
-  res.clearCookie("accessToken");
+  clearCookie(res, "accessToken");
 
   res.json({
     message: "Logout successful",

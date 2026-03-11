@@ -7,13 +7,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import redis from "../../../shared/configs/redis.js";
+import redis from "#shared/configs/redis.js";
 
-import sendEmail from "../../../shared/configs/sendEmail.js";
+import sendEmail from "#shared/configs/sendEmail.js";
 
 const emailJob = async (job) => {
-  console.log("Processing:", job.name);
-
   const { email, otp } = job.data;
 
   const html = await ejs.renderFile(
