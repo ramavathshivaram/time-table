@@ -1,6 +1,6 @@
 import { useGetWorkflows } from "@/hooks/react-query/workflow.query.js";
 import React from "react";
-import WorkflowCard from "./Workflowcard";
+import WorkflowCard from "./WorkflowCard";
 
 const AllWorkflows = () => {
   const {

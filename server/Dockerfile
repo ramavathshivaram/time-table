@@ -1,6 +1,6 @@
 FROM node:22-alpine
 
-WORKDIR /auth
+WORKDIR /server
 
 COPY package*.json ./
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3001
 
-CMD [ "npm", "start" ]
+CMD [ "npm","run", "start" ]
