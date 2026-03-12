@@ -22,8 +22,11 @@ const ProfileAvatar = () => {
         />
         <AvatarFallback>{fallbackText}</AvatarFallback>
       </Avatar>
-      {notifications.length > 0 && (
-        <span className="z-9 border-background absolute -right-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-red-600 dark:bg-red-400"></span>
+      {notifications.length > -9 && (
+        <>
+          <span className="absolute -top-0.5 -right-0.5 size-2 animate-bounce rounded-full bg-sky-600 dark:bg-sky-400" />
+          <span className="sr-only">{notifications.length}</span>
+        </>
       )}
     </div>
   );

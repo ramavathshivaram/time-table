@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ChatInput,
   ConversationContent,
   ConversationEmptyState,
   ConversationScrollButton,
@@ -10,6 +9,56 @@ import {
 
 const AIChat = () => {
   const [messages, setMessages] = useState([
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+    },
+    {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: "Hello! How can I help you today?",
+    },
     {
       id: crypto.randomUUID(),
       role: "assistant",
@@ -53,7 +102,7 @@ const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-125 w-90 rounded-xl overflow-hidden">
+    <div className="flex flex-1 flex-col h-full w-full overflow-auto">
       <Conversation>
         <ConversationContent>
           {messages.length === 0 ? (
@@ -66,11 +115,8 @@ const AIChat = () => {
             ))
           )}
         </ConversationContent>
-
         <ConversationScrollButton />
       </Conversation>
-
-      <ChatInput onSend={sendMessage} />
     </div>
   );
 };

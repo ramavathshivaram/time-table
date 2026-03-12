@@ -1,12 +1,12 @@
 import React, { memo } from "react";
-
 import { Panel } from "@xyflow/react";
 
 import NodeLibrary from "./NodeLibrary";
 import WorkflowTitle from "./WorkflowTitle";
 import WorkflowControls from "./WorkflowControls";
 import GenerateTimeTable from "./GenerateTimeTable";
-import AIChatBot from "./AIChatBot";
+import Resources from "./resources/Resources";
+import AIChatBotWrapper from "./AIChatBotWrapper";
 
 const ReactflowPanels = ({ workflowId, title, onDragStart }) => {
   return (
@@ -28,7 +28,11 @@ const ReactflowPanels = ({ workflowId, title, onDragStart }) => {
       </Panel>
 
       <Panel position="bottom-right">
-        <AIChatBot />
+        <AIChatBotWrapper />
+      </Panel>
+
+      <Panel position="bottom-left">
+        <Resources />
       </Panel>
     </>
   );

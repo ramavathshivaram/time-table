@@ -20,6 +20,12 @@ const workflowSchema = new mongoose.Schema(
     nodes: [{}],
 
     edges: [{}],
+
+    faculties: [{}],
+
+    subjects: [{}],
+
+    rooms: [{}],
   },
   {
     timestamps: true,

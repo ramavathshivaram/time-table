@@ -15,7 +15,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  // generate otp
   const otp = generateOTP();
 
   //! send otp email

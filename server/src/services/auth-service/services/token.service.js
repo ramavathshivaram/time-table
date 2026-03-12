@@ -42,7 +42,7 @@ export const decodeTokenPayload = (token) => {
   return decode(token);
 };
 
-export const verifyToken = (token, isAccessToken) => {
+export const verifyToken = (token, isAccessToken = true) => {
   if (!token) throw new ApiError(404, "Token not found");
   return verify(token, isAccessToken ? JWT_ACCESS_SECRET : JWT_REFRESH_SECRET);
 };

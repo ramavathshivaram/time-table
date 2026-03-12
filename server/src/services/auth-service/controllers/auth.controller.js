@@ -17,10 +17,6 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 
   const accessData = decodeTokenPayload(accessToken);
 
-  if (!accessData) {
-    throw new ApiError(401, "Invalid or expired access token");
-  }
-
   const { authId, tokenVersion: accessTokenVersion } = accessData;
 
   const auth = await authRepository.findUserById(authId);
@@ -29,17 +25,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const refreshToken = auth.refreshToken;
-
-  if (!refreshToken) {
-    throw new ApiError(401, "Refresh token not found");
-  }
-
-  const refreshData = verifyToken(refreshToken, false);
-
-  if (!refreshData) {
-    throw new ApiError(401, "Refresh token expired");
-  }
+  const refreshData = verifyToken(auth.refreshToken, false);
 
   const { tokenVersion: refreshTokenVersion } = refreshData;
 
@@ -47,7 +33,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     refreshTokenVersion !== accessTokenVersion ||
     refreshTokenVersion !== auth.tokenVersion
   ) {
-    throw new ApiError(401, "Invalid refresh token");
+    throw new ApiError(401, "Invalid access token");
   }
 
   const newAccessToken = generateAccessToken(

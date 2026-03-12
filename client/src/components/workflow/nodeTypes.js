@@ -2,7 +2,7 @@ import {
   GitBranch,
   Calendar,
   Layers,
-  Home,
+  DoorOpen,
   BookOpen,
   User,
   FlaskConical,
@@ -50,7 +50,7 @@ const nodeTypes = [
   {
     type: "room",
     title: "Room",
-    icon: Home,
+    icon: DoorOpen,
     description: "Room allocation",
     color: "text-teal-500",
     bg: "bg-teal-100",
