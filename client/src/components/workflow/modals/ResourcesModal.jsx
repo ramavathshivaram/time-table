@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
 import FacultyModal from "./FacultyModal";
+import SubjectModal from "./SubjectModal";
+import RoomModal from "./RoomModal";
 
 const ResourcesModal = () => {
   const type = useResourcesModalStore((s) => s.type);
@@ -11,10 +13,10 @@ const ResourcesModal = () => {
 
   if (!isModalOpen) return null;
 
-  console.log(type);
-
   const ModalComponents = {
     faculty: FacultyModal,
+    subject: SubjectModal,
+    room: RoomModal,
   };
 
   if (!ModalComponents[type]) return null;

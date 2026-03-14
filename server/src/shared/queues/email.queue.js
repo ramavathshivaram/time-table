@@ -3,6 +3,6 @@ import redis from "#shared/configs/redis.js";
 
 import { queueConst } from "../lib/const.js";
 
-export const sendOtpEmailQueue = new Queue(queueConst.SEND_OTP_EMAIL, {
+export const emailQueue = new Queue(queueConst.SEND_EMAIL, {
   connection: redis,
 });

@@ -1,13 +1,20 @@
 import userRepository from "../repositorys/user.repository.js";
-import { sendRegisterEmailQueue } from "../queues/email.queue.js";
-import { queueConst } from "../lib/const.js";
+import { emailQueue } from "#shared/queues/email.queue.js";
 
 const createUser = async (user) => {
   console.log(user);
   const newUser = await userRepository.createUser(user);
   console.log("new user created");
 
-  await sendRegisterEmailQueue.add(queueConst.SEND_REGISTER_EMAIL, newUser);
+  await emailQueue.add("send-register-email", {
+    email: user.email,
+    subject: "Registration Successful",
+    html: await loadHtml("user-service/templetes/email.register.ejs", {
+      userName: user.userName,
+      email: user.email,
+      avatar: user.avatar,
+    }),
+  });
 
   return newUser._id;
 };

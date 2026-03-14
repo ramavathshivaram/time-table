@@ -76,3 +76,42 @@ export const updateFacultyEmit = (workflowId, facultyId, facultyData) => {
     facultyData,
   );
 };
+
+//! SUBJECTS
+
+export const addSubjectEmit = (workflowId, subject) => {
+  logEmit(workflowSocketConst.SUBJECT_ADD, subject);
+  socket.emit(workflowSocketConst.SUBJECT_ADD, workflowId, subject);
+};
+
+export const removeSubjectEmit = (workflowId, subjectId) => {
+  logEmit(workflowSocketConst.SUBJECT_REMOVE, subjectId);
+  socket.emit(workflowSocketConst.SUBJECT_REMOVE, workflowId, subjectId);
+};
+
+export const updateSubjectEmit = (workflowId, subjectId, subjectData) => {
+  logEmit(workflowSocketConst.SUBJECT_UPDATE, subjectData);
+  socket.emit(
+    workflowSocketConst.SUBJECT_UPDATE,
+    workflowId,
+    subjectId,
+    subjectData,
+  );
+};
+
+//! ROOMS
+
+export const addRoomEmit = (workflowId, room) => {
+  logEmit(workflowSocketConst.ROOM_ADD, room);
+  socket.emit(workflowSocketConst.ROOM_ADD, workflowId, room);
+};
+
+export const removeRoomEmit = (workflowId, roomId) => {
+  logEmit(workflowSocketConst.ROOM_REMOVE, roomId);
+  socket.emit(workflowSocketConst.ROOM_REMOVE, workflowId, roomId);
+};
+
+export const updateRoomEmit = (workflowId, roomId, roomData) => {
+  logEmit(workflowSocketConst.ROOM_UPDATE, roomData);
+  socket.emit(workflowSocketConst.ROOM_UPDATE, workflowId, roomId, roomData);
+};

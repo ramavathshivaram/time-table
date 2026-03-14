@@ -36,14 +36,30 @@ export const removeFacultyGRPC = async (workflowId, faculty) => {
   await workflowRepository.removeFaculty(workflowId, faculty);
 };
 
-export const updateFacultyGRPC = async (
-  workflowId,
-  facultyId,
-  facultyData,
-) => {
-  await workflowRepository.updateFaculty(
-    workflowId,
-    facultyId,
-    facultyData,
-  );
+export const updateFacultyGRPC = async (workflowId, facultyId, facultyData) => {
+  await workflowRepository.updateFaculty(workflowId, facultyId, facultyData);
+};
+
+export const addSubjectGRPC = async (workflowId, subject) => {
+  await workflowRepository.addSubject(workflowId, subject);
+};
+
+export const removeSubjectGRPC = async (workflowId, subject) => {
+  await workflowRepository.removeSubject(workflowId, subject);
+};
+
+export const updateSubjectGRPC = async (workflowId, subjectId, subjectData) => {
+  await workflowRepository.updateSubject(workflowId, subjectId, subjectData);
+};
+
+export const addRoomGRPC = async (workflowId, room) => {
+  await workflowRepository.addRoom(workflowId, room);
+};
+
+export const removeRoomGRPC = async (workflowId, room) => {
+  await workflowRepository.removeRoom(workflowId, room);
+};
+
+export const updateRoomGRPC = async (workflowId, roomId, roomData) => {
+  await workflowRepository.updateRoom(workflowId, roomId, roomData);
 };

@@ -11,6 +11,12 @@ import {
   addFacultyEmit,
   removeFacultyEmit,
   updateFacultyEmit,
+  addSubjectEmit,
+  removeSubjectEmit,
+  updateSubjectEmit,
+  addRoomEmit,
+  removeRoomEmit,
+  updateRoomEmit,
 } from "@/hooks/socket/workflow.socket/useGraphEmitter.js";
 
 const useWorkflowStore = create((set, get) => ({
@@ -18,6 +24,8 @@ const useWorkflowStore = create((set, get) => ({
   nodes: [],
   edges: [],
   faculties: [],
+  subjects: [],
+  rooms: [],
 
   init: (initialWorkflowData) =>
     set({
@@ -25,6 +33,8 @@ const useWorkflowStore = create((set, get) => ({
       nodes: initialWorkflowData.nodes,
       edges: initialWorkflowData.edges,
       faculties: initialWorkflowData.faculties,
+      subjects: initialWorkflowData.subjects,
+      rooms: initialWorkflowData.rooms,
     }),
 
   //! NODES METHODS
@@ -115,8 +125,54 @@ const useWorkflowStore = create((set, get) => ({
     updateFacultyEmit(get().workflowId, facultyId, facultyData);
     set((state) => ({
       faculties: state.faculties.map((f) =>
-        f.id === facultyId ?  facultyData  : f,
+        f.id === facultyId ? facultyData : f,
       ),
+    }));
+  },
+
+  //! SUBJECTS
+  setSubjects: (subjects) => set({ subjects }),
+
+  addSubject: (subject) => {
+    addSubjectEmit(get().workflowId, subject);
+    set((state) => ({
+      subjects: [...state.subjects, subject],
+    }));
+  },
+
+  removeSubject: (subjectId) => {
+    removeSubjectEmit(get().workflowId, subjectId);
+    set((state) => ({
+      subjects: state.subjects.filter((s) => s.id !== subjectId),
+    }));
+  },
+
+  updatesubject: (subjectId, subjectData) => {
+    updateSubjectEmit(get().workflowId, subjectId, subjectData);
+    set((state) => ({
+      subjects: state.subjects.map((s) =>
+        s.id === subjectId ? subjectData : s,
+      ),
+    }));
+  },
+
+  //! ROOMS
+  setRooms: (rooms) => set({ rooms }),
+
+  addRoom: (room) => {
+    addRoomEmit(get().workflowId, room);
+    set((state) => ({ rooms: [...state.rooms, room] }));
+  },
+
+  removeRoom: (roomId) => {
+    removeRoomEmit(get().workflowId, roomId);
+    set((state) => ({ rooms: state.rooms.filter((r) => r.id !== roomId) }));
+  },
+
+  updateRoom: (roomId, roomData) => {
+    updateRoomEmit(get().workflowId, roomId, roomData);
+    set((state) => ({
+      rooms: state.rooms.map((r) => (r.id === roomId ? roomData : r)),
     }));
   },
 }));

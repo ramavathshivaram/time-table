@@ -9,6 +9,12 @@ import {
   addFacultyGRPC,
   updateFacultyGRPC,
   removeFacultyGRPC,
+  addSubjectGRPC,
+  updateSubjectGRPC,
+  removeSubjectGRPC,
+  addRoomGRPC,
+  updateRoomGRPC,
+  removeRoomGRPC,
 } from "../controllers/workflow.grpc.controller.js";
 
 export default {
@@ -23,4 +29,12 @@ export default {
   addFacultyGRPC,
   updateFacultyGRPC,
   removeFacultyGRPC,
+
+  addSubjectGRPC,
+  updateSubjectGRPC,
+  removeSubjectGRPC,
+
+  addRoomGRPC,
+  updateRoomGRPC,
+  removeRoomGRPC,
 };

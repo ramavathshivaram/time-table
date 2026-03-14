@@ -5,6 +5,7 @@ const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
 
   return workflowModel
     .find({ userId })
+    .select("title createdAt updatedAt _id")
     .sort(sort)
     .skip(skip)
     .limit(limit)
@@ -12,7 +13,12 @@ const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
 };
 
 const getRecentWorkflowsByUserId = async (userId) => {
-  return workflowModel.find({ userId }).sort({ updatedAt: -1 }).limit(5).lean();
+  return workflowModel
+    .find({ userId })
+    .select("title createdAt updatedAt _id")
+    .sort({ updatedAt: -1 })
+    .limit(5)
+    .lean();
 };
 
 const createWorkflow = async (workflow) => {
@@ -99,20 +105,83 @@ const updateFaculty = async (workflowId, facultyId, facultyData) => {
   );
 };
 
+const addSubject = async (workflowId, subject) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $push: { subjects: subject },
+  });
+};
+
+const removeSubject = async (workflowId, subjectId) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $pull: { subjects: { id: subjectId } },
+  });
+};
+
+const updateSubject = async (workflowId, subjectId, subjectData) => {
+  await workflowModel.findOneAndUpdate(
+    {
+      _id: workflowId,
+      "subjects.id": subjectId,
+    },
+    {
+      $set: {
+        "subjects.$": subjectData,
+      },
+    },
+  );
+};
+
+const addRoom = async (workflowId, room) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $push: { rooms: room },
+  });
+};
+
+const removeRoom = async (workflowId, roomId) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $pull: { rooms: { id: roomId } },
+  });
+};
+
+const updateRoom = async (workflowId, roomId, roomData) => {
+  await workflowModel.findOneAndUpdate(
+    {
+      _id: workflowId,
+      "rooms.id": roomId,
+    },
+    {
+      $set: {
+        "rooms.$": roomData,
+      },
+    },
+  );
+};
+
 export default {
   getAllUserWorkflowsByUserId,
   createWorkflow,
   getWorkflowById,
   updateWorkflowById,
   getRecentWorkflowsByUserId,
+
   addNode,
   addNodes,
   removeNode,
   updateNode,
+
   addEdge,
   addEdges,
   removeEdge,
+
   addFaculty,
   removeFaculty,
   updateFaculty,
+
+  addSubject,
+  removeSubject,
+  updateSubject,
+
+  addRoom,
+  removeRoom,
+  updateRoom,
 };

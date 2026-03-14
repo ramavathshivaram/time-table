@@ -2,9 +2,9 @@ import asyncHandler from "express-async-handler";
 import ApiError from "#shared/lib/ApiError.js";
 import { hashPassword, generateOTP } from "../services/password.service.js";
 import authRepository from "../repositorys/auth.repository.js";
-import { sendOtpEmailQueue } from "../queues/emailQueue.js";
-import { queueConst } from "../lib/const.js";
+import { emailQueue } from "#shared/queues/email.queue.js";
 import redis from "../../../shared/configs/redis.js";
+import loadHtml from "#shared/lib/loadHtml.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -18,7 +18,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const otp = generateOTP();
 
   //! send otp email
-  await sendOtpEmailQueue.add(queueConst.SEND_OTP_EMAIL, { email, otp });
+  await emailQueue.add("send-otp-email", {
+    email,
+    subject: "OTP Verification",
+    html: await loadHtml("auth-service/templetes/email.otp.ejs", { otp }),
+  });
 
   // save otp to redis
   redis.set(`otp:${email}`, otp, "EX", 900); //// 15 mins
@@ -44,7 +48,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { otp, password, email } = req.body;
 
-  const otpFromRedis =  await redis.get(`otp:${email}`);
+  const otpFromRedis = await redis.get(`otp:${email}`);
 
   if (!otpFromRedis || otpFromRedis !== otp) {
     throw new ApiError(404, "Invalid OTP");

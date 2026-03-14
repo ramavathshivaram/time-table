@@ -1,25 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import React, { useState } from "react";
+import useResourcesModalStore from "@/store/recources.modal.store";
+import useWorkflowStore from "@/store/workflow.store.js";
 
 const Rooms = () => {
   const [search, setSearch] = useState("");
 
-  const rooms = [
-    "room 101","room 102","room 103","room 104","room 105",
-    "room 106","room 107","room 108","room 109","room 110",
-    "room 111","room 112","room 113","room 114","room 115",
-    "room 116","room 117","room 118","room 119","room 120",
-  ];
+  const rooms = useWorkflowStore((state) => state.rooms);
+  const openModal = useResourcesModalStore((state) => state.openModal);
+
+  console.log(rooms);
 
   const filteredRooms = rooms.filter((room) =>
-    room.toLowerCase().includes(search.toLowerCase())
+    room.name.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const handleAddRoom = () => {
+    openModal("room", null, true);
+  };
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      
       {/* Search */}
       <div className="flex items-center gap-2">
         <Input
@@ -27,7 +30,7 @@ const Rooms = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button className="p-0">
+        <Button className="p-0" onClick={handleAddRoom}>
           <Plus />
         </Button>
       </div>
@@ -36,14 +39,14 @@ const Rooms = () => {
       <ul className="space-y-1 overflow-y-auto scrollbar">
         {filteredRooms.map((room) => (
           <li
-            key={room}
+            key={room.id}
+            onClick={() => openModal("room", room)}
             className="border px-2 py-1 rounded-md cursor-pointer hover:bg-accent transition"
           >
-            {room}
+            {room.name}
           </li>
         ))}
       </ul>
-
     </div>
   );
 };

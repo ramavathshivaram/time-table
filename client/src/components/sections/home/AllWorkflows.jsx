@@ -5,7 +5,6 @@ import WorkflowCard from "./WorkflowCard";
 const AllWorkflows = () => {
   const {
     data,
-    error,
     fetchNextPage,
     hasNextPage,
     isFetching,

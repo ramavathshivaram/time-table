@@ -11,9 +11,6 @@ const Faculties = () => {
   const faculties = useWorkflowStore((state) => state.faculties);
   const openModal = useResourcesModalStore((state) => state.openModal);
 
-
-  console.log(faculties)
-
   const filteredFaculties = faculties.filter((faculty) =>
     faculty.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -23,7 +20,7 @@ const Faculties = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 h-full">
       {/* Search */}
       <div className="flex items-center gap-2">
         <Input
@@ -40,7 +37,7 @@ const Faculties = () => {
       <ul className="space-y-1 mt-2 overflow-y-auto scrollbar">
         {filteredFaculties.map((faculty) => (
           <li
-            key={faculty.name}
+            key={faculty.id}
             className="border px-2 py-1 hover:bg-white/20 rounded-sm cursor-pointer"
             onClick={() => openModal("faculty", faculty)}
           >
