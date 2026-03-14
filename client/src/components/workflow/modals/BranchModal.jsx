@@ -18,8 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useWorkflowStore from "@/store/workflow.store.js";
 
-const BranchModal = ({ activeNode, setNodes, closeModal }) => {
+const BranchModal = ({ activeNode, closeModal }) => {
+  const updateNode = useWorkflowStore((s) => s.updateNode);
+
   const {
     register,
     handleSubmit,
@@ -37,19 +40,9 @@ const BranchModal = ({ activeNode, setNodes, closeModal }) => {
   });
 
   const onSubmit = (data) => {
-    setNodes((nodes) =>
-      nodes.map((node) =>
-        node.id === activeNode.id
-          ? {
-              ...node,
-              data: {
-                ...node.data,
-                ...data,
-              },
-            }
-          : node
-      )
-    );
+    console.log(data);
+
+    updateNode(activeNode.id, data);
 
     closeModal();
   };
@@ -61,7 +54,6 @@ const BranchModal = ({ activeNode, setNodes, closeModal }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <FieldSet>
           <FieldGroup>
-
             {/* Branch Label */}
             <Field>
               <FieldLabel>Branch Name</FieldLabel>
@@ -69,9 +61,7 @@ const BranchModal = ({ activeNode, setNodes, closeModal }) => {
                 placeholder="CSE"
                 {...register("label", { required: true })}
               />
-              {errors.label && (
-                <FieldError>Branch name required</FieldError>
-              )}
+              {errors.label && <FieldError>Branch name required</FieldError>}
             </Field>
 
             {/* Timings */}
@@ -94,40 +84,25 @@ const BranchModal = ({ activeNode, setNodes, closeModal }) => {
             {/* Lunch */}
             <Field>
               <FieldLabel>Lunch Time</FieldLabel>
-              <Input
-                placeholder="1 PM - 2 PM"
-                {...register("lunch")}
-              />
+              <Input placeholder="1 PM - 2 PM" {...register("lunch")} />
             </Field>
 
             {/* Years */}
             <Field>
               <FieldLabel>No of Years</FieldLabel>
-              <Input
-                type="number"
-                placeholder="4"
-                {...register("years")}
-              />
+              <Input type="number" placeholder="4" {...register("years")} />
             </Field>
 
             {/* Subjects */}
             <Field>
               <FieldLabel>No of Subjects</FieldLabel>
-              <Input
-                type="number"
-                placeholder="30"
-                {...register("subjects")}
-              />
+              <Input type="number" placeholder="30" {...register("subjects")} />
             </Field>
 
             {/* Faculty */}
             <Field>
               <FieldLabel>No of Faculty</FieldLabel>
-              <Input
-                type="number"
-                placeholder="20"
-                {...register("faculty")}
-              />
+              <Input type="number" placeholder="20" {...register("faculty")} />
             </Field>
 
             {/* Buttons */}
@@ -138,7 +113,6 @@ const BranchModal = ({ activeNode, setNodes, closeModal }) => {
 
               <Button type="submit">Save</Button>
             </div>
-
           </FieldGroup>
         </FieldSet>
       </form>

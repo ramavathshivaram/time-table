@@ -1,8 +1,26 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import useResourcesModalStore from "@/store/recources.modal.store.js";
+import FacultyModal from "./FacultyModal";
 
-const Modal = () => {
+const ResourcesModal = () => {
+  const type = useResourcesModalStore((s) => s.type);
+  const isModalOpen = useResourcesModalStore((s) => s.isModalOpen);
+  const closeModal = useResourcesModalStore((s) => s.closeModal);
+
+  if (!isModalOpen) return null;
+
+  console.log(type);
+
+  const ModalComponents = {
+    faculty: FacultyModal,
+  };
+
+  if (!ModalComponents[type]) return null;
+
+  const ModalComponent = ModalComponents[type];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -29,10 +47,12 @@ const Modal = () => {
           ease: "easeInOut",
         }}
       >
-        <Card className="shadow-xl border border-gray-700 rounded-xl p-6 w-105 bg-background"></Card>
+        <Card className="shadow-xl border border-gray-700 rounded-xl p-6 w-105 bg-background">
+          <ModalComponent closeModal={closeModal} />
+        </Card>
       </motion.div>
     </motion.div>
   );
 };
 
-export default Modal;
+export default ResourcesModal;

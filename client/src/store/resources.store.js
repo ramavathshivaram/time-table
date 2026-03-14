@@ -1,14 +1,12 @@
 import { create } from "zustand";
 
 const useModalStore = create((set) => ({
-  origin: { x: 0, y: 0 },
-  activeNode: null,
+  
   isModalOpen: false,
 
-  openModal: (node, origin) =>
+  openModal: (id, type) =>
     set({
-      activeNode: node,
-      origin,
+     
       isModalOpen: true,
     }),
 
@@ -20,4 +18,3 @@ const useModalStore = create((set) => ({
 }));
 
 export default useModalStore;
-

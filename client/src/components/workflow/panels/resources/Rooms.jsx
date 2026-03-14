@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import React, { useState } from "react";
 
 const Rooms = () => {
@@ -27,13 +27,13 @@ const Rooms = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button size="sm">
-          <Search size={16} />
+        <Button className="p-0">
+          <Plus />
         </Button>
       </div>
 
       {/* Room List */}
-      <ul className="space-y-1 overflow-y-auto">
+      <ul className="space-y-1 overflow-y-auto scrollbar">
         {filteredRooms.map((room) => (
           <li
             key={room}

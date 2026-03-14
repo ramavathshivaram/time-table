@@ -7,9 +7,19 @@ const workflowSocketInit = (io, socket) => {
     console.log(workflowSocketConst.NODES_ADD, workflowId, node);
   });
 
+  socket.on(workflowSocketConst.NODES_ADD, (workflowId, nodes) => {
+    workflowGRPC.addNodesGRPC(workflowId, nodes);
+    console.log(workflowSocketConst.NODES_ADD, workflowId, nodes);
+  });
+
   socket.on(workflowSocketConst.NODE_REMOVE, (workflowId, nodeId) => {
     workflowGRPC.removeNodeGRPC(workflowId, nodeId);
     console.log(workflowSocketConst.NODE_REMOVE, workflowId, nodeId);
+  });
+
+  socket.on(workflowSocketConst.NODE_UPDATE, (workflowId, nodeId, nodeData) => {
+    workflowGRPC.updateNodeGRPC(workflowId, nodeId, nodeData);
+    console.log(workflowSocketConst.NODE_UPDATE, workflowId, nodeId, nodeData);
   });
 
   socket.on(workflowSocketConst.EDGE_ADD, (workflowId, edge) => {
@@ -17,9 +27,29 @@ const workflowSocketInit = (io, socket) => {
     console.log(workflowSocketConst.EDGE_ADD, workflowId, edge);
   });
 
+  socket.on(workflowSocketConst.EDGES_ADD, (workflowId, edges) => {
+    workflowGRPC.addEdgesGRPC(workflowId, edges);
+    console.log(workflowSocketConst.EDGES_ADD, workflowId, edges);
+  });
+
   socket.on(workflowSocketConst.EDGE_REMOVE, (workflowId, edgeId) => {
     workflowGRPC.removeEdgeGRPC(workflowId, edgeId);
     console.log(workflowSocketConst.EDGE_REMOVE, workflowId, edgeId);
+  });
+
+  socket.on(workflowSocketConst.FACULTY_ADD, (workflowId, faculty) => {
+    workflowGRPC.addFacultyGRPC(workflowId, faculty);
+    console.log(workflowSocketConst.FACULTY_ADD, workflowId, faculty);
+  });
+
+  socket.on(workflowSocketConst.FACULTY_UPDATE, (workflowId, facultyId, faculty) => {
+    workflowGRPC.updateFacultyGRPC(workflowId, facultyId, faculty);
+    console.log(workflowSocketConst.FACULTY_UPDATE, workflowId, facultyId, faculty);
+  });
+
+  socket.on(workflowSocketConst.FACULTY_REMOVE, (workflowId, facultyId) => {
+    workflowGRPC.removeFacultyGRPC(workflowId, facultyId);
+    console.log(workflowSocketConst.FACULTY_REMOVE, workflowId, facultyId);
   });
 };
 

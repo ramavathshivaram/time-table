@@ -13,22 +13,20 @@ const NODE_WIDTH = 150;
 const NODE_HEIGHT = 80;
 
 const useWorkflowInteractions = (
-  initialWorkflowData,
-  workflowId,
   reactFlowInstanceRef,
 ) => {
   const openModal = useModalStore((s) => s.openModal);
 
   const nodes = useWorkflowStore((s) => s.nodes);
+  const addNode = useWorkflowStore((s) => s.addNode);
   const setNodes = useWorkflowStore((s) => s.setNodes);
+  const removeNode = useWorkflowStore((s) => s.removeNode);
+  
 
   const edges = useWorkflowStore((s) => s.edges);
-  const setEdges = useWorkflowStore((s) => s.setEdges);
-
-  const addNode = useWorkflowStore((s) => s.addNode);
-  const removeNode = useWorkflowStore((s) => s.removeNode);
-  const removeEdge = useWorkflowStore((s) => s.removeEdge);
   const addEdge = useWorkflowStore((s) => s.addEdge);
+  const setEdges = useWorkflowStore((s) => s.setEdges);
+  const removeEdge = useWorkflowStore((s) => s.removeEdge);
 
   const { screenToFlowPosition } = useReactFlow();
 
@@ -141,10 +139,8 @@ const useWorkflowInteractions = (
 
   return {
     nodes,
-    setNodes,
     onNodesChange,
     edges,
-    setEdges,
     onEdgesChange,
 
     onConnect,

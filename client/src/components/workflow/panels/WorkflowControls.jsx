@@ -41,8 +41,6 @@ const WorkflowControls = () => {
   const duplicateSelected = useDuplicateSelected({
     getNodes,
     getEdges,
-    setNodes,
-    setEdges,
   });
 
   const autoArrangement = useAutoArrange({

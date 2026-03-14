@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import React, { useState } from "react";
 
 const Subjects = () => {
@@ -32,13 +32,13 @@ const Subjects = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button size="sm">
-          <Search size={16} />
+        <Button className="p-0">
+          <Plus />
         </Button>
       </div>
 
       {/* Subject List */}
-      <ul className="space-y-1 mt-2 overflow-y-auto">
+      <ul className="space-y-1 mt-2 overflow-y-auto scrollbar">
         {filteredSubjects.map((subject) => (
           <li
             key={subject}

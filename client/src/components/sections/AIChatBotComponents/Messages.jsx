@@ -102,7 +102,7 @@ const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col h-full w-full overflow-auto">
+    <div className="flex flex-1 flex-col h-full w-full overflow-y-auto scrollbar">
       <Conversation>
         <ConversationContent>
           {messages.length === 0 ? (

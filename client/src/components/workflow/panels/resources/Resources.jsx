@@ -45,7 +45,7 @@ const Resources = () => {
 
         <DropdownMenuContent className="w-75 p-2 ml-2">
           <DropdownMenuGroup>
-            <Tabs defaultValue="faculties">
+            <Tabs defaultValue="faculties" className="grid grid-rows-[auto_1fr]">
               <TabsList className="w-full">
                 {list.map((item) => (
                   <TabsTrigger
@@ -63,7 +63,7 @@ const Resources = () => {
                 <TabsContent
                   key={item.label}
                   value={item.label.toLowerCase()}
-                  className="p-0 min-h-[60vh] max-h-[60vh]"
+                  className="p-0 min-h-[60vh] max-h-[60vh] scrollbar"
                 >
                   {item.component}
                 </TabsContent>

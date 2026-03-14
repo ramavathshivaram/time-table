@@ -21,7 +21,7 @@ const Workflow = () => {
 
   useEffect(() => {
     if (initialWorkflowData) {
-      init(workflowId, initialWorkflowData.nodes, initialWorkflowData.edges);
+      init(initialWorkflowData);
     }
   }, [initialWorkflowData, init, workflowId]);
 

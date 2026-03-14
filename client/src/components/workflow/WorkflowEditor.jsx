@@ -10,35 +10,28 @@ import useWorkflowInteractions from "./workflows-hooks/useWorkflowInteractions.j
 import CollegeNode from "./node-components/CollegeNode";
 import DefaultNode from "./node-components/DefaultNode";
 import SectionNode from "./node-components/SectionNode";
-import Modal from "./modals/ModalWrapper.jsx";
+import ModalWrapper from "./modals/ModalWrapper.jsx";
 import StartNode from "./node-components/StartNode";
-import useWorkflowStore from "@/store/workflow.store.js";
+import ResourcesModal from "./modals/ResourcesModal";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
 
-  const nodes=useWorkflowStore((s) => s.nodes);
-  
   const reactFlowInstanceRef = useRef(null);
 
   const {
-    setNodes,
-    onNodesChange,
+    nodes,
     edges,
+    onNodesChange,
     onEdgesChange,
 
     onConnect,
     isValidConnection,
     onNodeDoubleClick,
     onConnectEnd,
-  } = useWorkflowInteractions(
-    initialWorkflowData,
-    workflowId,
-    reactFlowInstanceRef,
-  );
+  } = useWorkflowInteractions(reactFlowInstanceRef);
 
   const { onDragOver, onDrop, onDragStart } = useDnD({
-    setNodes,
     reactFlowInstanceRef,
   });
 
@@ -88,7 +81,8 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         />
       </ReactFlow>
 
-      <Modal />
+      <ModalWrapper />
+      <ResourcesModal />
     </div>
   );
 };
