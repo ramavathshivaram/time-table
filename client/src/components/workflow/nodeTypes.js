@@ -1,15 +1,15 @@
-import {
-  GitBranch,
-  Calendar,
-  Layers,
-  DoorOpen,
-  BookOpen,
-  User,
-  FlaskConical,
-  School,
-} from "lucide-react";
+import { GitBranch, Calendar, Layers, School, Play } from "lucide-react";
 
 const nodeTypes = [
+  {
+    type: "start",
+    title: "Start",
+    icon: Play,
+    description: "Start of the workflow",
+    color: "text-green-500",
+    bg: "bg-green-100",
+    parent: null,
+  },
   {
     type: "college",
     title: "College",
@@ -17,7 +17,7 @@ const nodeTypes = [
     description: "College selection",
     color: "text-blue-500",
     bg: "bg-blue-100",
-    parent: null,
+    parent: "start",
   },
   {
     type: "branch",
@@ -45,39 +45,6 @@ const nodeTypes = [
     color: "text-pink-500",
     bg: "bg-pink-100",
     parent: "year",
-
-  },
-  {
-    type: "room",
-    title: "Room",
-    icon: DoorOpen,
-    description: "Room allocation",
-    color: "text-teal-500",
-    bg: "bg-teal-100",
-  },
-  {
-    type: "subject",
-    title: "Subject",
-    icon: BookOpen,
-    description: "Course subjects",
-    color: "text-indigo-500",
-    bg: "bg-indigo-100",
-  },
-  {
-    type: "faculty",
-    title: "Faculty",
-    icon: User,
-    description: "Teacher assignment",
-    color: "text-yellow-500",
-    bg: "bg-yellow-100",
-  },
-  {
-    type: "lab",
-    title: "Lab",
-    icon: FlaskConical,
-    description: "Laboratory sessions",
-    color: "text-red-500",
-    bg: "bg-red-100",
   },
 ];
 

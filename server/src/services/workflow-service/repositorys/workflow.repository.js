@@ -27,10 +27,34 @@ const updateWorkflowById = async (workflowId, data) => {
   await workflowModel.findByIdAndUpdate(workflowId, data);
 };
 
+const addNode = async (workflowId, node) => {
+  await workflowModel.findByIdAndUpdate(workflowId, { $push: { nodes: node } });
+};
+
+const removeNode = async (workflowId, nodeId) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $pull: { nodes: { id: nodeId } },
+  });
+};
+
+const addEdge = async (workflowId, edge) => {
+  await workflowModel.findByIdAndUpdate(workflowId, { $push: { edges: edge } });
+};
+
+const removeEdge = async (workflowId, edgeId) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $pull: { edges: { id: edgeId } },
+  });
+};
+
 export default {
   getAllUserWorkflowsByUserId,
   createWorkflow,
   getWorkflowById,
   updateWorkflowById,
   getRecentWorkflowsByUserId,
+  addNode,
+  removeNode,
+  addEdge,
+  removeEdge,
 };

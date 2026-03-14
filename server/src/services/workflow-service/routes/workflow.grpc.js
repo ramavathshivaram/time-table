@@ -1,8 +1,13 @@
-import {updateWorkflow} from "../controllers/workflow.grpc.controller.js";
-
-
-const updateWorkflowGRPC = updateWorkflow;
+import {
+  addNodeGRPC,
+  removeNodeGRPC,
+  addEdgeGRPC,
+  removeEdgeGRPC,
+} from "../controllers/workflow.grpc.controller.js";
 
 export default {
-  updateWorkflowGRPC,
+  addNodeGRPC,
+  removeNodeGRPC,
+  addEdgeGRPC,
+  removeEdgeGRPC,
 };

@@ -11,6 +11,4 @@ router.post("/create-workflow", workflowController.createWorkflow);
 
 router.get("/:workflowId", workflowController.getWorkflowById);
 
-router.put("/:workflowId", workflowController.updateWorkflow);
-
 export default router;

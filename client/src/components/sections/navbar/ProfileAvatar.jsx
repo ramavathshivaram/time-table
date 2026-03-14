@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Avatar,
-  AvatarBadge,
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar";
@@ -24,7 +23,7 @@ const ProfileAvatar = () => {
       </Avatar>
       {notifications.length > -9 && (
         <>
-          <span className="absolute -top-0.5 -right-0.5 size-2 animate-bounce rounded-full bg-sky-600 dark:bg-sky-400" />
+          <span className="absolute top-0 right-0 size-2 animate-bounce rounded-full bg-sky-600 dark:bg-sky-400" />
           <span className="sr-only">{notifications.length}</span>
         </>
       )}

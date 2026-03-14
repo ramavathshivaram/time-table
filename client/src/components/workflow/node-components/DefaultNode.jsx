@@ -5,7 +5,6 @@ import nodeTypes from "../nodeTypes.js";
 import { cn } from "@/lib/utils.js";
 
 const DefaultNode = ({ data, isConnectable, type, selected }) => {
-  console.log("DefaultNode");
   const node = nodeTypes.find((n) => n.type === type) || {};
   const Icon = node.icon;
 

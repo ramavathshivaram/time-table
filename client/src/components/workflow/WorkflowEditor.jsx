@@ -11,18 +11,22 @@ import CollegeNode from "./node-components/CollegeNode";
 import DefaultNode from "./node-components/DefaultNode";
 import SectionNode from "./node-components/SectionNode";
 import Modal from "./modals/ModalWrapper.jsx";
+import StartNode from "./node-components/StartNode";
+import useWorkflowStore from "@/store/workflow.store.js";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
+
+  const nodes=useWorkflowStore((s) => s.nodes);
+  
   const reactFlowInstanceRef = useRef(null);
 
   const {
-    nodes,
     setNodes,
     onNodesChange,
     edges,
     onEdgesChange,
-    
+
     onConnect,
     isValidConnection,
     onNodeDoubleClick,
@@ -40,6 +44,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
 
   const nodeTypes = useMemo(
     () => ({
+      start: StartNode,
       college: CollegeNode,
       branch: DefaultNode,
       year: DefaultNode,

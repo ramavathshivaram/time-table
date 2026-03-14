@@ -28,30 +28,26 @@
               box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             "
           >
-            <!-- Logo / Header -->
+            <!-- Header -->
             <tr>
               <td align="center" style="padding-bottom: 25px">
-                <div
+                <!-- Avatar -->
+                <img
+                  src="<%= avatar %>"
+                  alt="User Avatar"
+                  width="80"
+                  height="80"
                   style="
-                    width: 60px;
-                    height: 60px;
                     border-radius: 50%;
-                    background: #111;
-                    color: white;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: bold;
-                    font-size: 22px;
-                    margin: auto;
+                    object-fit: cover;
+                    border: 3px solid #eee;
+                    margin-bottom: 10px;
                   "
-                >
-                  TT
-                </div>
+                />
 
                 <h1
                   style="
-                    margin-top: 20px;
+                    margin-top: 10px;
                     font-size: 28px;
                     color: #111;
                     letter-spacing: -0.5px;
@@ -88,7 +84,7 @@
               </td>
             </tr>
 
-            <!-- Info Card -->
+            <!-- User Info Card -->
             <tr>
               <td style="padding-top: 30px">
                 <table
@@ -116,6 +112,17 @@
                       >
                         <b>Email</b><br />
                         <span style="color: #666"><%= email %></span>
+                      </p>
+
+                      <p
+                        style="
+                          margin: 14px 0 6px 0;
+                          font-size: 14px;
+                          color: #333;
+                        "
+                      >
+                        <b>Avatar</b><br />
+                        <span style="color: #666"><%= avatar %></span>
                       </p>
                     </td>
                   </tr>

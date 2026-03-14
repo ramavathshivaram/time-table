@@ -10,7 +10,6 @@ import {
   createUserGRPC,
   getUserIdByEmailGRPC,
 } from "../../user-service/routes/user.grpc.js";
-import { sendRegisterEmailQueue } from "../queues/emailQueue.js";
 
 const googleLogin = asyncHandler(async (req, res) => {
   const { accessToken } = req.body;
@@ -71,11 +70,6 @@ const googleRegister = asyncHandler(async (req, res) => {
     email: googleUserData.email,
     authId: newUser._id,
     avatar: googleUserData.picture,
-  });
-
-  await sendRegisterEmailQueue.add("registerSuccess", {
-    email: googleUserData.email,
-    userName: googleUserData.name,
   });
 
   return await responseWithCookie(

@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
+import "dotenv/config";
+import redis from "#configs/redis.js";
 
 import mongoose from "mongoose";
-import connectDB from "./shared/configs/mongoDB.js";
+import connectDB from "#shared/configs/mongoDB.js";
 
 import authWorkerFactories from "./services/auth-service/workers/index.js";
 import workflowWorkerFactories from "./services/workflow-service/workers/index.js";
-import redis from "#configs/redis.js";
+import userWorkerFactories from "./services/user-service/workers/index.js";
 
-const workerFactories = [...authWorkerFactories, ...workflowWorkerFactories];
+const workerFactories = [...authWorkerFactories, ...workflowWorkerFactories, ...userWorkerFactories];
 
 let workers = [];
 

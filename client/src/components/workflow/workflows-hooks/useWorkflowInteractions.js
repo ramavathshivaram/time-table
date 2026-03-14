@@ -1,10 +1,13 @@
-import { useEdgesState, useNodesState, useReactFlow } from "@xyflow/react";
-import { useCallback, useEffect } from "react";
-import useDebounceSave from "./useDebounceSave.js";
+import {
+  applyNodeChanges,
+  applyEdgeChanges,
+  useReactFlow,
+} from "@xyflow/react";
+import { useCallback } from "react";
 import nodeTypes from "../nodeTypes.js";
 import useModalStore from "@/store/modal.store.js";
 import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
-import useGraphActions from "./useGraphActions.js";
+import useWorkflowStore from "@/store/workflow.store.js";
 
 const NODE_WIDTH = 150;
 const NODE_HEIGHT = 80;
@@ -12,44 +15,69 @@ const NODE_HEIGHT = 80;
 const useWorkflowInteractions = (
   initialWorkflowData,
   workflowId,
-  reactFlowInstanceRef
+  reactFlowInstanceRef,
 ) => {
   const openModal = useModalStore((s) => s.openModal);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(
-    initialWorkflowData.nodes
+  const nodes = useWorkflowStore((s) => s.nodes);
+  const setNodes = useWorkflowStore((s) => s.setNodes);
+
+  const edges = useWorkflowStore((s) => s.edges);
+  const setEdges = useWorkflowStore((s) => s.setEdges);
+
+  const addNode = useWorkflowStore((s) => s.addNode);
+  const removeNode = useWorkflowStore((s) => s.removeNode);
+  const removeEdge = useWorkflowStore((s) => s.removeEdge);
+  const addEdge = useWorkflowStore((s) => s.addEdge);
+
+  const { screenToFlowPosition } = useReactFlow();
+
+  const onNodesChange = useCallback(
+    (changes) => {
+      console.log(changes);
+
+      for (let change of changes) {
+        switch (change.type) {
+          case "remove":
+            console.log("remove");
+            removeNode(change.id);
+        }
+      }
+
+      setNodes(applyNodeChanges(changes, nodes));
+    },
+    [setNodes, nodes, removeNode],
   );
 
-  const [edges, setEdges, onEdgesChange] = useEdgesState(
-    initialWorkflowData.edges
+  const onEdgesChange = useCallback(
+    (changes) => {
+      console.log(changes);
+
+      for (let change of changes) {
+        switch (change.type) {
+          case "remove":
+            console.log("remove");
+            removeEdge(change.id);
+        }
+      }
+      setEdges(applyEdgeChanges(changes, edges));
+    },
+    [setEdges, edges, removeEdge],
   );
-
-  const { getNodes, screenToFlowPosition } = useReactFlow();
-
-  const { addNode, addEdgeAction } = useGraphActions();
-
-  const debouncedSave = useDebounceSave(workflowId);
-
-  // autosave
-  useEffect(() => {
-    debouncedSave({ nodes, edges });
-  }, [nodes, edges, debouncedSave]);
 
   const onConnect = useCallback(
     (connection) => {
-      addEdgeAction({
+      addEdge({
         id: generateEdgeId(),
         ...connection,
-        type: "smoothstep",
+        type: "bezier",
       });
     },
-    [addEdgeAction]
+    [addEdge],
   );
 
   const isValidConnection = useCallback(
     (connection) => {
-      const nodes = getNodes();
-
       const sourceNode = nodes.find((n) => n.id === connection.source);
       const targetNode = nodes.find((n) => n.id === connection.target);
 
@@ -59,7 +87,7 @@ const useWorkflowInteractions = (
 
       return sourceNode.type === targetType?.parent;
     },
-    [getNodes]
+    [nodes],
   );
 
   const onNodeDoubleClick = useCallback(
@@ -74,7 +102,7 @@ const useWorkflowInteractions = (
 
       openModal(node, screen);
     },
-    [openModal, reactFlowInstanceRef]
+    [openModal, reactFlowInstanceRef],
   );
 
   const onConnectEnd = useCallback(
@@ -82,7 +110,7 @@ const useWorkflowInteractions = (
       if (connectionState?.toNode || connectionState?.toHandle) return;
 
       const nextNodeType = nodeTypes.find(
-        (n) => n?.parent === connectionState?.fromNode?.type
+        (n) => n?.parent === connectionState?.fromNode?.type,
       );
 
       if (!nextNodeType) return;
@@ -101,14 +129,14 @@ const useWorkflowInteractions = (
         data: { label: nextNodeType.type },
       });
 
-      addEdgeAction({
+      addEdge({
         id: generateEdgeId(),
         source: connectionState.fromNode.id,
         target: newNodeId,
-        type: "smoothstep",
+        type: "bezier",
       });
     },
-    [addNode, addEdgeAction, screenToFlowPosition]
+    [addNode, addEdge, screenToFlowPosition],
   );
 
   return {

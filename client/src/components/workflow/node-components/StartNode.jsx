@@ -1,10 +1,10 @@
 import React from "react";
-import { School } from "lucide-react";
+import { Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
 import { cn } from "@/lib/utils.js";
 
-const CollegeNode = ({ data, isConnectable, selected }) => {
+const StartNode = ({ data, isConnectable, selected }) => {
   return (
     <div className="relative group">
       {/* Node */}
@@ -16,8 +16,8 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
       >
         <div className="flex items-center gap-2">
           {/* Icon */}
-          <div className="flex items-center justify-center w-6 h-6 rounded-sm bg-blue-100">
-            <School className="w-5 h-5 text-blue-600" />
+          <div className="flex items-center justify-center w-6 h-6 rounded-sm bg-green-100">
+            <Play className="w-5 h-5 text-green-600" />
           </div>
 
           {/* Label */}
@@ -25,18 +25,10 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
             <span className="text-sm font-semibold leading-none capitalize">
               {data.label || "Untitled"}
             </span>
-            <span className="text-[10px] text-muted-foreground">College</span>
+            <span className="text-[10px] text-muted-foreground">Start</span>
           </div>
         </div>
       </Card>
-
-      {/* Target Handle */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-        className="opacity-0 group-hover:opacity-100 transition-opacity"
-      />
 
       {/* Source Handle */}
       <Handle
@@ -49,4 +41,4 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
   );
 };
 
-export default CollegeNode;
+export default StartNode;

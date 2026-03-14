@@ -7,5 +7,4 @@ export const COOKIE_EXPIRES_IN = 24 * 60 * 60 * 1000; //! 1 day
 
 export const queueConst = {
   SEND_OTP_EMAIL: "SEND_OTP_EMAIL",
-  SEND_REGISTER_EMAIL: "SEND_REGISTER_EMAIL",
 };

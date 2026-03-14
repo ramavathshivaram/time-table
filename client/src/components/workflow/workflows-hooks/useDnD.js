@@ -1,20 +1,23 @@
 import { useCallback } from "react";
 import { generateNodeId } from "@/lib/utils.js";
+import useWorkflowStore from "@/store/workflow.store";
 
-const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
-  // Drag start
+const NODE_WIDTH = 150;
+const NODE_HEIGHT = 80;
+
+const useDnD = ({ reactFlowInstanceRef }) => {
+  const addNode = useWorkflowStore((s) => s.addNode);
+
   const onDragStart = useCallback((e, type) => {
     e.dataTransfer.setData("application/reactflow", type);
     e.dataTransfer.effectAllowed = "move";
   }, []);
 
-  // Drag over
   const onDragOver = useCallback((e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   }, []);
 
-  // Drop
   const onDrop = useCallback(
     (e) => {
       e.preventDefault();
@@ -22,24 +25,20 @@ const useDnD = ({ setNodes, reactFlowInstanceRef }) => {
       const type = e.dataTransfer.getData("application/reactflow");
       if (!type) return;
 
-      const position = reactFlowInstanceRef.current.screenToFlowPosition({
-        x: e.clientX - 70,
-        y: e.clientY - 20,
-      });
+      const position =
+        reactFlowInstanceRef.current.screenToFlowPosition({
+          x: e.clientX - NODE_WIDTH / 2,
+          y: e.clientY - NODE_HEIGHT / 2,
+        });
 
-      const newNode = {
+      addNode({
         id: generateNodeId(),
-        type: type,
+        type,
         position,
-        data: {
-          label: type,
-          type,
-        },
-      };
-
-      setNodes((nds) => [...nds, newNode]);
+        data: { label: type, type },
+      });
     },
-    [setNodes, reactFlowInstanceRef],
+    [addNode, reactFlowInstanceRef]
   );
 
   return { onDragStart, onDragOver, onDrop };

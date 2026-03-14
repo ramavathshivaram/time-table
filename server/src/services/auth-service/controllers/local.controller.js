@@ -13,7 +13,6 @@ import { generateTokens } from "../services/token.service.js";
 import authRepository from "../repositorys/auth.repository.js";
 
 import { setCookie } from "../services/cookie.service.js";
-import { sendRegisterEmailQueue } from "../queues/emailQueue.js";
 
 import {
   createUserGRPC,
@@ -55,16 +54,10 @@ const register = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  //todo create userId, emit event to create user
   const userId = await createUserGRPC({
     userName,
     email,
     authId: auth._id,
-  });
-
-  await sendRegisterEmailQueue.add("registerSuccess", {
-    email,
-    userName,
   });
 
   return await responseWithCookie(auth, userId, res, "Registration successful");
