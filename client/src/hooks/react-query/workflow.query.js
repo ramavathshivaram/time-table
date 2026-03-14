@@ -9,7 +9,8 @@ import {
   getWorkflowsApi,
   getWorkflowDetailsApi,
   createWorkflowApi,
-  getRecentWorkflowsApi
+  getRecentWorkflowsApi,
+  deleteWorkflowApi,
 } from "@/lib/apis/workflow.api.js";
 
 export const useGetWorkflows = () => {
@@ -51,6 +52,56 @@ export const useCreateWorkflow = () => {
       queryClient.invalidateQueries({
         queryKey: ["workflows"],
       });
+    },
+  });
+};
+
+export const useDeleteWorkflow = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ workflowId }) => deleteWorkflowApi(workflowId),
+
+    onMutate: async ({ workflowId }) => {
+      await queryClient.cancelQueries({ queryKey: ["workflows"] });
+      await queryClient.cancelQueries({ queryKey: ["recent-workflows"] });
+
+      const previousWorkflows = queryClient.getQueryData(["workflows"]);
+      const previousRecent = queryClient.getQueryData(["recent-workflows"]);
+
+      // update infinite workflows
+      queryClient.setQueryData(["workflows"], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) =>
+            page.filter((workflow) => workflow._id !== workflowId),
+          ),
+        };
+      });
+
+      // update recent workflows
+      queryClient.setQueryData(["recent-workflows"], (old = []) =>
+        old.filter((workflow) => workflow._id !== workflowId),
+      );
+
+      return { previousWorkflows, previousRecent };
+    },
+
+    onError: (err, variables, context) => {
+      if (context?.previousWorkflows) {
+        queryClient.setQueryData(["workflows"], context.previousWorkflows);
+      }
+
+      if (context?.previousRecent) {
+        queryClient.setQueryData(["recent-workflows"], context.previousRecent);
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["workflows"] });
+      queryClient.invalidateQueries({ queryKey: ["recent-workflows"] });
     },
   });
 };

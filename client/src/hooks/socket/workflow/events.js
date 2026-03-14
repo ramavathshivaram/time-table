@@ -1,4 +1,4 @@
-export const WORKFLOW_EVENTS = {
+const WORKFLOW_EVENTS = {
   NODE_ADD: "node:add",
   NODES_ADD: "nodes:add",
   NODE_UPDATE: "node:update",
@@ -42,3 +42,5 @@ export const WORKFLOW_EVENTS = {
   MESSAGE_SEND: "message:send",
   MESSAGE_RESPONSE: "message:response",
 };
+
+export default WORKFLOW_EVENTS;

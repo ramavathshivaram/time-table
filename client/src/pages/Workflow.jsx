@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 
 const Workflow = () => {
   const init = useWorkflowStore((s) => s.init);
+  const clear = useWorkflowStore((s) => s.clear);
   const { workflowId } = useParams();
 
   const { data: initialWorkflowData, isLoading } =
@@ -23,7 +24,11 @@ const Workflow = () => {
     if (initialWorkflowData) {
       init(initialWorkflowData);
     }
-  }, [initialWorkflowData, init, workflowId]);
+
+    return () => {
+      clear();
+    };
+  }, [initialWorkflowData, init, workflowId, clear]);
 
   if (isLoading) return <div>Loading...</div>;
 

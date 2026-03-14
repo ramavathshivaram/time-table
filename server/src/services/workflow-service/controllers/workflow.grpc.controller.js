@@ -63,3 +63,7 @@ export const removeRoomGRPC = async (workflowId, room) => {
 export const updateRoomGRPC = async (workflowId, roomId, roomData) => {
   await workflowRepository.updateRoom(workflowId, roomId, roomData);
 };
+
+export const sendMessageGRPC = async (workflowId, message) => {
+  await workflowRepository.sendMessage(workflowId, message);
+};

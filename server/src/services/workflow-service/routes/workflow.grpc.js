@@ -15,6 +15,7 @@ import {
   addRoomGRPC,
   updateRoomGRPC,
   removeRoomGRPC,
+  sendMessageGRPC
 } from "../controllers/workflow.grpc.controller.js";
 
 export default {
@@ -37,4 +38,6 @@ export default {
   addRoomGRPC,
   updateRoomGRPC,
   removeRoomGRPC,
+
+  sendMessageGRPC
 };

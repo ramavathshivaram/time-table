@@ -1,23 +1,32 @@
 import { create } from "zustand";
 
 import {
+  updateNodeEmit,
   addNodeEmit,
   removeNodeEmit,
+  addNodesEmit,
+} from "@/hooks/socket/workflow/emitters/nodes.emit.js";
+import {
+  addEdgesEmit,
   addEdgeEmit,
   removeEdgeEmit,
-  addNodesEmit,
-  addEdgesEmit,
-  updateNodeEmit,
+} from "@/hooks/socket/workflow/emitters/edges.emit.js";
+import {
   addFacultyEmit,
   removeFacultyEmit,
   updateFacultyEmit,
+} from "@/hooks/socket/workflow/emitters/faculty.emit.js";
+import {
   addSubjectEmit,
   removeSubjectEmit,
   updateSubjectEmit,
+} from "@/hooks/socket/workflow/emitters/subject.emit.js";
+import {
   addRoomEmit,
   removeRoomEmit,
   updateRoomEmit,
-} from "@/hooks/socket/workflow.socket/useGraphEmitter.js";
+} from "@/hooks/socket/workflow/emitters/room.emit.js";
+import { sendMessageEmit } from "@/hooks/socket/workflow/emitters/message.emit.js";
 
 const useWorkflowStore = create((set, get) => ({
   workflowId: null,
@@ -26,6 +35,7 @@ const useWorkflowStore = create((set, get) => ({
   faculties: [],
   subjects: [],
   rooms: [],
+  messages: [],
 
   init: (initialWorkflowData) =>
     set({
@@ -35,6 +45,17 @@ const useWorkflowStore = create((set, get) => ({
       faculties: initialWorkflowData.faculties,
       subjects: initialWorkflowData.subjects,
       rooms: initialWorkflowData.rooms,
+      messages: initialWorkflowData.messages,
+    }),
+
+  clear: () =>
+    set({
+      nodes: [],
+      edges: [],
+      faculties: [],
+      subjects: [],
+      rooms: [],
+      messages: [],
     }),
 
   //! NODES METHODS
@@ -147,7 +168,7 @@ const useWorkflowStore = create((set, get) => ({
     }));
   },
 
-  updatesubject: (subjectId, subjectData) => {
+  updateSubject: (subjectId, subjectData) => {
     updateSubjectEmit(get().workflowId, subjectId, subjectData);
     set((state) => ({
       subjects: state.subjects.map((s) =>
@@ -175,6 +196,17 @@ const useWorkflowStore = create((set, get) => ({
       rooms: state.rooms.map((r) => (r.id === roomId ? roomData : r)),
     }));
   },
+
+  //! MESSAGES
+  sendMessage: (message) => {
+    sendMessageEmit(get().workflowId, message);
+    set((state) => ({
+      messages: [...state.messages, message],
+    }));
+  },
+
+  responseMessage: (message) =>
+    set((st) => ({ messages: [...st.messages, message] })),
 }));
 
 export default useWorkflowStore;

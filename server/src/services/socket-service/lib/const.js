@@ -1,4 +1,4 @@
-export const workflowSocketConst = {
+export const WORKFLOW_EVENTS = {
   NODE_ADD: "node:add",
   NODES_ADD: "nodes:add",
   NODE_UPDATE: "node:update",
@@ -38,4 +38,7 @@ export const workflowSocketConst = {
   ROOMS_REMOVE: "rooms:remove",
   ROOM_GET: "room:get",
   ROOMS_GET: "rooms:get",
+
+  MESSAGE_SEND: "message:send",
+  MESSAGE_RESPONSE: "message:response",
 };

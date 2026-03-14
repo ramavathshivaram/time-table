@@ -10,6 +10,11 @@ export const createWorkflowApi = async () => {
   return res.data.data;
 };
 
+export const deleteWorkflowApi = async (workflowId) => {
+  const res = await api.delete(`/workflow/${workflowId}`);
+  return res.data.data;
+};
+
 export const getWorkflowDetailsApi = async (workflowId) => {
   const res = await api.get(`/workflow/${workflowId}`);
   return res.data.data;

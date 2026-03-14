@@ -6,100 +6,12 @@ import {
   Conversation,
   Message,
 } from "@/components/ui/conversation";
+import useWorkflowStore from "@/store/workflow.store.js";
 
 const AIChat = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: "Hello! How can I help you today?",
-    },
-  ]);
+  const messages = useWorkflowStore((state) => state.messages);
 
-  const sendMessage = (text) => {
-    const userMsg = {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: text,
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-
-    setTimeout(() => {
-      const aiMsg = {
-        id: crypto.randomUUID(),
-        role: "assistant",
-        content: "This is a dummy AI response fknbfkdf 🤖",
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
-    }, 600);
-  };
+  console.log(messages);
 
   return (
     <div className="flex flex-1 flex-col h-full w-full overflow-y-auto scrollbar">

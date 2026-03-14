@@ -12,6 +12,10 @@ const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
     .lean();
 };
 
+const deleteWorkflow = async (workflowId) => {
+  await workflowModel.findByIdAndDelete(workflowId);
+};
+
 const getRecentWorkflowsByUserId = async (userId) => {
   return workflowModel
     .find({ userId })
@@ -157,9 +161,16 @@ const updateRoom = async (workflowId, roomId, roomData) => {
   );
 };
 
+const sendMessage = async (workflowId, message) => {
+  await workflowModel.findByIdAndUpdate(workflowId, {
+    $push: { messages: message },
+  });
+};
+
 export default {
   getAllUserWorkflowsByUserId,
   createWorkflow,
+  deleteWorkflow,
   getWorkflowById,
   updateWorkflowById,
   getRecentWorkflowsByUserId,
@@ -184,4 +195,6 @@ export default {
   addRoom,
   removeRoom,
   updateRoom,
+
+  sendMessage,
 };

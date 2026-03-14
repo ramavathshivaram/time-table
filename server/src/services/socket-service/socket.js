@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import onlineUsers from "./onlineUsers.js";
 import getUserIdFromCookie from "./middlewares/getUserIdFromCookie.js";
 
-import workflowSocketInit from "./workflow-socket/workflow.socket.js";
+import workflowSocket from "./workflow/workflow.socket.js";
 
 const socketInit = (server) => {
   const io = new Server(server, {
@@ -20,7 +20,7 @@ const socketInit = (server) => {
     console.log("User connected:", socket.userId, socket.id);
 
     //! Init workflow socket
-    workflowSocketInit(io, socket);
+    workflowSocket(io, socket);
 
     socket.on("disconnect", () => {
       onlineUsers.removeUserBySocketId(socket.id);

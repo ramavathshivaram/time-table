@@ -15,6 +15,14 @@ const createWorkflow = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteWorkflow = asyncHandler(async (req, res) => {
+  const workflowId = req.params.workflowId;
+  await workflowRepository.deleteWorkflow(workflowId);
+  return res.status(200).json({
+    success: true,
+  });
+});
+
 const getWorkflowById = asyncHandler(async (req, res) => {
   const workflowId = req.params.workflowId;
   const workflow = await workflowRepository.getWorkflowById(workflowId);
@@ -56,6 +64,7 @@ const getRecentWorkflows = asyncHandler(async (req, res) => {
 export default {
   getAllUserWorkflows,
   createWorkflow,
+  deleteWorkflow,
   getWorkflowById,
   getRecentWorkflows,
 };

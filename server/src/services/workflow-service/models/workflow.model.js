@@ -26,6 +26,8 @@ const workflowSchema = new mongoose.Schema(
     subjects: [{}],
 
     rooms: [{}],
+
+    messages: [{}],
   },
   {
     timestamps: true,

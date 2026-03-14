@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import useWorkflowStore from "@/store/workflow.store.js";
 
-const PromptInput = ({ onSend }) => {
+const PromptInput = () => {
   const [input, setInput] = useState("");
+  const sendMessage = useWorkflowStore((state) => state.sendMessage);
 
   const handleSend = () => {
     const message = input.trim();
     if (!message) return;
 
-    onSend(message);
+    sendMessage({
+      role: "user",
+      content: message,
+    });
     setInput("");
   };
 
