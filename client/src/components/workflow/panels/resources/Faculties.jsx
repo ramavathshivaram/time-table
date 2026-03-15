@@ -31,7 +31,7 @@ const Faculties = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <Button size="icon" onClick={handleAddFaculty}>
+        <Button size="icon" onClick={handleAddFaculty} className="cursor-pointer">
           <Plus size={18} />
         </Button>
       </div>

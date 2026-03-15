@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Bot, X } from "lucide-react";
 import React from "react";
 

@@ -6,7 +6,6 @@ export const addNodeEmit = (workflowId, node) => {
   console.log("add node emit", workflowId, node);
   const io = getIo();
   const socketId = getWorkflowSocket(workflowId);
-  console.log(socketId);
   io.to(socketId).emit(WORKFLOW_EVENTS.NODE_ADD, node);
 };
 

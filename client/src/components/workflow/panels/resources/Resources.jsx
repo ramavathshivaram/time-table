@@ -38,7 +38,7 @@ const Resources = () => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex items-center">
+          <Button variant="outline" className="flex items-center cursor-pointer">
             Resources
           </Button>
         </DropdownMenuTrigger>
@@ -51,7 +51,7 @@ const Resources = () => {
                   <TabsTrigger
                     key={item.label}
                     value={item.label.toLowerCase()}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 cursor-pointer"
                   >
                     {item.icon}
                     {item.label}

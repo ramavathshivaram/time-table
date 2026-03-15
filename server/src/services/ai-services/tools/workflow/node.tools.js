@@ -1,26 +1,44 @@
 import { nodeController } from "#services/workflow-service/routes/workflow.grpc.js";
 import { tool } from "langchain";
 import { z } from "zod";
+import { generateNodeId } from "../../libs/workflow.lib.js";
 
 import { addNodeEmit } from "#services/socket-service/workflow/emitters/node.emit.js";
 
 const addNodeTool = tool(
   async ({ workflowId, node }) => {
-    console.log("add node tool called", workflowId, node);
+    try {
+      console.log("add node tool called", workflowId, node);
 
-    await nodeController.addNodeGRPC(workflowId, node);
+      const newNode = {
+        ...node,
+        id: generateNodeId(),
+      };
 
-    addNodeEmit(workflowId, node);
+      // Save node
+      await nodeController.addNodeGRPC(workflowId, newNode);
 
-    return {
-      success: true,
-      action: "node_added",
-      nodeId: node.id,
-    };
+      // Emit realtime update
+      addNodeEmit(workflowId, newNode);
+
+      return {
+        success: true,
+        action: "node_added",
+        node: newNode,
+      };
+    } catch (error) {
+      console.error("add node tool error:", error);
+
+      return {
+        success: false,
+        action: "node_add_failed",
+        error: error.message,
+      };
+    }
   },
   {
     name: "add_node",
-    description: "Add a node to the workflow",
+    description: "Add a node to the workflow graph",
     schema: z.object({
       workflowId: z
         .string()
@@ -30,58 +48,60 @@ const addNodeTool = tool(
 
       node: z
         .object({
-          id: z
-            .string()
-            .describe("Unique identifier of the node inside the workflow"),
-
           type: z
             .enum(["section", "year", "branch", "college"])
             .describe(
               "Type of node representing hierarchy levels in the timetable system",
             ),
 
-          data: z
-            .object({
-              label: z
-                .string()
-                .describe(
-                  "Display name of the node shown in the workflow graph",
-                ),
-            })
-            .describe("Metadata associated with the node"),
+          data: z.object({
+            label: z
+              .string()
+              .describe("Display name of the node shown in the workflow graph"),
+          }),
 
-          position: z
-            .object({
-              x: z
-                .number()
-                .describe(
-                  "Horizontal position of the node in the workflow canvas",
-                ),
+          position: z.object({
+            x: z
+              .number()
+              .describe("Horizontal position of the node in the canvas"),
 
-              y: z
-                .number()
-                .describe(
-                  "Vertical position of the node in the workflow canvas",
-                ),
-            })
-            .describe("Position coordinates of the node in the graph layout"),
+            y: z
+              .number()
+              .describe("Vertical position of the node in the canvas"),
+          }),
         })
-        .describe("Node object containing id, type, data and position"),
+        .describe("Node object containing type, data, and position"),
     }),
   },
 );
 
 const addNodesTool = tool(
   async ({ workflowId, nodes }) => {
-    console.log("add nodes tool called", workflowId, nodes);
+    try {
+      console.log("add nodes tool called", workflowId, nodes);
 
-    await nodeController.addNodesGRPC(workflowId, nodes);
+      const newNodes = nodes.map((node) => ({
+        ...node,
+        id: generateNodeId(),
+      }));
 
-    return {
-      success: true,
-      action: "nodes_added",
-      count: nodes.length,
-    };
+      await nodeController.addNodesGRPC(workflowId, newNodes);
+
+      return {
+        success: true,
+        action: "nodes_added",
+        count: newNodes.length,
+        nodes: newNodes,
+      };
+    } catch (error) {
+      console.error("add nodes tool error:", error);
+
+      return {
+        success: false,
+        action: "nodes_add_failed",
+        error: error.message,
+      };
+    }
   },
   {
     name: "add_nodes",
@@ -96,29 +116,23 @@ const addNodesTool = tool(
       nodes: z
         .array(
           z.object({
-            id: z.string().describe("Unique identifier of the node"),
-
             type: z
               .enum(["section", "year", "branch", "college"])
               .describe("Type of the node in the workflow hierarchy"),
 
-            data: z
-              .object({
-                label: z.string().describe("Display name of the node"),
-              })
-              .describe("Node metadata"),
+            data: z.object({
+              label: z.string().describe("Display name of the node"),
+            }),
 
-            position: z
-              .object({
-                x: z
-                  .number()
-                  .describe("Horizontal position of the node in the graph"),
+            position: z.object({
+              x: z
+                .number()
+                .describe("Horizontal position of the node in the graph"),
 
-                y: z
-                  .number()
-                  .describe("Vertical position of the node in the graph"),
-              })
-              .describe("Node position coordinates in the workflow canvas"),
+              y: z
+                .number()
+                .describe("Vertical position of the node in the graph"),
+            }),
           }),
         )
         .describe("Array of nodes to add to the workflow"),

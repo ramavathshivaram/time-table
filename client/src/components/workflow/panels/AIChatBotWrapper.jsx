@@ -13,7 +13,7 @@ const AIChatBotWrapper = () => {
       ) : (
         <div
           onClick={() => setIsChatbotOpen((prev) => !prev)}
-          className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg p-0"
+          className="cursor-pointer w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg p-0"
         >
           <Bot size={30} className="text-primary-foreground" />
         </div>

@@ -11,14 +11,17 @@ export const chat = async (workflowId, message) => {
       ],
     });
 
-    console.log(aiMessage)
+    const lastMessage = response.messages?.at(-1);
 
-    const aiMessage = response.messages[response.messages.length - 1];
+    if (!lastMessage) {
+      return "No response generated.";
+    }
 
-    return aiMessage.content;
+    return lastMessage.content;
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error("Chat error:", error);
+
+    return "An error occurred while processing the request.";
   }
 };
 

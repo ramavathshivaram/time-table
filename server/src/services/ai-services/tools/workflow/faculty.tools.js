@@ -1,0 +1,132 @@
+import { facultyController } from "#services/workflow-service/routes/workflow.grpc.js";
+import { tool } from "langchain";
+import { z } from "zod";
+import { generateFacultyId } from "../../libs/workflow.lib.js";
+
+const addFacultyTool = tool(
+  async ({ workflowId, faculty }) => {
+    try {
+      const newFaculty = {
+        ...faculty,
+        id: generateFacultyId(),
+      };
+
+      await facultyController.addFacultyGRPC(workflowId, newFaculty);
+
+      return {
+        success: true,
+        action: "faculty_added",
+        faculty: newFaculty,
+      };
+    } catch (error) {
+      console.error("add faculty tool error:", error);
+
+      return {
+        success: false,
+        action: "faculty_add_failed",
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "add_faculty",
+    description: "Add a faculty member to the workflow",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier where the faculty will be added"),
+
+      faculty: z.object({
+        name: z.string().describe("Full name of the faculty member"),
+
+        subjects: z
+          .array(z.string())
+          .describe("Array of subject IDs that the faculty can teach"),
+      }),
+    }),
+  },
+);
+
+const removeFacultyTool = tool(
+  async ({ workflowId, facultyId }) => {
+    try {
+      await facultyController.removeFacultyGRPC(workflowId, facultyId);
+
+      return {
+        success: true,
+        action: "faculty_removed",
+        facultyId,
+      };
+    } catch (error) {
+      console.error("remove faculty tool error:", error);
+
+      return {
+        success: false,
+        action: "faculty_remove_failed",
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "remove_faculty",
+    description: "Remove a faculty member from the workflow",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the faculty"),
+
+      facultyId: z
+        .string()
+        .describe("Unique identifier of the faculty to remove"),
+    }),
+  },
+);
+
+const updateFacultyTool = tool(
+  async ({ workflowId, facultyId, facultyData }) => {
+    try {
+      await facultyController.updateFacultyGRPC(
+        workflowId,
+        facultyId,
+        facultyData,
+      );
+
+      return {
+        success: true,
+        action: "faculty_updated",
+        facultyId,
+        updates: facultyData,
+      };
+    } catch (error) {
+      console.error("update faculty tool error:", error);
+
+      return {
+        success: false,
+        action: "faculty_update_failed",
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "update_faculty",
+    description: "Update faculty details in the workflow",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the faculty"),
+
+      facultyId: z.string().describe("Unique identifier of the faculty"),
+
+      facultyData: z.object({
+        name: z.string().optional().describe("Updated faculty name"),
+
+        subjects: z
+          .array(z.string())
+          .optional()
+          .describe("Updated list of subject IDs taught by the faculty"),
+      }),
+    }),
+  },
+);
+
+export default [addFacultyTool, removeFacultyTool, updateFacultyTool];

@@ -33,14 +33,14 @@ const PromptInput = () => {
         onKeyDown={handleKeyDown}
         placeholder="Ask something..."
         rows={1}
-        className="max-h-32 min-h-10 resize-none border-0 bg-transparent text-sm focus-visible:ring-0"
+        className="max-h-32 min-h-10 resize-none border-0 bg-transparent text-sm focus-visible:ring-0 overflow-y-auto scrollbar"
       />
 
       <Button
         size="icon"
         onClick={handleSend}
         disabled={!input.trim()}
-        className="shrink-0"
+        className="shrink-0 cursor-pointer "
       >
         <Send className="size-4" />
       </Button>

@@ -33,7 +33,7 @@ const Subjects = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <Button size="icon" onClick={handleAddSubject}>
+        <Button size="icon" onClick={handleAddSubject} className="cursor-pointer">
           <Plus size={18} />
         </Button>
       </div>
