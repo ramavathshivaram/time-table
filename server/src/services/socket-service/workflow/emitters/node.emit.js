@@ -9,4 +9,21 @@ export const addNodeEmit = (workflowId, node) => {
   io.to(socketId).emit(WORKFLOW_EVENTS.NODE_ADD, node);
 };
 
-export const removeNodeEmit = () => {};
+export const addNodesEmit = (workflowId, nodes) => {
+  console.log("add nodes emit", workflowId, nodes);
+  const io = getIo();
+  const socketId = getWorkflowSocket(workflowId);
+  io.to(socketId).emit(WORKFLOW_EVENTS.NODES_ADD, nodes);
+};
+export const removeNodeEmit = (workflowId, nodeId) => {
+  console.log("remove node emit", workflowId, nodeId);
+  const io = getIo();
+  const socketId = getWorkflowSocket(workflowId);
+  io.to(socketId).emit(WORKFLOW_EVENTS.NODE_REMOVE, nodeId);
+};
+export const updateNodeEmit = (workflowId, nodeId, nodeData) => {
+  console.log("update node emit", workflowId, nodeId, nodeData);
+  const io = getIo();
+  const socketId = getWorkflowSocket(workflowId);
+  io.to(socketId).emit(WORKFLOW_EVENTS.NODE_UPDATE, nodeId, nodeData);
+};

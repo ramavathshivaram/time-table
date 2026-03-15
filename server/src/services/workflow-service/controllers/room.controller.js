@@ -1,5 +1,13 @@
 import roomRepository from "../repositorys/room.repository.js";
 
+const getRoomsGRPC = async (workflowId) => {
+  return await roomRepository.getRooms(workflowId);
+};
+
+const getRoomGRPC = async (workflowId, roomId) => {
+  return await roomRepository.getRoom(workflowId, roomId);
+};
+
 const addRoomGRPC = async (workflowId, room) => {
   await roomRepository.addRoom(workflowId, room);
 };
@@ -12,4 +20,10 @@ const updateRoomGRPC = async (workflowId, roomId, roomData) => {
   await roomRepository.updateRoom(workflowId, roomId, roomData);
 };
 
-export default { addRoomGRPC, removeRoomGRPC, updateRoomGRPC };
+export default {
+  getRoomsGRPC,
+  getRoomGRPC,
+  addRoomGRPC,
+  removeRoomGRPC,
+  updateRoomGRPC,
+};

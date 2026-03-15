@@ -40,6 +40,10 @@ const useWorkflowStore = create((set) => ({
     set((state) => ({
       nodes: [...state.nodes, node],
     })),
+  addNodesLocal: (nodes) =>
+    set((state) => ({
+      nodes: [...state.nodes, ...nodes],
+    })),
 
   removeNodeLocal: (nodeId) =>
     set((state) => ({
@@ -49,7 +53,7 @@ const useWorkflowStore = create((set) => ({
   updateNodeLocal: (nodeId, nodeData) =>
     set((state) => ({
       nodes: state.nodes.map((n) =>
-        n.id === nodeId ? { ...n, data: nodeData } : n
+        n.id === nodeId ? { ...n, data: nodeData } : n,
       ),
     })),
 
@@ -82,6 +86,13 @@ const useWorkflowStore = create((set) => ({
       faculties: state.faculties.filter((f) => f.id !== facultyId),
     })),
 
+  updateFacultyLocal: (facultyId, facultyData) =>
+    set((state) => ({
+      faculties: state.faculties.map((f) =>
+        f.id === facultyId ? facultyData : f,
+      ),
+    })),
+
   //! SUBJECTS
   setSubjects: (subjects) => set({ subjects }),
 
@@ -90,12 +101,34 @@ const useWorkflowStore = create((set) => ({
       subjects: [...state.subjects, subject],
     })),
 
+  removeSubjectLocal: (subjectId) =>
+    set((state) => ({
+      subjects: state.subjects.filter((s) => s.id !== subjectId),
+    })),
+
+  updateSubjectLocal: (subjectId, subjectData) =>
+    set((state) => ({
+      subjects: state.subjects.map((s) =>
+        s.id === subjectId ? subjectData : s,
+      ),
+    })),
+
   //! ROOMS
   setRooms: (rooms) => set({ rooms }),
 
   addRoomLocal: (room) =>
     set((state) => ({
       rooms: [...state.rooms, room],
+    })),
+
+  removeRoomLocal: (roomId) =>
+    set((state) => ({
+      rooms: state.rooms.filter((r) => r.id !== roomId),
+    })),
+
+  updateRoomLocal: (roomId, roomData) =>
+    set((state) => ({
+      rooms: state.rooms.map((r) => (r.id === roomId ? roomData : r)),
     })),
 
   //! MESSAGES

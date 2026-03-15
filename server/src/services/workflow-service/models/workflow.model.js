@@ -11,27 +11,168 @@ const workflowSchema = new mongoose.Schema(
 
     title: {
       type: String,
+      required: true,
+      trim: true,
     },
 
-    description: {
-      type: String,
+    nodes: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
+
+          type: {
+            type: String,
+            enum: ["start", "college", "branch", "year", "section"],
+            required: true,
+          },
+
+          position: {
+            x: { type: Number, required: true },
+            y: { type: Number, required: true },
+          },
+
+          data: {
+            label: { type: String, required: true },
+            type: { type: String, required: true },
+          },
+        },
+      ],
+      default: [],
     },
 
-    nodes: [{}],
+    edges: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
 
-    edges: [{}],
+          source: {
+            type: String,
+            required: true,
+          },
 
-    faculties: [{}],
+          target: {
+            type: String,
+            required: true,
+          },
 
-    subjects: [{}],
+          sourceHandle: String,
+          targetHandle: String,
 
-    rooms: [{}],
+          type: {
+            type: String,
+            default: "bezier",
+          },
+        },
+      ],
+      default: [],
+    },
 
-    messages: [{}],
+    faculties: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
+
+          name: {
+            type: String,
+            required: true,
+          },
+
+          subjects: {
+            type: [String],
+            default: [],
+          },
+        },
+      ],
+      default: [],
+    },
+
+    subjects: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
+
+          name: {
+            type: String,
+            required: true,
+          },
+
+          duration: {
+            type: Number,
+            required: true,
+          },
+
+          isLab: {
+            type: Boolean,
+            default: false,
+          },
+        },
+      ],
+      default: [],
+    },
+
+    rooms: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
+
+          name: {
+            type: String,
+            required: true,
+          },
+
+          roomNumber: {
+            type: String,
+            required: true,
+          },
+
+          isLab: {
+            type: Boolean,
+            default: false,
+          },
+        },
+      ],
+      default: [],
+    },
+
+    messages: {
+      type: [
+        {
+          role: {
+            type: String,
+            enum: ["user", "assistant"],
+          },
+
+          content: {
+            type: String,
+          },
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,
   },
 );
+
+workflowSchema.index({ "nodes.id": 1 });
+workflowSchema.index({ "subjects.id": 1 });
+workflowSchema.index({ "faculties.id": 1 });
+workflowSchema.index({ "rooms.id": 1 });
 
 export default mongoose.model("Workflow", workflowSchema);

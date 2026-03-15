@@ -1,5 +1,31 @@
 import workflowModel from "../models/workflow.model.js";
 
+const getFaculties = async (workflowId) => {
+  const workflow = await workflowModel
+    .findById(workflowId)
+    .select("faculties")
+    .lean();
+
+  if (!workflow) {
+    throw new Error("Workflow not found");
+  }
+
+  return workflow.faculties;
+};
+
+const getFaculty = async (workflowId, facultyId) => {
+  const workflow = await workflowModel
+    .findById(workflowId)
+    .select("faculties")
+    .lean();
+
+  if (!workflow) {
+    throw new Error("Workflow not found");
+  }
+
+  return workflow.faculties.find((faculty) => faculty.id === facultyId);
+};
+
 const addFaculty = async (workflowId, faculty) => {
   await workflowModel.findByIdAndUpdate(workflowId, {
     $push: { faculties: faculty },
@@ -26,5 +52,10 @@ const updateFaculty = async (workflowId, facultyId, facultyData) => {
   );
 };
 
-
-export default { addFaculty, removeFaculty, updateFaculty };
+export default {
+  getFaculties,
+  getFaculty,
+  addFaculty,
+  removeFaculty,
+  updateFaculty,
+};

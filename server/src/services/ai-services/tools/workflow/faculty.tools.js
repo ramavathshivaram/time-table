@@ -3,6 +3,79 @@ import { tool } from "langchain";
 import { z } from "zod";
 import { generateFacultyId } from "../../libs/workflow.lib.js";
 
+import {
+  addFacultyEmit,
+  removeFacultyEmit,
+  updateFacultyEmit,
+} from "#services/socket-service/workflow/emitters/faculty.emit.js";
+
+const getFacultyTool = tool(
+  async ({ workflowId, facultyId }) => {
+    try {
+      console.log("get faculties tool called", workflowId);
+
+      const faculties = await facultyController.getFacultyGRPC(
+        workflowId,
+        facultyId,
+      );
+
+      return {
+        success: true,
+        faculties,
+      };
+    } catch (error) {
+      console.error("get faculties tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_faculties",
+    description: "Get all faculties from the workflow",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the faculties"),
+
+      facultyId: z.string().describe("Unique identifier of the faculty to get"),
+    }),
+  },
+);
+
+const getFacultiesTool = tool(
+  async ({ workflowId }) => {
+    try {
+      console.log("get faculties tool called", workflowId);
+
+      const faculties = await facultyController.getFacultiesGRPC(workflowId);
+
+      return {
+        success: true,
+        faculties,
+      };
+    } catch (error) {
+      console.error("get faculties tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_faculties",
+    description: "Get all faculties from the workflow",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the faculties"),
+    }),
+  },
+);
+
 const addFacultyTool = tool(
   async ({ workflowId, faculty }) => {
     try {
@@ -12,6 +85,8 @@ const addFacultyTool = tool(
       };
 
       await facultyController.addFacultyGRPC(workflowId, newFaculty);
+
+      addFacultyEmit(workflowId, newFaculty);
 
       return {
         success: true,
@@ -52,6 +127,8 @@ const removeFacultyTool = tool(
     try {
       await facultyController.removeFacultyGRPC(workflowId, facultyId);
 
+      removeFacultyEmit(workflowId, facultyId);
+
       return {
         success: true,
         action: "faculty_removed",
@@ -91,6 +168,8 @@ const updateFacultyTool = tool(
         facultyData,
       );
 
+      updateFacultyEmit(workflowId, facultyId, facultyData);
+
       return {
         success: true,
         action: "faculty_updated",
@@ -129,4 +208,10 @@ const updateFacultyTool = tool(
   },
 );
 
-export default [addFacultyTool, removeFacultyTool, updateFacultyTool];
+export default [
+  getFacultiesTool,
+  getFacultyTool,
+  addFacultyTool,
+  removeFacultyTool,
+  updateFacultyTool,
+];

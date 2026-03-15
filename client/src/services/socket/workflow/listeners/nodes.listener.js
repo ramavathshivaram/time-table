@@ -11,6 +11,24 @@ const nodesListenerInit = () => {
 
     useWorkflowStore.getState().addNodeLocal(node);
   });
+
+  socket.on(WORKFLOW_EVENTS.NODE_REMOVE, (nodeId) => {
+    console.log(WORKFLOW_EVENTS.NODE_REMOVE, nodeId);
+
+    useWorkflowStore.getState().removeNodeLocal(nodeId);
+  });
+
+  socket.on(WORKFLOW_EVENTS.NODE_UPDATE, (nodeId, nodeData) => {
+    console.log(WORKFLOW_EVENTS.NODE_UPDATE, nodeId, nodeData);
+
+    useWorkflowStore.getState().updateNodeLocal(nodeId, nodeData);
+  });
+
+  socket.on(WORKFLOW_EVENTS.NODES_ADD, (nodes) => {
+    console.log(WORKFLOW_EVENTS.NODES_ADD, nodes);
+
+    useWorkflowStore.getState().addNodesLocal(nodes);
+  });
 };
 
 export default nodesListenerInit;

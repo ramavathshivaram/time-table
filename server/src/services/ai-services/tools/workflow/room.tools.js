@@ -3,6 +3,72 @@ import { tool } from "langchain";
 import { z } from "zod";
 import { generateRoomId } from "../../libs/workflow.lib.js";
 
+import {
+  addRoomEmit,
+  removeRoomEmit,
+  updateRoomEmit,
+} from "#services/socket-service/workflow/emitters/room.emit.js";
+
+const getRoomTool = tool(
+  async ({ workflowId, roomId }) => {
+    try {
+      const room = await roomController.getRoomGRPC(workflowId, roomId);
+
+      return {
+        success: true,
+        room,
+      };
+    } catch (error) {
+      console.error("get room tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_room",
+    description: "Get a room from the workflow timetable system",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the room"),
+
+      roomId: z.string().describe("Room identifier"),
+    }),
+  },
+);
+
+const getRoomsTool = tool(
+  async ({ workflowId }) => {
+    try {
+      const rooms = await roomController.getRoomsGRPC(workflowId);
+
+      return {
+        success: true,
+        rooms,
+      };
+    } catch (error) {
+      console.error("get rooms tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_rooms",
+    description: "Get all rooms from the workflow timetable system",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the rooms"),
+    }),
+  },
+);
+
 const addRoomTool = tool(
   async ({ workflowId, room }) => {
     try {
@@ -12,6 +78,8 @@ const addRoomTool = tool(
       };
 
       await roomController.addRoomGRPC(workflowId, newRoom);
+
+      addRoomEmit(workflowId, newRoom);
 
       return {
         success: true,
@@ -52,6 +120,8 @@ const removeRoomTool = tool(
     try {
       await roomController.removeRoomGRPC(workflowId, roomId);
 
+      removeRoomEmit(workflowId, roomId);
+
       return {
         success: true,
         action: "room_removed",
@@ -84,6 +154,8 @@ const updateRoomTool = tool(
   async ({ workflowId, roomId, roomData }) => {
     try {
       await roomController.updateRoomGRPC(workflowId, roomId, roomData);
+
+      updateRoomEmit(workflowId, roomId, roomData);
 
       return {
         success: true,
@@ -122,4 +194,4 @@ const updateRoomTool = tool(
   },
 );
 
-export default [addRoomTool, removeRoomTool, updateRoomTool];
+export default [ getRoomTool, getRoomsTool, addRoomTool, removeRoomTool, updateRoomTool];

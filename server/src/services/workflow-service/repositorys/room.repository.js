@@ -1,5 +1,31 @@
 import workflowModel from "../models/workflow.model.js";
 
+const getRooms = async (workflowId) => {
+  const workflow = await workflowModel
+    .findById(workflowId)
+    .select("rooms")
+    .lean();
+
+  if (!workflow) {
+    throw new Error("Workflow not found");
+  }
+
+  return workflow.rooms;
+};
+
+const getRoom = async (workflowId, roomId) => {
+  const workflow = await workflowModel
+    .findById(workflowId)
+    .select("rooms")
+    .lean();
+
+  if (!workflow) {
+    throw new Error("Workflow not found");
+  }
+
+  return workflow.rooms.find((room) => room.id === roomId);
+};
+
 const addRoom = async (workflowId, room) => {
   await workflowModel.findByIdAndUpdate(workflowId, {
     $push: { rooms: room },
@@ -26,5 +52,10 @@ const updateRoom = async (workflowId, roomId, roomData) => {
   );
 };
 
-
-export default { addRoom, removeRoom, updateRoom };
+export default {
+  getRooms,
+  getRoom,
+  addRoom,
+  removeRoom,
+  updateRoom,
+};

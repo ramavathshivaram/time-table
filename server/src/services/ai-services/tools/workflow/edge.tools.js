@@ -3,6 +3,75 @@ import { tool } from "langchain";
 import { z } from "zod";
 import { generateEdgeId } from "../../libs/workflow.lib.js";
 
+import {
+  addEdgeEmit,
+  removeEdgeEmit,
+} from "#services/socket-service/workflow/emitters/edge.emit.js";
+
+const getEdgeTool = tool(
+  async ({ workflowId, edgeId }) => {
+    try {
+      console.log("get edge tool called", workflowId, edgeId);
+
+      const edge = await edgeController.getEdgeGRPC(workflowId, edgeId);
+
+      return {
+        success: true,
+        edge,
+      };
+    } catch (error) {
+      console.error("get edge tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_edge",
+    description: "Get an edge from the workflow graph",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the edge"),
+
+      edgeId: z.string().describe("Unique identifier of the edge to retrieve"),
+    }),
+  },
+);
+
+const getEdgesTool = tool(
+  async ({ workflowId }) => {
+    try {
+      console.log("get edges tool called", workflowId);
+
+      const edges = await edgeController.getEdgesGRPC(workflowId);
+
+      return {
+        success: true,
+        edges,
+      };
+    } catch (error) {
+      console.error("get edges tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_edges",
+    description: "Get all edges from the workflow graph",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the edges"),
+    }),
+  },
+);
+
 const addEdgeTool = tool(
   async ({ workflowId, edge }) => {
     try {
@@ -14,6 +83,8 @@ const addEdgeTool = tool(
       };
 
       await edgeController.addEdgeGRPC(workflowId, newEdge);
+
+      addEdgeEmit(workflowId, newEdge);
 
       return {
         success: true,
@@ -59,6 +130,8 @@ const removeEdgeTool = tool(
 
       await edgeController.removeEdgeGRPC(workflowId, edgeId);
 
+      removeEdgeEmit(workflowId, edgeId);
+
       return {
         success: true,
         action: "edge_removed",
@@ -87,4 +160,4 @@ const removeEdgeTool = tool(
   },
 );
 
-export default [addEdgeTool, removeEdgeTool];
+export default [getEdgeTool, getEdgesTool, addEdgeTool, removeEdgeTool];

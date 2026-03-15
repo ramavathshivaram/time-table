@@ -3,7 +3,12 @@ import { tool } from "langchain";
 import { z } from "zod";
 import { generateNodeId } from "../../libs/workflow.lib.js";
 
-import { addNodeEmit } from "#services/socket-service/workflow/emitters/node.emit.js";
+import {
+  addNodeEmit,
+  removeNodeEmit,
+  updateNodeEmit,
+  addNodesEmit,
+} from "#services/socket-service/workflow/emitters/node.emit.js";
 
 const addNodeTool = tool(
   async ({ workflowId, node }) => {
@@ -87,6 +92,8 @@ const addNodesTool = tool(
 
       await nodeController.addNodesGRPC(workflowId, newNodes);
 
+      addNodesEmit(workflowId, newNodes);
+
       return {
         success: true,
         action: "nodes_added",
@@ -146,6 +153,8 @@ const removeNodeTool = tool(
 
     await nodeController.removeNodeGRPC(workflowId, nodeId);
 
+    removeNodeEmit(workflowId, nodeId);
+
     return {
       success: true,
       action: "node_removed",
@@ -172,6 +181,8 @@ const updateNodeTool = tool(
     console.log("update node tool called", workflowId, nodeId);
 
     await nodeController.updateNodeGRPC(workflowId, nodeId, nodeData);
+
+    updateNodeEmit(workflowId, nodeId, nodeData);
 
     return {
       success: true,

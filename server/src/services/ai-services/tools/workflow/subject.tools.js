@@ -3,6 +3,81 @@ import { tool } from "langchain";
 import { z } from "zod";
 import { generateSubjectId } from "../../libs/workflow.lib.js";
 
+import {
+  addSubjectEmit,
+  removeSubjectEmit,
+  updateSubjectEmit,
+} from "#services/socket-service/workflow/emitters/subject.emit.js";
+
+const getSubjectTool = tool(
+  async ({ workflowId, subjectId }) => {
+    try {
+      console.log("get subject tool called", workflowId, subjectId);
+
+      const subject = await subjectController.getSubjectGRPC(
+        workflowId,
+        subjectId,
+      );
+
+      return {
+        success: true,
+        subject,
+      };
+    } catch (error) {
+      console.error("get subject tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_subject",
+    description: "Get a subject from the workflow timetable system",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the subject"),
+
+      subjectId: z
+        .string()
+        .describe("Identifier of the subject to be retrieved"),
+    }),
+  },
+);
+
+const getSubjectsTool = tool(
+  async ({ workflowId }) => {
+    try {
+      console.log("get subjects tool called", workflowId);
+
+      const subjects = await subjectController.getSubjectsGRPC(workflowId);
+
+      return {
+        success: true,
+        subjects,
+      };
+    } catch (error) {
+      console.error("get subjects tool error:", error);
+
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  },
+  {
+    name: "get_subjects",
+    description: "Get all subjects from the workflow timetable system",
+    schema: z.object({
+      workflowId: z
+        .string()
+        .describe("Workflow identifier containing the subjects"),
+    }),
+  },
+);
+
 const addSubjectTool = tool(
   async ({ workflowId, subject }) => {
     try {
@@ -12,6 +87,8 @@ const addSubjectTool = tool(
       };
 
       await subjectController.addSubjectGRPC(workflowId, newSubject);
+
+      addSubjectEmit(workflowId, newSubject);
 
       return {
         success: true,
@@ -52,6 +129,8 @@ const removeSubjectTool = tool(
     try {
       await subjectController.removeSubjectGRPC(workflowId, subjectId);
 
+      removeSubjectEmit(workflowId, subjectId);
+
       return {
         success: true,
         action: "subject_removed",
@@ -88,6 +167,8 @@ const updateSubjectTool = tool(
         subjectId,
         subjectData,
       );
+
+      updateSubjectEmit(workflowId, subjectId, subjectData);
 
       return {
         success: true,
@@ -129,4 +210,10 @@ const updateSubjectTool = tool(
   },
 );
 
-export default [addSubjectTool, removeSubjectTool, updateSubjectTool];
+export default [
+  getSubjectTool,
+  getSubjectsTool,
+  addSubjectTool,
+  removeSubjectTool,
+  updateSubjectTool,
+];

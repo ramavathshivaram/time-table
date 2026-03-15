@@ -102,13 +102,7 @@ const SubjectModal = ({ closeModal }) => {
 
         {/* Is Lab */}
         <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            {...register("isLab", {
-              required: "Is lab is required",
-            })}
-            className="h-4 w-4"
-          />
+          <input type="checkbox" {...register("isLab")} className="h-4 w-4" />
           <label className="text-sm font-medium">Is Lab</label>
         </div>
 
