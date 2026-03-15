@@ -1,6 +1,6 @@
 import { generateSubjectId } from "@/lib/utils.js";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
-import useWorkflowStore from "@/store/workflow.store.js";
+import subjectService from "@/services/workflow/subject.service.js";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -10,10 +10,6 @@ import { Delete } from "lucide-react";
 const SubjectModal = ({ closeModal }) => {
   const isNew = useResourcesModalStore((s) => s.isNew);
   const current = useResourcesModalStore((s) => s.current);
-
-  const addSubject = useWorkflowStore((s) => s.addSubject);
-  const updateSubject = useWorkflowStore((s) => s.updateSubject);
-  const removeSubject = useWorkflowStore((s) => s.removeSubject);
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -31,9 +27,9 @@ const SubjectModal = ({ closeModal }) => {
     };
 
     if (isNew) {
-      addSubject(payload);
+      subjectService.addSubject(payload);
     } else {
-      updateSubject(current.id, payload);
+      subjectService.updateSubject(current.id, payload);
     }
 
     reset();
@@ -41,7 +37,7 @@ const SubjectModal = ({ closeModal }) => {
   };
 
   const handleDelete = () => {
-    removeSubject(current.id);
+    subjectService.removeSubject(current.id);
     closeModal();
   };
 
@@ -81,11 +77,7 @@ const SubjectModal = ({ closeModal }) => {
 
         {/* Is Lab */}
         <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            {...register("isLab")}
-            className="h-4 w-4"
-          />
+          <input type="checkbox" {...register("isLab")} className="h-4 w-4" />
           <label className="text-sm font-medium">Is Lab</label>
         </div>
 

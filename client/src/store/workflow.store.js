@@ -1,34 +1,6 @@
 import { create } from "zustand";
 
-import {
-  updateNodeEmit,
-  addNodeEmit,
-  removeNodeEmit,
-  addNodesEmit,
-} from "@/hooks/socket/workflow/emitters/nodes.emit.js";
-import {
-  addEdgesEmit,
-  addEdgeEmit,
-  removeEdgeEmit,
-} from "@/hooks/socket/workflow/emitters/edges.emit.js";
-import {
-  addFacultyEmit,
-  removeFacultyEmit,
-  updateFacultyEmit,
-} from "@/hooks/socket/workflow/emitters/faculty.emit.js";
-import {
-  addSubjectEmit,
-  removeSubjectEmit,
-  updateSubjectEmit,
-} from "@/hooks/socket/workflow/emitters/subject.emit.js";
-import {
-  addRoomEmit,
-  removeRoomEmit,
-  updateRoomEmit,
-} from "@/hooks/socket/workflow/emitters/room.emit.js";
-import { sendMessageEmit } from "@/hooks/socket/workflow/emitters/message.emit.js";
-
-const useWorkflowStore = create((set, get) => ({
+const useWorkflowStore = create((set) => ({
   workflowId: null,
   nodes: [],
   edges: [],
@@ -37,15 +9,15 @@ const useWorkflowStore = create((set, get) => ({
   rooms: [],
   messages: [],
 
-  init: (initialWorkflowData) =>
+  init: (data) =>
     set({
-      workflowId: initialWorkflowData._id,
-      nodes: initialWorkflowData.nodes,
-      edges: initialWorkflowData.edges,
-      faculties: initialWorkflowData.faculties,
-      subjects: initialWorkflowData.subjects,
-      rooms: initialWorkflowData.rooms,
-      messages: initialWorkflowData.messages,
+      workflowId: data._id,
+      nodes: data.nodes,
+      edges: data.edges,
+      faculties: data.faculties,
+      subjects: data.subjects,
+      rooms: data.rooms,
+      messages: data.messages,
     }),
 
   clear: () =>
@@ -58,158 +30,79 @@ const useWorkflowStore = create((set, get) => ({
       messages: [],
     }),
 
-  //! NODES METHODS
+  //! NODES STATE
   setNodes: (nodes) =>
     set((state) => ({
       nodes: typeof nodes === "function" ? nodes(state.nodes) : nodes,
     })),
 
-  addNode: (node) => {
-    const { workflowId, nodes } = get();
+  addNodeLocal: (node) =>
+    set((state) => ({
+      nodes: [...state.nodes, node],
+    })),
 
-    addNodeEmit(workflowId, node);
+  removeNodeLocal: (nodeId) =>
+    set((state) => ({
+      nodes: state.nodes.filter((n) => n.id !== nodeId),
+    })),
 
-    set({
-      nodes: [...nodes, node],
-    });
-  },
-
-  responseNodeAdd: (node) =>
-    set((state) => ({ nodes: [...state.nodes, node] })),
-
-  addNodes: (nodes) => {
-    const { workflowId } = get();
-
-    addNodesEmit(workflowId, nodes);
-
-    set({
-      nodes: [...get().nodes, ...nodes],
-    });
-  },
-
-  removeNode: (nodeId) => {
-    removeNodeEmit(get().workflowId, nodeId);
-
-    set((state) => ({ nodes: state.nodes.filter((n) => n.id !== nodeId) }));
-  },
-
-  updateNode: (nodeId, nodeData) => {
-    updateNodeEmit(get().workflowId, nodeId, nodeData);
+  updateNodeLocal: (nodeId, nodeData) =>
     set((state) => ({
       nodes: state.nodes.map((n) =>
-        n.id === nodeId ? { ...n, data: nodeData } : n,
+        n.id === nodeId ? { ...n, data: nodeData } : n
       ),
-    }));
-  },
+    })),
 
-  //! EDGES METHODS
+  //! EDGES STATE
   setEdges: (edges) =>
     set((state) => ({
       edges: typeof edges === "function" ? edges(state.edges) : edges,
     })),
 
-  addEdge: (edge) => {
-    addEdgeEmit(get().workflowId, edge);
-
+  addEdgeLocal: (edge) =>
     set((state) => ({
       edges: [...state.edges, edge],
-    }));
-  },
+    })),
 
-  addEdges: (edges) => {
-    addEdgesEmit(get().workflowId, edges);
+  removeEdgeLocal: (edgeId) =>
     set((state) => ({
-      edges: [...state.edges, ...edges],
-    }));
-  },
-
-  removeEdge: (edgeId) => {
-    removeEdgeEmit(get().workflowId, edgeId);
-    set((state) => ({ edges: state.edges.filter((e) => e.id !== edgeId) }));
-  },
+      edges: state.edges.filter((e) => e.id !== edgeId),
+    })),
 
   //! FACULTIES
   setFaculties: (faculties) => set({ faculties }),
 
-  addFaculty: (faculty) => {
-    addFacultyEmit(get().workflowId, faculty);
+  addFacultyLocal: (faculty) =>
     set((state) => ({
       faculties: [...state.faculties, faculty],
-    }));
-  },
+    })),
 
-  removeFaculty: (facultyId) => {
-    removeFacultyEmit(get().workflowId, facultyId);
+  removeFacultyLocal: (facultyId) =>
     set((state) => ({
       faculties: state.faculties.filter((f) => f.id !== facultyId),
-    }));
-  },
-
-  updateFaculty: (facultyId, facultyData) => {
-    updateFacultyEmit(get().workflowId, facultyId, facultyData);
-    set((state) => ({
-      faculties: state.faculties.map((f) =>
-        f.id === facultyId ? facultyData : f,
-      ),
-    }));
-  },
+    })),
 
   //! SUBJECTS
   setSubjects: (subjects) => set({ subjects }),
 
-  addSubject: (subject) => {
-    addSubjectEmit(get().workflowId, subject);
+  addSubjectLocal: (subject) =>
     set((state) => ({
       subjects: [...state.subjects, subject],
-    }));
-  },
-
-  removeSubject: (subjectId) => {
-    removeSubjectEmit(get().workflowId, subjectId);
-    set((state) => ({
-      subjects: state.subjects.filter((s) => s.id !== subjectId),
-    }));
-  },
-
-  updateSubject: (subjectId, subjectData) => {
-    updateSubjectEmit(get().workflowId, subjectId, subjectData);
-    set((state) => ({
-      subjects: state.subjects.map((s) =>
-        s.id === subjectId ? subjectData : s,
-      ),
-    }));
-  },
+    })),
 
   //! ROOMS
   setRooms: (rooms) => set({ rooms }),
 
-  addRoom: (room) => {
-    addRoomEmit(get().workflowId, room);
-    set((state) => ({ rooms: [...state.rooms, room] }));
-  },
-
-  removeRoom: (roomId) => {
-    removeRoomEmit(get().workflowId, roomId);
-    set((state) => ({ rooms: state.rooms.filter((r) => r.id !== roomId) }));
-  },
-
-  updateRoom: (roomId, roomData) => {
-    updateRoomEmit(get().workflowId, roomId, roomData);
+  addRoomLocal: (room) =>
     set((state) => ({
-      rooms: state.rooms.map((r) => (r.id === roomId ? roomData : r)),
-    }));
-  },
+      rooms: [...state.rooms, room],
+    })),
 
   //! MESSAGES
-  sendMessage: (message) => {
-    sendMessageEmit(get().workflowId, message);
+  addMessageLocal: (message) =>
     set((state) => ({
       messages: [...state.messages, message],
-    }));
-  },
-
-  responseMessage: (message) =>
-    set((st) => ({ messages: [...st.messages, message] })),
+    })),
 }));
 
 export default useWorkflowStore;

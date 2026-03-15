@@ -1,10 +1,9 @@
 import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
-import useWorkflowStore from "@/store/workflow.store";
+import nodeService from "@/services/workflow/node.service.js";
+import edgeService from "@/services/workflow/edge.service.js";
 import { useCallback } from "react";
 
 const useDuplicateSelected = ({ getNodes, getEdges }) => {
-  const addNodes = useWorkflowStore((s) => s.addNodes);
-  const addEdges = useWorkflowStore((s) => s.addEdges);
   return useCallback(() => {
     const nodes = getNodes();
     const edges = getEdges();
@@ -41,9 +40,9 @@ const useDuplicateSelected = ({ getNodes, getEdges }) => {
         selected: false,
       }));
 
-    addNodes(duplicatedNodes);
-    addEdges(duplicatedEdges);
-  }, [getNodes, getEdges, addNodes, addEdges]);
+    nodeService.addNodes(duplicatedNodes);
+    edgeService.addEdges(duplicatedEdges);
+  }, [getNodes, getEdges]);
 };
 
 export default useDuplicateSelected;

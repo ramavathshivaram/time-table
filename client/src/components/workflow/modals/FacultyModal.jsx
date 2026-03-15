@@ -1,19 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
-import useWorkflowStore from "@/store/workflow.store.js";
 import React, { useState } from "react";
 import { Delete, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { generateFacultyId } from "@/lib/utils";
+import facultyService from "@/services/workflow/faculty.service.js";
 
 const FacultyModal = ({ closeModal }) => {
   const isNew = useResourcesModalStore((s) => s.isNew);
   const current = useResourcesModalStore((s) => s.current);
-
-  const addFaculty = useWorkflowStore((s) => s.addFaculty);
-  const updateFaculty = useWorkflowStore((s) => s.updateFaculty);
-  const removeFaculty = useWorkflowStore((s) => s.removeFaculty);
 
   const [subjectInput, setSubjectInput] = useState("");
   const [subjects, setSubjects] = useState(current?.subjects || []);
@@ -51,9 +47,9 @@ const FacultyModal = ({ closeModal }) => {
     };
 
     if (isNew) {
-      addFaculty(payload);
+      facultyService.addFaculty(payload);
     } else {
-      updateFaculty(current.id, payload);
+      facultyService.updateFaculty(current.id, payload);
     }
 
     reset();
@@ -62,7 +58,7 @@ const FacultyModal = ({ closeModal }) => {
 
   // Delete faculty
   const handleDelete = () => {
-    removeFaculty(current.id);
+    facultyService.removeFaculty(current.id);
     closeModal();
   };
 

@@ -8,20 +8,17 @@ import nodeTypes from "../nodeTypes.js";
 import useModalStore from "@/store/modal.store.js";
 import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 import useWorkflowStore from "@/store/workflow.store.js";
+import nodeService from "@/services/workflow/node.service.js";
+import edgeService from "@/services/workflow/edge.service.js";
 
 const NODE_WIDTH = 150;
 const NODE_HEIGHT = 80;
 
-const useWorkflowInteractions = (
-  reactFlowInstanceRef,
-) => {
+const useWorkflowInteractions = (reactFlowInstanceRef) => {
   const openModal = useModalStore((s) => s.openModal);
 
   const nodes = useWorkflowStore((s) => s.nodes);
-  const addNode = useWorkflowStore((s) => s.addNode);
   const setNodes = useWorkflowStore((s) => s.setNodes);
-  const removeNode = useWorkflowStore((s) => s.removeNode);
-  
 
   const edges = useWorkflowStore((s) => s.edges);
   const addEdge = useWorkflowStore((s) => s.addEdge);
@@ -38,13 +35,13 @@ const useWorkflowInteractions = (
         switch (change.type) {
           case "remove":
             console.log("remove");
-            removeNode(change.id);
+            nodeService.removeNode(change.id);
         }
       }
 
       setNodes(applyNodeChanges(changes, nodes));
     },
-    [setNodes, nodes, removeNode],
+    [setNodes, nodes],
   );
 
   const onEdgesChange = useCallback(
@@ -55,24 +52,21 @@ const useWorkflowInteractions = (
         switch (change.type) {
           case "remove":
             console.log("remove");
-            removeEdge(change.id);
+            edgeService.removeEdge(change.id);
         }
       }
       setEdges(applyEdgeChanges(changes, edges));
     },
-    [setEdges, edges, removeEdge],
+    [setEdges, edges],
   );
 
-  const onConnect = useCallback(
-    (connection) => {
-      addEdge({
-        id: generateEdgeId(),
-        ...connection,
-        type: "bezier",
-      });
-    },
-    [addEdge],
-  );
+  const onConnect = useCallback((connection) => {
+    edgeService.addEdge({
+      id: generateEdgeId(),
+      ...connection,
+      type: "bezier",
+    });
+  }, []);
 
   const isValidConnection = useCallback(
     (connection) => {
@@ -120,21 +114,21 @@ const useWorkflowInteractions = (
 
       const newNodeId = generateNodeId();
 
-      addNode({
+      nodeService.addNode({
         id: newNodeId,
         type: nextNodeType.type,
         position,
         data: { label: nextNodeType.type },
       });
 
-      addEdge({
+      edgeService.addEdge({
         id: generateEdgeId(),
         source: connectionState.fromNode.id,
         target: newNodeId,
         type: "bezier",
       });
     },
-    [addNode, addEdge, screenToFlowPosition],
+    [screenToFlowPosition],
   );
 
   return {
