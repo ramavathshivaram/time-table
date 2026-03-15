@@ -7,7 +7,7 @@ import Messages from "./Messages";
 
 const AIChatBot = ({ setIsChatbotOpen }) => {
   return (
-    <Card className="min-h-[70vh] max-h-[70vh] w-100 shadow-xl rounded-xl flex flex-col overflow-hidden p-0.5">
+    <Card className="min-h-[90vh] max-h-[90vh] w-100 shadow-xl rounded-xl flex flex-col overflow-hidden p-0.5">
       <Title setIsChatbotOpen={setIsChatbotOpen} />
       <Messages />
       <PromptInput />

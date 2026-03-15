@@ -4,7 +4,7 @@ import http from "http";
 import connectDB from "./shared/configs/mongoDB.js";
 import app from "./services/app.js";
 
-import socketInit from "./services/socket-service/socket.js";
+import { socketInit } from "./services/socket-service/socket.js";
 import mongoose from "mongoose";
 import redis from "#configs/redis.js";
 

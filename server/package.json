@@ -14,7 +14,8 @@
     "#configs/*": "./src/shared/configs/*",
     "#shared/*": "./src/shared/*",
     "#lib/*": "./src/shared/lib/*",
-    "#middlewares/*": "./src/shared/middlewares/*"
+    "#middlewares/*": "./src/shared/middlewares/*",
+    "#services/*": "./src/services/*"
   },
   "keywords": [],
   "author": "Ramavath Shiva ram",

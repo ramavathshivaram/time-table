@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import workflowRepository from "../repositorys/workflow.repository.js";
+import { setCookie } from "#shared/lib/cookie.js";
 
 const createWorkflow = asyncHandler(async (req, res) => {
   const createdWorkflow = await workflowRepository.createWorkflow({
@@ -26,6 +27,9 @@ const deleteWorkflow = asyncHandler(async (req, res) => {
 const getWorkflowById = asyncHandler(async (req, res) => {
   const workflowId = req.params.workflowId;
   const workflow = await workflowRepository.getWorkflowById(workflowId);
+
+  setCookie(res, "workflowId", workflowId);
+
   return res.status(200).json({
     success: true,
     data: workflow,

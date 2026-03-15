@@ -1,4 +1,6 @@
 import {
+  getNodeGRPC,
+  getNodesGRPC,
   addNodeGRPC,
   addNodesGRPC,
   removeNodeGRPC,
@@ -15,10 +17,12 @@ import {
   addRoomGRPC,
   updateRoomGRPC,
   removeRoomGRPC,
-  sendMessageGRPC
+  sendMessageGRPC,
 } from "../controllers/workflow.grpc.controller.js";
 
 export default {
+  getNodeGRPC,
+  getNodesGRPC,
   addNodeGRPC,
   addNodesGRPC,
   removeNodeGRPC,
@@ -39,5 +43,5 @@ export default {
   updateRoomGRPC,
   removeRoomGRPC,
 
-  sendMessageGRPC
+  sendMessageGRPC,
 };

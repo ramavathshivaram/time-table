@@ -1,5 +1,12 @@
 import workflowRepository from "../repositorys/workflow.repository.js";
 
+export const getNodeGRPC = async (workflowId, nodeId) => {
+  return await workflowRepository.getNode(workflowId, nodeId);
+}
+
+export const getNodesGRPC = async (workflowId) => {
+  return await workflowRepository.getNodes(workflowId);
+}
 export const addNodeGRPC = async (workflowId, node) => {
   await workflowRepository.addNode(workflowId, node);
 };

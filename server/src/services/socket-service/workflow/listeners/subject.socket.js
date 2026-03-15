@@ -1,5 +1,5 @@
-import workflowGRPC from "../../workflow-service/routes/workflow.grpc.js";
-import { WORKFLOW_EVENTS } from "../lib/const.js";
+import workflowGRPC from "#services/workflow-service/routes/workflow.grpc.js";
+import { WORKFLOW_EVENTS } from "../../lib/const.js";
 
 const subjectSocket = (io, socket) => {
   socket.on(WORKFLOW_EVENTS.SUBJECT_ADD, (workflowId, subject) => {

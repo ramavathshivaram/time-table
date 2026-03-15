@@ -1,6 +1,7 @@
 import WorkflowEditor from "@/components/workflow/WorkflowEditor";
 import { useGetWorkflowDetails } from "@/hooks/react-query/workflow.query.js";
 import { getSocket } from "@/hooks/socket/socket.js";
+import initSocketListeners from "@/hooks/socket/workflow/listeners/initListeners.js";
 import useWorkflowStore from "@/store/workflow.store";
 import { ReactFlowProvider } from "@xyflow/react";
 import React, { useEffect } from "react";
@@ -29,6 +30,10 @@ const Workflow = () => {
       clear();
     };
   }, [initialWorkflowData, init, workflowId, clear]);
+
+  useEffect(() => {
+    initSocketListeners();
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
 

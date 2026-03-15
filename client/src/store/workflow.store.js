@@ -74,6 +74,9 @@ const useWorkflowStore = create((set, get) => ({
     });
   },
 
+  responseNodeAdd: (node) =>
+    set((state) => ({ nodes: [...state.nodes, node] })),
+
   addNodes: (nodes) => {
     const { workflowId } = get();
 

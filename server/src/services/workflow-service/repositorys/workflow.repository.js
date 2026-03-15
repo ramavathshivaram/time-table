@@ -37,6 +37,29 @@ const updateWorkflowById = async (workflowId, data) => {
   await workflowModel.findByIdAndUpdate(workflowId, data);
 };
 
+const getNode = async (workflowId, nodeId) => {
+  const result = await workflowModel.findOne(
+    {
+      _id: workflowId,
+      "nodes.id": nodeId,
+    },
+    { "nodes.$": 1 },
+  );
+
+  return result?.nodes?.[0] || null;
+};
+
+const getNodes = async (workflowId) => {
+  const result = await workflowModel.findOne(
+    {
+      _id: workflowId,
+    },
+    { nodes: 1 },
+  );
+
+  return result?.nodes || null;
+};
+
 const addNode = async (workflowId, node) => {
   await workflowModel.findByIdAndUpdate(workflowId, { $push: { nodes: node } });
 };
@@ -175,6 +198,8 @@ export default {
   updateWorkflowById,
   getRecentWorkflowsByUserId,
 
+  getNode,
+  getNodes,
   addNode,
   addNodes,
   removeNode,
