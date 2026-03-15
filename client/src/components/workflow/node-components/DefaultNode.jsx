@@ -21,8 +21,7 @@ const DefaultNode = ({ data, isConnectable, type, selected }) => {
           {/* Icon */}
           <div
             className={cn(
-              "flex items-center justify-center w-6 h-6 rounded-sm",
-              node.bg,
+              "flex items-center justify-center w-6 h-6 p-0.5 rounded-sm border",
             )}
           >
             {Icon && <Icon className={cn("w-5 h-5", node.color)} />}
@@ -30,7 +29,6 @@ const DefaultNode = ({ data, isConnectable, type, selected }) => {
 
           {/* Label */}
           <div className="flex flex-col">
-
             <span className="text-sm font-semibold leading-none capitalize">
               {data.label || "Untitled"}
             </span>

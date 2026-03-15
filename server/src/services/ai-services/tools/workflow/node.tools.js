@@ -1,4 +1,4 @@
-import workflowGrpc from "../../../workflow-service/routes/workflow.grpc.js";
+import { nodeController } from "#services/workflow-service/routes/workflow.grpc.js";
 import { tool } from "langchain";
 import { z } from "zod";
 
@@ -8,7 +8,7 @@ const addNodeTool = tool(
   async ({ workflowId, node }) => {
     console.log("add node tool called", workflowId, node);
 
-    await workflowGrpc.addNodeGRPC(workflowId, node);
+    await nodeController.addNodeGRPC(workflowId, node);
 
     addNodeEmit(workflowId, node);
 
@@ -75,7 +75,7 @@ const addNodesTool = tool(
   async ({ workflowId, nodes }) => {
     console.log("add nodes tool called", workflowId, nodes);
 
-    await workflowGrpc.addNodesGRPC(workflowId, nodes);
+    await nodeController.addNodesGRPC(workflowId, nodes);
 
     return {
       success: true,
@@ -130,7 +130,7 @@ const removeNodeTool = tool(
   async ({ workflowId, nodeId }) => {
     console.log("remove node tool called", workflowId, nodeId);
 
-    await workflowGrpc.removeNodeGRPC(workflowId, nodeId);
+    await nodeController.removeNodeGRPC(workflowId, nodeId);
 
     return {
       success: true,
@@ -157,7 +157,7 @@ const updateNodeTool = tool(
   async ({ workflowId, nodeId, nodeData }) => {
     console.log("update node tool called", workflowId, nodeId);
 
-    await workflowGrpc.updateNodeGRPC(workflowId, nodeId, nodeData);
+    await nodeController.updateNodeGRPC(workflowId, nodeId, nodeData);
 
     return {
       success: true,

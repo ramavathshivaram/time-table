@@ -24,9 +24,9 @@ const NodeLibrary = ({ onDragStart }) => {
                     <div
                       draggable
                       onDragStart={(e) => onDragStart(e, node.type)}
-                      className="flex items-center gap-2 cursor-grab p-1 rounded-lg border border-gray-200/60 shadow-sm transition-all hover:bg-muted"
+                      className="flex items-center gap-2 cursor-grab p-1 rounded-lg border shadow-sm transition-all hover:bg-muted"
                     >
-                      <div className={`p-0.5 rounded-md ${node.bg}`}>
+                      <div className={`p-0.5 rounded-md`}>
                         <Icon className={`size-7 ${node.color}`} />
                       </div>
                     </div>

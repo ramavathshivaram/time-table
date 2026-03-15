@@ -10,7 +10,6 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-
 export const addEdgeEmit = (workflowId, edge) => {
   logEmit(WORKFLOW_EVENTS.EDGE_ADD, edge);
   socket.emit(WORKFLOW_EVENTS.EDGE_ADD, workflowId, edge);

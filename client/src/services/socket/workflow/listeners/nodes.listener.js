@@ -4,13 +4,13 @@ import { getSocket } from "../../socket.js";
 import useWorkflowStore from "@/store/workflow.store.js";
 
 const nodesListenerInit = () => {
-   const socket = getSocket();
+  const socket = getSocket();
 
-   socket.on(WORKFLOW_EVENTS.NODE_ADD, (node) => {
-      console.log(WORKFLOW_EVENTS.NODE_ADD, node);
+  socket.on(WORKFLOW_EVENTS.NODE_ADD, (node) => {
+    console.log(WORKFLOW_EVENTS.NODE_ADD, node);
 
-      useWorkflowStore.getState().responseNodeAdd(node);
-   });
+    useWorkflowStore.getState().addNodeLocal(node);
+  });
 };
 
 export default nodesListenerInit;

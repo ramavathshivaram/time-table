@@ -11,6 +11,8 @@ export const chat = async (workflowId, message) => {
       ],
     });
 
+    console.log(aiMessage)
+
     const aiMessage = response.messages[response.messages.length - 1];
 
     return aiMessage.content;

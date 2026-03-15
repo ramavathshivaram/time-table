@@ -16,7 +16,7 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
       >
         <div className="flex items-center gap-2">
           {/* Icon */}
-          <div className="flex items-center justify-center w-6 h-6 rounded-sm bg-blue-100">
+          <div className="flex items-center justify-center w-6 h-6 p-0.5 rounded-sm border">
             <School className="w-5 h-5 text-blue-600" />
           </div>
 

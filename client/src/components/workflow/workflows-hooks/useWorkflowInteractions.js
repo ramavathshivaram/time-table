@@ -21,9 +21,7 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
   const setNodes = useWorkflowStore((s) => s.setNodes);
 
   const edges = useWorkflowStore((s) => s.edges);
-  const addEdge = useWorkflowStore((s) => s.addEdge);
   const setEdges = useWorkflowStore((s) => s.setEdges);
-  const removeEdge = useWorkflowStore((s) => s.removeEdge);
 
   const { screenToFlowPosition } = useReactFlow();
 
@@ -84,6 +82,7 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
 
   const onNodeDoubleClick = useCallback(
     (_, node) => {
+      if (node.type === "start") return;
       const rf = reactFlowInstanceRef.current;
       if (!rf) return;
 

@@ -8,7 +8,7 @@ const messageListenerInit = () => {
   socket.on(WORKFLOW_EVENTS.MESSAGE_RESPONSE, (response) => {
     console.log(WORKFLOW_EVENTS.MESSAGE_RESPONSE, response);
 
-    useWorkflowStore.getState().responseMessage(response);
+    useWorkflowStore.getState().addMessageLocal(response);
   });
 };
 

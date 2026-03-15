@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import useWorkflowStore from "@/store/workflow.store.js";
+import messageService from "@/services/workflow/message.service.js";
 
 const PromptInput = () => {
   const [input, setInput] = useState("");
-  const sendMessage = useWorkflowStore((state) => state.sendMessage);
 
   const handleSend = () => {
     const message = input.trim();
     if (!message) return;
 
-    sendMessage({
+    messageService.sendMessage({
       role: "user",
       content: message,
     });
@@ -20,7 +19,6 @@ const PromptInput = () => {
   };
 
   const handleKeyDown = (e) => {
-    // Enter to send
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -28,7 +26,7 @@ const PromptInput = () => {
   };
 
   return (
-    <div className="flex items-end gap-2 rounded-b-lg border bg-muted/30 p-2">
+    <div className="flex items-end gap-2 rounded-b-lg border p-2">
       <Textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}

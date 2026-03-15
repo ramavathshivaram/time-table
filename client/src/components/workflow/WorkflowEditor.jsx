@@ -1,7 +1,7 @@
 import "@xyflow/react/dist/style.css";
 import useUserStore from "@/store/user.store.js";
 import React, { useRef, useMemo } from "react";
-import { ReactFlow, Background } from "@xyflow/react";
+import { ReactFlow, Background, BezierEdge } from "@xyflow/react";
 
 import ReactflowPanels from "./panels/ReactflowPanels";
 import useDnD from "./workflows-hooks/useDnD.js";
@@ -50,6 +50,13 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     [],
   );
 
+  const edgeTypes = useMemo(
+    () => ({
+      bezier: BezierEdge,
+    }),
+    [],
+  );
+
   return (
     <div className="w-screen h-screen">
       <ReactFlow
@@ -59,6 +66,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         onDragOver={onDragOver}
         onDrop={onDrop}
         colorMode={darkMode ? "dark" : "light"}
