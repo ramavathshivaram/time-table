@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
-import React, { useState } from "react";
+import { Plus, FlaskConical, BookOpen } from "lucide-react";
+import React, { useMemo, useState } from "react";
 
 import useResourcesModalStore from "@/store/recources.modal.store";
 import useWorkflowStore from "@/store/workflow.store.js";
+import { cn } from "@/lib/utils";
 
 const Subjects = () => {
   const [search, setSearch] = useState("");
@@ -12,43 +13,71 @@ const Subjects = () => {
   const subjects = useWorkflowStore((state) => state.subjects);
   const openModal = useResourcesModalStore((state) => state.openModal);
 
-  console.log(subjects)
-
-
-  const filteredSubjects = subjects.filter((subject) =>
-    subject.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredSubjects = useMemo(() => {
+    return subjects.filter((subject) =>
+      subject.name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [subjects, search]);
 
   const handleAddSubject = () => {
     openModal("subject", null, true);
   };
 
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex flex-col gap-3 h-full">
       {/* Search */}
       <div className="flex items-center gap-2">
         <Input
-          placeholder="Enter subject name"
+          placeholder="Search subject..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button className="p-0" onClick={handleAddSubject}>
-          <Plus />
+
+        <Button size="icon" onClick={handleAddSubject}>
+          <Plus size={18} />
         </Button>
       </div>
 
       {/* Subject List */}
-      <ul className="space-y-1 overflow-y-auto scrollbar">
+      <div className="flex flex-col gap-1 overflow-y-auto scrollbar">
         {filteredSubjects.map((subject) => (
-          <li
+          <div
             key={subject.id}
-            onClick={() => openModal("faculty", subject)}
-            className="border p-1 hover:bg-white/20 rounded-sm cursor-pointer"
+            onClick={() => openModal("subject", subject)}
+            className="border rounded-md px-2 py-1 flex w-full justify-between items-center cursor-pointer hover:bg-muted transition"
           >
-            {subject.name}
-          </li>
+            {/* Subject name */}
+            <div className="flex flex-col justify-between gap-1">
+              <h2 className="text-sm font-medium">{subject.name}</h2>
+              <span className="text-xs text-muted-foreground">
+                {subject.duration} periods
+              </span>
+            </div>
+            <span
+              className={cn(
+                "flex items-center gap-1 text-xs px-1 py-1 rounded bg-green-500/20 text-green-600",
+                subject.isLab && "bg-blue-500/20 text-blue-600",
+              )}
+            >
+              {subject.isLab ? (
+                <>
+                  <FlaskConical size={12} /> Lab
+                </>
+              ) : (
+                <>
+                  <BookOpen size={12} /> Theory
+                </>
+              )}
+            </span>
+          </div>
         ))}
-      </ul>
+
+        {filteredSubjects.length === 0 && (
+          <div className="text-sm text-muted-foreground text-center py-6">
+            No subjects found
+          </div>
+        )}
+      </div>
     </div>
   );
 };

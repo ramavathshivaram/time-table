@@ -4,14 +4,22 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Delete } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { generateRoomId } from "@/lib/utils.js";
+import useWorkflowStore from "@/store/workflow.store.js";
 
 const RoomModal = ({ closeModal }) => {
   const isNew = useResourcesModalStore((s) => s.isNew);
   const current = useResourcesModalStore((s) => s.current);
 
-  const { register, handleSubmit, reset } = useForm({
+  const rooms = useWorkflowStore((s) => s.rooms);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: current?.name || "",
       roomNumber: current?.roomNumber || "",
@@ -42,6 +50,7 @@ const RoomModal = ({ closeModal }) => {
 
   return (
     <div className="space-y-4">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">
           {isNew ? "Add Room" : "Edit Room"}
@@ -49,7 +58,7 @@ const RoomModal = ({ closeModal }) => {
 
         {!isNew && (
           <Button variant="destructive" size="icon" onClick={handleDelete}>
-            <Delete size={16} />
+            <Trash2 size={16} />
           </Button>
         )}
       </div>
@@ -58,18 +67,50 @@ const RoomModal = ({ closeModal }) => {
         {/* Room Name */}
         <div>
           <label className="text-sm font-medium">Room Name</label>
-          <Input placeholder="Enter room name" {...register("name")} />
+          <Input
+            placeholder="Enter room name"
+            {...register("name", {
+              required: "Room name is required",
+              validate: (value) => {
+                const roomName = value.trim().toLowerCase();
+                const duplicate = rooms.some(
+                  (room) => room.name.toLowerCase() === roomName,
+                );
+
+                return !duplicate || "Room already exists";
+              },
+            })}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Room Number */}
         <div>
           <label className="text-sm font-medium">Room Number</label>
-          <Input placeholder="Enter room number" {...register("roomNumber")} />
+          <Input
+            placeholder="Enter room number"
+            {...register("roomNumber", {
+              required: "Room number is required",
+              validate: (value) => {
+                const roomNumber = value.trim().toLowerCase();
+                const duplicate = rooms.some(
+                  (room) => room.roomNumber.toLowerCase() === roomNumber,
+                );
+
+                return !duplicate || "Room number already exists";
+              },
+            })}
+          />
+          {errors.roomNumber && (
+            <p className="text-sm text-red-500">{errors.roomNumber.message}</p>
+          )}
         </div>
 
         {/* Is Lab */}
         <div className="flex items-center gap-2">
-          <Input type="checkbox" {...register("isLab")} className="h-4 w-4" />
+          <input type="checkbox" {...register("isLab")} className="h-4 w-4" />
           <label className="text-sm font-medium">Is Lab</label>
         </div>
 
