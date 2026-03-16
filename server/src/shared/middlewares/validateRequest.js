@@ -1,11 +1,15 @@
 import ApiError from "#utils/ApiError.js";
 
-const validateRequest = (scheme) => {
+const validateRequest = (schema) => {
   return (req, res, next) => {
-    const result = scheme.parse(req.body);
-    if (result.error) {
-      throw new ApiError(400, result.error.details[0].message);
+    const result = schema.safeParse(req.body);
+
+    if (!result.success) {
+      const message = result.error.errors[0].message;
+      return next(new ApiError(400, message));
     }
+
+    req.body = result.data;
     next();
   };
 };

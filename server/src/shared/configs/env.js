@@ -1,10 +1,10 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import { z } from "zod";
 
-dotenv.config();
-
 const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
 
   JWT_ACCESS_SECRET: z.string().min(10),
   JWT_REFRESH_SECRET: z.string().min(10),

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import env from "#configs/env.js";
 import logger from "#configs/logger.js";
 
 mongoose.connection.on("connected", () => {
@@ -25,14 +26,20 @@ const mongoOptions = {
   retryWrites: true,
 };
 
-const connectDB = async () => {
-  try {
-    const MONGODB_URI =
-      process.env.MONGODB_URI || "mongodb://localhost:27017/timeTable";
+const connectDB = async (retries = 5, delay = 5000) => {
+  const MONGODB_URI = env.MONGODB_URI || "mongodb://localhost:27017/timeTable";
 
+  try {
     await mongoose.connect(MONGODB_URI, mongoOptions);
   } catch (error) {
-    logger.error("Failed to connect to MongoDB:", error);
+    if (retries === 0) {
+      logger.error("No retries left. Exiting...");
+      process.exit(1);
+    }
+
+    logger.warn(`Retrying MongoDB connection in ${delay / 1000}s...`);
+
+    setTimeout(() => connectDB(retries - 1, delay), delay);
   }
 };
 
