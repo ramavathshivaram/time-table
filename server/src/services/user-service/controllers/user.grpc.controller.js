@@ -1,10 +1,12 @@
+import logger from "#configs/logger.js";
+import loadHtml from "#shared/lib/loadHtml.js";
 import userRepository from "../repositorys/user.repository.js";
 import { emailQueue } from "#shared/queues/email.queue.js";
 
 const createUser = async (user) => {
-  console.log(user);
+  logger.info(user);
   const newUser = await userRepository.createUser(user);
-  console.log("new user created");
+  logger.info("new user created");
 
   await emailQueue.add("send-register-email", {
     email: user.email,

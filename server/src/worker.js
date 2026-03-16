@@ -1,4 +1,5 @@
 import "dotenv/config";
+import logger from "#configs/logger.js";
 import redis from "#configs/redis.js";
 
 import mongoose from "mongoose";
@@ -22,19 +23,19 @@ const workerEventHandlers = (worker) => {
   const name = worker.name;
 
   worker.on("ready", () => {
-    console.log(`✅ Worker ready: ${name}`);
+    logger.info(`✅ Worker ready: ${name}`);
   });
 
   worker.on("completed", (job) => {
-    console.log(`✅ Job ${job.id} completed in ${name}`);
+    logger.info(`✅ Job ${job.id} completed in ${name}`);
   });
 
   worker.on("failed", (job, err) => {
-    console.error(`❌ Job ${job?.id} failed in ${name}:`, err?.message);
+    logger.error(`❌ Job ${job?.id} failed in ${name}:`, err?.message);
   });
 
   worker.on("error", (err) => {
-    console.error(`🚨 Worker error in ${name}:`, err);
+    logger.error(`🚨 Worker error in ${name}:`, err);
   });
 };
 
@@ -48,15 +49,15 @@ const startWorkers = async () => {
       return worker;
     });
 
-    console.log("🚀 All workers started");
+    logger.info("🚀 All workers started");
   } catch (error) {
-    console.error("Worker startup failed:", error);
+    logger.error("Worker startup failed:", error);
     process.exit(1);
   }
 };
 
 const gracefulShutdown = async () => {
-  console.log("Shutting down workers...");
+  logger.info("Shutting down workers...");
 
   try {
     for (const worker of workers) {
@@ -66,10 +67,10 @@ const gracefulShutdown = async () => {
     await redis.disconnect();
     await mongoose.disconnect();
 
-    console.log("All workers shut down cleanly.");
+    logger.info("All workers shut down cleanly.");
     process.exit(0);
   } catch (error) {
-    console.error("Shutdown error:", error);
+    logger.error("Shutdown error:", error);
     process.exit(1);
   }
 };

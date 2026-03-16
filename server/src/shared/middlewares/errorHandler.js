@@ -1,5 +1,7 @@
+import logger from "#configs/logger.js";
+
 const errorHandler = (err, req, res, next) => {
-  console.log(err.stack);
+  logger.info(err.stack);
 
   const status = err.status || 500;
   const message = err.message || "Something went wrong";

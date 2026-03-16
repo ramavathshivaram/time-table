@@ -1,6 +1,5 @@
 import Redis from "ioredis";
-
-console.log("Redis host:", process.env.REDIS_HOST);
+import logger from "./logger.js";
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
@@ -8,14 +7,18 @@ const redis = new Redis({
   maxRetriesPerRequest: null,
 });
 
-redis.on("error", (err) => console.log("Redis Client Error", err));
+redis.on("error", (err) => logger.info("Redis Client Error", err));
 
-redis.on("connect", () => console.log("Redis Client Connected."));
+redis.on("connect", () => logger.info("Redis Client Connected."));
 
-redis.on("end", () => console.log("Redis Client Disconnected."));
+redis.on("end", () => logger.info("Redis Client Disconnected."));
 
 await redis.set("ping", "pong", "EX", 60 * 60 * 24);
 
-console.log(await redis.get("ping"));
+const pong = await redis.get("ping");
+
+if (pong !== "pong") {
+  logger.error("Redis ping failed");
+}
 
 export default redis;

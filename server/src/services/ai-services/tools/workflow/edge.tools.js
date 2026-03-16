@@ -2,6 +2,7 @@ import { edgeController } from "#services/workflow-service/routes/workflow.grpc.
 import { tool } from "langchain";
 import { z } from "zod";
 import { generateEdgeId } from "../../libs/workflow.lib.js";
+import logger from "#configs/logger.js";
 
 import {
   addEdgeEmit,
@@ -11,7 +12,7 @@ import {
 const getEdgeTool = tool(
   async ({ workflowId, edgeId }) => {
     try {
-      console.log("get edge tool called", workflowId, edgeId);
+      logger.info("get edge tool called", workflowId, edgeId);
 
       const edge = await edgeController.getEdgeGRPC(workflowId, edgeId);
 
@@ -20,7 +21,7 @@ const getEdgeTool = tool(
         edge,
       };
     } catch (error) {
-      console.error("get edge tool error:", error);
+      logger.error("get edge tool error:", error);
 
       return {
         success: false,
@@ -44,7 +45,7 @@ const getEdgeTool = tool(
 const getEdgesTool = tool(
   async ({ workflowId }) => {
     try {
-      console.log("get edges tool called", workflowId);
+      logger.info("get edges tool called", workflowId);
 
       const edges = await edgeController.getEdgesGRPC(workflowId);
 
@@ -53,7 +54,7 @@ const getEdgesTool = tool(
         edges,
       };
     } catch (error) {
-      console.error("get edges tool error:", error);
+      logger.error("get edges tool error:", error);
 
       return {
         success: false,
@@ -75,7 +76,7 @@ const getEdgesTool = tool(
 const addEdgeTool = tool(
   async ({ workflowId, edge }) => {
     try {
-      console.log("add edge tool called", workflowId, edge);
+      logger.info("add edge tool called", workflowId, edge);
 
       const newEdge = {
         ...edge,
@@ -92,7 +93,7 @@ const addEdgeTool = tool(
         edge: newEdge,
       };
     } catch (error) {
-      console.error("add edge tool error:", error);
+      logger.error("add edge tool error:", error);
 
       return {
         success: false,
@@ -126,7 +127,7 @@ const addEdgeTool = tool(
 const removeEdgeTool = tool(
   async ({ workflowId, edgeId }) => {
     try {
-      console.log("remove edge tool called", workflowId, edgeId);
+      logger.info("remove edge tool called", workflowId, edgeId);
 
       await edgeController.removeEdgeGRPC(workflowId, edgeId);
 
@@ -138,7 +139,7 @@ const removeEdgeTool = tool(
         edgeId,
       };
     } catch (error) {
-      console.error("remove edge tool error:", error);
+      logger.error("remove edge tool error:", error);
 
       return {
         success: false,

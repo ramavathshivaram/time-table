@@ -1,9 +1,9 @@
-import dotenv from "dotenv";
-dotenv.config();
+import logger from "#configs/logger.js";
+import ejs from "ejs";
+
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import ejs from "ejs";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
@@ -27,7 +27,11 @@ const app = express();
 app.set("view engine", "ejs");
 
 //! Middlewares
-app.use(morgan("dev"));
+app.use(
+  morgan("dev", {
+    stream: logger.stream,
+  }),
+);
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());

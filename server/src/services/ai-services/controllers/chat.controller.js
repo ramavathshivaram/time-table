@@ -1,6 +1,7 @@
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import chatAgent from "../agents/chatAgent.js";
 import SYSTEM_PROMPT from "../prompts/system.prompt.js";
+import logger from "#configs/logger.js";
 
 export const chat = async (workflowId, message) => {
   try {
@@ -19,7 +20,7 @@ export const chat = async (workflowId, message) => {
 
     return lastMessage.content;
   } catch (error) {
-    console.error("Chat error:", error);
+    logger.error("Chat error:", error);
 
     return "An error occurred while processing the request.";
   }

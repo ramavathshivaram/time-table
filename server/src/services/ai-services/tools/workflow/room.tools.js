@@ -2,6 +2,7 @@ import { roomController } from "#services/workflow-service/routes/workflow.grpc.
 import { tool } from "langchain";
 import { z } from "zod";
 import { generateRoomId } from "../../libs/workflow.lib.js";
+import logger from "#configs/logger.js";
 
 import {
   addRoomEmit,
@@ -19,7 +20,7 @@ const getRoomTool = tool(
         room,
       };
     } catch (error) {
-      console.error("get room tool error:", error);
+      logger.error("get room tool error:", error);
 
       return {
         success: false,
@@ -50,7 +51,7 @@ const getRoomsTool = tool(
         rooms,
       };
     } catch (error) {
-      console.error("get rooms tool error:", error);
+      logger.error("get rooms tool error:", error);
 
       return {
         success: false,
@@ -87,7 +88,7 @@ const addRoomTool = tool(
         room: newRoom,
       };
     } catch (error) {
-      console.error("add room tool error:", error);
+      logger.error("add room tool error:", error);
 
       return {
         success: false,
@@ -128,7 +129,7 @@ const removeRoomTool = tool(
         roomId,
       };
     } catch (error) {
-      console.error("remove room tool error:", error);
+      logger.error("remove room tool error:", error);
 
       return {
         success: false,
@@ -164,7 +165,7 @@ const updateRoomTool = tool(
         updates: roomData,
       };
     } catch (error) {
-      console.error("update room tool error:", error);
+      logger.error("update room tool error:", error);
 
       return {
         success: false,
@@ -194,4 +195,10 @@ const updateRoomTool = tool(
   },
 );
 
-export default [ getRoomTool, getRoomsTool, addRoomTool, removeRoomTool, updateRoomTool];
+export default [
+  getRoomTool,
+  getRoomsTool,
+  addRoomTool,
+  removeRoomTool,
+  updateRoomTool,
+];

@@ -2,6 +2,7 @@ import { subjectController } from "#services/workflow-service/routes/workflow.gr
 import { tool } from "langchain";
 import { z } from "zod";
 import { generateSubjectId } from "../../libs/workflow.lib.js";
+import logger from "#configs/logger.js";
 
 import {
   addSubjectEmit,
@@ -12,7 +13,7 @@ import {
 const getSubjectTool = tool(
   async ({ workflowId, subjectId }) => {
     try {
-      console.log("get subject tool called", workflowId, subjectId);
+      logger.info("get subject tool called", workflowId, subjectId);
 
       const subject = await subjectController.getSubjectGRPC(
         workflowId,
@@ -24,7 +25,7 @@ const getSubjectTool = tool(
         subject,
       };
     } catch (error) {
-      console.error("get subject tool error:", error);
+      logger.error("get subject tool error:", error);
 
       return {
         success: false,
@@ -50,7 +51,7 @@ const getSubjectTool = tool(
 const getSubjectsTool = tool(
   async ({ workflowId }) => {
     try {
-      console.log("get subjects tool called", workflowId);
+      logger.info("get subjects tool called", workflowId);
 
       const subjects = await subjectController.getSubjectsGRPC(workflowId);
 
@@ -59,7 +60,7 @@ const getSubjectsTool = tool(
         subjects,
       };
     } catch (error) {
-      console.error("get subjects tool error:", error);
+      logger.error("get subjects tool error:", error);
 
       return {
         success: false,
@@ -96,7 +97,7 @@ const addSubjectTool = tool(
         subject: newSubject,
       };
     } catch (error) {
-      console.error("add subject tool error:", error);
+      logger.error("add subject tool error:", error);
 
       return {
         success: false,
@@ -137,7 +138,7 @@ const removeSubjectTool = tool(
         subjectId,
       };
     } catch (error) {
-      console.error("remove subject tool error:", error);
+      logger.error("remove subject tool error:", error);
 
       return {
         success: false,
@@ -177,7 +178,7 @@ const updateSubjectTool = tool(
         updates: subjectData,
       };
     } catch (error) {
-      console.error("update subject tool error:", error);
+      logger.error("update subject tool error:", error);
 
       return {
         success: false,

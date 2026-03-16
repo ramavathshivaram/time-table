@@ -1,7 +1,5 @@
 import axios from "axios";
-
-import dotenv from "dotenv";
-dotenv.config();
+import logger from "./logger.js";
 
 const brevoApi = axios.create({
   baseURL: "https://api.brevo.com/v3",
@@ -28,7 +26,7 @@ const sendEmail = async (toEmail, subject, htmlContent) => {
 
     return response.data;
   } catch (error) {
-    console.error(error?.response?.data || error.message);
+    logger.error(error?.response?.data || error.message);
     throw error;
   }
 };

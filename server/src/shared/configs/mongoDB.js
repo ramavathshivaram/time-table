@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
+import logger from "./logger.js";
 
-mongoose.connection.on("connected", ( ) => {
-  console.log("Connected to MongoDB");
+mongoose.connection.on("connected", () => {
+  logger.info("Connected to MongoDB");
 });
 
 mongoose.connection.on("disconnected", () => {
-  console.log("Disconnected from MongoDB");
+  logger.info("Disconnected from MongoDB");
 });
 
 mongoose.connection.on("error", (error) => {
-  console.error("MongoDB connection error:", error);
+  logger.error("MongoDB connection error:", error);
 });
 
 const mongoOptions = {
@@ -24,7 +25,7 @@ const connectDB = async () => {
 
     await mongoose.connect(MONGODB_URI, mongoOptions);
   } catch (error) {
-    console.error("Failed to connect to MongoDB:", error);
+    logger.error("Failed to connect to MongoDB:", error);
   }
 };
 

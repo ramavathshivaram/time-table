@@ -2,6 +2,7 @@ import { nodeController } from "#services/workflow-service/routes/workflow.grpc.
 import { tool } from "langchain";
 import { z } from "zod";
 import { generateNodeId } from "../../libs/workflow.lib.js";
+import logger from "#configs/logger.js";
 
 import {
   addNodeEmit,
@@ -13,7 +14,7 @@ import {
 const addNodeTool = tool(
   async ({ workflowId, node }) => {
     try {
-      console.log("add node tool called", workflowId, node);
+      logger.info("add node tool called", workflowId, node);
 
       const newNode = {
         ...node,
@@ -32,7 +33,7 @@ const addNodeTool = tool(
         node: newNode,
       };
     } catch (error) {
-      console.error("add node tool error:", error);
+      logger.error("add node tool error:", error);
 
       return {
         success: false,
@@ -83,7 +84,7 @@ const addNodeTool = tool(
 const addNodesTool = tool(
   async ({ workflowId, nodes }) => {
     try {
-      console.log("add nodes tool called", workflowId, nodes);
+      logger.info("add nodes tool called", workflowId, nodes);
 
       const newNodes = nodes.map((node) => ({
         ...node,
@@ -101,7 +102,7 @@ const addNodesTool = tool(
         nodes: newNodes,
       };
     } catch (error) {
-      console.error("add nodes tool error:", error);
+      logger.error("add nodes tool error:", error);
 
       return {
         success: false,
@@ -149,7 +150,7 @@ const addNodesTool = tool(
 
 const removeNodeTool = tool(
   async ({ workflowId, nodeId }) => {
-    console.log("remove node tool called", workflowId, nodeId);
+    logger.info("remove node tool called", workflowId, nodeId);
 
     await nodeController.removeNodeGRPC(workflowId, nodeId);
 
@@ -178,7 +179,7 @@ const removeNodeTool = tool(
 
 const updateNodeTool = tool(
   async ({ workflowId, nodeId, nodeData }) => {
-    console.log("update node tool called", workflowId, nodeId);
+    logger.info("update node tool called", workflowId, nodeId);
 
     await nodeController.updateNodeGRPC(workflowId, nodeId, nodeData);
 
@@ -211,7 +212,7 @@ const updateNodeTool = tool(
 
 const getNodeTool = tool(
   async ({ workflowId, nodeId }) => {
-    console.log("get node tool called", workflowId, nodeId);
+    logger.info("get node tool called", workflowId, nodeId);
 
     const node = await workflowGrpc.getNodeGRPC(workflowId, nodeId);
 
@@ -235,7 +236,7 @@ const getNodeTool = tool(
 
 const getNodesTool = tool(
   async ({ workflowId }) => {
-    console.log("get nodes tool called", workflowId);
+    logger.info("get nodes tool called", workflowId);
 
     const nodes = await workflowGrpc.getNodesGRPC(workflowId);
 

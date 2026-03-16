@@ -1,12 +1,13 @@
 import "dotenv/config";
 import http from "http";
+import logger from "#configs/logger.js";
+import mongoose from "mongoose";
 
+import redis from "#configs/redis.js";
 import connectDB from "./shared/configs/mongoDB.js";
 import app from "./services/app.js";
 
 import { socketInit } from "./services/socket-service/socket.js";
-import mongoose from "mongoose";
-import redis from "#configs/redis.js";
 
 const server = http.createServer(app);
 
@@ -19,21 +20,21 @@ const serverInit = async () => {
   await connectDB();
 
   server.listen(port, () => {
-    console.log(`Server started on ${port}`);
+    logger.info(`Server started on ${port}`);
   });
 };
 
 serverInit();
 
 const gracefulShutdown = () => {
-  console.log("shutting down server...");
+  logger.info("shutting down server...");
 
   server.close(async () => {
     await redis.disconnect();
 
     await mongoose.disconnect();
 
-    console.log("server closed");
+    logger.info("server closed");
     process.exit(0);
   });
 };

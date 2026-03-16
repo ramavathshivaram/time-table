@@ -2,6 +2,7 @@ import { facultyController } from "#services/workflow-service/routes/workflow.gr
 import { tool } from "langchain";
 import { z } from "zod";
 import { generateFacultyId } from "../../libs/workflow.lib.js";
+import logger from "#configs/logger.js";
 
 import {
   addFacultyEmit,
@@ -12,7 +13,7 @@ import {
 const getFacultyTool = tool(
   async ({ workflowId, facultyId }) => {
     try {
-      console.log("get faculties tool called", workflowId);
+      logger.info("get faculties tool called", workflowId);
 
       const faculties = await facultyController.getFacultyGRPC(
         workflowId,
@@ -24,7 +25,7 @@ const getFacultyTool = tool(
         faculties,
       };
     } catch (error) {
-      console.error("get faculties tool error:", error);
+      logger.error("get faculties tool error:", error);
 
       return {
         success: false,
@@ -48,7 +49,7 @@ const getFacultyTool = tool(
 const getFacultiesTool = tool(
   async ({ workflowId }) => {
     try {
-      console.log("get faculties tool called", workflowId);
+      logger.info("get faculties tool called", workflowId);
 
       const faculties = await facultyController.getFacultiesGRPC(workflowId);
 
@@ -57,7 +58,7 @@ const getFacultiesTool = tool(
         faculties,
       };
     } catch (error) {
-      console.error("get faculties tool error:", error);
+      logger.error("get faculties tool error:", error);
 
       return {
         success: false,
@@ -94,7 +95,7 @@ const addFacultyTool = tool(
         faculty: newFaculty,
       };
     } catch (error) {
-      console.error("add faculty tool error:", error);
+      logger.error("add faculty tool error:", error);
 
       return {
         success: false,
@@ -135,7 +136,7 @@ const removeFacultyTool = tool(
         facultyId,
       };
     } catch (error) {
-      console.error("remove faculty tool error:", error);
+      logger.error("remove faculty tool error:", error);
 
       return {
         success: false,
@@ -177,7 +178,7 @@ const updateFacultyTool = tool(
         updates: facultyData,
       };
     } catch (error) {
-      console.error("update faculty tool error:", error);
+      logger.error("update faculty tool error:", error);
 
       return {
         success: false,

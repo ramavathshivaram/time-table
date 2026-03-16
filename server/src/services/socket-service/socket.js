@@ -5,6 +5,7 @@ import getUserIdFromCookie from "./middlewares/getUserIdFromCookie.js";
 import workflowSocket from "./workflow/workflow.socket.js";
 import getWorkflowIdFromCookie from "./middlewares/getWorkflowIdCookie.js";
 import { removeWorkflowSocket } from "./workflow/workflow.socket.store.js";
+import logger from "#configs/logger.js";
 
 let io;
 
@@ -22,7 +23,7 @@ export const socketInit = (server) => {
 
   io.on("connection", (socket) => {
     onlineUsers.addUser(socket.userId, socket.id);
-    console.log("User connected:", socket.userId, socket.id);
+    logger.info("User connected:", socket.userId, socket.id);
 
     //! Init workflow socket
     workflowSocket(io, socket);
@@ -30,7 +31,7 @@ export const socketInit = (server) => {
     socket.on("disconnect", () => {
       onlineUsers.removeUserBySocketId(socket.id);
       removeWorkflowSocket(socket.id);
-      console.log("User disconnected:", socket.userId, socket.id);
+      logger.info("User disconnected:", socket.userId, socket.id);
     });
   });
 };
