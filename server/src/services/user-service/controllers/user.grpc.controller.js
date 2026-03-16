@@ -1,5 +1,5 @@
 import logger from "#configs/logger.js";
-import loadHtml from "#shared/lib/loadHtml.js";
+import loadHtml from "#utils/loadHtml.js";
 import userRepository from "../repositorys/user.repository.js";
 import { emailQueue } from "#shared/queues/email.queue.js";
 

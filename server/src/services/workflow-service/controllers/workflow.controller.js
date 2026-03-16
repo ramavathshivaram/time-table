@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import workflowRepository from "../repositorys/workflow.repository.js";
-import { setCookie } from "#shared/lib/cookie.js";
+import { setCookie } from "#utils/cookie.js";
 
 const createWorkflow = asyncHandler(async (req, res) => {
   const createdWorkflow = await workflowRepository.createWorkflow({

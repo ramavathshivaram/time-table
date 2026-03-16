@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "./logger.js";
+import logger from "#configs/logger.js";
 
 mongoose.connection.on("connected", () => {
   logger.info("Connected to MongoDB");
@@ -16,6 +16,13 @@ mongoose.connection.on("error", (error) => {
 const mongoOptions = {
   minPoolSize: 5,
   maxPoolSize: 10,
+
+  maxIdleTimeMS: 30000,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  heartbeatFrequencyMS: 10000,
+
+  retryWrites: true,
 };
 
 const connectDB = async () => {

@@ -1,9 +1,9 @@
-import { queueConst } from "../lib/const.js";
+import { queueConst } from "../utils/const.js";
 import { Worker } from "bullmq";
 
 import redis from "#shared/configs/redis.js";
 
-import sendEmail from "#shared/configs/sendEmail.js";
+import sendEmail from "#utils/sendEmail.js";
 
 const emailJob = async (job) => {
   const { email, subject, html } = job.data;

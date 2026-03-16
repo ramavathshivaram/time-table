@@ -28,7 +28,6 @@ const useAuthStore = create((set) => ({
       set({ user: null, isAuthenticated: false });
 
       console.error(error);
-
       throw error;
     }
   },
@@ -36,15 +35,10 @@ const useAuthStore = create((set) => ({
   googleLogin: async (accessToken) => {
     try {
       const user = await googleLoginApi({ accessToken });
-
-      console.log(user);
-
       set({ user: user, isAuthenticated: true });
     } catch (error) {
       set({ user: null, isAuthenticated: false });
-
       console.error(error);
-
       throw error;
     }
   },
@@ -75,7 +69,7 @@ const useAuthStore = create((set) => ({
     try {
       await logoutApi();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       set({ user: null, isAuthenticated: false });
     }
@@ -86,7 +80,7 @@ const useAuthStore = create((set) => ({
       await authCheckApi();
       set({ isAuthenticated: true });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       set({ user: null, isAuthenticated: false });
     } finally {
       set({ isCheckingAuth: false });

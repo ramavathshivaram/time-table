@@ -1,6 +1,6 @@
 import notificationRepository from "../repositorys/notification.repository.js";
 import asyncHandler from "express-async-handler";
-import ApiError from "#shared/lib/ApiError.js";
+import ApiError from "#utils/ApiError.js";
 
 const getUnreadCount = asyncHandler(async (req, res) => {
   const userId = req.userID;

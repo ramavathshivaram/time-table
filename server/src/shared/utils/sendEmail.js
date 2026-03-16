@@ -1,5 +1,5 @@
 import axios from "axios";
-import logger from "./logger.js";
+import logger from "../configs/logger.js";
 
 const brevoApi = axios.create({
   baseURL: "https://api.brevo.com/v3",

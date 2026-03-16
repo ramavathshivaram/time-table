@@ -24,8 +24,6 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        console.log("Refreshing token...");
-
         await refreshTokenApi();
 
         // retry original request
@@ -39,7 +37,7 @@ api.interceptors.response.use(
     // show error only if not refresh retry
     toast.error(message);
 
-    return Promise.reject(error);
+    return Promise.reject(message);
   },
 );
 

@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
-import ApiError from "#shared/lib/ApiError.js";
+import ApiError from "#utils/ApiError.js";
 import { hashPassword, generateOTP } from "../services/password.service.js";
 import authRepository from "../repositorys/auth.repository.js";
 import { emailQueue } from "#shared/queues/email.queue.js";
 import redis from "../../../shared/configs/redis.js";
-import loadHtml from "#shared/lib/loadHtml.js";
+import loadHtml from "#utils/loadHtml.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;

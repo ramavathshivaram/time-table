@@ -1,24 +1,47 @@
 import Redis from "ioredis";
-import logger from "./logger.js";
+import logger from "#configs/logger.js";
+import env from "#configs/env.js";
 
-const redis = new Redis({
-  host: process.env.REDIS_HOST || "localhost",
-  port: process.env.REDIS_PORT || 6379,
+export const redis = new Redis({
+  host: env.REDIS_HOST || "127.0.0.1",
+  port: env.REDIS_PORT || 6379,
+
   maxRetriesPerRequest: null,
+  enableReadyCheck: true,
+  retryStrategy: (times) => {
+    return Math.min(times * 50, 2000);
+  },
 });
 
-redis.on("error", (err) => logger.info("Redis Client Error", err));
+redis.on("connect", () => {
+  logger.info("Redis connected");
+});
 
-redis.on("connect", () => logger.info("Redis Client Connected."));
+redis.on("ready", () => {
+  logger.info("Redis ready");
+});
 
-redis.on("end", () => logger.info("Redis Client Disconnected."));
+redis.on("error", (err) => {
+  logger.error("Redis error", err);
+});
 
-await redis.set("ping", "pong", "EX", 60 * 60 * 24);
+redis.on("end", () => {
+  logger.warn("Redis connection closed");
+});
 
-const pong = await redis.get("ping");
+export const checkRedis = async () => {
+  try {
+    const pong = await redis.ping();
 
-if (pong !== "pong") {
-  logger.error("Redis ping failed");
-}
+    if (pong !== "PONG") {
+      throw new Error("Invalid Redis ping response");
+    }
+
+    logger.info("Redis ping successful");
+  } catch (err) {
+    logger.error("Redis health check failed", err);
+    throw err;
+  }
+};
 
 export default redis;

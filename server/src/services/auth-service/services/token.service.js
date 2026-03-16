@@ -1,6 +1,4 @@
-import dotEnv from "dotenv";
-dotEnv.config();
-import ApiError from "#shared/lib/ApiError.js";
+import ApiError from "#utils/ApiError.js";
 import jwt from "jsonwebtoken";
 const { sign, verify, decode } = jwt;
 import {

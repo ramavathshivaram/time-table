@@ -1,4 +1,4 @@
-import ApiError from "../lib/ApiError.js";
+import ApiError from "#utils/ApiError.js";
 import jwt from "jsonwebtoken";
 
 const authenticate = (req, res, next) => {

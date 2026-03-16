@@ -1,12 +1,13 @@
 import "dotenv/config";
 import http from "http";
-import logger from "#configs/logger.js";
 import mongoose from "mongoose";
 
-import redis from "#configs/redis.js";
+import logger from "#configs/logger.js";
+import env from "#configs/env.js";
+import redis, { checkRedis } from "#configs/redis.js";
+
 import connectDB from "./shared/configs/mongoDB.js";
 import app from "./services/app.js";
-
 import { socketInit } from "./services/socket-service/socket.js";
 
 const server = http.createServer(app);
@@ -14,29 +15,39 @@ const server = http.createServer(app);
 // Init socket
 socketInit(server);
 
-const port = process.env.PORT || 8080;
-
 const serverInit = async () => {
-  await connectDB();
+  try {
+    logger.info("Starting server...");
 
-  server.listen(port, () => {
-    logger.info(`Server started on ${port}`);
-  });
+    await checkRedis();
+    await connectDB();
+
+    server.listen(env.PORT, () => {
+      logger.info(`Server started on ${env.PORT}`);
+    });
+  } catch (error) {
+    logger.error("Server startup failed", error);
+    process.exit(1);
+  }
 };
 
 serverInit();
 
-const gracefulShutdown = () => {
-  logger.info("shutting down server...");
+const gracefulShutdown = async () => {
+  try {
+    logger.info("Shutting down server...");
 
-  server.close(async () => {
-    await redis.disconnect();
+    server.close(async () => {
+      await redis.disconnect();
+      await mongoose.disconnect();
 
-    await mongoose.disconnect();
-
-    logger.info("server closed");
-    process.exit(0);
-  });
+      logger.info("Server closed");
+      process.exit(0);
+    });
+  } catch (err) {
+    logger.error("Shutdown error", err);
+    process.exit(1);
+  }
 };
 
 process.on("SIGINT", gracefulShutdown);

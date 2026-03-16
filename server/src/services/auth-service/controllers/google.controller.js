@@ -1,7 +1,7 @@
 import AuthModel from "../models/Auth.model.js";
 import asyncHandler from "express-async-handler";
 import axios from "axios";
-import ApiError from "../../../shared/lib/ApiError.js";
+import ApiError from "#utils/ApiError.js";
 import authRepository from "../repositorys/auth.repository.js";
 import { generateTokens } from "../services/token.service.js";
 import { generateRandomPassword } from "../services/password.service.js";

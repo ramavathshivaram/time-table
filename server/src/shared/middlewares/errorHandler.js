@@ -1,14 +1,20 @@
 import logger from "#configs/logger.js";
 
 const errorHandler = (err, req, res, next) => {
-  logger.info(err.stack);
-
-  const status = err.status || 500;
+  const status = err.status || err.statusCode || 500;
   const message = err.message || "Something went wrong";
 
-  res.status(status).json({
+  logger.error({
+    status,
     message,
+    stack: err.stack,
+    path: req.originalUrl,
+    method: req.method,
+  });
+
+  res.status(status).json({
     success: false,
+    message,
   });
 };
 

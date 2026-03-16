@@ -1,4 +1,4 @@
-import ApiError from "./ApiError.js";
+import ApiError from "#utils/ApiError.js";
 import { COOKIE_EXPIRES_IN } from "./const.js";
 
 const cookieOptions = {

@@ -1,6 +1,6 @@
 import "dotenv/config";
 import logger from "#configs/logger.js";
-import redis from "#configs/redis.js";
+import redis, { checkRedis } from "#configs/redis.js";
 
 import mongoose from "mongoose";
 import connectDB from "#shared/configs/mongoDB.js";
@@ -41,6 +41,7 @@ const workerEventHandlers = (worker) => {
 
 const startWorkers = async () => {
   try {
+    await checkRedis();
     await connectDB();
 
     workers = workerFactories.map((createWorker) => {
