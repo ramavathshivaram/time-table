@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node src/main/server.js",
     "dev": "nodemon src/main/server.js",
-    "worker-dev": "nodemon src/main/worker.js",
     "worker": "node src/main/worker.js",
-    "load-test": "node src/test/loadTest.js",
+    "worker-dev": "nodemon src/main/worker.js",
+    "test:load": "node src/test/loadTest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "imports": {

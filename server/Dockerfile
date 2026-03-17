@@ -4,10 +4,12 @@ WORKDIR /server
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --omit=dev
 
-COPY . .
+COPY . ./
 
-EXPOSE 3001
+ENV NODE_ENV=production
 
-CMD [ "npm","run", "start" ]
+EXPOSE 8080
+
+CMD ["npm", "run","start"]

@@ -1,6 +1,4 @@
-
 services:
-
   client:
     # image: ramavathshivaram/time-table-client
     build:
@@ -9,7 +7,7 @@ services:
     container_name: client
     restart: always
     ports:
-      - "5173:5173"
+      - "5173:80"
     environment:
       VITE_GOOGLE_CLIENT_ID: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       VITE_SERVER_URL: http://server:8080
@@ -19,7 +17,7 @@ services:
       - public-network
 
   server:
-   # image: ramavathshivaram/time-table-server
+    # image: ramavathshivaram/time-table-server
     build:
       context: ./server
       dockerfile: Dockerfile
