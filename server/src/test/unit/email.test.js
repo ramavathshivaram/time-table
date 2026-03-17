@@ -1,4 +1,4 @@
-import sendEmail from "../../src/shared/utils/sendEmail.js";
+import sendEmail from "#utils/sendEmail.js";
 
 describe("Email Service", () => {
   it("should send email successfully", async () => {

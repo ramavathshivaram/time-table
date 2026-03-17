@@ -8,9 +8,7 @@ export const redis = new Redis({
 
   maxRetriesPerRequest: null,
   enableReadyCheck: true,
-  retryStrategy: (times) => {
-    return Math.min(times * 50, 2000);
-  },
+  retryStrategy: (times) => Math.min(times * 50, 2000)
 });
 
 redis.on("connect", () => {

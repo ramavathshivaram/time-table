@@ -1,58 +1,95 @@
+
 services:
+
   client:
+    # image: ramavathshivaram/time-table-client
     build:
       context: ./client
       dockerfile: Dockerfile
     container_name: client
+    restart: always
     ports:
       - "5173:5173"
+    environment:
+      VITE_GOOGLE_CLIENT_ID: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      VITE_SERVER_URL: http://server:8080
     depends_on:
       - server
+    networks:
+      - public-network
 
   server:
+   # image: ramavathshivaram/time-table-server
     build:
       context: ./server
       dockerfile: Dockerfile
     container_name: server
+    restart: always
     ports:
       - "8080:8080"
     environment:
+      JWT_ACCESS_SECRET: 5aa7466d87f0abd5ad3d8bec186af549
+      JWT_REFRESH_SECRET: 8132f649e5ce12d9c94e734c32c78f5a
+      BREVO_API_KEY: xkeysib-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      GROQ_API_KEY: gsk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      PORT: 8080
+      NODE_ENV: production
       REDIS_HOST: redis
       REDIS_PORT: 6379
       MONGODB_URI: mongodb://mongo:27017/timetable
     depends_on:
       - redis
       - mongo
+    networks:
+      - public-network
+      - private-network
 
   worker:
+    # image: ramavathshivaram/time-table-worker
     build:
       context: ./server
       dockerfile: Dockerfile.worker
     container_name: worker
+    restart: always
     environment:
+      NODE_ENV: production
       REDIS_HOST: redis
       REDIS_PORT: 6379
       MONGODB_URI: mongodb://mongo:27017/timetable
     depends_on:
       - redis
       - mongo
+    networks:
+      - private-network
 
   redis:
     image: redis:7-alpine
+    restart: always
     container_name: redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis-data:/data
+    networks:
+      - private-network
 
   mongo:
     image: mongo:7
     container_name: mongo
-    ports:
-      - "27017:27017"
+    restart: always
+    depends_on:
+      - redis
     volumes:
       - mongo-data:/data/db
+    networks:
+      - private-network
 
 volumes:
   redis-data:
   mongo-data:
+
+networks:
+  public-network:
+    driver: bridge
+
+  private-network:
+    driver: bridge
+    internal: true

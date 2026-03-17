@@ -2,26 +2,26 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "src/main/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "worker-dev": "nodemon src/worker.js",
-    "worker": "node src/worker.js",
-    "load-test": "node test/loadTest.js",
-    "test": "jest"
+    "start": "node src/main/server.js",
+    "dev": "nodemon src/main/server.js",
+    "worker-dev": "nodemon src/main/worker.js",
+    "worker": "node src/main/worker.js",
+    "load-test": "node src/test/loadTest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "imports": {
-    "#configs/*": "./src/shared/configs/*",
-    "#shared/*": "./src/shared/*",
-    "#lib/*": "./src/shared/lib/*",
-    "#utils/*": "./src/shared/utils/*",
-    "#cache/*": "./src/shared/cache/*",
-    "#middlewares/*": "./src/shared/middlewares/*",
-    "#services/*": "./src/services/*"
+    "#configs/*": "./src/main/shared/configs/*",
+    "#shared/*": "./src/main/shared/*",
+    "#lib/*": "./src/main/shared/lib/*",
+    "#utils/*": "./src/main/shared/utils/*",
+    "#cache/*": "./src/main/shared/cache/*",
+    "#middlewares/*": "./src/main/shared/middlewares/*",
+    "#services/*": "./src/main/services/*"
   },
   "keywords": [],
-  "author": "Ramavath Shiva ram",
+  "author": "Ramavath Shiva Ram",
   "license": "ISC",
   "type": "module",
   "dependencies": {

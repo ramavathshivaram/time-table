@@ -6,6 +6,11 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
 
+  REDIS_HOST: z.string().default("127.0.0.1"),
+  REDIS_PORT: z.coerce.number().default(6379),
+
+  MONGODB_URI: z.string().default("mongodb://localhost:27017/timeTable"),
+
   JWT_ACCESS_SECRET: z.string().min(10),
   JWT_REFRESH_SECRET: z.string().min(10),
 
