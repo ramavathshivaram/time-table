@@ -23,7 +23,7 @@ export const socketInit = (server) => {
 
   io.on("connection", (socket) => {
     onlineUsers.addUser(socket.userId, socket.id);
-    logger.info("User connected:", socket.userId, socket.id);
+    logger.info(`User connected: ${socket.userId} ${socket.id}`);
 
     //! Init workflow socket
     workflowSocket(io, socket);

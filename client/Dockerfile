@@ -1,3 +1,4 @@
+# BUILD THE IMAGE
 FROM node:22-alpine AS builder
 
 WORKDIR /client
@@ -9,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-
+# RUN THE APP
 FROM nginx:alpine
 
 RUN rm /etc/nginx/conf.d/default.conf

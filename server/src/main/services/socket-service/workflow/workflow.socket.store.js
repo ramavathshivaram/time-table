@@ -1,7 +1,10 @@
+import logger from "#configs/logger.js";
+
 const workflows = new Map(); // workflowId -> socketId
 const sockets = new Map();   // socketId -> workflowId
 
 export const addWorkflowSocket = (workflowId, socketId) => {
+  logger.info(`add workflow socket ${workflowId} ${socketId}`);
   workflows.set(workflowId, socketId);
   sockets.set(socketId, workflowId);
 };

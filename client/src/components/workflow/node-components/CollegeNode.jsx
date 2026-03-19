@@ -23,7 +23,7 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
           {/* Label */}
           <div className="flex flex-col">
             <span className="text-sm font-semibold leading-none capitalize">
-              {data.label || "Untitled"}
+              {data?.label || "Untitled"}
             </span>
             <span className="text-[10px] text-muted-foreground">College</span>
           </div>

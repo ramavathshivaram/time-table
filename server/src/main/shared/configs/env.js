@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   NODE_ENV: z
-    .enum(["development", "production", "test"])
+    .enum(["development", "production"])
     .default("development"),
 
   REDIS_HOST: z.string().default("127.0.0.1"),
@@ -11,14 +11,14 @@ const envSchema = z.object({
 
   MONGODB_URI: z.string().default("mongodb://localhost:27017/timeTable"),
 
-  JWT_ACCESS_SECRET: z.string().min(10),
-  JWT_REFRESH_SECRET: z.string().min(10),
+  JWT_ACCESS_SECRET: z.string().optional(),
+  JWT_REFRESH_SECRET: z.string().optional(),
 
-  BREVO_API_KEY: z.string(),
+  BREVO_API_KEY: z.string().optional(),
 
-  GROQ_API_KEY: z.string(),
+  GROQ_API_KEY: z.string().optional(),
 
-  PORT: z.coerce.number().default(8080),
+  PORT: z.coerce.number().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

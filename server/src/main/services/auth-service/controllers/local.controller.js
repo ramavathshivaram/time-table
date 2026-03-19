@@ -72,7 +72,7 @@ const responseWithCookie = async (auth, userId, res, msg) => {
 
   setCookie(res, "accessToken", accessToken);
 
-  res.json({
+  res.status(201).json({
     message: msg,
     success: true,
     data: {

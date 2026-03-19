@@ -1,14 +1,14 @@
 import Redis from "ioredis";
-import logger from "#configs/logger.js";
 import env from "#configs/env.js";
+import logger from "#configs/logger.js";
 
 export const redis = new Redis({
-  host: env.REDIS_HOST || "127.0.0.1",
-  port: env.REDIS_PORT || 6379,
+  host: env.REDIS_HOST,
+  port: env.REDIS_PORT,
 
   maxRetriesPerRequest: null,
   enableReadyCheck: true,
-  retryStrategy: (times) => Math.min(times * 50, 2000)
+  retryStrategy: (times) => Math.min(times * 50, 2000),
 });
 
 redis.on("connect", () => {

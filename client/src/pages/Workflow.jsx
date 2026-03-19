@@ -18,8 +18,15 @@ const Workflow = () => {
   useEffect(() => {
     const socket = getSocket();
 
-    if (!socket.connected) socket.connect();
-  }, [workflowId]);
+    if (!socket.connected) {
+      socket.connect();
+      initSocketListeners();
+    }
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (initialWorkflowData) {
@@ -31,11 +38,9 @@ const Workflow = () => {
     };
   }, [initialWorkflowData, init, workflowId, clear]);
 
-  useEffect(() => {
-    initSocketListeners();
-  }, []);
-
   if (isLoading) return <div>Loading...</div>;
+
+  console.log(initialWorkflowData);
 
   return (
     <ReactFlowProvider>
