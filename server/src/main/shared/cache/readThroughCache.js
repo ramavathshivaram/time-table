@@ -1,7 +1,7 @@
 import logger from "#configs/logger.js";
 import redis from "#configs/redis.js";
 
-const getCacheOrDefault = async (key, fetchFn, ttl = 3600) => {
+const readThroughCache = async (key, fetchFn, ttl = 3600) => {
   try {
     const cached = await redis.get(key);
 
@@ -21,4 +21,4 @@ const getCacheOrDefault = async (key, fetchFn, ttl = 3600) => {
   }
 };
 
-export default getCacheOrDefault;
+export default readThroughCache;

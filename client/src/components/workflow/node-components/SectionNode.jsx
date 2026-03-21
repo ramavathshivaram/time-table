@@ -9,6 +9,8 @@ const SectionNode = ({ data, type, selected }) => {
     handleType: "target",
   });
 
+  console.log(data)
+
   const node = nodeTypes.find((n) => n.type === type) || {};
   const Icon = node.icon;
 

@@ -2,6 +2,8 @@ import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import chatAgent from "../agents/chatAgent.js";
 import SYSTEM_PROMPT from "../prompts/system.prompt.js";
 import logger from "#configs/logger.js";
+import { addMessageEmit } from "#services/socket-service/workflow/emitters/message.emit.js";
+import messageController from "#services/workflow-service/controllers/message.controller.js";
 
 export const chat = async (workflowId, message) => {
   try {
@@ -15,10 +17,15 @@ export const chat = async (workflowId, message) => {
     const lastMessage = response.messages?.at(-1);
 
     if (!lastMessage) {
-      return "No response generated.";
+      addMessageEmit(workflowId, "No response generated.");
+      return;
     }
 
-    return lastMessage.content;
+    addMessageEmit(workflowId, lastMessage.content);
+    messageController.sendMessageGRPC(workflowId, {
+      role: "assistant",
+      content: lastMessage.content,
+    });
   } catch (error) {
     logger.error("Chat error:", error);
 

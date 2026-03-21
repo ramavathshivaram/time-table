@@ -9,21 +9,7 @@ const messageSocket = (io, socket) => {
 
     logger.info(WORKFLOW_EVENTS.MESSAGE_SEND, workflowId, message);
 
-    const response = await chat.chatGRPC(workflowId, message);
-
-    logger.info("response", response);
-
-    if (response) {
-      socket.emit(WORKFLOW_EVENTS.MESSAGE_RESPONSE, {
-        role: "assistant",
-        content: response,
-      });
-
-      messageController.sendMessageGRPC(workflowId, {
-        role: "assistant",
-        content: response,
-      });
-    }
+    await chat.chatGRPC(workflowId, message);
   });
 };
 

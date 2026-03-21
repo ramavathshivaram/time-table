@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 
 const SectionModal = ({ activeNode, setNodes, closeModal }) => {
   const [form, setForm] = useState({
@@ -35,20 +30,19 @@ const SectionModal = ({ activeNode, setNodes, closeModal }) => {
                 ...form,
               },
             }
-          : node
-      )
+          : node,
+      ),
     );
 
     closeModal();
   };
 
   return (
-    <div className="flex flex-col gap-4 w-80">
+    <div className="flex flex-col gap-4 w-full">
       <h2 className="text-lg font-semibold">Section Settings</h2>
 
       <FieldSet>
         <FieldGroup>
-
           <Field>
             <FieldLabel>Section</FieldLabel>
             <Input
@@ -111,7 +105,6 @@ const SectionModal = ({ activeNode, setNodes, closeModal }) => {
               placeholder="Lunch time"
             />
           </Field>
-
         </FieldGroup>
       </FieldSet>
 
@@ -120,9 +113,7 @@ const SectionModal = ({ activeNode, setNodes, closeModal }) => {
           Cancel
         </Button>
 
-        <Button onClick={handleSave}>
-          Save
-        </Button>
+        <Button onClick={handleSave}>Save</Button>
       </div>
     </div>
   );

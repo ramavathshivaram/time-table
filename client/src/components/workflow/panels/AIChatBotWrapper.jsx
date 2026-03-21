@@ -7,7 +7,6 @@ const AIChatBotWrapper = () => {
 
   return (
     <div>
-      {/* Chat Window */}
       {isChatbotOpen ? (
         <AIChatBot setIsChatbotOpen={setIsChatbotOpen} />
       ) : (

@@ -27,10 +27,10 @@ const CollegeModal = ({ activeNode, setNodes, closeModal }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      label: activeNode.data.label || "",
-      timings: activeNode.data.timings || "",
-      lunch: activeNode.data.lunch || "",
-      branches: activeNode.data.branches || "",
+      label: activeNode?.data?.label || "",
+      timings: activeNode.data?.timings || "",
+      lunch: activeNode.data?.lunch || "",
+      branches: activeNode.data?.branches || "",
     },
   });
 
@@ -77,7 +77,7 @@ const CollegeModal = ({ activeNode, setNodes, closeModal }) => {
               <FieldLabel>College Timings</FieldLabel>
 
               <Select
-                defaultValue={activeNode.data.timings}
+                defaultValue={activeNode.data?.timings}
                 onValueChange={(value) => setValue("timings", value)}
               >
                 <SelectTrigger>
@@ -106,7 +106,7 @@ const CollegeModal = ({ activeNode, setNodes, closeModal }) => {
               <FieldLabel>Lunch Time</FieldLabel>
 
               <Select
-                defaultValue={activeNode.data.lunch}
+                defaultValue={activeNode.data?.lunch}
                 onValueChange={(value) => setValue("lunch", value)}
               >
                 <SelectTrigger>
