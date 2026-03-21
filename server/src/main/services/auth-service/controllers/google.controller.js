@@ -3,9 +3,9 @@ import asyncHandler from "express-async-handler";
 import axios from "axios";
 import ApiError from "#utils/ApiError.js";
 import authRepository from "../repositorys/auth.repository.js";
-import { generateTokens } from "../services/token.service.js";
 import { generateRandomPassword } from "../services/password.service.js";
-import { setCookie } from "../services/cookie.service.js";
+
+import setAuthCookiesAndRespond from "../services/setAuthCookiesAndRespond.service.js";
 import {
   createUserGRPC,
   getUserIdByEmailGRPC,
@@ -32,7 +32,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
   const userId = await getUserIdByEmailGRPC(googleUserData.email);
 
-  return await responseWithCookie(auth, userId, res, "Login successful");
+  return await setAuthCookiesAndRespond(auth, userId, res, "Login successful");
 });
 
 const googleRegister = asyncHandler(async (req, res) => {
@@ -72,35 +72,13 @@ const googleRegister = asyncHandler(async (req, res) => {
     avatar: googleUserData.picture,
   });
 
-  return await responseWithCookie(
+  return await setAuthCookiesAndRespond(
     newAuth,
     userId,
     res,
     "Registration successful",
   );
 });
-
-const responseWithCookie = async (auth, userId, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(
-    userId,
-    auth._id,
-    auth.tokenVersion,
-  );
-
-  auth.refreshToken = refreshToken;
-  await auth.save();
-
-  setCookie(res, "accessToken", accessToken);
-
-  res.json({
-    message: msg,
-    success: true,
-    data: {
-      userName: auth.userName,
-      email: auth.email,
-    },
-  });
-};
 
 const getUserDataFromGoogle = async (accessToken) => {
   try {

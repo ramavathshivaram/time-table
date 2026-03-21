@@ -15,29 +15,22 @@ const useAuthStore = create((set) => ({
 
   isCheckingAuth: true,
 
+  token: null,
+
   setUser: (user) => set({ user }),
 
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
+  setToken: (token) => set({ token }),
+
   login: async (userData) => {
     try {
-      const user = await loginApi(userData);
-      
-      set({ user: user, isAuthenticated: true });
-    } catch (error) {
-      set({ user: null, isAuthenticated: false });
+      const { user, token } = await loginApi(userData);
 
-      console.error(error);
-      throw error;
-    }
-  },
-
-  googleLogin: async (accessToken) => {
-    try {
-      const user = await googleLoginApi({ accessToken });
-      set({ user: user, isAuthenticated: true });
+      set({ user: user, isAuthenticated: true, token: token });
     } catch (error) {
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, token: null });
+
       console.error(error);
       throw error;
     }
@@ -45,22 +38,33 @@ const useAuthStore = create((set) => ({
 
   register: async (userData) => {
     try {
-      const user = await registerApi(userData);
+      const { user, token } = await registerApi(userData);
 
-      set({ user: user, isAuthenticated: true });
+      set({ user: user, isAuthenticated: true, token: token });
     } catch (error) {
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, token: null });
+      throw error;
+    }
+  },
+
+  googleLogin: async (accessToken) => {
+    try {
+      const { user, token } = await googleLoginApi({ accessToken });
+      set({ user: user, isAuthenticated: true, token: token });
+    } catch (error) {
+      set({ user: null, isAuthenticated: false, token: null });
+      console.error(error);
       throw error;
     }
   },
 
   googleRegister: async (accessToken) => {
     try {
-      const user = await googleRegisterApi({ accessToken });
+      const { user, token } = await googleRegisterApi({ accessToken });
 
-      set({ user: user, isAuthenticated: true });
+      set({ user: user, isAuthenticated: true, token: token });
     } catch (error) {
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, token: null });
       throw error;
     }
   },
@@ -68,10 +72,11 @@ const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await logoutApi();
+      set({ user: null, isAuthenticated: false, token: null });
     } catch (error) {
       console.error(error);
     } finally {
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, token: null });
     }
   },
 
@@ -81,7 +86,7 @@ const useAuthStore = create((set) => ({
       set({ isAuthenticated: true });
     } catch (error) {
       console.error(error);
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, token: null });
     } finally {
       set({ isCheckingAuth: false });
     }

@@ -1,46 +1,35 @@
 import ApiError from "#utils/ApiError.js";
 import jwt from "jsonwebtoken";
-const { sign, verify, decode } = jwt;
+const { sign, verify } = jwt;
 import {
   ACCESS_TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from "../lib/const.js";
-
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+import env from "#configs/env.js";
 
 export const generateTokens = (userId, authId, tokenVersion) => {
-  const payload = { userId, authId, tokenVersion };
-
-  const accessToken = sign(payload, JWT_ACCESS_SECRET, {
-    expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-  });
-
-  const refreshToken = sign(payload, JWT_REFRESH_SECRET, {
-    expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-  });
-
-  return { accessToken, refreshToken };
+  return {
+    accessToken: generateAccessToken(userId, authId, tokenVersion),
+    refreshToken: generateRefreshToken(userId, authId, tokenVersion),
+  };
 };
 
 export const generateAccessToken = (userId, authId, tokenVersion) => {
-  return sign({ userId, authId, tokenVersion }, JWT_ACCESS_SECRET, {
+  return sign({ userId, authId, tokenVersion }, env.JWT_ACCESS_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRES_IN,
   });
 };
 
 export const generateRefreshToken = (userId, authId, tokenVersion) => {
-  return sign({ userId, authId, tokenVersion }, JWT_REFRESH_SECRET, {
+  return sign({ userId, authId, tokenVersion }, env.JWT_REFRESH_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRES_IN,
   });
 };
 
-export const decodeTokenPayload = (token) => {
+export const verifyToken = (token, expectedType = "access") => {
   if (!token) throw new ApiError(404, "Token not found");
-  return decode(token);
-};
-
-export const verifyToken = (token, isAccessToken = true) => {
-  if (!token) throw new ApiError(404, "Token not found");
-  return verify(token, isAccessToken ? JWT_ACCESS_SECRET : JWT_REFRESH_SECRET);
+  return verify(
+    token,
+    expectedType === "access" ? env.JWT_ACCESS_SECRET : env.JWT_REFRESH_SECRET,
+  );
 };

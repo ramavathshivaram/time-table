@@ -3,21 +3,22 @@ import ApiError from "#utils/ApiError.js";
 import {
   generateAccessToken,
   verifyToken,
-  decodeTokenPayload,
+  generateRefreshToken,
 } from "../services/token.service.js";
 import authRepository from "../repositorys/auth.repository.js";
-import { clearCookie, setCookie } from "../services/cookie.service.js";
+import {
+  clearCookie,
+  setCookie,
+  getCookie,
+} from "../services/cookie.service.js";
+import { REFRESH_TOKEN_EXPIRES_IN } from "../lib/const.js";
 
 const refreshTokenController = asyncHandler(async (req, res) => {
-  const accessToken = req.cookies.accessToken;
+  const refreshToken = getCookie(req, "refreshToken");
 
-  if (!accessToken) {
-    throw new ApiError(401, "Access token not found");
-  }
+  const refreshData = verifyToken(refreshToken, "refresh");
 
-  const accessData = decodeTokenPayload(accessToken);
-
-  const { authId, tokenVersion: accessTokenVersion } = accessData;
+  const { tokenVersion, authId } = refreshData;
 
   const auth = await authRepository.findUserById(authId);
 
@@ -25,28 +26,32 @@ const refreshTokenController = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const refreshData = verifyToken(auth.refreshToken, false);
-
-  const { tokenVersion: refreshTokenVersion } = refreshData;
-
-  if (
-    refreshTokenVersion !== accessTokenVersion ||
-    refreshTokenVersion !== auth.tokenVersion
-  ) {
-    throw new ApiError(401, "Invalid access token");
+  if (tokenVersion !== auth.tokenVersion) {
+    throw new ApiError(401, "Invalid refresh token");
   }
+
+  const newRefreshToken = generateRefreshToken(
+    refreshData.userId,
+    authId,
+    auth.tokenVersion,
+  );
+
+  await authRepository.findUserByIdAndUpdate(authId, {
+    refreshToken: newRefreshToken,
+  });
+
+  setCookie(res, "refreshToken", newRefreshToken);
 
   const newAccessToken = generateAccessToken(
     refreshData.userId,
     authId,
-    accessTokenVersion,
+    auth.tokenVersion,
   );
-
-  setCookie(res, "accessToken", newAccessToken);
 
   res.status(200).json({
     success: true,
     message: "Access token refreshed successfully",
+    token: newAccessToken,
   });
 });
 
@@ -55,7 +60,7 @@ const logout = asyncHandler(async (req, res) => {
     refreshToken: null,
   });
 
-  clearCookie(res, "accessToken");
+  clearCookie(res, "refreshToken");
 
   res.json({
     message: "Logout successful",

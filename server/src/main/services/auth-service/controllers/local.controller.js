@@ -4,12 +4,9 @@ import {
   hashPassword,
   isPasswordMatched,
 } from "../services/password.service.js";
-
-import { generateTokens } from "../services/token.service.js";
+import setAuthCookiesAndRespond from "../services/setAuthCookiesAndRespond.service.js";
 
 import authRepository from "../repositorys/auth.repository.js";
-
-import { setCookie } from "../services/cookie.service.js";
 
 import {
   createUserGRPC,
@@ -31,7 +28,7 @@ const login = asyncHandler(async (req, res) => {
 
   const userId = await getUserIdByEmailGRPC(email);
 
-  return await responseWithCookie(auth, userId, res, "Login successful");
+  return await setAuthCookiesAndRespond(auth, userId, res, "Login successful");
 });
 
 const register = asyncHandler(async (req, res) => {
@@ -57,30 +54,13 @@ const register = asyncHandler(async (req, res) => {
     authId: auth._id,
   });
 
-  return await responseWithCookie(auth, userId, res, "Registration successful");
-});
-
-const responseWithCookie = async (auth, userId, res, msg) => {
-  const { accessToken, refreshToken } = generateTokens(
+  return await setAuthCookiesAndRespond(
+    auth,
     userId,
-    auth._id,
-    auth.tokenVersion,
+    res,
+    "Registration successful",
   );
-
-  auth.refreshToken = refreshToken;
-  await auth.save();
-
-  setCookie(res, "accessToken", accessToken);
-
-  res.status(201).json({
-    message: msg,
-    success: true,
-    data: {
-      userName: auth.userName,
-      email: auth.email,
-    },
-  });
-};
+});
 
 export default {
   login,

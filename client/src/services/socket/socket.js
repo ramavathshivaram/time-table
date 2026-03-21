@@ -1,3 +1,4 @@
+import useAuthStore from "@/store/auth.store.js";
 import { io } from "socket.io-client";
 
 let socket;
@@ -8,6 +9,9 @@ export const getSocket = () => {
       withCredentials: true,
       autoConnect: false,
       transports: ["websocket"],
+      auth: () => ({
+        token: useAuthStore.getState().token,
+      }),
     });
 
     socket.on("connect", () => console.log("socket connected"));

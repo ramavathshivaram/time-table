@@ -27,7 +27,7 @@ export const getCookie = (req, name) => {
   const cookie = req.cookies?.[name];
 
   if (!cookie) {
-    throw new ApiError(404, "Cookie not found");
+    throw new ApiError(404, `Cookie not found ${name}`);
   }
 
   return cookie;

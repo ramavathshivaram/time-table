@@ -3,10 +3,16 @@ import jwt from "jsonwebtoken";
 import env from "#configs/env.js";
 
 const authenticate = (req, res, next) => {
-  const token = req.cookies?.accessToken;
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next(new ApiError(427, "Access token missing or malformed"));
+  }
+
+  const token = authHeader.split(" ")[1];
 
   if (!token) {
-    return next(new ApiError(401, "Access token missing"));
+    return next(new ApiError(427, "Access token missing"));
   }
 
   try {

@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import onlineUsers from "./onlineUsers.js";
-import getUserIdFromCookie from "./middlewares/getUserIdFromCookie.js";
+import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
 
 import workflowSocket from "./workflow/workflow.socket.js";
 import getWorkflowIdFromCookie from "./middlewares/getWorkflowIdCookie.js";
@@ -18,7 +18,7 @@ export const socketInit = (server) => {
     },
   });
 
-  io.use(getUserIdFromCookie);
+  io.use(socketAuthMiddleware);
   io.use(getWorkflowIdFromCookie);
 
   io.on("connection", (socket) => {

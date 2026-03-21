@@ -3,22 +3,31 @@ import api from "../axios.js";
 
 export const registerApi = async (data) => {
   const res = await api.post("/auth/register", data);
-  return res.data.data;
+  return { user: res.data.user, token: res.data.token };
 };
 
 export const loginApi = async (data) => {
   const res = await api.post("/auth/login", data);
-  return res.data.data;
+  return {
+    user: res.data.user,
+    token: res.data.token,
+  };
 };
 
 export const googleLoginApi = async (data) => {
   const res = await api.post("/auth/google-login", data);
-  return res.data.data;
+  return {
+    user: res.data.user,
+    token: res.data.token,
+  };
 };
 
 export const googleRegisterApi = async (data) => {
   const res = await api.post("/auth/google-register", data);
-  return res.data.data;
+  return {
+    user: res.data.user,
+    token: res.data.token,
+  };
 };
 
 export const forgotPasswordApi = async (data) => {
@@ -49,5 +58,5 @@ export const authCheckApi = async () => {
 
 export const refreshTokenApi = async () => {
   const res = await api.get("/auth/refresh-token");
-  return res.data;
+  return res.data.token;
 };
