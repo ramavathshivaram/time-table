@@ -22,7 +22,8 @@ export const chat = async (workflowId, message) => {
     }
 
     addMessageEmit(workflowId, lastMessage.content);
-    messageController.sendMessageGRPC(workflowId, {
+
+    messageController.addMessageGRPC(workflowId, {
       role: "assistant",
       content: lastMessage.content,
     });

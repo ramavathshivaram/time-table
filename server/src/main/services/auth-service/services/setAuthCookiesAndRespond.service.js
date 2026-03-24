@@ -1,6 +1,7 @@
-import { REFRESH_TOKEN_EXPIRES_IN } from "../lib/const.js";
+import authRepository from "../repositorys/auth.repository.js";
 import { setCookie } from "./cookie.service.js";
 import { generateTokens } from "./token.service.js";
+import { createSession } from "./session.service.js";
 
 const setAuthCookiesAndRespond = async (
   auth,
@@ -15,10 +16,9 @@ const setAuthCookiesAndRespond = async (
     auth.tokenVersion,
   );
 
-  auth.refreshToken = refreshToken;
   await auth.save();
 
-  console.log(REFRESH_TOKEN_EXPIRES_IN);
+  await createSession(auth._id, auth.tokenVersion);
 
   setCookie(res, "refreshToken", refreshToken);
 

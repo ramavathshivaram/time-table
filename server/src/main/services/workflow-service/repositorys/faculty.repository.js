@@ -1,54 +1,37 @@
-import workflowModel from "../models/workflow.model.js";
+import FacultyModel from "../models/faculty.model.js";
 
 const getFaculties = async (workflowId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("faculties")
-    .lean();
-
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.faculties;
+  return FacultyModel.find({ workflowId }).lean();
 };
 
 const getFaculty = async (workflowId, facultyId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("faculties")
-    .lean();
+  const faculty = await FacultyModel.findOne({
+    workflowId,
+    id: facultyId,
+  });
 
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.faculties.find((faculty) => faculty.id === facultyId);
+  return faculty || null;
 };
 
 const addFaculty = async (workflowId, faculty) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $push: { faculties: faculty },
+  return FacultyModel.create({
+    ...faculty,
+    workflowId,
   });
 };
 
-const removeFaculty = async (workflowId, faculty) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $pull: { faculties: { id: faculty } },
+const removeFaculty = async (workflowId, facultyId) => {
+  return FacultyModel.deleteOne({
+    workflowId,
+    id: facultyId,
   });
 };
 
-const updateFaculty = async (workflowId, facultyId, facultyData) => {
-  await workflowModel.findOneAndUpdate(
-    {
-      _id: workflowId,
-      "faculties.id": facultyId,
-    },
-    {
-      $set: {
-        "faculties.$": facultyData,
-      },
-    },
+const updateFaculty = async (workflowId, facultyId, updateFields) => {
+  return FacultyModel.findOneAndUpdate(
+    { workflowId, id: facultyId },
+    { $set: updateFields },
+    { new: true, runValidators: true },
   );
 };
 

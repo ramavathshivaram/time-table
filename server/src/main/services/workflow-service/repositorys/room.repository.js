@@ -1,54 +1,46 @@
-import workflowModel from "../models/workflow.model.js";
+import RoomModel from "../models/room.model.js";
 
 const getRooms = async (workflowId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("rooms")
-    .lean();
-
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.rooms;
+  return RoomModel.find({ workflowId }).lean();
 };
 
 const getRoom = async (workflowId, roomId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("rooms")
-    .lean();
+  const room = await RoomModel.findOne({
+    workflowId,
+    id: roomId,
+  });
 
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.rooms.find((room) => room.id === roomId);
+  return room || null;
 };
 
 const addRoom = async (workflowId, room) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $push: { rooms: room },
+  return RoomModel.create({
+    ...room,
+    workflowId,
   });
+};
+
+const addRooms = async (workflowId, rooms) => {
+  const docs = rooms.map((room) => ({
+    ...room,
+    workflowId,
+  }));
+
+  return RoomModel.insertMany(docs);
 };
 
 const removeRoom = async (workflowId, roomId) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $pull: { rooms: { id: roomId } },
+  return RoomModel.deleteOne({
+    workflowId,
+    id: roomId,
   });
 };
 
-const updateRoom = async (workflowId, roomId, roomData) => {
-  await workflowModel.findOneAndUpdate(
-    {
-      _id: workflowId,
-      "rooms.id": roomId,
-    },
-    {
-      $set: {
-        "rooms.$": roomData,
-      },
-    },
+const updateRoom = async (workflowId, roomId, updateFields) => {
+  return RoomModel.findOneAndUpdate(
+    { workflowId, id: roomId },
+    { $set: updateFields },
+    { new: true, runValidators: true }
   );
 };
 
@@ -56,6 +48,7 @@ export default {
   getRooms,
   getRoom,
   addRoom,
+  addRooms,
   removeRoom,
   updateRoom,
 };

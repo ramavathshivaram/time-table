@@ -2,20 +2,9 @@ import React from "react";
 import { Workflow, ArrowRight, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useDeleteWorkflow } from "@/hooks/react-query/workflow.query.js";
 
 const WorkflowCard = ({ workflow }) => {
   const navigate = useNavigate();
-
-  const { mutate: deleteWorkflow, isPending } = useDeleteWorkflow();
-
-  const handleDelete = (e) => {
-    e.stopPropagation(); // prevents navigation
-
-    if (confirm("Delete this workflow?")) {
-      deleteWorkflow({ workflowId: workflow._id });
-    }
-  };
 
   return (
     <div
@@ -30,15 +19,6 @@ const WorkflowCard = ({ workflow }) => {
         </div>
 
         <h2 className="text-lg font-semibold line-clamp-1">{workflow.title}</h2>
-
-        {/* Delete */}
-        <button
-          className="ml-auto text-muted-foreground hidden group-hover:block hover:text-red-500 transition-all duration-200"
-          onClick={handleDelete}
-          disabled={isPending}
-        >
-          <Trash2 size={18} />
-        </button>
       </div>
 
       {/* Dates */}

@@ -1,8 +1,8 @@
 import express from "express";
 
 //! shared
-import validateRequest from "../../../shared/middlewares/validateRequest.js";
-import authenticate from "../../../shared/middlewares/authenticate.js";
+import validateRequest from "#shared/middlewares/validateRequest.js";
+import authenticate from "#shared/middlewares/authenticate.js";
 
 import localController from "../controllers/local.controller.js";
 import googleController from "../controllers/google.controller.js";

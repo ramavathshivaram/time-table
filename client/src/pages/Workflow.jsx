@@ -1,4 +1,4 @@
-import WorkflowEditor from "@/components/workflow/WorkflowEditor";
+import WorkflowEditor from "@/features/workflow/WorkflowEditor";
 import { useGetWorkflowDetails } from "@/hooks/react-query/workflow.query.js";
 import { getSocket } from "@/services/socket/socket.js";
 import initSocketListeners from "@/services/socket/workflow/listeners/initListeners.js";

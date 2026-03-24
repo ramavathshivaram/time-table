@@ -11,7 +11,11 @@ import {
   setCookie,
   getCookie,
 } from "../services/cookie.service.js";
-import { REFRESH_TOKEN_EXPIRES_IN } from "../lib/const.js";
+import {
+  getSession,
+  updateSession,
+  deleteSession,
+} from "../services/session.service.js";
 
 const refreshTokenController = asyncHandler(async (req, res) => {
   const refreshToken = getCookie(req, "refreshToken");
@@ -20,33 +24,31 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 
   const { tokenVersion, authId } = refreshData;
 
-  const auth = await authRepository.findUserById(authId);
+  const session = await getSession(authId);
 
-  if (!auth) {
-    throw new ApiError(404, "User not found");
+  if (!session) {
+    throw new ApiError(404, "Session not found");
   }
 
-  if (tokenVersion !== auth.tokenVersion) {
+  if (tokenVersion !== session.tokenVersion) {
     throw new ApiError(401, "Invalid refresh token");
   }
 
   const newRefreshToken = generateRefreshToken(
     refreshData.userId,
     authId,
-    auth.tokenVersion,
+    tokenVersion,
   );
-
-  await authRepository.findUserByIdAndUpdate(authId, {
-    refreshToken: newRefreshToken,
-  });
 
   setCookie(res, "refreshToken", newRefreshToken);
 
   const newAccessToken = generateAccessToken(
     refreshData.userId,
     authId,
-    auth.tokenVersion,
+    tokenVersion,
   );
+
+  await updateSession(authId, session.tokenVersion);
 
   res.status(200).json({
     success: true,
@@ -56,11 +58,9 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-  await authRepository.findUserByIdAndUpdate(req.authId, {
-    refreshToken: null,
-  });
-
   clearCookie(res, "refreshToken");
+
+  await deleteSession(req.authId);
 
   res.json({
     message: "Logout successful",

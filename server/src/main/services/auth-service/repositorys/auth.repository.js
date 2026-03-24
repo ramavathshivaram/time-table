@@ -25,7 +25,18 @@ const findUserByIdAndUpdate = async (id, user) => {
 };
 
 const findUserByEmailAndUpdate = async (email, user) => {
-  return await AuthModel.findOneAndUpdate({ email }, user);
+  return await AuthModel.findOneAndUpdate({ email }, user, { new: true });
+};
+
+const updateRefreshToken = async (authId, refreshToken) => {
+  return await AuthModel.findOneAndUpdate({ _id: authId }, { refreshToken });
+};
+
+const deleteRefreshToken = async (authId) => {
+  return await AuthModel.findOneAndUpdate(
+    { _id: authId },
+    { refreshToken: null },
+  );
 };
 
 export default {
@@ -35,5 +46,7 @@ export default {
   findUserById,
   findUserByIdAndUpdate,
   checkAuthExists,
-  findUserByEmailAndUpdate
+  findUserByEmailAndUpdate,
+  updateRefreshToken,
+  deleteRefreshToken,
 };

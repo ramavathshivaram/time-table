@@ -19,3 +19,4 @@ export const generateRandomPassword = async () => {
 };
 
 export const generateOTP = () => crypto.randomBytes(3).toString("hex");
+

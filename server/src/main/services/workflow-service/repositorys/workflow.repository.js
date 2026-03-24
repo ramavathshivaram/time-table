@@ -12,10 +12,6 @@ const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
     .lean();
 };
 
-const deleteWorkflow = async (workflowId) => {
-  await workflowModel.findByIdAndDelete(workflowId);
-};
-
 const getRecentWorkflowsByUserId = async (userId) => {
   return workflowModel
     .find({ userId })
@@ -30,18 +26,55 @@ const createWorkflow = async (workflow) => {
 };
 
 const getWorkflowById = async (workflowId) => {
-  return await workflowModel.findById(workflowId);
-};
+  return await workflowModel.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(workflowId) } },
 
-const updateWorkflowById = async (workflowId, data) => {
-  await workflowModel.findByIdAndUpdate(workflowId, data);
+    {
+      $lookup: {
+        from: "nodes",
+        localField: "_id",
+        foreignField: "workflowId",
+        as: "nodes",
+      },
+    },
+    {
+      $lookup: {
+        from: "edges",
+        localField: "_id",
+        foreignField: "workflowId",
+        as: "edges",
+      },
+    },
+    {
+      $lookup: {
+        from: "faculties",
+        localField: "_id",
+        foreignField: "workflowId",
+        as: "faculties",
+      },
+    },
+    {
+      $lookup: {
+        from: "subjects",
+        localField: "_id",
+        foreignField: "workflowId",
+        as: "subjects",
+      },
+    },
+    {
+      $lookup: {
+        from: "rooms",
+        localField: "_id",
+        foreignField: "workflowId",
+        as: "rooms",
+      },
+    },
+  ]);
 };
 
 export default {
   getAllUserWorkflowsByUserId,
   createWorkflow,
-  deleteWorkflow,
   getWorkflowById,
-  updateWorkflowById,
   getRecentWorkflowsByUserId,
 };

@@ -1,45 +1,54 @@
-import workflowModel from "../models/workflow.model.js";
+import EdgeModel from "../models/edge.model.js";
 
 const getEdge = async (workflowId, edgeId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("edges")
-    .lean();
+  const edge = await EdgeModel.findOne({
+    workflowId,
+    id: edgeId,
+  });
 
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.edges.find((edge) => edge.id === edgeId);
+  return edge || null;
 };
 
 const getEdges = async (workflowId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("edges")
-    .lean();
-
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.edges;
+  return EdgeModel.find({ workflowId }).lean();
 };
 
+
 const addEdge = async (workflowId, edge) => {
-  await workflowModel.findByIdAndUpdate(workflowId, { $push: { edges: edge } });
+  return EdgeModel.create({
+    ...edge,
+    workflowId,
+  });
 };
 
 const addEdges = async (workflowId, edges) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $push: { edges: { $each: edges } },
-  });
+  const docs = edges.map((edge) => ({
+    ...edge,
+    workflowId,
+  }));
+
+  return EdgeModel.insertMany(docs);
 };
 
 const removeEdge = async (workflowId, edgeId) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $pull: { edges: { id: edgeId } },
+  return EdgeModel.deleteOne({
+    workflowId,
+    id: edgeId,
   });
+};
+
+const updateEdge = async (workflowId, edgeId, updateFields) => {
+  const setQuery = {};
+
+  for (const key in updateFields) {
+    setQuery[key] = updateFields[key];
+  }
+
+  return EdgeModel.findOneAndUpdate(
+    { workflowId, id: edgeId },
+    { $set: setQuery },
+    { new: true, runValidators: true }
+  );
 };
 
 export default {
@@ -48,4 +57,5 @@ export default {
   addEdge,
   addEdges,
   removeEdge,
+  updateEdge,
 };

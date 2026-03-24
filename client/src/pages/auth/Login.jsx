@@ -75,7 +75,15 @@ const Login = () => {
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <div className="flex justify-between">
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <Link
+                      to="/forgot-password"
+                      className="text-sm text-blue-500 hover:text-blue-600 transition"
+                    >
+                      Forgot Password
+                    </Link>
+                  </div>
                   <Input
                     type="password"
                     id="password"
@@ -115,15 +123,6 @@ const Login = () => {
               className="font-medium text-primary hover:underline hover:text-primary/80 transition"
             >
               Create one
-            </Link>
-          </div>
-
-          <div className="text-center">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-muted-foreground hover:text-primary transition"
-            >
-              Forgot your password?
             </Link>
           </div>
         </CardFooter>

@@ -24,7 +24,7 @@ const GoogleLoginBtn = () => {
     <Button
       variant="outline"
       onClick={handleLogin}
-      className="w-full h-11 flex items-center justify-center gap-3
+      className="w-full flex items-center justify-center gap-3
              bg-white border border-gray-300
              hover:bg-gray-50 hover:shadow-sm
              transition-all duration-200"

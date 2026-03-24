@@ -1,7 +1,11 @@
 import messageRepository from "../repositorys/message.repository.js";
 
-const sendMessageGRPC = async (workflowId, message) => {
-  await messageRepository.sendMessage(workflowId, message);
+const addMessageGRPC = async (workflowId, message) => {
+  await messageRepository.addMessage(workflowId, message.role, message.content);
 };
 
-export default { sendMessageGRPC };
+const getAllMessagesGRPC = async (workflowId, offset, limit) => {
+  return await messageRepository.workflowMessages(workflowId, offset, limit);
+};
+
+export default { addMessageGRPC, getAllMessagesGRPC };

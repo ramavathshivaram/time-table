@@ -5,6 +5,7 @@ import authRepository from "../repositorys/auth.repository.js";
 import { emailQueue } from "#shared/queues/email.queue.js";
 import redis from "../../../shared/configs/redis.js";
 import loadHtml from "#utils/loadHtml.js";
+import { updateSession } from "../services/session.service.js";
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -25,7 +26,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   });
 
   // save otp to redis
-  redis.set(`otp:${email}`, otp, "EX", 900); //// 15 mins
+  await redis.set(`otp:${email}`, otp, "EX", 900); //// 15 mins
 
   return res.json({
     message: "OTP sent to your email",
@@ -56,11 +57,12 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   const hashedPassword = await hashPassword(password);
 
-  await authRepository.findUserByEmailAndUpdate(email, {
+  const auth = await authRepository.findUserByEmailAndUpdate(email, {
     password: hashedPassword,
-    refreshToken: null,
     $inc: { tokenVersion: 1 },
   });
+
+  await updateSession(auth._id, auth.tokenVersion);
 
   return res.json({ message: "Password reset successful", success: true });
 });

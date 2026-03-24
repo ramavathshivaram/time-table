@@ -1,54 +1,46 @@
-import workflowModel from "../models/workflow.model.js";
+import SubjectModel from "../models/subject.model.js";
 
 const getSubjects = async (workflowId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("subjects")
-    .lean();
-
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.subjects;
+  return SubjectModel.find({ workflowId }).lean();
 };
 
 const getSubject = async (workflowId, subjectId) => {
-  const workflow = await workflowModel
-    .findById(workflowId)
-    .select("subjects")
-    .lean();
+  const subject = await SubjectModel.findOne({
+    workflowId,
+    id: subjectId,
+  });
 
-  if (!workflow) {
-    throw new Error("Workflow not found");
-  }
-
-  return workflow.subjects.find((subject) => subject.id === subjectId);
+  return subject || null;
 };
 
 const addSubject = async (workflowId, subject) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $push: { subjects: subject },
+  return SubjectModel.create({
+    ...subject,
+    workflowId,
   });
+};
+
+const addSubjects = async (workflowId, subjects) => {
+  const docs = subjects.map((s) => ({
+    ...s,
+    workflowId,
+  }));
+
+  return SubjectModel.insertMany(docs);
 };
 
 const removeSubject = async (workflowId, subjectId) => {
-  await workflowModel.findByIdAndUpdate(workflowId, {
-    $pull: { subjects: { id: subjectId } },
+  return SubjectModel.deleteOne({
+    workflowId,
+    id: subjectId,
   });
 };
 
-const updateSubject = async (workflowId, subjectId, subjectData) => {
-  await workflowModel.findOneAndUpdate(
-    {
-      _id: workflowId,
-      "subjects.id": subjectId,
-    },
-    {
-      $set: {
-        "subjects.$": subjectData,
-      },
-    },
+const updateSubject = async (workflowId, subjectId, updateFields) => {
+  return SubjectModel.findOneAndUpdate(
+    { workflowId, id: subjectId },
+    { $set: updateFields },
+    { new: true, runValidators: true },
   );
 };
 
@@ -56,6 +48,7 @@ export default {
   getSubjects,
   getSubject,
   addSubject,
+  addSubjects,
   removeSubject,
   updateSubject,
 };

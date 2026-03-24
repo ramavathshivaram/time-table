@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.get("/", workflowController.getAllUserWorkflows);
 
-router.delete("/:workflowId", workflowController.deleteWorkflow);
-
 router.get("/recent", workflowController.getRecentWorkflows);
 
 router.post("/create-workflow", workflowController.createWorkflow);

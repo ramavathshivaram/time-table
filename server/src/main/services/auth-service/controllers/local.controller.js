@@ -54,12 +54,7 @@ const register = asyncHandler(async (req, res) => {
     authId: auth._id,
   });
 
-  return await setAuthCookiesAndRespond(
-    auth,
-    userId,
-    res,
-    "Registration successful",
-  );
+  return await setAuthCookiesAndRespond(auth, userId, res, "Registration successful");
 });
 
 export default {
