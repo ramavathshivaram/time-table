@@ -5,6 +5,7 @@ import helmet from "helmet";
 import compression from "compression";
 
 import errorHandler from "#shared/middlewares/errorHandler.js";
+import rateLimiter from "#shared/middlewares/rateLimiter.js";
 import notFoundRoute from "#shared/middlewares/notFoundRoute.js";
 import authenticate from "#shared/middlewares/authenticate.js";
 import morganMiddleware from "#shared/middlewares/morganMiddleware.js";
@@ -25,6 +26,7 @@ app.set("view engine", "ejs");
 
 //! Middlewares
 app.use(morganMiddleware);
+app.use(rateLimiter);
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "1mb" }));

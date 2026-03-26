@@ -46,9 +46,11 @@ const Workflow = () => {
     return () => clear();
   }, [clear]);
 
-  if (isLoading || !isConnected || !initialWorkflowData) {
-    return <FullScreenLoader />;
-  }
+  console.log(isLoading, isConnected, initialWorkflowData);
+
+  // if (isLoading || !isConnected || !initialWorkflowData) {
+  //   return <FullScreenLoader />;
+  // }
 
   console.log(initialWorkflowData);
 

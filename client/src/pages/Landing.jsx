@@ -7,14 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isCheckingAuth && isAuthenticated) {
       navigate("/home");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isCheckingAuth, navigate]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

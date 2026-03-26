@@ -1,0 +1,61 @@
+services:
+  client:
+    image: ramavathshivaram/time-table-client
+    container_name: client
+    restart: always
+    ports:
+      - "80:80"
+    env_file:
+      - ./client.env
+    depends_on:
+      - server
+    networks:
+      - public-network
+
+  server:
+    image: ramavathshivaram/time-table-server
+    container_name: server
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./server.env
+
+    depends_on:
+      - redis
+    networks:
+      - public-network
+      - private-network
+
+  worker:
+    image: ramavathshivaram/time-table-worker
+    container_name: worker
+    restart: always
+    env_file:
+      - ./worker.env
+
+    depends_on:
+      - redis
+    networks:
+      - private-network
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    container_name: redis
+    volumes:
+      - redis-data:/data
+    networks:
+      - private-network
+
+
+volumes:
+  redis-data:
+
+networks:
+  public-network:
+    driver: bridge
+
+  private-network:
+    driver: bridge
+    internal: true

@@ -43,13 +43,13 @@ api.interceptors.response.use(
       } catch (refreshError) {
         toast.error("Session expired. Please login again.");
         useAuthStore.getState().logout();
+        window.location.href = "/login";
+
         return Promise.reject(refreshError);
       }
     }
 
-    // show error only if not refresh retry
     toast.error(message);
-
     return Promise.reject(message);
   },
 );
