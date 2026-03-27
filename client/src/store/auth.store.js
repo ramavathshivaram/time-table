@@ -89,7 +89,6 @@ const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await logoutApi();
-      set({ user: null, isAuthenticated: false, token: null });
     } catch (error) {
       console.error(error);
     } finally {

@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, Clock3, Sparkles } from "lucide-react";
 import useAuthStore from "../store/auth.store.js";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isCheckingAuth && isAuthenticated) {
-      navigate("/home");
-    }
-  }, [isAuthenticated, isCheckingAuth, navigate]);
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

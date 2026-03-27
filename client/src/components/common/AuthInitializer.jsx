@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
 import LoadingHeader from "@/components/common/LoadingHeader";
 
-const AuthInitializer = ({ children }) => {
+const AuthInitializer = () => {
   const authCheck = useAuthStore((s) => s.authCheck);
   const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
@@ -12,7 +13,7 @@ const AuthInitializer = ({ children }) => {
 
   if (isCheckingAuth) return <LoadingHeader />;
 
-  return children;
+  return <Outlet />;
 };
 
 export default AuthInitializer;

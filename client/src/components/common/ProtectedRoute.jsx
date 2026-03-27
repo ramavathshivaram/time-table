@@ -5,7 +5,6 @@ import LoadingHeader from "./LoadingHeader";
 
 const ProtectedRoute = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-
   const isCheckingAuth = useAuthStore((s) => s.isCheckingAuth);
 
   if (isCheckingAuth) return <LoadingHeader />;

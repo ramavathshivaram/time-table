@@ -42,8 +42,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         toast.error("Session expired. Please login again.");
-        useAuthStore.getState().logout();
-        window.location.href = "/login";
+
+        useAuthStore.getState().clearUser();
 
         return Promise.reject(refreshError);
       }
