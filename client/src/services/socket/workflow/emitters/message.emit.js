@@ -10,7 +10,7 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-export const sendMessageEmit = (workflowId, message) => {
+export const sendMessageEmit = (message) => {
   logEmit(WORKFLOW_EVENTS.MESSAGE_SEND, message);
-  socket.emit(WORKFLOW_EVENTS.MESSAGE_SEND, workflowId, message);
+  socket.emit(WORKFLOW_EVENTS.MESSAGE_SEND, message);
 };

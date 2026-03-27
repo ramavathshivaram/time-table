@@ -1,6 +1,10 @@
 import WorkflowEditor from "@/features/workflow/WorkflowEditor";
 import { useGetWorkflowDetails } from "@/hooks/react-query/workflow.query.js";
-import { getSocket } from "@/services/socket/socket.js";
+import {
+  connectSocket,
+  disconnectSocket,
+  getSocket,
+} from "@/services/socket/socket.js";
 import initSocketListeners from "@/services/socket/workflow/listeners/initListeners.js";
 import useWorkflowStore from "@/store/workflow.store";
 import { ReactFlowProvider } from "@xyflow/react";
@@ -26,13 +30,15 @@ const Workflow = () => {
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
 
-    socket.connect();
+    connectSocket();
+
     initSocketListeners();
 
     return () => {
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
-      socket.disconnect();
+
+      disconnectSocket();
     };
   }, []);
 
@@ -46,13 +52,11 @@ const Workflow = () => {
     return () => clear();
   }, [clear]);
 
-  console.log(isLoading, isConnected, initialWorkflowData);
+  if (isLoading || !isConnected || !initialWorkflowData) {
+    return <FullScreenLoader />;
+  }
 
-  // if (isLoading || !isConnected || !initialWorkflowData) {
-  //   return <FullScreenLoader />;
-  // }
-
-  console.log(initialWorkflowData);
+  console.log("workflow data ", initialWorkflowData);
 
   return (
     <ReactFlowProvider>

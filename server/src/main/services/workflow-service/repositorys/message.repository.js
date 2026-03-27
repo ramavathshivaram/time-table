@@ -1,7 +1,13 @@
 import MessageModel from "../models/message.model.js";
 
 const addMessage = async (workflowId, role, content) => {
-  return await MessageModel.create({ workflowId, role, content });
+  console.log(workflowId);
+  try {
+    return await MessageModel.create({ workflowId, role, content });
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
 
 const workflowMessages = async (workflowId, page = 1, limit = 10) => {

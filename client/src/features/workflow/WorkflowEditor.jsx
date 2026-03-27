@@ -43,9 +43,6 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
       year: DefaultNode,
       section: SectionNode,
       room: DefaultNode,
-      subject: DefaultNode,
-      faculty: DefaultNode,
-      lab: DefaultNode,
     }),
     [],
   );
@@ -84,7 +81,7 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
 
         <ReactflowPanels
           workflowId={workflowId}
-          title={initialWorkflowData.title}
+          title={initialWorkflowData?.title}
           onDragStart={onDragStart}
         />
       </ReactFlow>

@@ -1,3 +1,4 @@
+import env from "#configs/env.js";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -23,6 +24,7 @@ const corsOptions = {
 const app = express();
 
 app.set("view engine", "ejs");
+app.set("trust proxy", 1);
 
 //! Middlewares
 app.use(morganMiddleware);

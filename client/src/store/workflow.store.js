@@ -17,7 +17,6 @@ const useWorkflowStore = create((set) => ({
       faculties: data.faculties,
       subjects: data.subjects,
       rooms: data.rooms,
-      messages: data.messages,
     }),
 
   clear: () =>
@@ -40,6 +39,7 @@ const useWorkflowStore = create((set) => ({
     set((state) => ({
       nodes: [...state.nodes, node],
     })),
+
   addNodesLocal: (nodes) =>
     set((state) => ({
       nodes: [...state.nodes, ...nodes],

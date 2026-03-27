@@ -49,7 +49,10 @@ const Register = () => {
       <Card className="flex w-full max-w-md ">
         <CardHeader>
           <CardTitle className="text-center">
-            <h1 className="text-2xl font-bold underline">Register</h1>
+            <h1 className="text-2xl font-bold underline">Join Us</h1>
+            <p className="text-gray-500">
+              Sign up to unlock powerful tools and seamless workflows.
+            </p>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -119,7 +122,9 @@ const Register = () => {
               {isSubmitting ? "Registering..." : "Register"}
             </Button>
 
-            <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
+            <FieldSeparator className="my-4 col-span-full bg-transparent">
+              OR
+            </FieldSeparator>
 
             <GoogleRegisterBtn />
           </form>

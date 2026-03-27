@@ -8,47 +8,34 @@ import {
 
 const nodeService = {
   addNode(node) {
-    const { workflowId } = useWorkflowStore.getState();
-    addNodeEmit(workflowId, node);
+    addNodeEmit(node);
 
-    useWorkflowStore.setState((state) => ({
-      nodes: [...state.nodes, node],
-    }));
+    useWorkflowStore.getState().addNodeLocal(node);
   },
 
   addNodes(nodes) {
     const { workflowId } = useWorkflowStore.getState();
     addNodesEmit(workflowId, nodes);
 
-    useWorkflowStore.setState((state) => ({
-      nodes: [...state.nodes, ...nodes],
-    }));
+    useWorkflowStore.getState().addNodesLocal(nodes);
   },
 
   removeNode(nodeId) {
     const { workflowId } = useWorkflowStore.getState();
     removeNodeEmit(workflowId, nodeId);
 
-    useWorkflowStore.setState((state) => ({
-      nodes: state.nodes.filter((n) => n.id !== nodeId),
-    }));
+    useWorkflowStore.getState().removeNodeLocal(nodeId);
   },
 
   updateNode(nodeId, nodeData) {
     const { workflowId } = useWorkflowStore.getState();
     updateNodeEmit(workflowId, nodeId, nodeData);
 
-    useWorkflowStore.setState((state) => ({
-      nodes: state.nodes.map((n) =>
-        n.id === nodeId ? { ...n, data: nodeData } : n
-      ),
-    }));
+    useWorkflowStore.getState().updateNodeLocal(nodeId, nodeData);
   },
 
   responseAdd(node) {
-    useWorkflowStore.setState((state) => ({
-      nodes: [...state.nodes, node],
-    }));
+    useWorkflowStore.getState().addNodeLocal(node);
   },
 };
 

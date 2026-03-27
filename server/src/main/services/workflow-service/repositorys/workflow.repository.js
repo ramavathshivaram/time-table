@@ -27,8 +27,16 @@ const createWorkflow = async (workflow) => {
 };
 
 const getWorkflowById = async (workflowId) => {
-  return await workflowModel.aggregate([
-    { $match: { _id: new mongoose.Types.ObjectId(workflowId) } },
+  if (!mongoose.Types.ObjectId.isValid(workflowId)) {
+    throw new Error("Invalid workflowId");
+  }
+
+  const [workflow] = await workflowModel.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(workflowId),
+      },
+    },
 
     {
       $lookup: {
@@ -70,7 +78,20 @@ const getWorkflowById = async (workflowId) => {
         as: "rooms",
       },
     },
+
+    {
+      $project: {
+        __v: 0,
+        "nodes.__v": 0,
+        "edges.__v": 0,
+        "faculties.__v": 0,
+        "subjects.__v": 0,
+        "rooms.__v": 0,
+      },
+    },
   ]);
+
+  return workflow || null;
 };
 
 export default {

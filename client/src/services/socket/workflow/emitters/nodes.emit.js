@@ -10,9 +10,9 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-export const addNodeEmit = (workflowId, node) => {
+export const addNodeEmit = (node) => {
   logEmit(WORKFLOW_EVENTS.NODE_ADD, node);
-  socket.emit(WORKFLOW_EVENTS.NODE_ADD, workflowId, node);
+  socket.emit(WORKFLOW_EVENTS.NODE_ADD, node);
 };
 
 export const removeNodeEmit = (workflowId, nodeId) => {

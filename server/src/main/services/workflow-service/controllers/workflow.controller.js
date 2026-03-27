@@ -20,6 +20,8 @@ const getWorkflowById = asyncHandler(async (req, res) => {
   const workflowId = req.params.workflowId;
   const workflow = await workflowRepository.getWorkflowById(workflowId);
 
+  console.log(workflow)
+
   setCookie(res, "workflowId", workflowId);
 
   return res.status(200).json({

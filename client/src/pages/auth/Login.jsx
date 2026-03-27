@@ -49,7 +49,10 @@ const Login = () => {
       <Card className="flex w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center">
-            <h1 className="text-2xl font-bold underline">Login</h1>
+            <h1 className="text-2xl font-bold underline">Welcome Back</h1>
+            <p className="text-gray-500">
+              Continue your journey and keep building.
+            </p>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -110,7 +113,9 @@ const Login = () => {
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
 
-            <FieldSeparator className="my-4 col-span-full">OR</FieldSeparator>
+            <FieldSeparator className="my-4 col-span-full bg-transparent">
+              OR
+            </FieldSeparator>
 
             <GoogleLoginBtn />
           </form>

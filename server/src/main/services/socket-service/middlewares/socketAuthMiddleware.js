@@ -4,8 +4,6 @@ const socketAuthMiddleware = (socket, next) => {
   try {
     const token = socket.handshake.auth?.token;
 
-    console.log(token)
-
     if (!token) {
       return next(new Error("Authentication failed: No token"));
     }

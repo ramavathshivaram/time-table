@@ -4,12 +4,12 @@ import { WORKFLOW_EVENTS } from "../../lib/const.js";
 import logger from "#configs/logger.js";
 
 const messageSocket = (io, socket) => {
-  socket.on(WORKFLOW_EVENTS.MESSAGE_SEND, async (workflowId, message) => {
-    messageController.sendMessageGRPC(workflowId, message);
+  socket.on(WORKFLOW_EVENTS.MESSAGE_SEND, async (message) => {
+    messageController.addMessageGRPC(socket.workflowId, message);
 
-    logger.info(WORKFLOW_EVENTS.MESSAGE_SEND, workflowId, message);
+    logger.info(WORKFLOW_EVENTS.MESSAGE_SEND, socket.workflowId, message);
 
-    await chat.chatGRPC(workflowId, message);
+    await chat.chatGRPC(socket.workflowId, message);
   });
 };
 

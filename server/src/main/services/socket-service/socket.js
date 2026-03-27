@@ -23,7 +23,10 @@ export const socketInit = (server) => {
 
   io.on("connection", (socket) => {
     onlineUsers.addUser(socket.userId, socket.id);
-    logger.info(`User connected: ${socket.userId} ${socket.id}`);
+    logger.info("User Connected", {
+      userId: socket.userId,
+      socketId: socket.id,
+    });
 
     //! Init workflow socket
     workflowSocket(io, socket);
@@ -31,7 +34,10 @@ export const socketInit = (server) => {
     socket.on("disconnect", () => {
       onlineUsers.removeUserBySocketId(socket.id);
       removeWorkflowSocket(socket.id);
-      logger.info("User disconnected:", socket.userId, socket.id);
+      logger.info("User disconnected", {
+        userId: socket.userId,
+        socketId: socket.id,
+      });
     });
   });
 };
