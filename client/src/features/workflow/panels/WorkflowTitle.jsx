@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect, memo } from "react";
-import useDebounceSave from "../workflows-hooks/useDebounceSave.js";
 
-const WorkflowTitle = ({ title, workflowId }) => {
+const WorkflowTitle = ({ title }) => {
   const [workflowTitle, setWorkflowTitle] = useState(title);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
-
-  const debouncedSave = useDebounceSave(workflowId);
 
   useEffect(() => {
     if (isEditing) inputRef.current?.focus();
@@ -15,9 +12,7 @@ const WorkflowTitle = ({ title, workflowId }) => {
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setWorkflowTitle(value);
-    debouncedSave({
-      title: value,
-    });
+    //todo save the title using debounce
   };
 
   const handleKeyDown = (e) => {

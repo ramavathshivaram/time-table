@@ -1,23 +1,37 @@
 import MessageModel from "../models/message.model.js";
+import logger from "#configs/logger.js";
 
 const addMessage = async (workflowId, role, content) => {
-  console.log(workflowId);
   try {
     return await MessageModel.create({ workflowId, role, content });
   } catch (error) {
-    console.log(error);
+    logger.error("Error in addMessage", {
+      workflowId,
+      role,
+      error: error.message,
+    });
     return null;
   }
 };
 
 const workflowMessages = async (workflowId, page = 1, limit = 10) => {
-  const skip = (page - 1) * limit;
+  try {
+    const skip = (page - 1) * limit;
 
-  return MessageModel.find({ workflowId })
-    .sort({ createdAt: 1 })
-    .skip(skip)
-    .limit(limit)
-    .lean();
+    return await MessageModel.find({ workflowId })
+      .sort({ createdAt: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+  } catch (error) {
+    logger.error("Error in workflowMessages", {
+      workflowId,
+      page,
+      limit,
+      error: error.message,
+    });
+    return [];
+  }
 };
 
 export default { addMessage, workflowMessages };

@@ -14,3 +14,8 @@ export const sendMessageEmit = (message) => {
   logEmit(WORKFLOW_EVENTS.MESSAGE_SEND, message);
   socket.emit(WORKFLOW_EVENTS.MESSAGE_SEND, message);
 };
+
+export const getAllMessagesEmit = (page, limit, callback) => {
+  logEmit(WORKFLOW_EVENTS.MESSAGE_GET_ALL, null);
+  socket.emit(WORKFLOW_EVENTS.MESSAGE_GET_ALL, page, limit, callback);
+};

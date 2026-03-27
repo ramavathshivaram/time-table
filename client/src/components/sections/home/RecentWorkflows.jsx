@@ -1,27 +1,66 @@
 import { useGetRecentWorkflows } from "@/hooks/react-query/workflow.query.js";
 import React from "react";
-import WorkflowCard from "./WorkflowCard";
+import RecentWorkflowCard from "./RecentWorkflowCard";
 
 const RecentWorkflows = () => {
   const { data = [], isLoading, isError } = useGetRecentWorkflows();
 
-  if (isLoading) return <div className="text-sm">Loading...</div>;
+  if (isLoading) {
+    return (
+      <section className="space-y-4">
+        <div className="text-sm text-muted-foreground">
+          Loading workflows...
+        </div>
+      </section>
+    );
+  }
 
-  if (isError) return <div className="text-sm">Failed to load workflows</div>;
+  if (isError) {
+    return (
+      <div className="text-sm text-red-500">
+        Failed to load workflows
+      </div>
+    );
+  }
 
-  if (!data.length) return null;
+  if (!data.length) {
+    return (
+      <div className="text-sm text-muted-foreground">
+        No recent workflows
+      </div>
+    );
+  }
 
   return (
-    <section className="space-y-4">
+    <section
+      className="
+        space-y-5 surface-muted p-3
+      "
+    >
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Recent Workflows</h2>
+        <h2 className="text-lg font-semibold">
+          Recent Workflows
+        </h2>
 
-        <p className="text-sm text-muted-foreground">{data.length} recent</p>
+        <span className="
+          text-xs px-2 py-1 rounded-md
+          bg-surface-muted/10
+          text-muted-foreground
+        ">
+          {data.length} recent
+        </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      {/* Grid */}
+      <div className="
+        grid 
+        grid-cols-3 
+        xl:grid-cols-4 
+        gap-6
+      ">
         {data.map((workflow) => (
-          <WorkflowCard key={workflow._id} workflow={workflow} />
+          <RecentWorkflowCard key={workflow._id} workflow={workflow} />
         ))}
       </div>
     </section>

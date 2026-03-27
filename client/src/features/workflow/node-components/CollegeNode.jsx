@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { School } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
@@ -49,4 +49,4 @@ const CollegeNode = ({ data, isConnectable, selected }) => {
   );
 };
 
-export default CollegeNode;
+export default memo(CollegeNode);

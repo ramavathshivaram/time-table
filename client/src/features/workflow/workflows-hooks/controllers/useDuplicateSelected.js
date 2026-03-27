@@ -25,6 +25,7 @@ const useDuplicateSelected = ({ getNodes, getEdges }) => {
           y: node.position.y + 60,
         },
         selected: false,
+        _id: null,
       };
     });
 
@@ -38,6 +39,7 @@ const useDuplicateSelected = ({ getNodes, getEdges }) => {
         source: nodeIdMap.get(edge.source),
         target: nodeIdMap.get(edge.target),
         selected: false,
+        _id: null,
       }));
 
     nodeService.addNodes(duplicatedNodes);

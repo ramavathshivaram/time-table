@@ -6,13 +6,13 @@ import { cn } from "@/lib/utils.js";
 
 const links = [
   { name: "Home", path: "/home" },
-  { name: "Timetable", path: "/timetable" },
+  { name: "Templates", path: "/templates" },
   { name: "About", path: "/about" },
 ];
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-lg px-6 py-2 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400 bg-background/70 backdrop-blur-lg px-6 py-2 flex items-center justify-between">
       {/* Logo */}
       <NavLink
         to="/"
@@ -22,10 +22,7 @@ const Navbar = () => {
       </NavLink>
 
       {/* Navigation */}
-      <ul
-        className="hidden md:flex items-center gap-6 
-        text-sm font-medium"
-      >
+      <ul className="hidden md:flex items-center gap-6 text-sm font-medium surface-muted py-2 px-4">
         {links.map((link) => (
           <li key={link.path}>
             <NavLink

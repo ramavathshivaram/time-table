@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { memo } from "react";
 
 const GenerateTimeTable = () => {
   return (
@@ -9,4 +9,4 @@ const GenerateTimeTable = () => {
   );
 };
 
-export default GenerateTimeTable;
+export default memo(GenerateTimeTable);

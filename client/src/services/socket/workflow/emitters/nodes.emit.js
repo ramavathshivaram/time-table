@@ -15,22 +15,22 @@ export const addNodeEmit = (node) => {
   socket.emit(WORKFLOW_EVENTS.NODE_ADD, node);
 };
 
-export const removeNodeEmit = (workflowId, nodeId) => {
+export const removeNodeEmit = (nodeId) => {
   logEmit(WORKFLOW_EVENTS.NODE_REMOVE, nodeId);
-  socket.emit(WORKFLOW_EVENTS.NODE_REMOVE, workflowId, nodeId);
+  socket.emit(WORKFLOW_EVENTS.NODE_REMOVE, nodeId);
 };
 
-export const addNodesEmit = (workflowId, nodes) => {
+export const addNodesEmit = (nodes) => {
   logEmit(WORKFLOW_EVENTS.NODES_ADD, nodes);
-  socket.emit(WORKFLOW_EVENTS.NODES_ADD, workflowId, nodes);
+  socket.emit(WORKFLOW_EVENTS.NODES_ADD, nodes);
 };
 
-export const removeNodesEmit = (workflowId, nodeIds) => {
+export const removeNodesEmit = (nodeIds) => {
   logEmit(WORKFLOW_EVENTS.NODES_REMOVE, nodeIds);
-  socket.emit(WORKFLOW_EVENTS.NODES_REMOVE, workflowId, nodeIds);
+  socket.emit(WORKFLOW_EVENTS.NODES_REMOVE, nodeIds);
 };
 
-export const updateNodeEmit = (workflowId, nodeId, nodeData) => {
+export const updateNodeEmit = (nodeId, nodeData) => {
   logEmit(WORKFLOW_EVENTS.NODE_UPDATE, nodeData);
-  socket.emit(WORKFLOW_EVENTS.NODE_UPDATE, workflowId, nodeId, nodeData);
+  socket.emit(WORKFLOW_EVENTS.NODE_UPDATE, nodeId, nodeData);
 };

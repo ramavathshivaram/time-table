@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, FlaskConical, DoorOpen } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import useResourcesModalStore from "@/store/recources.modal.store";
 import useWorkflowStore from "@/store/workflow.store.js";
 
@@ -83,4 +83,4 @@ const Rooms = () => {
   );
 };
 
-export default Rooms;
+export default memo(Rooms);

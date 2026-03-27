@@ -136,6 +136,11 @@ const useWorkflowStore = create((set) => ({
     set((state) => ({
       messages: [...state.messages, message],
     })),
+
+  addMessagesLocal: (messages) =>
+    set((state) => ({
+      messages: [...state.messages, ...messages],
+    })),
 }));
 
 export default useWorkflowStore;

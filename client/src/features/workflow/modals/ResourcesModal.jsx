@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
@@ -57,4 +57,4 @@ const ResourcesModal = () => {
   );
 };
 
-export default ResourcesModal;
+export default memo(ResourcesModal);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -110,4 +110,4 @@ const YearModal = ({ activeNode, setNodes, closeModal }) => {
   );
 };
 
-export default YearModal;
+export default memo(YearModal);

@@ -2,7 +2,7 @@ import { generateSubjectId } from "@/lib/utils.js";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
 import subjectService from "@/services/workflow/subject.service.js";
 import useWorkflowStore from "@/store/workflow.store.js";
-import React from "react";
+import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -121,4 +121,4 @@ const SubjectModal = ({ closeModal }) => {
   );
 };
 
-export default SubjectModal;
+export default memo(SubjectModal);

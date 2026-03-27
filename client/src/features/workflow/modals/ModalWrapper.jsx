@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import useModalStore from "@/store/modal.store.js";
@@ -71,4 +71,4 @@ const ModalWrapper = () => {
   );
 };
 
-export default ModalWrapper;
+export default memo(ModalWrapper);

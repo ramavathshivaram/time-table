@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -120,4 +120,4 @@ const BranchModal = ({ activeNode, closeModal }) => {
   );
 };
 
-export default BranchModal;
+export default memo(BranchModal);

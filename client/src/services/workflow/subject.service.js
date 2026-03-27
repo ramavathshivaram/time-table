@@ -7,32 +7,21 @@ import {
 
 const subjectService = {
   addSubject(subject) {
-    const { workflowId } = useWorkflowStore.getState();
-    addSubjectEmit(workflowId, subject);
+    addSubjectEmit(subject);
 
-    useWorkflowStore.setState((state) => ({
-      subjects: [...state.subjects, subject],
-    }));
+    useWorkflowStore.getState().addSubjectLocal(subject);
   },
 
   removeSubject(subjectId) {
-    const { workflowId } = useWorkflowStore.getState();
-    removeSubjectEmit(workflowId, subjectId);
+    removeSubjectEmit(subjectId);
 
-    useWorkflowStore.setState((state) => ({
-      subjects: state.subjects.filter((s) => s.id !== subjectId),
-    }));
+    useWorkflowStore.getState().removeSubjectLocal(subjectId);
   },
 
   updateSubject(subjectId, subjectData) {
-    const { workflowId } = useWorkflowStore.getState();
-    updateSubjectEmit(workflowId, subjectId, subjectData);
+    updateSubjectEmit(subjectId, subjectData);
 
-    useWorkflowStore.setState((state) => ({
-      subjects: state.subjects.map((s) =>
-        s.id === subjectId ? subjectData : s
-      ),
-    }));
+    useWorkflowStore.getState().updateSubjectLocal(subjectId, subjectData);
   },
 };
 

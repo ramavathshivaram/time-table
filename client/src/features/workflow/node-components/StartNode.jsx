@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
@@ -41,4 +41,4 @@ const StartNode = ({ data, isConnectable, selected }) => {
   );
 };
 
-export default StartNode;
+export default memo(StartNode);

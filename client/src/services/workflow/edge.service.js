@@ -7,36 +7,25 @@ import {
 
 const edgeService = {
   addEdge(edge) {
-    const { workflowId } = useWorkflowStore.getState();
-    addEdgeEmit(workflowId, edge);
+    addEdgeEmit(edge);
 
-    useWorkflowStore.setState((state) => ({
-      edges: [...state.edges, edge],
-    }));
+    useWorkflowStore.getState().addEdgeLocal(edge);
   },
 
   addEdges(edges) {
-    const { workflowId } = useWorkflowStore.getState();
-    addEdgesEmit(workflowId, edges);
+    addEdgesEmit(edges);
 
-    useWorkflowStore.setState((state) => ({
-      edges: [...state.edges, ...edges],
-    }));
+    useWorkflowStore.getState().addEdgesLocal(edges);
   },
 
   removeEdge(edgeId) {
-    const { workflowId } = useWorkflowStore.getState();
-    removeEdgeEmit(workflowId, edgeId);
+    removeEdgeEmit(edgeId);
 
-    useWorkflowStore.setState((state) => ({
-      edges: state.edges.filter((e) => e.id !== edgeId),
-    }));
+    useWorkflowStore.getState().removeEdgeLocal(edgeId);
   },
 
   responseAdd(edge) {
-    useWorkflowStore.setState((state) => ({
-      edges: [...state.edges, edge],
-    }));
+    useWorkflowStore.getState().addEdgeLocal(edge);
   },
 };
 

@@ -124,6 +124,10 @@
   }
 }
 @layer utilities {
+  .surface-muted {
+    @apply dark:bg-gray-100/5 bg-gray-600/5 rounded-2xl shadow-2xs border border-border/20;
+  }
+
   .scrollbar {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;

@@ -1,6 +1,8 @@
 import { useGetWorkflows } from "@/hooks/react-query/workflow.query.js";
-import React from "react";
+import React, { useEffect } from "react";
 import WorkflowCard from "./WorkflowCard";
+import SearchBar from "./SearchBar";
+import { useInView } from "react-intersection-observer";
 
 const AllWorkflows = () => {
   const {
@@ -11,6 +13,16 @@ const AllWorkflows = () => {
     isFetchingNextPage,
     status,
   } = useGetWorkflows();
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
 
   if (status === "loading") {
     return (
@@ -36,6 +48,7 @@ const AllWorkflows = () => {
 
   return (
     <section className="space-y-4">
+      <SearchBar />
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">All Workflows</h2>
@@ -52,19 +65,9 @@ const AllWorkflows = () => {
             ))}
           </React.Fragment>
         ))}
-        <div>
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetching}
-          >
-            {isFetchingNextPage
-              ? "Loading more..."
-              : hasNextPage
-                ? "Load More"
-                : "Nothing more to load"}
-          </button>
-        </div>
-        <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
+      </div>
+      <div ref={ref}>
+        {isFetching && !isFetchingNextPage ? "Fetching..." : null}
       </div>
     </section>
   );

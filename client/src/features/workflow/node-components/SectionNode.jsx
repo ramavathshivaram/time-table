@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
 import nodeTypes from "../nodeTypes.js";
@@ -8,8 +8,6 @@ const SectionNode = ({ data, type, selected }) => {
   const connections = useNodeConnections({
     handleType: "target",
   });
-
-  console.log(data)
 
   const node = nodeTypes.find((n) => n.type === type) || {};
   const Icon = node.icon;
@@ -54,4 +52,4 @@ const SectionNode = ({ data, type, selected }) => {
   );
 };
 
-export default SectionNode;
+export default memo(SectionNode);

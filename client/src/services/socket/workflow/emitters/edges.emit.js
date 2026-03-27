@@ -10,22 +10,22 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-export const addEdgeEmit = (workflowId, edge) => {
+export const addEdgeEmit = (edge) => {
   logEmit(WORKFLOW_EVENTS.EDGE_ADD, edge);
-  socket.emit(WORKFLOW_EVENTS.EDGE_ADD, workflowId, edge);
+  socket.emit(WORKFLOW_EVENTS.EDGE_ADD, edge);
 };
 
-export const removeEdgeEmit = (workflowId, edgeId) => {
+export const removeEdgeEmit = (edgeId) => {
   logEmit(WORKFLOW_EVENTS.EDGE_REMOVE, edgeId);
-  socket.emit(WORKFLOW_EVENTS.EDGE_REMOVE, workflowId, edgeId);
+  socket.emit(WORKFLOW_EVENTS.EDGE_REMOVE, edgeId);
 };
 
-export const addEdgesEmit = (workflowId, edges) => {
+export const addEdgesEmit = (edges) => {
   logEmit(WORKFLOW_EVENTS.EDGES_ADD, edges);
-  socket.emit(WORKFLOW_EVENTS.EDGES_ADD, workflowId, edges);
+  socket.emit(WORKFLOW_EVENTS.EDGES_ADD, edges);
 };
 
-export const removeEdgesEmit = (workflowId, edgeIds) => {
+export const removeEdgesEmit = (edgeIds) => {
   logEmit(WORKFLOW_EVENTS.EDGES_REMOVE, edgeIds);
-  socket.emit(WORKFLOW_EVENTS.EDGES_REMOVE, workflowId, edgeIds);
+  socket.emit(WORKFLOW_EVENTS.EDGES_REMOVE, edgeIds);
 };

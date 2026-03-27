@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -161,4 +161,4 @@ const CollegeModal = ({ activeNode, setNodes, closeModal }) => {
   );
 };
 
-export default CollegeModal;
+export default memo(CollegeModal);

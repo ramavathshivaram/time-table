@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Handle, Position } from "@xyflow/react";
-import React from "react";
+import React, { memo } from "react";
 import nodeTypes from "../nodeTypes.js";
 import { cn } from "@/lib/utils.js";
 
@@ -59,4 +59,4 @@ const DefaultNode = ({ data, isConnectable, type, selected }) => {
   );
 };
 
-export default DefaultNode;
+export default memo(DefaultNode);

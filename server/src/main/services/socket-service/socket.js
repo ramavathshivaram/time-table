@@ -2,10 +2,11 @@ import { Server } from "socket.io";
 import onlineUsers from "./onlineUsers.js";
 import socketAuthMiddleware from "./middlewares/socketAuthMiddleware.js";
 
+import logger from "#configs/logger.js";
+import socketLogger from "./middlewares/socketLogger.js";
 import workflowSocket from "./workflow/workflow.socket.js";
 import getWorkflowIdFromCookie from "./middlewares/getWorkflowIdCookie.js";
 import { removeWorkflowSocket } from "./workflow/workflow.socket.store.js";
-import logger from "#configs/logger.js";
 
 let io;
 
@@ -18,6 +19,7 @@ export const socketInit = (server) => {
     },
   });
 
+  io.use(socketLogger);
   io.use(socketAuthMiddleware);
   io.use(getWorkflowIdFromCookie);
 

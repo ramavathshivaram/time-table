@@ -10,23 +10,21 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-
-
-export const addSubjectEmit = (workflowId, subject) => {
+export const addSubjectEmit = (subject) => {
   logEmit(WORKFLOW_EVENTS.SUBJECT_ADD, subject);
-  socket.emit(WORKFLOW_EVENTS.SUBJECT_ADD, workflowId, subject);
+  socket.emit(WORKFLOW_EVENTS.SUBJECT_ADD, subject);
 };
 
-export const removeSubjectEmit = (workflowId, subjectId) => {
+export const removeSubjectEmit = (subjectId) => {
   logEmit(WORKFLOW_EVENTS.SUBJECT_REMOVE, subjectId);
-  socket.emit(WORKFLOW_EVENTS.SUBJECT_REMOVE, workflowId, subjectId);
+  socket.emit(WORKFLOW_EVENTS.SUBJECT_REMOVE, subjectId);
 };
 
-export const updateSubjectEmit = (workflowId, subjectId, subjectData) => {
+export const updateSubjectEmit = (subjectId, subjectData) => {
   logEmit(WORKFLOW_EVENTS.SUBJECT_UPDATE, subjectData);
   socket.emit(
     WORKFLOW_EVENTS.SUBJECT_UPDATE,
-    workflowId,
+
     subjectId,
     subjectData,
   );

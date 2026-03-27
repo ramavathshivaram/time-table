@@ -10,6 +10,7 @@ import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 import useWorkflowStore from "@/store/workflow.store.js";
 import nodeService from "@/services/workflow/node.service.js";
 import edgeService from "@/services/workflow/edge.service.js";
+import useNodeUpdateDebounce from "./useNodeUpdateDebounce.js";
 
 const NODE_WIDTH = 150;
 const NODE_HEIGHT = 80;
@@ -23,33 +24,35 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
   const edges = useWorkflowStore((s) => s.edges);
   const setEdges = useWorkflowStore((s) => s.setEdges);
 
+  const nodeUpdateDebounce = useNodeUpdateDebounce();
+
   const { screenToFlowPosition } = useReactFlow();
 
   const onNodesChange = useCallback(
     (changes) => {
-      console.log(changes);
-
+      // console.log(changes);
       for (let change of changes) {
         switch (change.type) {
           case "remove":
-            console.log("remove");
             nodeService.removeNode(change.id);
+            break;
+          case "position":
+            // use debounce to avoid sending too many position updates to the server
+            nodeUpdateDebounce(change.id, change.position);
+            break;
         }
       }
 
       setNodes(applyNodeChanges(changes, nodes));
     },
-    [setNodes, nodes],
+    [setNodes, nodes, nodeUpdateDebounce],
   );
 
   const onEdgesChange = useCallback(
     (changes) => {
-      console.log(changes);
-
       for (let change of changes) {
         switch (change.type) {
           case "remove":
-            console.log("remove");
             edgeService.removeEdge(change.id);
         }
       }

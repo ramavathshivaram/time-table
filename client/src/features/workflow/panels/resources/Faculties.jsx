@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import useResourcesModalStore from "@/store/recources.modal.store";
 import useWorkflowStore from "@/store/workflow.store.js";
 import { Plus, BookOpen } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 
 const Faculties = () => {
   const [search, setSearch] = useState("");
@@ -65,4 +65,4 @@ const Faculties = () => {
   );
 };
 
-export default Faculties;
+export default memo(Faculties);

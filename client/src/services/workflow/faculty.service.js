@@ -7,32 +7,21 @@ import {
 
 const facultyService = {
   addFaculty(faculty) {
-    const { workflowId } = useWorkflowStore.getState();
-    addFacultyEmit(workflowId, faculty);
+    addFacultyEmit(faculty);
 
-    useWorkflowStore.setState((state) => ({
-      faculties: [...state.faculties, faculty],
-    }));
+    useWorkflowStore.getState().addFacultyLocal(faculty);
   },
 
   removeFaculty(facultyId) {
-    const { workflowId } = useWorkflowStore.getState();
-    removeFacultyEmit(workflowId, facultyId);
+    removeFacultyEmit(facultyId);
 
-    useWorkflowStore.setState((state) => ({
-      faculties: state.faculties.filter((f) => f.id !== facultyId),
-    }));
+    useWorkflowStore.getState().removeFacultyLocal(facultyId);
   },
 
   updateFaculty(facultyId, facultyData) {
-    const { workflowId } = useWorkflowStore.getState();
-    updateFacultyEmit(workflowId, facultyId, facultyData);
+    updateFacultyEmit(facultyId, facultyData);
 
-    useWorkflowStore.setState((state) => ({
-      faculties: state.faculties.map((f) =>
-        f.id === facultyId ? facultyData : f
-      ),
-    }));
+    useWorkflowStore.getState().updateFacultyLocal(facultyId, facultyData);
   },
 };
 

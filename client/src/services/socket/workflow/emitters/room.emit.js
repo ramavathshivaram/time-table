@@ -10,18 +10,17 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-
-export const addRoomEmit = (workflowId, room) => {
+export const addRoomEmit = (room) => {
   logEmit(WORKFLOW_EVENTS.ROOM_ADD, room);
-  socket.emit(WORKFLOW_EVENTS.ROOM_ADD, workflowId, room);
+  socket.emit(WORKFLOW_EVENTS.ROOM_ADD, room);
 };
 
-export const removeRoomEmit = (workflowId, roomId) => {
+export const removeRoomEmit = (roomId) => {
   logEmit(WORKFLOW_EVENTS.ROOM_REMOVE, roomId);
-  socket.emit(WORKFLOW_EVENTS.ROOM_REMOVE, workflowId, roomId);
+  socket.emit(WORKFLOW_EVENTS.ROOM_REMOVE, roomId);
 };
 
-export const updateRoomEmit = (workflowId, roomId, roomData) => {
+export const updateRoomEmit = (roomId, roomData) => {
   logEmit(WORKFLOW_EVENTS.ROOM_UPDATE, roomData);
-  socket.emit(WORKFLOW_EVENTS.ROOM_UPDATE, workflowId, roomId, roomData);
+  socket.emit(WORKFLOW_EVENTS.ROOM_UPDATE, roomId, roomData);
 };

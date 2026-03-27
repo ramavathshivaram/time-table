@@ -3,7 +3,7 @@ import { Workflow, ArrowRight, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
-const WorkflowCard = ({ workflow }) => {
+const RecentWorkflowCard = ({ workflow }) => {
   const navigate = useNavigate();
 
   const createdAgo = formatDistanceToNow(new Date(workflow.createdAt), {
@@ -16,25 +16,26 @@ const WorkflowCard = ({ workflow }) => {
       className="
         group relative overflow-hidden
         rounded-2xl border border-border/50
-        surface-muted backdrop-blur-sm
+        bg-surface-muted/5 backdrop-blur-sm
         p-5
         transition-all duration-300
-        hover:-translate-y-1 hover:shadow-lg
+        hover:shadow-lg hover:-translate-y-1
         cursor-pointer
       "
     >
-      {/* Hover Glow */}
+      {/* Glow Hover Effect */}
       <div
         className="
         absolute inset-0 opacity-0 group-hover:opacity-100
+        transition duration-300
         bg-gradient-to-br from-white/5 to-transparent
-        transition
         pointer-events-none
       "
       />
 
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      {/* Top Section */}
+      <div className="flex items-start justify-between">
+        {/* Left */}
         <div className="flex items-center gap-3">
           <div
             className="
@@ -47,12 +48,15 @@ const WorkflowCard = ({ workflow }) => {
             <Workflow size={18} />
           </div>
 
-          <h2 className="text-base font-semibold line-clamp-1">
-            {workflow.title}
-          </h2>
+          <div>
+            <h2 className="text-base font-semibold leading-tight line-clamp-1">
+              {workflow.title}
+            </h2>
+            <p className="text-xs text-muted-foreground">Workflow</p>
+          </div>
         </div>
 
-        {/* Actions (hover only) */}
+        {/* Right Actions */}
         <div
           className="
           flex items-center gap-2
@@ -67,7 +71,8 @@ const WorkflowCard = ({ workflow }) => {
             }}
             className="
               p-2 rounded-lg
-              hover:bg-red-500/10 hover:text-red-500
+              hover:bg-red-500/10
+              hover:text-red-500
               transition
             "
           >
@@ -76,25 +81,13 @@ const WorkflowCard = ({ workflow }) => {
         </div>
       </div>
 
-      {/* Dates */}
-      <div className="text-xs text-muted-foreground space-y-1">
-        <p>Created:{createdAgo}</p>
-      </div>
-
-      {/* Footer */}
+      {/* Bottom subtle info */}
       <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-        <span>ID: {workflow._id.slice(-6)}</span>
-
-        <span className="flex items-center gap-1 group-hover:gap-2 transition-all">
-          Open
-          <ArrowRight
-            size={14}
-            className="transition-transform group-hover:translate-x-1"
-          />
-        </span>
+        <span>{createdAgo.replace("about", "")}</span>
+        <span>Open →</span>
       </div>
     </div>
   );
 };
 
-export default WorkflowCard;
+export default RecentWorkflowCard;

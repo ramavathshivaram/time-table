@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -119,4 +119,4 @@ const SectionModal = ({ activeNode, setNodes, closeModal }) => {
   );
 };
 
-export default SectionModal;
+export default memo(SectionModal);

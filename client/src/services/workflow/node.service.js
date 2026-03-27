@@ -14,28 +14,28 @@ const nodeService = {
   },
 
   addNodes(nodes) {
-    const { workflowId } = useWorkflowStore.getState();
-    addNodesEmit(workflowId, nodes);
-
+    addNodesEmit(nodes);
     useWorkflowStore.getState().addNodesLocal(nodes);
   },
 
   removeNode(nodeId) {
-    const { workflowId } = useWorkflowStore.getState();
-    removeNodeEmit(workflowId, nodeId);
+    removeNodeEmit(nodeId);
 
     useWorkflowStore.getState().removeNodeLocal(nodeId);
   },
 
   updateNode(nodeId, nodeData) {
-    const { workflowId } = useWorkflowStore.getState();
-    updateNodeEmit(workflowId, nodeId, nodeData);
+    updateNodeEmit(nodeId, nodeData);
 
     useWorkflowStore.getState().updateNodeLocal(nodeId, nodeData);
   },
 
   responseAdd(node) {
     useWorkflowStore.getState().addNodeLocal(node);
+  },
+
+  updateNodePosition(nodeId, position) {
+    updateNodeEmit(nodeId, { position });
   },
 };
 

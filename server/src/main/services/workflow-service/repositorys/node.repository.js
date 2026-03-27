@@ -1,57 +1,104 @@
 import NodeModel from "../models/node.model.js";
+import logger from "#configs/logger.js";
 
 const getNode = async (workflowId, nodeId) => {
-  const node = await NodeModel.findOne({
-    workflowId,
-    id: nodeId,
-  });
+  try {
+    const node = await NodeModel.findOne({
+      workflowId,
+      id: nodeId,
+    });
 
-  return node || null;
+    return node || null;
+  } catch (error) {
+    logger.error("Error in getNode", {
+      workflowId,
+      nodeId,
+      error: error.message,
+    });
+    return null;
+  }
 };
 
 const getNodes = async (workflowId) => {
-  return NodeModel.find({ workflowId });
+  try {
+    return await NodeModel.find({ workflowId });
+  } catch (error) {
+    logger.error("Error in getNodes", {
+      workflowId,
+      error: error.message,
+    });
+    return [];
+  }
 };
 
 const addNode = async (workflowId, node) => {
-  return NodeModel.create({
-    ...node,
-    workflowId,
-  });
+  try {
+    return await NodeModel.create({
+      ...node,
+      workflowId,
+    });
+  } catch (error) {
+    logger.error("Error in addNode", {
+      workflowId,
+      node,
+      error: error.message,
+    });
+    return null;
+  }
 };
 
 const addNodes = async (workflowId, nodes) => {
-  const docs = nodes.map((node) => ({
-    ...node,
-    workflowId,
-  }));
+  try {
+    const docs = nodes.map((node) => ({
+      ...node,
+      workflowId,
+    }));
 
-  return NodeModel.insertMany(docs);
+    return await NodeModel.insertMany(docs);
+  } catch (error) {
+    logger.error("Error in addNodes", {
+      workflowId,
+      nodesCount: nodes?.length,
+      error: error.message,
+    });
+    return [];
+  }
 };
 
-
 const removeNode = async (workflowId, nodeId) => {
-  return NodeModel.deleteOne({
-    workflowId,
-    id: nodeId,
-  });
+  try {
+    return await NodeModel.deleteOne({
+      workflowId,
+      id: nodeId,
+    });
+  } catch (error) {
+    logger.error("Error in removeNode", {
+      workflowId,
+      nodeId,
+      error: error.message,
+    });
+    return null;
+  }
 };
 
 const updateNode = async (workflowId, nodeId, updateFields) => {
-  const setQuery = {};
-
-  for (const key in updateFields) {
-    setQuery[key] = updateFields[key];
-  }
-
-  return NodeModel.findOneAndUpdate(
-    {
+  try {
+    return await NodeModel.findOneAndUpdate(
+      {
+        workflowId,
+        id: nodeId,
+      },
+      { ...updateFields },
+    );
+  } catch (error) {
+    logger.error("Error in updateNode", {
       workflowId,
-      id: nodeId,
-    },
-    { $set: setQuery },
-    { new: true, runValidators: true }
-  );
+      nodeId,
+      updateFields,
+      error: error.message,
+    });
+    return null;
+  }
 };
 
 export default {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -180,4 +180,4 @@ const WorkflowControls = () => {
   );
 };
 
-export default WorkflowControls;
+export default memo(WorkflowControls);

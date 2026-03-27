@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, FlaskConical, BookOpen } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 
 import useResourcesModalStore from "@/store/recources.modal.store";
 import useWorkflowStore from "@/store/workflow.store.js";
@@ -82,4 +82,4 @@ const Subjects = () => {
   );
 };
 
-export default Subjects;
+export default memo(Subjects);

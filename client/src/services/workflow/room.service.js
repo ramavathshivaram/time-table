@@ -7,32 +7,21 @@ import {
 
 const roomService = {
   addRoom(room) {
-    const { workflowId } = useWorkflowStore.getState();
-    addRoomEmit(workflowId, room);
+    addRoomEmit(room);
 
-    useWorkflowStore.setState((state) => ({
-      rooms: [...state.rooms, room],
-    }));
+    useWorkflowStore.getState().addRoomLocal(room);
   },
 
   removeRoom(roomId) {
-    const { workflowId } = useWorkflowStore.getState();
-    removeRoomEmit(workflowId, roomId);
+    removeRoomEmit(roomId);
 
-    useWorkflowStore.setState((state) => ({
-      rooms: state.rooms.filter((r) => r.id !== roomId),
-    }));
+    useWorkflowStore.getState().removeRoomLocal(roomId);
   },
 
   updateRoom(roomId, roomData) {
-    const { workflowId } = useWorkflowStore.getState();
-    updateRoomEmit(workflowId, roomId, roomData);
+    updateRoomEmit(roomId, roomData);
 
-    useWorkflowStore.setState((state) => ({
-      rooms: state.rooms.map((r) =>
-        r.id === roomId ? roomData : r
-      ),
-    }));
+    useWorkflowStore.getState().updateRoomLocal(roomId, roomData);
   },
 };
 

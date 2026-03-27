@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useResourcesModalStore from "@/store/recources.modal.store.js";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { Trash2, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { generateFacultyId } from "@/lib/utils";
@@ -209,4 +209,4 @@ const FacultyModal = ({ closeModal }) => {
   );
 };
 
-export default FacultyModal;
+export default memo(FacultyModal);

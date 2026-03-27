@@ -41,4 +41,5 @@ export const WORKFLOW_EVENTS = {
 
   MESSAGE_SEND: "message:send",
   MESSAGE_RESPONSE: "message:response",
+  MESSAGE_GET_ALL: "message:get:all",
 };

@@ -10,21 +10,21 @@ const logEmit = (event, payload) => {
   console.groupEnd();
 };
 
-export const addFacultyEmit = (workflowId, faculty) => {
+export const addFacultyEmit = (faculty) => {
   logEmit(WORKFLOW_EVENTS.FACULTY_ADD, faculty);
-  socket.emit(WORKFLOW_EVENTS.FACULTY_ADD, workflowId, faculty);
+  socket.emit(WORKFLOW_EVENTS.FACULTY_ADD, faculty);
 };
 
-export const removeFacultyEmit = (workflowId, facultyId) => {
+export const removeFacultyEmit = (facultyId) => {
   logEmit(WORKFLOW_EVENTS.FACULTY_REMOVE, facultyId);
-  socket.emit(WORKFLOW_EVENTS.FACULTY_REMOVE, workflowId, facultyId);
+  socket.emit(WORKFLOW_EVENTS.FACULTY_REMOVE, facultyId);
 };
 
-export const updateFacultyEmit = (workflowId, facultyId, facultyData) => {
+export const updateFacultyEmit = (facultyId, facultyData) => {
   logEmit(WORKFLOW_EVENTS.FACULTY_UPDATE, facultyData);
   socket.emit(
     WORKFLOW_EVENTS.FACULTY_UPDATE,
-    workflowId,
+
     facultyId,
     facultyData,
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,4 +48,4 @@ const PromptInput = () => {
   );
 };
 
-export default PromptInput;
+export default memo(PromptInput);

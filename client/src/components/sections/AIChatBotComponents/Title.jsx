@@ -1,5 +1,5 @@
 import { Bot, X } from "lucide-react";
-import React from "react";
+import React, { memo } from "react";
 
 const Title = ({ setIsChatbotOpen }) => {
   return (
@@ -19,4 +19,4 @@ const Title = ({ setIsChatbotOpen }) => {
   );
 };
 
-export default Title;
+export default memo(Title);

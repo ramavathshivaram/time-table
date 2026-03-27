@@ -27,7 +27,7 @@ const nodeSchema = new mongoose.Schema({
 
   data: {
     label: { type: String, required: true },
-    type: { type: String, required: true },
+    type: { type: String },
   },
 });
 

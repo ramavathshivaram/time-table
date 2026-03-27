@@ -1,6 +1,6 @@
 import useResourcesModalStore from "@/store/recources.modal.store.js";
 import roomService from "@/services/workflow/room.service.js";
-import React from "react";
+import React, { memo } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -127,4 +127,4 @@ const RoomModal = ({ closeModal }) => {
   );
 };
 
-export default RoomModal;
+export default memo(RoomModal);
