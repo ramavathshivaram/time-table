@@ -15,10 +15,11 @@ const messageService = {
     useWorkflowStore.getState().addMessageLocal(message);
   },
 
-  getAllMessages(page, limit) {
-    getAllMessagesEmit(page, limit, (messages) =>
-      useWorkflowStore.getState().addMessagesLocal(messages),
-    );
+  getAllMessages(page, limit, callback) {
+    getAllMessagesEmit(page, limit, (messages, hasMore) => {
+      useWorkflowStore.getState().addMessagesLocal(messages);
+      callback(hasMore);
+    });
   },
 };
 

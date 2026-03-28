@@ -76,14 +76,9 @@ const WorkflowCard = ({ workflow }) => {
         </div>
       </div>
 
-      {/* Dates */}
-      <div className="text-xs text-muted-foreground space-y-1">
-        <p>Created:{createdAgo}</p>
-      </div>
-
       {/* Footer */}
       <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-        <span>ID: {workflow._id.slice(-6)}</span>
+        <span>{createdAgo.replace("about", "")}</span>
 
         <span className="flex items-center gap-1 group-hover:gap-2 transition-all">
           Open

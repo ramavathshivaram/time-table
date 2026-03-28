@@ -1,7 +1,7 @@
 import api from "../axios.js";
 
-export const getWorkflowsApi = async ({ pageParam = 0 }) => {
-  const res = await api.get("/workflow?pageParam=" + pageParam);
+export const getWorkflowsApi = async ({ pageParam = 0, query }) => {
+  const res = await api.get(`/workflow?pageParam=${pageParam}&query=${query}`);
   return res.data.data;
 };
 

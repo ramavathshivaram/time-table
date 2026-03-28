@@ -12,10 +12,10 @@ import {
   getRecentWorkflowsApi,
 } from "@/lib/apis/workflow.api.js";
 
-export const useGetWorkflows = () => {
+export const useGetWorkflows = (query) => {
   return useInfiniteQuery({
-    queryKey: ["workflows"],
-    queryFn: getWorkflowsApi,
+    queryKey: ["workflows", query],
+    queryFn: ({ pageParam = 0 }) => getWorkflowsApi({ pageParam, query }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       if (lastPage.length === 0) return undefined;

@@ -1,11 +1,11 @@
 import RecentWorkflows from "@/components/sections/home/RecentWorkflows";
-import AllWorkflows from "@/components/sections/home/AllWorkflows";
+import WorkflowsPage from "@/components/sections/home/WorkflowsPage";
 
 const Home = () => {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <RecentWorkflows />
-      <AllWorkflows />
+      <WorkflowsPage />
     </div>
   );
 };

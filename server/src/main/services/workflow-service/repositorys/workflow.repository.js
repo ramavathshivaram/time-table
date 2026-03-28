@@ -2,10 +2,21 @@ import mongoose from "mongoose";
 import workflowModel from "../models/workflow.model.js";
 
 const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
-  const { skip = 0, limit = 10, sort = { title: 1 } } = options;
+  const {
+    skip = 0,
+    limit = 10,
+    query = "",
+    sort = { createdAt: -1 },
+  } = options;
+
+  const filters = { userId };
+
+  if (query) {
+    filters.title = { $regex: query, $options: "i" };
+  }
 
   return workflowModel
-    .find({ userId })
+    .find(filters)
     .select("title createdAt updatedAt _id")
     .sort(sort)
     .skip(skip)

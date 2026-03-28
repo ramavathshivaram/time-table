@@ -7,6 +7,7 @@ import messageController from "#services/workflow-service/controllers/message.co
 
 export const chat = async (workflowId, message) => {
   try {
+    logger.info("chat called", { workflowId, message });
     const response = await chatAgent.invoke({
       messages: [
         new SystemMessage(SYSTEM_PROMPT({ workflowId })),
@@ -27,6 +28,7 @@ export const chat = async (workflowId, message) => {
       role: "assistant",
       content: lastMessage.content,
     });
+    logger.info("chat response", { workflowId, response: lastMessage.content });
   } catch (error) {
     logger.error("Chat error:", error);
 

@@ -10,12 +10,12 @@ const messageSocket = (io, socket) => {
   });
 
   socket.on(WORKFLOW_EVENTS.MESSAGE_GET_ALL, async (page, limit, callback) => {
-    const messages = await messageController.getAllMessagesGRPC(
+    const { messages, hasMore } = await messageController.getAllMessagesGRPC(
       socket.workflowId,
       page,
       limit,
     );
-    callback(messages);
+    callback(messages, hasMore);
   });
 };
 

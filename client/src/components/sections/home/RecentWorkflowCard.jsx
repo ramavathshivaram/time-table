@@ -16,8 +16,7 @@ const RecentWorkflowCard = ({ workflow }) => {
       className="
         group relative overflow-hidden
         rounded-2xl border border-border/50
-        bg-surface-muted/5 backdrop-blur-sm
-        p-5
+        bg-surface-muted/5 backdrop-blur-sm p-2.5
         transition-all duration-300
         hover:shadow-lg hover:-translate-y-1
         cursor-pointer
@@ -36,10 +35,10 @@ const RecentWorkflowCard = ({ workflow }) => {
       {/* Top Section */}
       <div className="flex items-start justify-between">
         {/* Left */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <div
             className="
-            p-2.5 rounded-xl
+            p-2 rounded-xl
             bg-surface-muted/10
             group-hover:bg-surface-muted/20
             transition

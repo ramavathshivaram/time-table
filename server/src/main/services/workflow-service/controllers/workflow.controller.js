@@ -33,12 +33,13 @@ const getAllUserWorkflows = asyncHandler(async (req, res) => {
 
   const page = Number(req.query.pageParam) || 0;
   const limit = Number(req.query.limit) || 10;
+  const query = req.query.query || "";
 
   const skip = page * limit;
 
   const workflows = await workflowRepository.getAllUserWorkflowsByUserId(
     userId,
-    { skip, limit },
+    { skip, limit, query },
   );
 
   return res.status(200).json({

@@ -16,51 +16,37 @@ const RecentWorkflows = () => {
   }
 
   if (isError) {
-    return (
-      <div className="text-sm text-red-500">
-        Failed to load workflows
-      </div>
-    );
+    return <div className="text-sm text-red-500">Failed to load workflows</div>;
   }
 
   if (!data.length) {
     return (
-      <div className="text-sm text-muted-foreground">
-        No recent workflows
-      </div>
+      <div className="text-sm text-muted-foreground">No recent workflows</div>
     );
   }
 
   return (
-    <section
-      className="
-        space-y-5 surface-muted p-3
-      "
-    >
+    <section className="space-y-5 surface-muted p-3 rounded-xl">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">
-          Recent Workflows
-        </h2>
+        <h2 className="text-lg font-semibold">Recent Workflows</h2>
 
-        <span className="
-          text-xs px-2 py-1 rounded-md
-          bg-surface-muted/10
-          text-muted-foreground
-        ">
+        <span className="text-xs px-2 rounded-md bg-surface-muted/10 text-muted-foreground">
           {data.length} recent
         </span>
       </div>
 
       {/* Grid */}
-      <div className="
-        grid 
-        grid-cols-3 
-        xl:grid-cols-4 
-        gap-6
-      ">
+      <div
+        className="
+          flex gap-2 overflow-x-auto pb-2 scrollbar
+          snap-x snap-mandatory 
+        "
+      >
         {data.map((workflow) => (
-          <RecentWorkflowCard key={workflow._id} workflow={workflow} />
+          <div key={workflow._id} className="snap-start shrink-0">
+            <RecentWorkflowCard workflow={workflow} />
+          </div>
         ))}
       </div>
     </section>

@@ -18,11 +18,25 @@ const workflowMessages = async (workflowId, page = 1, limit = 10) => {
   try {
     const skip = (page - 1) * limit;
 
-    return await MessageModel.find({ workflowId })
-      .sort({ createdAt: 1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    // 🔥 run queries in parallel (faster)
+    const [messages, total] = await Promise.all([
+      MessageModel.find({ workflowId })
+        .sort({ createdAt: 1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      MessageModel.countDocuments({ workflowId }),
+    ]);
+
+    const hasMore = skip + messages.length < total;
+
+    return {
+      messages,
+      hasMore,
+      total,
+      page,
+    };
   } catch (error) {
     logger.error("Error in workflowMessages", {
       workflowId,
@@ -30,7 +44,13 @@ const workflowMessages = async (workflowId, page = 1, limit = 10) => {
       limit,
       error: error.message,
     });
-    return [];
+
+    return {
+      messages: [],
+      hasMore: false,
+      total: 0,
+      page,
+    };
   }
 };
 
