@@ -37,6 +37,7 @@ services:
     depends_on:
       - redis
     networks:
+      - public-network
       - private-network
 
   redis:
