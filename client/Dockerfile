@@ -13,7 +13,7 @@ RUN npm run build
 # RUN THE APP
 FROM nginx:alpine
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm -rf /etc/nginx/conf.d/*
 
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
