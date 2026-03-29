@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 const RecentWorkflowCard = ({ workflow }) => {
   const navigate = useNavigate();
 
-  const createdAgo = formatDistanceToNow(new Date(workflow.createdAt), {
+  const createdAgo = formatDistanceToNow(new Date(workflow.updatedAt), {
     addSuffix: true,
   });
 

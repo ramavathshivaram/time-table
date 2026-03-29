@@ -14,6 +14,7 @@ const ForgotPassword = lazy(
 );
 
 const Home = lazy(() => import("./pages/Home"));
+const Templates = lazy(() => import("./pages/Templates"));
 const Workflow = lazy(() => import("./pages/Workflow"));
 const Landing = lazy(() => import("./pages/Landing"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -34,6 +35,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<RootLayout />}>
               <Route path="/home" element={<Home />} />
+              <Route path="/templates" element={<Templates />} />
             </Route>
 
             <Route path="/workflow/:workflowId" element={<Workflow />} />

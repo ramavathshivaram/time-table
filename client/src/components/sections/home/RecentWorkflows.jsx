@@ -40,11 +40,11 @@ const RecentWorkflows = () => {
       <div
         className="
           flex gap-2 overflow-x-auto pb-2 scrollbar
-          snap-x snap-mandatory 
+          snap-x snap-mandatory -mt-3
         "
       >
         {data.map((workflow) => (
-          <div key={workflow._id} className="snap-start shrink-0">
+          <div key={workflow._id} className="snap-start shrink-0 pt-1">
             <RecentWorkflowCard workflow={workflow} />
           </div>
         ))}

@@ -132,18 +132,7 @@ const CollegeModal = ({ activeNode, setNodes, closeModal }) => {
                 </SelectContent>
               </Select>
             </Field>
-
-            {/* Number of Branches */}
-            <Field>
-              <FieldLabel htmlFor="branches">Number of Branches</FieldLabel>
-              <Input
-                id="branches"
-                type="number"
-                placeholder="10"
-                {...register("branches")}
-              />
-            </Field>
-
+            
             {/* Buttons */}
             <Field
               orientation="horizontal"

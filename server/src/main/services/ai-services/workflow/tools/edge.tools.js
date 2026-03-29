@@ -1,7 +1,7 @@
 import { edgeController } from "#services/workflow-service/routes/workflow.grpc.js";
 import { tool } from "langchain";
 import { z } from "zod";
-import { generateEdgeId } from "../../libs/workflow.lib.js";
+import { generateEdgeId } from "../libs/workflow.lib.js";
 import logger from "#configs/logger.js";
 
 import {

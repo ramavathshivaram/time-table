@@ -7,7 +7,7 @@ const rateLimiter = new RateLimiterRedis({
   storeClient: redis,
   points: 100, // requests
   duration: 60, // per minute
-  blockDuration: 60,
+  blockDuration: 30,
 });
 
 const rateLimiterMiddleware = asyncHandler(async (req, res, next) => {

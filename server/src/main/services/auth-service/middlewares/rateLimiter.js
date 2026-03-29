@@ -5,9 +5,9 @@ import ApiError from "#shared/utils/ApiError.js";
 
 export const authLimiter = new RateLimiterRedis({
   storeClient: redis,
-  points: 5,
+  points: 10,
   duration: 60,
-  blockDuration: 300,
+  blockDuration: 100,
   execEvenly: true,
 });
 
@@ -15,7 +15,7 @@ export const otpLimiter = new RateLimiterRedis({
   storeClient: redis,
   points: 5,
   duration: 300,
-  blockDuration: 600,
+  blockDuration: 300,
   execEvenly: true,
 });
 

@@ -58,6 +58,12 @@ getRoom
 addRoom
 updateRoom
 removeRoom
+---------------------------------
+Each tool returns:
+
+- status: "success" or "error"
+- result: structured data
+- summary: human-readable message
 
 AGENT REASONING PROCESS
 -----------------------

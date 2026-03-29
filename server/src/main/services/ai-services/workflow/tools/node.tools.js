@@ -1,7 +1,7 @@
 import { nodeController } from "#services/workflow-service/routes/workflow.grpc.js";
 import { tool } from "langchain";
 import { z } from "zod";
-import { generateNodeId } from "../../libs/workflow.lib.js";
+import { generateNodeId } from "../libs/workflow.lib.js";
 import logger from "#configs/logger.js";
 
 import {
@@ -31,6 +31,7 @@ const addNodeTool = tool(
         success: true,
         action: "node_added",
         node: newNode,
+        message: `Node "${newNode.data.label}" created successfully`,
       };
     } catch (error) {
       logger.error("add node tool error:", error);

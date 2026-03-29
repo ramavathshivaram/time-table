@@ -1,7 +1,7 @@
 import { facultyController } from "#services/workflow-service/routes/workflow.grpc.js";
 import { tool } from "langchain";
 import { z } from "zod";
-import { generateFacultyId } from "../../libs/workflow.lib.js";
+import { generateFacultyId } from "../libs/workflow.lib.js";
 import logger from "#configs/logger.js";
 
 import {
