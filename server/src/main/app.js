@@ -52,14 +52,14 @@ app.get("/health", async (req, res) => {
 });
 
 //! Auth Routes
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 //! User Routes
-app.use("/user", authenticate, userRouter);
-app.use("/notifications", authenticate, notificationRouter);
+app.use("/api/user", authenticate, userRouter);
+app.use("/api/notifications", authenticate, notificationRouter);
 
 //! Workflow Routes
-app.use("/workflow", authenticate, workflowRouter);
+app.use("/api/workflow", authenticate, workflowRouter);
 
 //! Route not found
 app.use(notFoundRoute);

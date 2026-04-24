@@ -15,9 +15,9 @@ FROM nginx:alpine
 
 RUN rm -rf /etc/nginx/conf.d/*
 
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-
 RUN rm -rf /usr/share/nginx/html/*
+
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /client/dist /usr/share/nginx/html
 

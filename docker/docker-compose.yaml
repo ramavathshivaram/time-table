@@ -1,6 +1,9 @@
 services:
   client:
-    image: ramavathshivaram/time-table-client
+    # image: ramavathshivaram/time-table-client
+    build: 
+      context: ../client
+      dockerfile: Dockerfile
     container_name: client
     restart: always
     ports:
@@ -13,14 +16,16 @@ services:
       - public-network
 
   server:
-    image: ramavathshivaram/time-table-server
+    # image: ramavathshivaram/time-table-server
+    build: 
+      context: ../server
+      dockerfile: Dockerfile
     container_name: server
     restart: always
     ports:
       - "8080:8080"
     env_file:
       - ./server.env
-
     depends_on:
       - redis
     networks:
@@ -28,7 +33,10 @@ services:
       - private-network
 
   worker:
-    image: ramavathshivaram/time-table-worker
+    # image: ramavathshivaram/time-table-worker
+    build: 
+      context: ../server
+      dockerfile: Dockerfile.worker
     container_name: worker
     restart: always
     env_file:
