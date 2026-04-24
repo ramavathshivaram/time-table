@@ -15,6 +15,8 @@ const queryClient = new QueryClient();
 
 const googleClient = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
+console.log(googleClient);
+
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
