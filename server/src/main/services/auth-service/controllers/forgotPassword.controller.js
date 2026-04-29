@@ -3,7 +3,7 @@ import ApiError from "#utils/ApiError.js";
 import { hashPassword, generateOTP } from "../services/password.service.js";
 import authRepository from "../repositorys/auth.repository.js";
 import { emailQueue } from "#shared/queues/email.queue.js";
-import redis from "../../../shared/configs/redis.js";
+import redis from "#shared/configs/redis.js";
 import loadHtml from "#utils/loadHtml.js";
 import { updateSession } from "../services/session.service.js";
 

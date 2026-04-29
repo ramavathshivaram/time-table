@@ -1,21 +1,9 @@
-import "dotenv/config";
 import logger from "#configs/logger.js";
-import redis, { checkRedis } from "#configs/redis.js";
+import redis, { checkRedis, disconnectRedis } from "#configs/redis.js";
 
-import mongoose from "mongoose";
-import connectDB from "#shared/configs/mongoDB.js";
+import emailWorker from "#workers/email.worker.js";
 
-import sharedWorkerFactories from "#shared/workers/index.js";
-import authWorkerFactories from "#services/auth-service/workers/index.js";
-import workflowWorkerFactories from "#services/workflow-service/workers/index.js";
-import userWorkerFactories from "#services/user-service/workers/index.js";
-
-const workerFactories = [
-  ...sharedWorkerFactories,
-  ...authWorkerFactories,
-  ...workflowWorkerFactories,
-  ...userWorkerFactories,
-];
+const workerFactories = [emailWorker];
 
 let workers = [];
 
@@ -42,7 +30,6 @@ const workerEventHandlers = (worker) => {
 const startWorkers = async () => {
   try {
     await checkRedis();
-    await connectDB();
 
     workers = workerFactories.map((createWorker) => {
       const worker = createWorker();
@@ -65,8 +52,7 @@ const gracefulShutdown = async () => {
       await worker.close();
     }
 
-    await redis.disconnect();
-    await mongoose.disconnect();
+    await disconnectRedis();
 
     logger.info("All workers shut down cleanly.");
     process.exit(0);

@@ -1,0 +1,30 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/main/worker.js",
+  "scripts": {
+    "start": "node src/main/worker.js",
+    "dev": "nodemon src/main/worker.js"
+  },
+  "imports": {
+    "#configs/*": "./src/main/configs/*",
+    "#services/*": "./src/main/services/*",
+    "#utils/*": "./src/main/utils/*",
+    "#workers/*": "./src/main/workers/*"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "axios": "^1.15.2",
+    "bullmq": "^5.76.4",
+    "dotenv": "^17.4.2",
+    "ioredis": "^5.10.1",
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
+  }
+}

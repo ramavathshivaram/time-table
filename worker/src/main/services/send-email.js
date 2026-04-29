@@ -1,5 +1,5 @@
 import axios from "axios";
-import logger from "../configs/logger.js";
+import logger from "#configs/logger.js";
 import env from "#configs/env.js";
 
 const brevoApi = axios.create({

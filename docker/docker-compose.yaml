@@ -35,8 +35,8 @@ services:
   worker:
     # image: ramavathshivaram/time-table-worker
     build: 
-      context: ../server
-      dockerfile: Dockerfile.worker
+      context: ../worker
+      dockerfile: Dockerfile
     container_name: worker
     restart: always
     env_file:

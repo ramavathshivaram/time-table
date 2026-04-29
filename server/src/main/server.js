@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 import logger from "#configs/logger.js";
 import env from "#configs/env.js";
-import redis, { checkRedis } from "#configs/redis.js";
+import redis, { checkRedis, disconnectRedis } from "#configs/redis.js";
 
 import connectDB from "#configs/mongoDB.js";
 import app from "./app.js";
@@ -38,7 +38,7 @@ const gracefulShutdown = async () => {
     logger.info("Shutting down server...");
 
     server.close(async () => {
-      await redis.disconnect();
+      await disconnectRedis();
       await mongoose.disconnect();
 
       logger.info("Server closed");

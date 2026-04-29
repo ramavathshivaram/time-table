@@ -39,7 +39,7 @@ jobs:
       - name: Build and Push Worker Image
         uses: docker/build-push-action@v6
         with:
-          context: ./server
-          file: ./server/Dockerfile.worker
+          context: ./worker
+          file: ./server/Dockerfile
           push: true
           tags: ramavathshivaram/time-table-worker:latest

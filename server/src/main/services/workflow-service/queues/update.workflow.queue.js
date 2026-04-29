@@ -1,5 +1,5 @@
 import { Queue } from "bullmq";
-import redis from "../../../shared/configs/redis.js";
+import redis from "#/shared/configs/redis.js";
 
 import { queueConst } from "../lib/const.js";
 
