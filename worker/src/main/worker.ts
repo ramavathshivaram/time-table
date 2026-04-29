@@ -1,14 +1,15 @@
 import logger from "#configs/logger.js";
-import redis, { checkRedis, disconnectRedis } from "#configs/redis.js";
+import { Worker } from "bullmq";
+import { checkRedis, disconnectRedis } from "#configs/redis.js";
 
 import emailWorker from "#workers/email.worker.js";
 
 const workerFactories = [emailWorker];
 
-let workers = [];
+let workers: Worker[] = [];
 
-const workerEventHandlers = (worker) => {
-  const name = worker.name;
+const workerEventHandlers = (worker: Worker) => {
+  const name: string = worker.name;
 
   worker.on("ready", () => {
     logger.info(`✅ Worker ready: ${name}`);
@@ -27,12 +28,12 @@ const workerEventHandlers = (worker) => {
   });
 };
 
-const startWorkers = async () => {
+const startWorkers = async (): Promise<void> => {
   try {
     await checkRedis();
 
-    workers = workerFactories.map((createWorker) => {
-      const worker = createWorker();
+    workers = workerFactories.map((createWorker: () => Worker) => {
+      const worker: Worker = createWorker();
       workerEventHandlers(worker);
       return worker;
     });
@@ -44,7 +45,7 @@ const startWorkers = async () => {
   }
 };
 
-const gracefulShutdown = async () => {
+const gracefulShutdown = async (): Promise<void> => {
   logger.info("Shutting down workers...");
 
   try {

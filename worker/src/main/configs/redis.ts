@@ -2,13 +2,13 @@ import Redis from "ioredis";
 import env from "#configs/env.js";
 import logger from "#configs/logger.js";
 
-export const redis = new Redis({
+export const redis = new (Redis as any)({
   host: env.REDIS_HOST,
   port: env.REDIS_PORT,
 
   maxRetriesPerRequest: null,
   enableReadyCheck: true,
-  retryStrategy: (times) => Math.min(times * 50, 2000),
+  retryStrategy: (times: number) => Math.min(times * 50, 2000),
 });
 
 redis.on("connect", () => {
@@ -19,7 +19,7 @@ redis.on("ready", () => {
   logger.info("Redis ready");
 });
 
-redis.on("error", (err) => {
+redis.on("error", (err: Error) => {
   logger.error("Redis error", err);
 });
 

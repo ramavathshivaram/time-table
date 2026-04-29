@@ -1,5 +1,9 @@
 
 
+GET http://localhost:8080/health
+Content-Type: application/json
+
+###
 POST http://localhost:8080/api/auth/forgot-password
 Content-Type: application/json
 

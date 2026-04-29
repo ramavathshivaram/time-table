@@ -19,13 +19,19 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const otp = generateOTP();
 
   //! send otp email
-  await emailQueue.add("send-otp-email", {
-    email,
-    subject: "OTP Verification",
-    html: await loadHtml("auth-service/templetes/email.otp.ejs", { otp }),
-  });
+  await emailQueue.add(
+    "send-otp-email",
+    {
+      email,
+      subject: "OTP Verification",
+      html: await loadHtml("auth-service/templetes/email.otp.ejs", { otp }),
+      text: `Your OTP is ${otp}`,
+    },
+    {
+      priority: 1,
+    },
+  );
 
-  // save otp to redis
   await redis.set(`otp:${email}`, otp, "EX", 900); //// 15 mins
 
   return res.json({

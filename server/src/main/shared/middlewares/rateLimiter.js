@@ -1,13 +1,14 @@
 import { RateLimiterRedis } from "rate-limiter-flexible";
-import redis from "#configs/redis.js";
 import asyncHandler from "express-async-handler";
+
+import redis from "#configs/redis.js";
 import ApiError from "#shared/utils/ApiError.js";
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redis,
-  points: 100, // requests
-  duration: 60, // per minute
-  blockDuration: 30,
+  points: 200, //// requests
+  duration: 60, //// per 1 minute
+  blockDuration: 15,
 });
 
 const rateLimiterMiddleware = asyncHandler(async (req, res, next) => {

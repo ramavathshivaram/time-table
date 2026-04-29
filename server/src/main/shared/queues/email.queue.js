@@ -5,4 +5,14 @@ import { queueConst } from "../utils/const.js";
 
 export const emailQueue = new Queue(queueConst.SEND_EMAIL, {
   connection: redis,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: {
+      type: "exponential",
+      delay: 3000,
+    },
+    removeOnComplete: true,
+    removeOnFail: false,
+    priority: 2,
+  },
 });

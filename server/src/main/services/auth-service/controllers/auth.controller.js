@@ -31,7 +31,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
   }
 
   if (tokenVersion !== session.tokenVersion) {
-    throw new ApiError(401, "Invalid refresh token");
+    throw new ApiError(404, "Invalid refresh token");
   }
 
   const newRefreshToken = generateRefreshToken(

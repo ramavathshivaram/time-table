@@ -7,8 +7,9 @@
   "type": "module",
   "main": "src/main/worker.js",
   "scripts": {
-    "start": "node src/main/worker.js",
-    "dev": "nodemon src/main/worker.js"
+    "dev": "tsx watch src/main/worker.ts",
+    "build": "tsc",
+    "start": "node dist/main/worker.js"
   },
   "imports": {
     "#configs/*": "./src/main/configs/*",
@@ -17,7 +18,10 @@
     "#workers/*": "./src/main/workers/*"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@types/node": "^25.6.0",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "axios": "^1.15.2",

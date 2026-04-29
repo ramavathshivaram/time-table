@@ -6,13 +6,13 @@ const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return next(new ApiError(427, "Access token missing or malformed"));
+    return next(new ApiError(403, "Access token missing or malformed"));
   }
 
   const token = authHeader.split(" ")[1];
 
   if (!token) {
-    return next(new ApiError(427, "Access token missing"));
+    return next(new ApiError(403, "Access token missing"));
   }
 
   try {
@@ -23,11 +23,7 @@ const authenticate = (req, res, next) => {
 
     next();
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return next(new ApiError(427, "Token expired"));
-    }
-
-    return next(new ApiError(401, "Invalid token"));
+    return next(new ApiError(403, "Token expired"));
   }
 };
 

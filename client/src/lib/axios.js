@@ -47,7 +47,7 @@ api.interceptors.response.use(
       error?.message ||
       "Something went wrong";
 
-    if (error?.response?.status === 427 && !originalRequest._retry) {
+    if (error?.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       return refreshFunc(originalRequest);
