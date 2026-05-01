@@ -5,21 +5,22 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "src/main/worker.js",
+  "main": "src/worker.js",
   "scripts": {
-    "dev": "tsx watch src/main/worker.ts",
+    "dev": "tsx watch src/worker.ts",
     "build": "tsc",
-    "start": "node dist/main/worker.js"
+    "start": "node dist/worker.js"
   },
   "imports": {
-    "#configs/*": "./src/main/configs/*",
-    "#services/*": "./src/main/services/*",
-    "#utils/*": "./src/main/utils/*",
-    "#workers/*": "./src/main/workers/*"
+    "#configs/*": "./dist/configs/*",
+    "#services/*": "./dist/services/*",
+    "#utils/*": "./dist/utils/*",
+    "#workers/*": "./dist/workers/*"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
     "nodemon": "^3.1.14",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   },

@@ -2,21 +2,21 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main/server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/main/server.js",
-    "dev": "nodemon src/main/server.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test:load": "node src/test/loadTest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "imports": {
-    "#configs/*": "./src/main/shared/configs/*",
-    "#shared/*": "./src/main/shared/*",
-    "#lib/*": "./src/main/shared/lib/*",
-    "#utils/*": "./src/main/shared/utils/*",
-    "#cache/*": "./src/main/shared/cache/*",
-    "#middlewares/*": "./src/main/shared/middlewares/*",
-    "#services/*": "./src/main/services/*"
+    "#configs/*": "./src/shared/configs/*",
+    "#shared/*": "./src/shared/*",
+    "#lib/*": "./src/shared/lib/*",
+    "#utils/*": "./src/shared/utils/*",
+    "#cache/*": "./src/shared/cache/*",
+    "#middlewares/*": "./src/shared/middlewares/*",
+    "#services/*": "./src/services/*"
   },
   "keywords": [],
   "author": "Ramavath Shiva Ram",
