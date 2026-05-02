@@ -1,6 +1,8 @@
 import env from "#configs/env.js";
 import morganMiddleware from "#middlewares/morganMiddleware.js";
-import rateLimiter from "#middlewares/rateLimiter.js";
+import rateLimiterMiddleware, {
+  authLimiter,
+} from "#middlewares/rateLimiter.js";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -11,6 +13,8 @@ import authRouter from "#modules/auth/auth.route.js";
 import googleRouter from "#modules/google/google.route.js";
 import localRouter from "#modules/local/local.route.js";
 import forgotPasswordRouter from "#modules/forgot-password/forgot-password.route.js";
+import notFoundRoute from "#middlewares/notFoundRoute.js";
+import errorHandler from "#middlewares/errorHandler.js";
 
 const corsOptions = {
   origin: process.env.ORIGIN || "http://localhost:5173",
@@ -24,7 +28,7 @@ app.set("trust proxy", 1);
 
 //! Middlewares
 app.use(morganMiddleware);
-app.use(rateLimiter);
+app.use(rateLimiterMiddleware(authLimiter));
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "1mb" }));
@@ -44,12 +48,16 @@ app.get("/health", async (req, res) => {
     status: "ok",
     uptime: process.uptime(),
     timestamp: Date.now(),
+    memory: process.memoryUsage(),
   });
 });
 
-app.use(authRouter);
-app.use(googleRouter);
-app.use(localRouter);
-app.use(forgotPasswordRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/google", googleRouter);
+app.use("/api/local", localRouter);
+app.use("/api/password", forgotPasswordRouter);
+
+app.use(errorHandler);
+app.use(notFoundRoute);
 
 export default app;

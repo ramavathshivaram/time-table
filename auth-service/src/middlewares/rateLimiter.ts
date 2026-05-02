@@ -1,49 +1,63 @@
-import { RateLimiterRedis } from "rate-limiter-flexible";
+import { RateLimiterRedis, RateLimiterMemory } from "rate-limiter-flexible";
 import asyncHandler from "express-async-handler";
 import redis from "#configs/redis.js";
 import ApiError from "#utils/ApiError.js";
 import type { NextFunction, Request, Response } from "express";
 
-export const authLimiter = new RateLimiterRedis({
-  storeClient: redis,
-  points: 10,
+interface LimitOptions {
+  keyPrefix: string;
+  points: number;
+  duration: number;
+  blockDuration: number;
+}
+
+const createLimiter = (options: LimitOptions) =>
+  new RateLimiterRedis({
+    storeClient: redis,
+    execEvenly: false,
+    insuranceLimiter: new RateLimiterMemory({
+      points: 100,
+      duration: 60,
+    }),
+    ...options,
+  });
+
+export const authLimiter = createLimiter({
+  keyPrefix: "auth",
+  points: 100,
   duration: 60,
-  blockDuration: 100,
-  execEvenly: true,
+  blockDuration: 30,
 });
 
-export const otpLimiter = new RateLimiterRedis({
-  storeClient: redis,
+export const otpLimiter = createLimiter({
+  keyPrefix: "otp",
   points: 5,
   duration: 300,
   blockDuration: 300,
-  execEvenly: true,
 });
 
-export const refreshLimiter = new RateLimiterRedis({
-  storeClient: redis,
+export const refreshLimiter = createLimiter({
+  keyPrefix: "refresh",
   points: 20,
   duration: 60,
   blockDuration: 60,
-  execEvenly: true,
 });
 
-export const authCheckLimiter = new RateLimiterRedis({
-  storeClient: redis,
+export const authCheckLimiter = createLimiter({
+  keyPrefix: "auth-check",
   points: 60,
   duration: 60,
   blockDuration: 30,
-  execEvenly: true,
 });
 
 export const rateLimiterMiddleware = (limiter: RateLimiterRedis) =>
-  asyncHandler(async (req:Request, res:Response, next:NextFunction) => {
-    try {
-      const key = req.cookies?.refreshToken || req.ip;
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const key : string =  req.ip as string;
 
+    try {
       await limiter.consume(key);
-      next();
-    } catch {
+      return next();
+    } catch (err) {
       return next(new ApiError(429, "Too many requests"));
     }
   });

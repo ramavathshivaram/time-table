@@ -8,7 +8,7 @@ import {
   deleteSession,
 } from "#services/session.service.js";
 import {
-  verifyToken,
+  verifyRefreshToken,
   generateAccessToken,
   generateRefreshToken,
 } from "#services/token.service.js";
@@ -27,7 +27,7 @@ const refreshTokenController = asyncHandler(
   async (req: Request, res: Response) => {
     const refreshToken = getCookie(req, "refreshToken");
 
-    const refreshData = verifyToken(refreshToken);
+    const refreshData = verifyRefreshToken(refreshToken);
 
     const { tokenVersion, authId, userId } = refreshData;
 

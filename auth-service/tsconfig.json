@@ -27,7 +27,8 @@
       "#services/*": ["./src/services/*"],
       "#configs/*": ["./src/configs/*"],
       "#repositories/*": ["./src/repositories/*"],
-      "#middlewares/*": ["./src/middlewares/*"]
+      "#middlewares/*": ["./src/middlewares/*"],
+      "#templates/*": ["./src/templates/*"]
     }
   }
 }

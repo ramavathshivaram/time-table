@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const loadHtml = async (templatePath: string, data = {}): Promise<string> => {
   try {
-    const fullPath: string = path.join(__dirname, "../../services", templatePath);
+    const fullPath: string = path.join(__dirname, templatePath);
 
     const html: string = await ejs.renderFile(fullPath, data, {
       async: true,

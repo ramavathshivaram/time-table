@@ -41,7 +41,7 @@ const forgotPassword = asyncHandler(
       {
         email,
         subject: "OTP Verification",
-        html: await loadHtml("auth-service/templetes/email.otp.ejs", { otp }),
+        html: await loadHtml("../templetes/email.otp.ejs", { otp }),
         text: `Your OTP is ${otp}`,
       },
       { priority: 1 }

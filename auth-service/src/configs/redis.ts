@@ -11,14 +11,6 @@ export const redis = new (Redis as any)({
   retryStrategy: (times: number) => Math.min(times * 50, 2000),
 });
 
-redis.on("connect", () => {
-  logger.info("Redis connected");
-});
-
-redis.on("ready", () => {
-  logger.info("Redis ready");
-});
-
 redis.on("error", (err: Error) => {
   logger.error("Redis error", err);
 });

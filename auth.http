@@ -1,7 +1,65 @@
 
-POST http://localhost:8081/forgot-password
+GET http://localhost:8081
+Content-Type: application/json
+
+###
+GET http://localhost:8081/health
+Content-Type: application/json
+
+
+###
+POST http://localhost:8081/api/local/login
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva6300@gmail.com",
+   "password":"12345678"
+}
+
+###
+POST http://localhost:8081/api/local/register
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva6302@gmail.com",
+   "password":"12345678",
+   "userName":"shiva ram"
+}
+
+###
+GET http://localhost:8081/api/auth/auth-check
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOiI2OWEyY2MxODMxZGE4ZDE4MTNlZWJjODYiLCJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3MTg5MzAsImV4cCI6MTc3NzcxOTgzMH0.WSoxzehcfOyj9ba2kThG8EVFFzshepSePC_HRCRgp7K_RgVp6yJ8VToRDO71NMB-tWi4fg4CZqqkXx5CCEHlTX16tuyiWCErqgPwmWfPbcVELffnAZlROTuviKljZ95ynDABj5hSvqBgZ2Fi96_2a_GTcksu1mHv--EmBt0T61IEjPNm6dAzuCOg3qyqAY-GQ5cTkhYAgu6OImH2tuIiNIxrsJ8fwIVpbjG2sdLeq2-oisIFuYbK91i9fhyOAJKy1xwtRpNlSOq-EF7cpjPF6xhWpVP81VX8-uQkbATKwlAzPWXDCEZ3kOK3X8UFHM_9nPaAe0idMDUUq9tV34aSNQ
+
+
+###
+GET http://localhost:8081/api/auth/refresh-token
+Content-Type: application/json
+Set-Cookie: refreshToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOiI2OWEyY2MxODMxZGE4ZDE4MTNlZWJjODYiLCJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc3NzE4OTk0LCJleHAiOjE3NzgzMjM3OTR9.hp7D4Z0v5iDykoueKWPdxjlvpWeO3kGeHjpzG8lGHNDGfmqR3C5h20wPNaLNIbDjXifnif9SL40Sp6X9m72MsCZWXLR_rKdAHnaOyE3_ovIWIGJ1TgWDyyIqib7847PeRvMAPNJRWOdA45hLas2d3e8GZaDpgki0kCF7Dr_JWKTTw-Z_gBvCKfxcW_koWrq8O21VPROPc2IySkLu61kVXssK2_PieeR-TvMGH8a5IsMnrdCgMkkn-ae_PUB8uukVWIwfb1QIjofS7lFabZLayyo84pVSEt-dQKKxT5FoE3DMVazoDXCNObe1iGWX6AWH_mkBwxIOh5GM7-GQA7PwCA; Max-Age=86400; Path=/; Expires=Sun, 03 May 2026 10:49:54 GMT; HttpOnly; SameSite=Lax
+
+###
+POST http://localhost:8081/api/password/forgot-password
 Content-Type: application/json
 
 {
    "email":"ramavathshiva6300@gmail.com"
+}
+
+###
+POST http://localhost:8081/api/password/verify-otp
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva6300@gmail.com",
+   "otp":"123456"
+}
+
+###
+POST http://localhost:8081/api/password/reset-password
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva6300@gmail.com",
+   "otp":"123456",
+   "password":"12345678"
 }

@@ -29,17 +29,16 @@ jobs:
           push: true
           tags: ramavathshivaram/time-table-client:latest
 
-      - name: Build and Push Server Image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./server
-          push: true
-          tags: ramavathshivaram/time-table-server:latest
-
       - name: Build and Push Worker Image
         uses: docker/build-push-action@v6
         with:
           context: ./worker
-          file: ./server/Dockerfile
           push: true
           tags: ramavathshivaram/time-table-worker:latest
+
+      - name: Build and Push auth-service Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./auth-service
+          push: true
+          tags: ramavathshivaram/time-table-auth-service:latest
