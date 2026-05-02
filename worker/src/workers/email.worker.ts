@@ -1,4 +1,4 @@
-import { Queue, Worker, Job } from "bullmq";
+import { Worker, Job } from "bullmq";
 import redis from "#configs/redis.js";
 import logger from "#configs/logger.js";
 import sendEmail from "#services/send-email.js";
@@ -9,19 +9,6 @@ interface EmailJobData {
   subject: string;
   html: string;
 }
-
-export const emailQueue = new Queue<EmailJobData>(queueConst.SEND_EMAIL, {
-  connection: redis,
-  defaultJobOptions: {
-    attempts: 3,
-    backoff: {
-      type: "exponential",
-      delay: 2000,
-    },
-    removeOnComplete: true,
-    removeOnFail: false,
-  },
-});
 
 const emailJob = async (job: Job<EmailJobData>) => {
   const { email, subject, html } = job.data;
@@ -51,7 +38,7 @@ const emailJob = async (job: Job<EmailJobData>) => {
 const createEmailWorker = () =>
   new Worker<EmailJobData>(queueConst.SEND_EMAIL, emailJob, {
     connection: redis,
-    concurrency: 5,
+    concurrency: 1,
   });
 
 export default createEmailWorker;
