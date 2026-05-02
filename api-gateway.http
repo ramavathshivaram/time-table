@@ -1,0 +1,26 @@
+
+GET http://localhost:8080
+Content-Type: application/json
+
+###
+GET http://localhost:8080/health
+Content-Type: application/json
+
+###
+POST http://localhost:8080/api/auth/local/login
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva6300@gmail.com",
+   "password":"12345678"
+}
+
+###
+GET http://localhost:8080/api/auth/auth/auth-check
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOiI2OWEyY2MxODMxZGE4ZDE4MTNlZWJjODYiLCJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3MjIxNzcsImV4cCI6MTc3NzcyMzA3N30.FizbUjuZoKP9dz_7fye5Ojb0LOrVbKZT62kZfm88dhnaGeTNgdc7hWBmPZpHjono-Xi5mJDap8rmOwXVZrvelCF8gFFtixoJnOb1mGOIQGmJ8E2c4qsIyxC38LDLKOBFQrgaFXXpNhx8OjPd7wmmbvemKOeCpTULnn02UPpKTlMPpPG9t5RS8FSncVIxXsBQzEpNGtuVzypvx82itnb7TLX3ASaijPDHpmNFQ_I0GMkRPNVAU0M9NW6WMFO3gPBf2EdIs0_JOBnDr5TXFHP4aweXqkcv7mGbhP5_Jj-I2u0e3TBPX7ClrBmgnw5XMgPPcsiSqDpmV04IfJRBgWgN7w
+
+###
+GET http://localhost:8080/api/auth/auth/refresh-token
+Content-Type: application/json
+Set-Cookie: refreshToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOiI2OWEyY2MxODMxZGE4ZDE4MTNlZWJjODYiLCJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzc3NzIyMjgyLCJleHAiOjE3NzgzMjcwODJ9.clJbj8oX8LJ_FDOI1WMoLteUl-kSYY_w1PNLi30Uus7TVKzhlaQCD19jLRAy8DHaFm16ujFuASbuiZC8bN31NntDvkyPdi5WzcILXaAEqaucHznjPG-knAvqD4LSUyJ-xsWy0h_ZiHjArm2QxGE8cChYdasTsj9Wx80-l3rtIID_nra7uG1wztbFpo6t_i8sAqVJN_HJzPaXWiMTh0YBiDOw8xHPgdwL7fDkqvYB0Pky5rC4g2vAJgCpLl9Kn1zYfgLfW_xBSqML9QG6a2RqMw8zufOAOgsasGwnAu_5mPQ7oAjziJZiFQ8zWc3y4SgkCmOYodFh2FfHy41YCbHXFw; Max-Age=86400; Path=/; Expires=Sun, 03 May 2026 11:44:42 GMT; HttpOnly; SameSite=Lax
