@@ -3,17 +3,25 @@ import {
   applyEdgeChanges,
   useReactFlow,
 } from "@xyflow/react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+
 import nodeTypes from "../nodeTypes.js";
 import useModalStore from "@/store/modal.store.js";
-import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 import useWorkflowStore from "@/store/workflow.store.js";
+
 import nodeService from "@/services/workflow/node.service.js";
 import edgeService from "@/services/workflow/edge.service.js";
+
+import { generateEdgeId, generateNodeId } from "@/lib/utils.js";
 import useNodeUpdateDebounce from "./useNodeUpdateDebounce.js";
 
 const NODE_WIDTH = 150;
 const NODE_HEIGHT = 80;
+
+/* ------------------ Node Type Map ------------------ */
+export const nodeTypeMap = Object.fromEntries(
+  nodeTypes.map((n) => [n.type, n])
+);
 
 const useWorkflowInteractions = (reactFlowInstanceRef) => {
   const openModal = useModalStore((s) => s.openModal);
@@ -28,16 +36,21 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
 
   const { screenToFlowPosition } = useReactFlow();
 
+  /* ------------------ Fast Lookup Map ------------------ */
+  const nodeMap = useMemo(() => {
+    return Object.fromEntries(nodes.map((n) => [n.id, n]));
+  }, [nodes]);
+
+  /* ------------------ Nodes Change ------------------ */
   const onNodesChange = useCallback(
     (changes) => {
-      // console.log(changes);
       for (let change of changes) {
         switch (change.type) {
           case "remove":
             nodeService.removeNode(change.id);
             break;
+
           case "position":
-            // use debounce to avoid sending too many position updates to the server
             nodeUpdateDebounce(change.id, change.position);
             break;
         }
@@ -45,47 +58,100 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
 
       setNodes(applyNodeChanges(changes, nodes));
     },
-    [setNodes, nodes, nodeUpdateDebounce],
+    [setNodes, nodes, nodeUpdateDebounce]
   );
 
+  /* ------------------ Edges Change ------------------ */
   const onEdgesChange = useCallback(
     (changes) => {
       for (let change of changes) {
-        switch (change.type) {
-          case "remove":
-            edgeService.removeEdge(change.id);
+        if (change.type === "remove") {
+          edgeService.removeEdge(change.id);
         }
       }
+
       setEdges(applyEdgeChanges(changes, edges));
     },
-    [setEdges, edges],
+    [setEdges, edges]
   );
 
-  const onConnect = useCallback((connection) => {
-    edgeService.addEdge({
-      id: generateEdgeId(),
-      ...connection,
-      type: "bezier",
-    });
-  }, []);
+  /* ------------------ Cycle Detection ------------------ */
+  const createsCycle = useCallback(
+    (sourceId, targetId) => {
+      const visited = new Set();
 
+      const dfs = (nodeId) => {
+        if (nodeId === sourceId) return true;
+
+        visited.add(nodeId);
+
+        return edges
+          .filter((e) => e.source === nodeId)
+          .some(
+            (e) => !visited.has(e.target) && dfs(e.target)
+          );
+      };
+
+      return dfs(targetId);
+    },
+    [edges]
+  );
+
+  /* ------------------ Validation ------------------ */
   const isValidConnection = useCallback(
     (connection) => {
-      const sourceNode = nodes.find((n) => n.id === connection.source);
-      const targetNode = nodes.find((n) => n.id === connection.target);
+      const sourceNode = nodeMap[connection.source];
+      const targetNode = nodeMap[connection.target];
 
       if (!sourceNode || !targetNode) return false;
 
-      const targetType = nodeTypes.find((n) => n.type === targetNode.type);
+      const sourceConfig = nodeTypeMap[sourceNode.type];
+      const targetConfig = nodeTypeMap[targetNode.type];
 
-      return sourceNode.type === targetType?.parent;
+      if (!sourceConfig || !targetConfig) return false;
+
+      // ✅ Rule 1: Allowed children
+      if (!sourceConfig.children.includes(targetNode.type)) {
+        return false;
+      }
+
+      // ✅ Rule 2: Only one parent
+      if (edges.some((e) => e.target === targetNode.id)) {
+        return false;
+      }
+
+      // ✅ Rule 3: No self connect
+      if (sourceNode.id === targetNode.id) return false;
+
+      // ✅ Rule 4: No cycles
+      if (createsCycle(sourceNode.id, targetNode.id)) {
+        return false;
+      }
+
+      return true;
     },
-    [nodes],
+    [nodeMap, edges, createsCycle]
   );
 
+  /* ------------------ Connect ------------------ */
+  const onConnect = useCallback(
+    (connection) => {
+      if (!isValidConnection(connection)) return;
+
+      edgeService.addEdge({
+        id: generateEdgeId(),
+        ...connection,
+        type: "bezier",
+      });
+    },
+    [isValidConnection]
+  );
+
+  /* ------------------ Double Click ------------------ */
   const onNodeDoubleClick = useCallback(
     (_, node) => {
       if (node.type === "start") return;
+
       const rf = reactFlowInstanceRef.current;
       if (!rf) return;
 
@@ -96,18 +162,22 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
 
       openModal(node, screen);
     },
-    [openModal, reactFlowInstanceRef],
+    [openModal, reactFlowInstanceRef]
   );
 
+  /* ------------------ Connect End (Auto Create Node) ------------------ */
   const onConnectEnd = useCallback(
     (_, connectionState) => {
       if (connectionState?.toNode || connectionState?.toHandle) return;
 
-      const nextNodeType = nodeTypes.find(
-        (n) => n?.parent === connectionState?.fromNode?.type,
-      );
+      const sourceType = connectionState?.fromNode?.type;
+      const sourceConfig = nodeTypeMap[sourceType];
 
-      if (!nextNodeType) return;
+      if (!sourceConfig?.children?.length) return;
+
+      // 👉 pick first allowed child (can be improved later)
+      const nextType = sourceConfig.children[0];
+      const nextNodeConfig = nodeTypeMap[nextType];
 
       const position = screenToFlowPosition({
         x: connectionState.pointer.x - NODE_WIDTH / 2,
@@ -118,9 +188,9 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
 
       nodeService.addNode({
         id: newNodeId,
-        type: nextNodeType.type,
+        type: nextType,
         position,
-        data: { label: nextNodeType.type },
+        data: nextNodeConfig.defaultData,
       });
 
       edgeService.addEdge({
@@ -130,19 +200,22 @@ const useWorkflowInteractions = (reactFlowInstanceRef) => {
         type: "bezier",
       });
     },
-    [screenToFlowPosition],
+    [screenToFlowPosition]
   );
 
+  /* ------------------ Return ------------------ */
   return {
     nodes,
-    onNodesChange,
     edges,
+
+    onNodesChange,
     onEdgesChange,
 
     onConnect,
     isValidConnection,
-    onNodeDoubleClick,
     onConnectEnd,
+
+    onNodeDoubleClick,
   };
 };
 

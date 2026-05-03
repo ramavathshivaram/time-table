@@ -1,4 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+export interface IWorkflow extends mongoose.Document {
+  userId: Types.ObjectId;
+  title: string;
+}
 
 const workflowSchema = new mongoose.Schema(
   {

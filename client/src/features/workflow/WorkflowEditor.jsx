@@ -10,9 +10,12 @@ import useWorkflowInteractions from "./workflows-hooks/useWorkflowInteractions.j
 import CollegeNode from "./node-components/CollegeNode";
 import DefaultNode from "./node-components/DefaultNode";
 import SectionNode from "./node-components/SectionNode";
-import ModalWrapper from "./modals/ModalWrapper.jsx";
 import StartNode from "./node-components/StartNode";
+
+import ModalWrapper from "./modals/ModalWrapper.jsx";
 import ResourcesModal from "./modals/ResourcesModal";
+
+import nodeTypesConfig from "../nodeTypes.js";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);
@@ -24,7 +27,6 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     edges,
     onNodesChange,
     onEdgesChange,
-
     onConnect,
     isValidConnection,
     onNodeDoubleClick,
@@ -35,34 +37,52 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
     reactFlowInstanceRef,
   });
 
-  const nodeTypes = useMemo(
-    () => ({
-      start: StartNode,
-      college: CollegeNode,
-      branch: DefaultNode,
-      year: DefaultNode,
-      section: SectionNode,
-      room: DefaultNode,
-    }),
-    [],
-  );
+  /* ------------------ Dynamic Node Mapping ------------------ */
+  const nodeComponentMap = useMemo(() => {
+    const map = {};
 
+    nodeTypesConfig.forEach((node) => {
+      switch (node.type) {
+        case "start":
+          map[node.type] = StartNode;
+          break;
+        case "college":
+          map[node.type] = CollegeNode;
+          break;
+        case "section":
+          map[node.type] = SectionNode;
+          break;
+        default:
+          map[node.type] = DefaultNode;
+      }
+    });
+
+    return map;
+  }, []);
+
+  /* ------------------ Edge Types ------------------ */
   const edgeTypes = useMemo(
     () => ({
-      bezier: BezierEdge,
+      bezier: (props) => (
+        <BezierEdge
+          {...props}
+          style={{ strokeWidth: 2 }}
+        />
+      ),
     }),
-    [],
+    []
   );
 
   return (
     <div className="w-screen h-screen">
       <ReactFlow
+        key={workflowId}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        nodeTypes={nodeTypes}
+        nodeTypes={nodeComponentMap}
         edgeTypes={edgeTypes}
         onDragOver={onDragOver}
         onDrop={onDrop}
@@ -76,6 +96,13 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         onInit={(instance) => (reactFlowInstanceRef.current = instance)}
         proOptions={{ hideAttribution: true }}
         fitView
+
+        minZoom={0.5}
+        maxZoom={1.5}
+        snapToGrid
+        snapGrid={[20, 20]}
+        panOnScroll
+        panOnDrag
       >
         <Background />
 

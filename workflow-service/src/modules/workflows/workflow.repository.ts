@@ -1,10 +1,5 @@
-import mongoose, { Types } from "mongoose";
-import workflowModel from "./workflow.model.js";
-
-interface Workflow {
-  title: string;
-  userId: Types.ObjectId;
-}
+import mongoose from "mongoose";
+import workflowModel,{type IWorkflow} from "./workflow.model.js";
 
 interface GetWorkflowsOptions {
   skip?: number;
@@ -14,7 +9,7 @@ interface GetWorkflowsOptions {
 
 
 const getAllUserWorkflowsByUserId = async (
-  userId: Types.ObjectId,
+  userId: IWorkflow["userId"],
   options: GetWorkflowsOptions = {},
 ) => {
   const { skip = 0, limit = 10, query = "" } = options;
@@ -37,7 +32,7 @@ const getAllUserWorkflowsByUserId = async (
     .lean();
 };
 
-const getRecentWorkflowsByUserId = async (userId: Types.ObjectId) => {
+const getRecentWorkflowsByUserId = async (userId: IWorkflow["userId"]) => {
   return workflowModel
     .find({ userId })
     .select("title createdAt updatedAt _id")
@@ -46,11 +41,11 @@ const getRecentWorkflowsByUserId = async (userId: Types.ObjectId) => {
     .lean();
 };
 
-const createWorkflow = async (workflow: Workflow) => {
+const createWorkflow = async (workflow: Partial<IWorkflow>) => {
   return await workflowModel.create(workflow);
 };
 
-const getWorkflowById = async (workflowId: Types.ObjectId) => {
+const getWorkflowById = async (workflowId: IWorkflow["_id"]) => {
   if (!mongoose.Types.ObjectId.isValid(workflowId)) {
     throw new Error("Invalid workflowId");
   }

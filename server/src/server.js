@@ -1,5 +1,5 @@
 import "dotenv/config";
-import http from "http";
+
 import mongoose from "mongoose";
 
 import logger from "#configs/logger.js";
@@ -10,10 +10,10 @@ import connectDB from "#configs/mongoDB.js";
 import app from "./app.js";
 import { socketInit } from "#services/socket-service/socket.js";
 
-const server = http.createServer(app);
+
 
 // Init socket
-socketInit(server);
+
 
 const serverInit = async () => {
   try {

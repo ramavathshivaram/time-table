@@ -1,13 +1,12 @@
-import type { Types } from "mongoose";
+import type { IWorkflow } from "./workflow.model.js";
 import workflowRepository from "./workflow.repository.js";
 
 const generateWorkflowTitle = (): string =>
   `Workflow ${Date.now().toString().substring(0, 5)}`;
 
 const createWorkflow = async (
-  userId: Types.ObjectId | undefined,
-): Promise<Types.ObjectId> => {
-
+  userId: IWorkflow["userId"] | undefined,
+): Promise<IWorkflow["_id"]> => {
   if (!userId) throw new Error("User id not found");
 
   const createdWorkflow = await workflowRepository.createWorkflow({
@@ -18,34 +17,30 @@ const createWorkflow = async (
   return createdWorkflow._id;
 };
 
-const getWorkflowById = async (workflowId: Types.ObjectId) => {
+const getWorkflowById = async (workflowId: IWorkflow["_id"]) => {
   const workflow = await workflowRepository.getWorkflowById(workflowId);
   return workflow;
 };
 
 const getAllUserWorkflows = async (
-  userId: Types.ObjectId|undefined,
+  userId: IWorkflow["userId"] | undefined,
   page: number = 0,
   limit: number = 10,
   query: string = "",
 ) => {
-  if(!userId) throw new Error("User id not found");
+  if (!userId) throw new Error("User id not found");
   const skip = page * limit;
-
-  console.log(userId)
 
   const workflows = await workflowRepository.getAllUserWorkflowsByUserId(
     userId,
     { skip, limit, query },
   );
 
-  console.log(workflows)
-
   return workflows;
 };
 
-const getRecentWorkflows = async (userId: Types.ObjectId|undefined) => {
-   if(!userId) throw new Error("User id not found");
+const getRecentWorkflows = async (userId: IWorkflow["userId"] | undefined) => {
+  if (!userId) throw new Error("User id not found");
   const workflows = await workflowRepository.getRecentWorkflowsByUserId(userId);
   return workflows;
 };
