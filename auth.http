@@ -21,7 +21,7 @@ POST http://localhost:8081/api/local/register
 Content-Type: application/json
 
 {
-   "email":"ramavathshiva6323@gmail.com",
+   "email":"ramavathshiva3433@gmail.com",
    "password":"12345678",
    "userName":"shiva ram"
 }
@@ -29,8 +29,7 @@ Content-Type: application/json
 ###
 GET http://localhost:8081/api/auth/auth-check
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOiI2OWEyY2MxODMxZGE4ZDE4MTNlZWJjODYiLCJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3MTg5MzAsImV4cCI6MTc3NzcxOTgzMH0.WSoxzehcfOyj9ba2kThG8EVFFzshepSePC_HRCRgp7K_RgVp6yJ8VToRDO71NMB-tWi4fg4CZqqkXx5CCEHlTX16tuyiWCErqgPwmWfPbcVELffnAZlROTuviKljZ95ynDABj5hSvqBgZ2Fi96_2a_GTcksu1mHv--EmBt0T61IEjPNm6dAzuCOg3qyqAY-GQ5cTkhYAgu6OImH2tuIiNIxrsJ8fwIVpbjG2sdLeq2-oisIFuYbK91i9fhyOAJKy1xwtRpNlSOq-EF7cpjPF6xhWpVP81VX8-uQkbATKwlAzPWXDCEZ3kOK3X8UFHM_9nPaAe0idMDUUq9tV34aSNQ
-
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3ODc5OTcsImV4cCI6MTc3Nzc4ODg5N30.AGFZBKWH75MHJXSVFsid16wX2HYBgnghOmsVwKvLrMmLZnQOyjWly2-9tdLaXCZY1STWEv-_oqnQ9GeZUGbQv2LdyeL5x-pR7aFAm7aNqBgMKWXxHfd83DZogSo-zXxZ6LRiKNQRG2llzDL-HFwBqMtwYvYAVTZ_6VMJB_e4Dm4lE3az9T1NcxG0Jo0QdCuy0tw2NsKVbRPTLTcarVt4_yi2mprG-ztWl0ZF1yhHDTtjU3QFNhA2eoZPAoN8ZuW0d8CfCmMpizsVlyCsTY8jCW2reMWBnX_sFeEymA2rv4NcCJLTP_scsfHfXneFY4ZX7dYT-4a0dKhB8tKQ5Xj7Yw
 
 ###
 GET http://localhost:8081/api/auth/refresh-token

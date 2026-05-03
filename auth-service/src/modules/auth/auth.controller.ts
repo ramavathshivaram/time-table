@@ -13,11 +13,12 @@ import {
   generateRefreshToken,
 } from "#services/token.service.js";
 import ApiError from "#utils/ApiError.js";
+import type { Types } from "mongoose";
 
 // ---------- TYPES ----------
 interface TokenPayload {
-  userId: string;
-  authId: string;
+  userId: Types.ObjectId;
+  authId: Types.ObjectId;
   tokenVersion: number;
   type: "access" | "refresh";
 }
@@ -27,7 +28,7 @@ const refreshTokenController = asyncHandler(
   async (req: Request, res: Response) => {
     const refreshToken = getCookie(req, "refreshToken");
 
-    const refreshData = verifyRefreshToken(refreshToken);
+    const refreshData:TokenPayload = verifyRefreshToken(refreshToken);
 
     const { tokenVersion, authId, userId } = refreshData;
 
@@ -51,7 +52,6 @@ const refreshTokenController = asyncHandler(
 
     const newAccessToken = generateAccessToken(
       userId,
-      authId,
       tokenVersion
     );
 

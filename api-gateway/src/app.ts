@@ -1,3 +1,5 @@
+import type { Request } from "express";
+
 import env from "#configs/env.js";
 import express from "express";
 import proxy from "express-http-proxy";
@@ -12,6 +14,26 @@ import notFoundRoute from "#middlewares/notFoundRoute.js";
 const corsOptions = {
   origin: env.ORIGIN,
   credentials: true,
+};
+
+interface ProxyOptions {
+  proxyReqPathResolver: (req: Request) => string;
+  proxyReqOptDecorator: (proxyReqOpts: any, srcReq: Request) => any;
+}
+
+const proxyOptions: ProxyOptions = {
+  proxyReqPathResolver: (req: Request): string => `/api${req.url}`,
+
+  proxyReqOptDecorator: (proxyReqOpts: any, srcReq: Request) => {
+    proxyReqOpts.headers = proxyReqOpts.headers || {};
+
+    proxyReqOpts.headers["Authorization"] =
+      srcReq.headers["authorization"] ?? "";
+
+    proxyReqOpts.headers["Cookie"] = srcReq.headers["cookie"] ?? "";
+
+    return proxyReqOpts;
+  },
 };
 
 const app = express();
@@ -35,13 +57,9 @@ app.get("/health", async (req, res) => {
   });
 });
 
-app.use("/api/auth", proxy(env.AUTH_SERVICE_URL, {
-  proxyReqPathResolver: (req) => `/api${req.url}`,
-}));
-
-app.use("/api/user", proxy(env.USER_SERVICE_URL, {
-  proxyReqPathResolver: (req) => `/api${req.url}`,
-}))
+app.use("/api/auth", proxy(env.AUTH_SERVICE_URL, proxyOptions));
+app.use("/api/user", proxy(env.USER_SERVICE_URL, proxyOptions));
+app.use("/api/workflow", proxy(env.WORKFLOW_SERVICE_URL, proxyOptions));
 
 app.use(errorHandler);
 app.use(notFoundRoute);

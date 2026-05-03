@@ -6,6 +6,7 @@ interface AuthUser {
   email: string;
   password?: string;
   isEmailVerifyed?: boolean | null;
+  userId: Types.ObjectId;
   [key: string]: unknown;
 }
 
@@ -50,7 +51,6 @@ const findUserByEmailAndUpdate = async (
 ): Promise<AuthUser | null> => {
   return AuthModel.findOneAndUpdate({ email }, user, { new: true });
 };
-
 
 export default {
   getUserWithPasswordByEmail,

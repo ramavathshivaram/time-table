@@ -1,30 +1,43 @@
-import mongoose from "mongoose";
-import workflowModel from "../models/workflow.model.js";
+import mongoose, { Types } from "mongoose";
+import workflowModel from "./workflow.model.js";
 
-const getAllUserWorkflowsByUserId = async (userId, options = {}) => {
-  const {
-    skip = 0,
-    limit = 10,
-    query = "",
-    sort = { createdAt: -1 },
-  } = options;
+interface Workflow {
+  title: string;
+  userId: Types.ObjectId;
+}
 
-  const filters = { userId };
+interface GetWorkflowsOptions {
+  skip?: number;
+  limit?: number;
+  query?: string;
+}
+
+
+const getAllUserWorkflowsByUserId = async (
+  userId: Types.ObjectId,
+  options: GetWorkflowsOptions = {},
+) => {
+  const { skip = 0, limit = 10, query = "" } = options;
+
+  const filters: any = { userId };
 
   if (query) {
     filters.title = { $regex: query, $options: "i" };
   }
 
-  return workflowModel
+
+  if (!userId) throw new Error("User id not found");
+
+  return await workflowModel
     .find(filters)
     .select("title createdAt updatedAt _id")
-    .sort(sort)
+    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
     .lean();
 };
 
-const getRecentWorkflowsByUserId = async (userId) => {
+const getRecentWorkflowsByUserId = async (userId: Types.ObjectId) => {
   return workflowModel
     .find({ userId })
     .select("title createdAt updatedAt _id")
@@ -33,11 +46,11 @@ const getRecentWorkflowsByUserId = async (userId) => {
     .lean();
 };
 
-const createWorkflow = async (workflow) => {
+const createWorkflow = async (workflow: Workflow) => {
   return await workflowModel.create(workflow);
 };
 
-const getWorkflowById = async (workflowId) => {
+const getWorkflowById = async (workflowId: Types.ObjectId) => {
   if (!mongoose.Types.ObjectId.isValid(workflowId)) {
     throw new Error("Invalid workflowId");
   }

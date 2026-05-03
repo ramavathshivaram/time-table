@@ -10,8 +10,8 @@ import type { Types } from "mongoose";
 const { sign, verify } = jwt;
 
 interface TokenPayload extends JwtPayload {
-  userId: string;
-  authId: string;
+  userId: Types.ObjectId;
+  authId: Types.ObjectId;
   tokenVersion: number;
   type: "access" | "refresh";
 }
@@ -22,14 +22,13 @@ export const generateTokens = (
   tokenVersion: number,
 ) => {
   return {
-    accessToken: generateAccessToken(userId, authId, tokenVersion),
+    accessToken: generateAccessToken(userId, tokenVersion),
     refreshToken: generateRefreshToken(userId, authId, tokenVersion),
   };
 };
 
 export const generateAccessToken = (
   userId: Types.ObjectId,
-  authId: Types.ObjectId,
   tokenVersion: number,
 ): string => {
   const options: SignOptions = {
@@ -40,7 +39,6 @@ export const generateAccessToken = (
   return sign(
     {
       userId,
-      authId,
       tokenVersion,
       type: "access",
     },
