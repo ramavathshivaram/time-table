@@ -1,4 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+export interface IEdge {
+  workflowId: Types.ObjectId;
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle?: string;
+  targetHandle?: string;
+  type?: string;
+}
 
 const edgeSchema = new mongoose.Schema({
   workflowId: {

@@ -2,10 +2,9 @@ import nodeRepository from "./node.repository.js";
 import type { INode } from "./node.model.js";
 
 const getNode = async (
-  workflowId: INode["workflowId"],
   nodeId: INode["id"]
 ) => {
-  const node : INode = await nodeRepository.getNode(workflowId, nodeId);
+  const node : INode = await nodeRepository.getNode(nodeId);
 
   if (!node) {
     throw new Error("Node not found");
@@ -36,30 +35,25 @@ const addNodes = async (
   if (!nodes?.length) {
     throw new Error("Nodes array is empty");
   }
-
   return await nodeRepository.addNodes(workflowId, nodes);
 };
 
 const removeNode = async (
-  workflowId: INode["workflowId"],
   nodeId: INode["id"]
 ) => {
-  const result: any = await nodeRepository.removeNode(workflowId, nodeId);
+  const result: any = await nodeRepository.removeNode( nodeId);
 
   if (!result?.deletedCount) {
     throw new Error("Node not found or already deleted");
   }
-
   return result;
 };
 
 const updateNode = async (
-  workflowId: INode["workflowId"],
   nodeId: INode["id"],
   updateFields: Partial<INode>
 ) => {
   const updated: INode = await nodeRepository.updateNode(
-    workflowId,
     nodeId,
     updateFields
   );

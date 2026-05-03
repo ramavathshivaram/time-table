@@ -1,4 +1,4 @@
-import { edgeController } from "#services/workflow-service/routes/workflow.grpc.js";
+import edgeApi from "#services/edge-api.js";
 import { EDGE } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
@@ -15,19 +15,19 @@ export const registerEdgeHandlers = (socket: WorkflowSocket) => {
   if (!workflowId) return;
 
   socket.on(EDGE.ADD, (edge) => {
-    edgeController.addEdgeGRPC(workflowId, edge);
+    edgeApi.addEdge(workflowId, edge);
   });
 
   socket.on(EDGE.ADD_MANY, (edges) => {
-    edgeController.addEdgesGRPC(workflowId, edges);
+    edgeApi.addEdges(workflowId, edges);
   });
 
   socket.on(EDGE.REMOVE, (edgeId) => {
-    edgeController.removeEdgeGRPC(workflowId, edgeId);
+    edgeApi.removeEdge(edgeId);
   });
 
   socket.on(EDGE.UPDATE, (edgeId, edgeData) => {
-    edgeController.updateEdgeGRPC(workflowId, edgeId, edgeData);
+    edgeApi.updateEdge(edgeId, edgeData);
   });
 };
 

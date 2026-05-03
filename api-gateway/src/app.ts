@@ -6,6 +6,7 @@ import proxy from "express-http-proxy";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 import morganMiddleware from "#middlewares/morganMiddleware.js";
 import errorHandler from "#middlewares/errorHandler.js";
@@ -60,6 +61,14 @@ app.get("/health", async (req, res) => {
 app.use("/api/auth", proxy(env.AUTH_SERVICE_URL, proxyOptions));
 app.use("/api/user", proxy(env.USER_SERVICE_URL, proxyOptions));
 app.use("/api/workflow", proxy(env.WORKFLOW_SERVICE_URL, proxyOptions));
+app.use(
+  "/socket.io",
+  createProxyMiddleware({
+    target: env.SOCKET_SERVICE_URL,
+    changeOrigin: true,
+    ws: true,
+  })
+);
 
 app.use(errorHandler);
 app.use(notFoundRoute);

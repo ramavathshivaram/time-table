@@ -12,7 +12,8 @@ const envSchema = z.object({
 
   AUTH_SERVICE_URL: z.string().min(1, "AUTH_SERVICE_URL is required"),
   USER_SERVICE_URL: z.string().min(1, "USER_SERVICE_URL is required"),
-  WORKFLOW_SERVICE_URL: z.string().min(1, "WORKFLOW_SERVICE_URL is required")
+  WORKFLOW_SERVICE_URL: z.string().min(1, "WORKFLOW_SERVICE_URL is required"),
+  SOCKET_SERVICE_URL: z.string().min(1, "SOCKET_SERVICE_URL is required"),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -12,7 +12,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]).default("development"),
   PORT: z.coerce.number().default(8084),
 
-  ORIGIN: z.string().min(1, "ORIGIN is required")
+  ORIGIN: z.string().min(1, "ORIGIN is required"),
+  WORKFLOW_SERVICE_URL: z.string().min(1, "WORKFLOW_SERVICE_URL is required"),
 });
 
 const parsed = envSchema.safeParse(process.env);

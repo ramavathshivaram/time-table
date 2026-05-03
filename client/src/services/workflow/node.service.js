@@ -1,31 +1,26 @@
-import useWorkflowStore from "@/store/workflow.store";
-import {
-  addNodeEmit,
-  addNodesEmit,
-  removeNodeEmit,
-  updateNodeEmit,
-} from "@/services/socket/workflow/emitters/nodes.socket";
+import useWorkflowStore from "@/store/workflow.store.js";
+import {nodeEmit} from "@/services/socket/workflow/nodes.socket.js";
 
 const nodeService = {
   addNode(node) {
-    addNodeEmit(node);
+    nodeEmit.add(node);
 
     useWorkflowStore.getState().addNodeLocal(node);
   },
 
   addNodes(nodes) {
-    addNodesEmit(nodes);
+    nodeEmit.addMany(nodes);
     useWorkflowStore.getState().addNodesLocal(nodes);
   },
 
   removeNode(nodeId) {
-    removeNodeEmit(nodeId);
+    nodeEmit.remove(nodeId);
 
     useWorkflowStore.getState().removeNodeLocal(nodeId);
   },
 
   updateNode(nodeId, nodeData) {
-    updateNodeEmit(nodeId, nodeData);
+    nodeEmit.update(nodeId, nodeData);
 
     useWorkflowStore.getState().updateNodeLocal(nodeId, nodeData);
   },
@@ -35,7 +30,7 @@ const nodeService = {
   },
 
   updateNodePosition(nodeId, position) {
-    updateNodeEmit(nodeId, { position });
+    nodeEmit.update(nodeId, { position });
   },
 };
 

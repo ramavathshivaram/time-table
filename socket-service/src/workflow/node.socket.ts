@@ -1,4 +1,4 @@
-import { nodeController } from "#services/workflow-service/routes/workflow.grpc.js";
+import nodeApi from "#services/node-api.js";
 import { NODE } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
@@ -15,19 +15,19 @@ export const registerNodeHandlers = (socket: WorkflowSocket) => {
   if (!workflowId) return;
 
   socket.on(NODE.ADD, (node) => {
-    nodeController.addNodeGRPC(workflowId, node);
+    nodeApi.addNode(workflowId, node);
   });
 
   socket.on(NODE.ADD_MANY, (nodes) => {
-    nodeController.addNodesGRPC(workflowId, nodes);
+    nodeApi.addNodes(workflowId, nodes);
   });
 
   socket.on(NODE.REMOVE, (nodeId) => {
-    nodeController.removeNodeGRPC(workflowId, nodeId);
+    nodeApi.removeNode( nodeId);
   });
 
   socket.on(NODE.UPDATE, (nodeId, nodeData) => {
-    nodeController.updateNodeGRPC(workflowId, nodeId, nodeData);
+    nodeApi.updateNode( nodeId, nodeData);
   });
 };
 

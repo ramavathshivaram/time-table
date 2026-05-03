@@ -9,6 +9,8 @@ import notFoundRoute from "#middlewares/notFoundRoute.js";
 import authenticate from "#middlewares/authenticate.js";
 
 import workflowRouter from "./modules/workflows/workflow.route.js";
+import nodeRouter from "./modules/nodes/node.route.js";
+import edgeRouter from "./modules/edges/edge.route.js";
 
 const corsOptions = {
   origin: env.ORIGIN,
@@ -36,6 +38,10 @@ app.get("/health", async (req, res) => {
 });
 
 app.use("/api/workflow", authenticate, workflowRouter);
+
+app.use("/api/node", authenticate, nodeRouter);
+
+app.use("/api/edge", authenticate, edgeRouter);
 
 app.use(errorHandler);
 app.use(notFoundRoute);

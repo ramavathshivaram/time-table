@@ -1,25 +1,21 @@
-import useWorkflowStore from "@/store/workflow.store";
-import {
-  addFacultyEmit,
-  removeFacultyEmit,
-  updateFacultyEmit,
-} from "@/services/socket/workflow/faculty.socket";
+import useWorkflowStore from "@/store/workflow.store.js";
+import {facultyEmit} from "@/services/socket/workflow/faculty.socket.js";
 
 const facultyService = {
   addFaculty(faculty) {
-    addFacultyEmit(faculty);
+    facultyEmit.add(faculty);
 
     useWorkflowStore.getState().addFacultyLocal(faculty);
   },
 
   removeFaculty(facultyId) {
-    removeFacultyEmit(facultyId);
+    facultyEmit.remove(facultyId);
 
     useWorkflowStore.getState().removeFacultyLocal(facultyId);
   },
 
   updateFaculty(facultyId, facultyData) {
-    updateFacultyEmit(facultyId, facultyData);
+    facultyEmit.update(facultyId, facultyData);
 
     useWorkflowStore.getState().updateFacultyLocal(facultyId, facultyData);
   },

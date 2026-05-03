@@ -1,12 +1,9 @@
-import useWorkflowStore from "@/store/workflow.store";
-import {
-  getAllMessagesEmit,
-  sendMessageEmit,
-} from "@/services/socket/workflow/message.socket";
+import useWorkflowStore from "@/store/workflow.store.js";
+import {messageEmit} from "@/services/socket/workflow/message.socket.js";
 
 const messageService = {
   sendMessage(message) {
-    sendMessageEmit(message);
+    messageEmit.send(message);
 
     useWorkflowStore.getState().addMessageLocal(message);
   },
@@ -16,7 +13,7 @@ const messageService = {
   },
 
   getAllMessages(page, limit, callback) {
-    getAllMessagesEmit(page, limit, (messages, hasMore) => {
+    messageEmit.getAll(page, limit, (messages, hasMore) => {
       useWorkflowStore.getState().addMessagesLocal(messages);
       callback(hasMore);
     });

@@ -1,25 +1,21 @@
-import useWorkflowStore from "@/store/workflow.store";
-import {
-  addEdgeEmit,
-  addEdgesEmit,
-  removeEdgeEmit,
-} from "@/services/socket/workflow/edges.socket";
+import useWorkflowStore from "@/store/workflow.store.js";
+import {edgeEmit} from "@/services/socket/workflow/edges.socket.js";
 
 const edgeService = {
   addEdge(edge) {
-    addEdgeEmit(edge);
+    edgeEmit.add(edge);
 
     useWorkflowStore.getState().addEdgeLocal(edge);
   },
 
   addEdges(edges) {
-    addEdgesEmit(edges);
+    edgeEmit.addMany(edges);
 
     useWorkflowStore.getState().addEdgesLocal(edges);
   },
 
   removeEdge(edgeId) {
-    removeEdgeEmit(edgeId);
+    edgeEmit.remove(edgeId);
 
     useWorkflowStore.getState().removeEdgeLocal(edgeId);
   },

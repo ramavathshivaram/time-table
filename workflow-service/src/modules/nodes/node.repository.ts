@@ -1,48 +1,49 @@
-import NodeModel,  {type INode } from "./node.model.js";
+import NodeModel, { type INode } from "./node.model.js";
 
-
-const getNode = async (workflowId: INode["workflowId"], nodeId: INode["id"]) => {
-  return await  NodeModel.findOne({
-    workflowId,
+const getNode = async (nodeId: INode["id"]): Promise<INode | null> => {
+  return NodeModel.findOne({
     id: nodeId,
   });
 };
 
-const getNodes = async (workflowId: INode["workflowId"]) => {
-  return await NodeModel.find({ workflowId });
+const getNodes = async (workflowId: INode["workflowId"]): Promise<INode[]> => {
+  return NodeModel.find({ workflowId });
 };
 
-const addNode = async (workflowId: INode["workflowId"], node: Partial<INode>) => {
-  return await NodeModel.create({
+const addNode = async (
+  workflowId: INode["workflowId"],
+  node: Partial<INode>,
+): Promise<INode> => {
+  return NodeModel.create({
     ...node,
     workflowId,
   });
 };
 
-const addNodes = async (workflowId: INode["workflowId"], nodes: Partial<INode>[]) => {
+const addNodes = async (
+  workflowId: INode["workflowId"],
+  nodes: Partial<INode>[],
+): Promise<INode[]> => {
   const docs = nodes.map((node) => ({
     ...node,
     workflowId,
   }));
 
-  return await NodeModel.insertMany(docs);
+  return NodeModel.insertMany(docs);
 };
 
-const removeNode = async (workflowId: INode["workflowId"], nodeId: INode["id"]) => {
+const removeNode = async (nodeId: INode["id"]): Promise<any> => {
   return NodeModel.deleteOne({
-    workflowId,
     id: nodeId,
   });
 };
 
 const updateNode = async (
-  workflowId: INode["workflowId"],
   nodeId: INode["id"],
   updateFields: Partial<INode>,
-) => {
-  return await NodeModel.findOneAndUpdate(
+): Promise<INode | null> => {
+  return NodeModel.findOneAndUpdate(
     {
-      workflowId,
       id: nodeId,
     },
     updateFields,
@@ -57,4 +58,4 @@ export default {
   addNodes,
   removeNode,
   updateNode,
-}
+};

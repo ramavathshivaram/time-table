@@ -1,6 +1,6 @@
 import mongoose, { Types } from "mongoose";
 
-export interface INode extends mongoose.Document {
+export interface INode {
   workflowId: Types.ObjectId;
 
   id: string;

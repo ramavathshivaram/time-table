@@ -1,4 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+export interface IFaculty {
+  workflowId: Types.ObjectId;
+  id: string;
+  name: string;
+  subjects: string[];
+}
 
 const facultySchema = new mongoose.Schema({
   workflowId: {

@@ -16,9 +16,107 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWY2Z
 
 
 
-
-
 ###
 GET http://localhost:8083/api/workflow/69f6e5a29623ee3e89863d14
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3ODc5OTcsImV4cCI6MTc3Nzc4ODg5N30.AGFZBKWH75MHJXSVFsid16wX2HYBgnghOmsVwKvLrMmLZnQOyjWly2-9tdLaXCZY1STWEv-_oqnQ9GeZUGbQv2LdyeL5x-pR7aFAm7aNqBgMKWXxHfd83DZogSo-zXxZ6LRiKNQRG2llzDL-HFwBqMtwYvYAVTZ_6VMJB_e4Dm4lE3az9T1NcxG0Jo0QdCuy0tw2NsKVbRPTLTcarVt4_yi2mprG-ztWl0ZF1yhHDTtjU3QFNhA2eoZPAoN8ZuW0d8CfCmMpizsVlyCsTY8jCW2reMWBnX_sFeEymA2rv4NcCJLTP_scsfHfXneFY4ZX7dYT-4a0dKhB8tKQ5Xj7Yw
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MjU3NzEsImV4cCI6MTc3NzgyNjY3MX0.lAhlpKPIcu66y2-tCw-yukB8rEB5FXaDKoLk255iIoQ1AkIixmDcYERpmgHMJQknFUWSOgUcwZPTEvNVy8-ptPWMbJRSDQtlVtOM23HTvF4w9YN8Ieh5ADBNd3Wp82HV4-hhnzwf6U7OZWdGd_THCLBvT8AyT4sibOsqccW9lhZTXDPBhi93bd0jCl-LcVwELJwbpKHdIMmqMThmHMSBXnVFLWltaCZnwPZppJ8kBPL00PrQsjXZtJTOIWZ4-TaUmndyO__LjM8xSGJ6uwNexZwmwj7y6kl8Ou6s_-KmlLrr-W3WbFGEnH-XPBVyFWxgxdzuVFKP2QRvvxiRxqMA6A
+
+###
+GET http://localhost:8083/api/node
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MjU3NzEsImV4cCI6MTc3NzgyNjY3MX0.lAhlpKPIcu66y2-tCw-yukB8rEB5FXaDKoLk255iIoQ1AkIixmDcYERpmgHMJQknFUWSOgUcwZPTEvNVy8-ptPWMbJRSDQtlVtOM23HTvF4w9YN8Ieh5ADBNd3Wp82HV4-hhnzwf6U7OZWdGd_THCLBvT8AyT4sibOsqccW9lhZTXDPBhi93bd0jCl-LcVwELJwbpKHdIMmqMThmHMSBXnVFLWltaCZnwPZppJ8kBPL00PrQsjXZtJTOIWZ4-TaUmndyO__LjM8xSGJ6uwNexZwmwj7y6kl8Ou6s_-KmlLrr-W3WbFGEnH-XPBVyFWxgxdzuVFKP2QRvvxiRxqMA6A
+
+
+###
+POST http://localhost:8083/api/node?workflowId=69f6e5a29623ee3e89863d14
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MjU3NzEsImV4cCI6MTc3NzgyNjY3MX0.lAhlpKPIcu66y2-tCw-yukB8rEB5FXaDKoLk255iIoQ1AkIixmDcYERpmgHMJQknFUWSOgUcwZPTEvNVy8-ptPWMbJRSDQtlVtOM23HTvF4w9YN8Ieh5ADBNd3Wp82HV4-hhnzwf6U7OZWdGd_THCLBvT8AyT4sibOsqccW9lhZTXDPBhi93bd0jCl-LcVwELJwbpKHdIMmqMThmHMSBXnVFLWltaCZnwPZppJ8kBPL00PrQsjXZtJTOIWZ4-TaUmndyO__LjM8xSGJ6uwNexZwmwj7y6kl8Ou6s_-KmlLrr-W3WbFGEnH-XPBVyFWxgxdzuVFKP2QRvvxiRxqMA6A
+
+{
+    "workflowId": "665f1a2b3c4d5e6f7890abcd",
+    "id": "node-1",
+    "type": "start",
+    "position": { "x": 100, "y": 50 },
+    "data": {
+      "label": "Start Node"
+    }
+}
+###
+GET http://localhost:8083/api/node?workflowId=69f6e5a29623ee3e89863d14
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MjU3NzEsImV4cCI6MTc3NzgyNjY3MX0.lAhlpKPIcu66y2-tCw-yukB8rEB5FXaDKoLk255iIoQ1AkIixmDcYERpmgHMJQknFUWSOgUcwZPTEvNVy8-ptPWMbJRSDQtlVtOM23HTvF4w9YN8Ieh5ADBNd3Wp82HV4-hhnzwf6U7OZWdGd_THCLBvT8AyT4sibOsqccW9lhZTXDPBhi93bd0jCl-LcVwELJwbpKHdIMmqMThmHMSBXnVFLWltaCZnwPZppJ8kBPL00PrQsjXZtJTOIWZ4-TaUmndyO__LjM8xSGJ6uwNexZwmwj7y6kl8Ou6s_-KmlLrr-W3WbFGEnH-XPBVyFWxgxdzuVFKP2QRvvxiRxqMA6A
+###
+GET http://localhost:8083/api/node/node-1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MjU3NzEsImV4cCI6MTc3NzgyNjY3MX0.lAhlpKPIcu66y2-tCw-yukB8rEB5FXaDKoLk255iIoQ1AkIixmDcYERpmgHMJQknFUWSOgUcwZPTEvNVy8-ptPWMbJRSDQtlVtOM23HTvF4w9YN8Ieh5ADBNd3Wp82HV4-hhnzwf6U7OZWdGd_THCLBvT8AyT4sibOsqccW9lhZTXDPBhi93bd0jCl-LcVwELJwbpKHdIMmqMThmHMSBXnVFLWltaCZnwPZppJ8kBPL00PrQsjXZtJTOIWZ4-TaUmndyO__LjM8xSGJ6uwNexZwmwj7y6kl8Ou6s_-KmlLrr-W3WbFGEnH-XPBVyFWxgxdzuVFKP2QRvvxiRxqMA6A
+
+
+
+###
+
+GET http://localhost:8083/api/edge?workflowId=69f6e5a29623ee3e89863d14
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
+
+###
+
+POST http://localhost:8083/api/edge?workflowId=69f6e5a29623ee3e89863d14
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
+
+{
+  "id": "edge-1",
+  "source": "node-1",
+  "target": "node-2",
+  "type": "default",
+  "data": {
+    "label": "Start to College"
+  }
+}
+
+###
+
+POST http://localhost:8083/api/edge/69f6e5a29623ee3e89863d14/bulk
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
+
+[
+  {
+    "id": "edge-2",
+    "source": "node-2",
+    "target": "node-3",
+    "type": "default",
+    "data": { "label": "College to Branch" }
+  },
+  {
+    "id": "edge-3",
+    "source": "node-3",
+    "target": "node-4",
+    "type": "default",
+    "data": { "label": "Branch to Year" }
+  }
+]
+
+###
+
+GET http://localhost:8083/api/edge/edge-1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
+
+###
+
+PUT http://localhost:8083/api/edge?edgeId=edge-1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
+
+{
+  "data": {
+    "label": "Updated Edge Label"
+  }
+}
+
+###
+
+DELETE http://localhost:8083/api/edge?edgeId=edge-1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc4MzAwODQsImV4cCI6MTc3NzgzMDk4NH0.OCBIld-eEPIK3LnaohwjvP-juBBTV_7XAq2CT5dKgbUEwXutx6PaDaC53wzROLJKsPCtiJ3S0OZaaJqLwq9bYy7oHX7kjK_k8Xgoa3YRkchHBy5eG4BeNnYIJ9JwEh06PPqapP6QDOOQbeBPfLZyKeisPNy99b9XNJY9oxa_jyKacSMk5gdzMMgF4NFn6zjJnDu4INcECu4_H95UXgW2OEN3f6D08DmfSWc5URwW6VtGbrvYbtPV_p3GPXANXluwV-rDBDry__ELQWoYMepgncaDoQfI9__Tfi3OIXsd2aH1uK8mCJK21AAY8ihnqKIn_BNsWBFVgMdysyXb0raJkA
