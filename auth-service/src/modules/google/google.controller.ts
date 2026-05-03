@@ -6,6 +6,7 @@ import authRepository from "#repositories/auth.repository.js";
 import { generateRandomPassword } from "#services/password.service.js";
 import setAuthCookiesAndRespond from "#services/setAuthCookiesAndRespond.service.js";
 import { Types } from "mongoose";
+import { createUserGrpc } from "#utils/api.js";
 
 // ---------- TYPES ----------
 interface GoogleLoginBody {
@@ -16,6 +17,7 @@ interface GoogleUser {
   email: string;
   name: string;
   sub: string;
+  picture: string;
 }
 
 // ---------- LOGIN ----------
@@ -34,7 +36,7 @@ const login = asyncHandler(
     }
 
     const authResponse = await authRepository.getUserByEmail(
-      googleUserData.email
+      googleUserData.email,
     );
 
     if (!authResponse) {
@@ -44,9 +46,9 @@ const login = asyncHandler(
     return await setAuthCookiesAndRespond(
       res,
       authResponse,
-      "Login successful"
+      "Login successful",
     );
-  }
+  },
 );
 
 // ---------- REGISTER ----------
@@ -74,10 +76,13 @@ const register = asyncHandler(
 
     const hashedPassword = await generateRandomPassword();
 
-    const userId = new Types.ObjectId();
+    const userId = await createUserGrpc({
+      userName: googleUserData.name,
+      email: googleUserData.email,
+      avatar: googleUserData,
+    });
 
     const newAuthResponse = await authRepository.createAuth({
-      userName: googleUserData.name,
       email: googleUserData.email,
       password: hashedPassword,
       userId,
@@ -86,14 +91,14 @@ const register = asyncHandler(
     return await setAuthCookiesAndRespond(
       res,
       newAuthResponse,
-      "Registration successful"
+      "Registration successful",
     );
-  }
+  },
 );
 
 // ---------- GOOGLE FETCH ----------
 const getUserDataFromGoogle = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GoogleUser> => {
   try {
     const response = await axios.get<GoogleUser>(
@@ -102,7 +107,7 @@ const getUserDataFromGoogle = async (
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
 
     return response.data;

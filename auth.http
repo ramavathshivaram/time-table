@@ -21,7 +21,7 @@ POST http://localhost:8081/api/local/register
 Content-Type: application/json
 
 {
-   "email":"ramavathshiva6302@gmail.com",
+   "email":"ramavathshiva6323@gmail.com",
    "password":"12345678",
    "userName":"shiva ram"
 }

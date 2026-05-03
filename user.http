@@ -1,0 +1,27 @@
+
+GET http://localhost:8082/health
+Content-Type: application/json
+
+###
+POST http://localhost:8082/api/user
+Content-Type: application/json
+
+{
+   "email":"ramavathshiva2113@gmail.com",
+   "password":"12345678",
+   "userName":"12345678"
+}
+
+###
+GET http://localhost:8082/api/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWY2Y2U0MzdmMTgzMzhjOWU5NzYyOTciLCJhdXRoSWQiOiI2OWY2Y2U0MzBjYmMyNGIwNmJjNzVkNjUiLCJ0b2tlblZlcnNpb24iOjAsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3ODMyMjgsImV4cCI6MTc3Nzc4NDEyOH0.R2nQ0hMTo5YSiJetqa5CGfn6HJO_AFvd4pmcIMwENKKG_Ouq7Dk_FYdtK5PZ3bjlso6TIBsDJpNr-FA0n3WDgyaGQ5QR04ZgaiTUbw2RW0bw3tlvd_9syXpR1LBMRv2Zpe0jF6lo5hEoSDSRtm-48E-UojlEsbuSETS_s7hFI1t9BGmlsMFKwsG_zbqNY8nt4nGK3-qzm6GwuIvk9tpRllOuNZ_0y5Ef4VuL8Yq_BvZu0k4zWnmncXHVpXLALdvJ0Fp4rwfoz3IgwoqwFBWJyhpmTIUlCrpixm5DAjFAubYz3AW9qk7KRXKke6XAt_r2kW41IPutDfppRc2kZuSn3Q
+
+###
+PUT http://localhost:8082/api/user/dark-mode
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWY2Y2U0MzdmMTgzMzhjOWU5NzYyOTciLCJhdXRoSWQiOiI2OWY2Y2U0MzBjYmMyNGIwNmJjNzVkNjUiLCJ0b2tlblZlcnNpb24iOjAsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzc3ODMyMjgsImV4cCI6MTc3Nzc4NDEyOH0.R2nQ0hMTo5YSiJetqa5CGfn6HJO_AFvd4pmcIMwENKKG_Ouq7Dk_FYdtK5PZ3bjlso6TIBsDJpNr-FA0n3WDgyaGQ5QR04ZgaiTUbw2RW0bw3tlvd_9syXpR1LBMRv2Zpe0jF6lo5hEoSDSRtm-48E-UojlEsbuSETS_s7hFI1t9BGmlsMFKwsG_zbqNY8nt4nGK3-qzm6GwuIvk9tpRllOuNZ_0y5Ef4VuL8Yq_BvZu0k4zWnmncXHVpXLALdvJ0Fp4rwfoz3IgwoqwFBWJyhpmTIUlCrpixm5DAjFAubYz3AW9qk7KRXKke6XAt_r2kW41IPutDfppRc2kZuSn3Q
+
+{
+   "darkMode": false
+}

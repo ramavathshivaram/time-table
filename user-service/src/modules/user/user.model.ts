@@ -16,14 +16,6 @@ const userSchema = new mongoose.Schema(
       index: true,
     },
 
-    authId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Auth",
-      required: true,
-      unique: true,
-      index: true,
-    },
-
     avatar: {
       type: String,
       default: "",

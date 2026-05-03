@@ -6,7 +6,7 @@ import { hashPassword, isPasswordMatched } from "#services/password.service.js";
 import setAuthCookiesAndRespond from "#services/setAuthCookiesAndRespond.service.js";
 
 import authRepository from "#repositories/auth.repository.js";
-import { Types } from "mongoose";
+import { createUserGrpc } from "#utils/api.js";
 
 // ---------- TYPES ----------
 interface LoginBody {
@@ -62,14 +62,15 @@ const register = asyncHandler(
 
     const hashedPassword: string = await hashPassword(password);
 
-    const userId = new Types.ObjectId();
+    const userId = await createUserGrpc({ userName, email });
 
     const authResponse = await authRepository.createAuth({
-      userName,
       email,
       password: hashedPassword,
       userId,
     });
+
+    console.log(authResponse)
 
     return await setAuthCookiesAndRespond(
       res,

@@ -1,12 +1,12 @@
 import api from "../axios.js";
 
 export const getUserDetailsApi = async (data) => {
-  const res = await api.get("/user", data);
+  const res = await api.get("/user/user", data);
   return res.data.data;
 };
 
 export const updateDarkModeApi = async (data) => {
-  const res = await api.put("/user/dark-mode", data);
+  const res = await api.put("/user/user/dark-mode", data);
   return res.data.data;
 };
 

@@ -2,11 +2,12 @@ import type { NextFunction, Request, Response } from "express";
 import ApiError from "#utils/ApiError.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import env from "#configs/env.js";
+import type { Types } from "mongoose";
 
 const publicKey = env.JWT_PUBLIC_KEY.replace(/\\n/g, "\n");
 
 interface TokenPayload extends JwtPayload {
-  userId: string;
+  userId: Types.ObjectId;
   authId: string;
   tokenVersion: number;
   type: "access" | "refresh";
@@ -40,8 +41,11 @@ const authenticate = (
 
     const payload = decoded as TokenPayload;
 
-    req.authId = payload.authId;
+    console.log(payload)
+
     req.userId = payload.userId;
+
+
 
     next();
   } catch (error) {
