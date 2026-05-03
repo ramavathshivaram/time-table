@@ -1,13 +1,15 @@
 import env from "#configs/env.js";
-import morganMiddleware from "#middlewares/morganMiddleware.js";
-import rateLimiterMiddleware, {
-  authLimiter,
-} from "#middlewares/rateLimiter.js";
+
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
+
+import morganMiddleware from "#middlewares/morganMiddleware.js";
+import rateLimiterMiddleware, {
+  authLimiter,
+} from "#middlewares/rateLimiter.js";
 
 import authRouter from "#modules/auth/auth.route.js";
 import googleRouter from "#modules/google/google.route.js";
@@ -17,7 +19,7 @@ import notFoundRoute from "#middlewares/notFoundRoute.js";
 import errorHandler from "#middlewares/errorHandler.js";
 
 const corsOptions = {
-  origin: process.env.ORIGIN || "http://localhost:5173",
+  origin: env.ORIGIN,
   credentials: true,
 };
 

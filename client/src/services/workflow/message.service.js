@@ -2,7 +2,7 @@ import useWorkflowStore from "@/store/workflow.store";
 import {
   getAllMessagesEmit,
   sendMessageEmit,
-} from "@/services/socket/workflow/emitters/message.emit";
+} from "@/services/socket/workflow/message.socket";
 
 const messageService = {
   sendMessage(message) {

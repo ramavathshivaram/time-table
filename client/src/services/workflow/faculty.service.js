@@ -3,7 +3,7 @@ import {
   addFacultyEmit,
   removeFacultyEmit,
   updateFacultyEmit,
-} from "@/services/socket/workflow/emitters/faculty.emit";
+} from "@/services/socket/workflow/faculty.socket";
 
 const facultyService = {
   addFaculty(faculty) {

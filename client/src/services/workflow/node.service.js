@@ -4,7 +4,7 @@ import {
   addNodesEmit,
   removeNodeEmit,
   updateNodeEmit,
-} from "@/services/socket/workflow/emitters/nodes.emit";
+} from "@/services/socket/workflow/emitters/nodes.socket";
 
 const nodeService = {
   addNode(node) {

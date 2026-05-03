@@ -1,47 +1,58 @@
-const WORKFLOW_EVENTS = {
-  NODE_ADD: "node:add",
-  NODES_ADD: "nodes:add",
-  NODE_UPDATE: "node:update",
-  NODE_REMOVE: "node:remove",
-  NODES_REMOVE: "nodes:remove",
-  NODE_GET: "node:get",
-  NODES_GET: "nodes:get",
-
-  EDGE_ADD: "edge:add",
-  EDGES_ADD: "edges:add",
-  EDGE_UPDATE: "edge:update",
-  EDGE_REMOVE: "edge:remove",
-  EDGES_REMOVE: "edges:remove",
-  EDGE_GET: "edge:get",
-  EDGES_GET: "edges:get",
-
-  FACULTY_ADD: "faculty:add",
-  FACULTIES_ADD: "faculties:add",
-  FACULTY_UPDATE: "faculty:update",
-  FACULTY_REMOVE: "faculty:remove",
-  FACULTIES_REMOVE: "faculties:remove",
-  FACULTY_GET: "faculty:get",
-  FACULTIES_GET: "faculties:get",
-
-  SUBJECT_ADD: "subject:add",
-  SUBJECTS_ADD: "subjects:add",
-  SUBJECT_UPDATE: "subject:update",
-  SUBJECT_REMOVE: "subject:remove",
-  SUBJECTS_REMOVE: "subjects:remove",
-  SUBJECT_GET: "subject:get",
-  SUBJECTS_GET: "subjects:get",
-
-  ROOM_ADD: "room:add",
-  ROOMS_ADD: "rooms:add",
-  ROOM_UPDATE: "room:update",
-  ROOM_REMOVE: "room:remove",
-  ROOMS_REMOVE: "rooms:remove",
-  ROOM_GET: "room:get",
-  ROOMS_GET: "rooms:get",
-
-  MESSAGE_SEND: "message:send",
-  MESSAGE_RESPONSE: "message:response",
-  MESSAGE_GET_ALL: "message:get:all",
+export const NODE = {
+  ADD: "node:add",
+  ADD_MANY: "nodes:add",
+  UPDATE: "node:update",
+  REMOVE: "node:remove",
+  REMOVE_MANY: "nodes:remove",
+  GET: "node:get",
+  GET_MANY: "nodes:get",
 };
 
-export default WORKFLOW_EVENTS;
+export const EDGE = {
+  ADD: "edge:add",
+  ADD_MANY: "edges:add",
+  UPDATE: "edge:update",
+  REMOVE: "edge:remove",
+  REMOVE_MANY: "edges:remove",
+  GET: "edge:get",
+  GET_MANY: "edges:get",
+};
+
+export const FACULTY = {
+  ADD: "faculty:add",
+  ADD_MANY: "faculties:add",
+  UPDATE: "faculty:update",
+  REMOVE: "faculty:remove",
+  REMOVE_MANY: "faculties:remove",
+  GET: "faculty:get",
+  GET_MANY: "faculties:get",
+};
+
+export const SUBJECT = {
+  ADD: "subject:add",
+  ADD_MANY: "subjects:add",
+  UPDATE: "subject:update",
+  REMOVE: "subject:remove",
+  REMOVE_MANY: "subjects:remove",
+  GET: "subject:get",
+  GET_MANY: "subjects:get",
+};
+
+export const ROOM = {
+  ADD: "room:add",
+  ADD_MANY: "rooms:add",
+  UPDATE: "room:update",
+  REMOVE: "room:remove",
+  REMOVE_MANY: "rooms:remove",
+  GET: "room:get",
+  GET_MANY: "rooms:get",
+};
+
+export const MESSAGE = {
+  SEND: "message:send",
+  RESPONSE: "message:response",
+  STREAM_START: "message:stream:start",
+  STREAM_CHUNK: "message:stream:chunk",
+  STREAM_END: "message:stream:end",
+  GET_ALL: "message:get:all",
+};

@@ -15,7 +15,7 @@ import StartNode from "./node-components/StartNode";
 import ModalWrapper from "./modals/ModalWrapper.jsx";
 import ResourcesModal from "./modals/ResourcesModal";
 
-import nodeTypesConfig from "../nodeTypes.js";
+import nodeTypesConfig from "./nodeTypes.js";
 
 const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   const darkMode = useUserStore((s) => s.darkMode);

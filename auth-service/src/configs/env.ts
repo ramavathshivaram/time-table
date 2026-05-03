@@ -12,6 +12,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(8081),
   REDIS_HOST: z.string().default("127.0.0.1"),
   REDIS_PORT: z.coerce.number().default(6379),
+  ORIGIN: z.string().min(1, "ORIGIN is required"),
   MONGODB_URI: z.string().min(1, "MONGODB_URI is required"),
   USER_SERVICE_URL: z.string().min(1, "User Service URL is required"),
 });

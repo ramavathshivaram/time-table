@@ -3,7 +3,7 @@ import {
   addSubjectEmit,
   removeSubjectEmit,
   updateSubjectEmit,
-} from "@/services/socket/workflow/emitters/subject.emit";
+} from "@/services/socket/workflow/emitters/subject.socket";
 
 const subjectService = {
   addSubject(subject) {

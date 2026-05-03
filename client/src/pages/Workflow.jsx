@@ -5,7 +5,10 @@ import {
   disconnectSocket,
   getSocket,
 } from "@/services/socket/socket.js";
-import initSocketListeners from "@/services/socket/workflow/listeners/initListeners.js";
+import {
+  registerHandlers,
+  cleanupHandlers,
+} from "@/services/socket/workflow/registerHandlers.js";
 import useWorkflowStore from "@/store/workflow.store";
 import { ReactFlowProvider } from "@xyflow/react";
 import React, { useEffect, useState } from "react";
@@ -24,15 +27,20 @@ const Workflow = () => {
   useEffect(() => {
     const socket = getSocket();
 
-    const handleConnect = () => setIsConnected(true);
-    const handleDisconnect = () => setIsConnected(false);
+    const handleConnect = () => {
+      setIsConnected(true);
+      registerHandlers();
+    };
+
+    const handleDisconnect = () => {
+      setIsConnected(false);
+      cleanupHandlers();
+    };
 
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
 
     connectSocket();
-
-    initSocketListeners();
 
     return () => {
       socket.off("connect", handleConnect);
@@ -40,7 +48,7 @@ const Workflow = () => {
 
       disconnectSocket();
     };
-  }, []);
+  }, [workflowId]);
 
   useEffect(() => {
     if (initialWorkflowData) {

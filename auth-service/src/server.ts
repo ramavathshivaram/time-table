@@ -16,7 +16,6 @@ const serverInit = async () => {
     server = app.listen(env.PORT, () => {
       logger.info(`Server started on ${env.PORT}`);
     });
-
   } catch (error) {
     logger.error("Server startup failed", error);
     process.exit(1);
@@ -40,7 +39,6 @@ const gracefulShutdown = async () => {
     } else {
       process.exit(0);
     }
-
   } catch (err) {
     logger.error("Shutdown error", err);
     process.exit(1);

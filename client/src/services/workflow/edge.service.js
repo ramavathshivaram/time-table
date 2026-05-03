@@ -3,7 +3,7 @@ import {
   addEdgeEmit,
   addEdgesEmit,
   removeEdgeEmit,
-} from "@/services/socket/workflow/emitters/edges.emit";
+} from "@/services/socket/workflow/edges.socket";
 
 const edgeService = {
   addEdge(edge) {
