@@ -41,14 +41,8 @@ const socketProxy = createProxyMiddleware({
   target: env.SOCKET_SERVICE_URL,
   changeOrigin: true,
   ws: true,
-
-  logLevel: "debug", // 👈 ADD THIS
-  timeout: 60000, // 🔥 IMPORTANT
-  proxyTimeout: 60000, // 🔥 IMPORTANT
-
-  onError: (err, req, res) => {
-    console.error("Socket proxy error:", err.message);
-  },
+  timeout: 60000,
+  proxyTimeout: 60000,
 });
 
 const app = express();
@@ -75,7 +69,7 @@ app.get("/health", async (req, res) => {
 app.use("/api/auth", proxy(env.AUTH_SERVICE_URL, proxyOptions));
 app.use("/api/user", proxy(env.USER_SERVICE_URL, proxyOptions));
 app.use("/api/workflow", proxy(env.WORKFLOW_SERVICE_URL, proxyOptions));
-app.use("/socket.io", socketProxy);
+app.use("/socket.io/", socketProxy);
 
 app.use(errorHandler);
 app.use(notFoundRoute);
