@@ -1,7 +1,7 @@
-import aiService from "#services/ai-services/routes/conversation.grpc.js";
-import { messageController } from "#services/workflow-service/routes/workflow.grpc.js";
-import { MESSAGE } from "./events.js";
 import type { Socket } from "socket.io";
+
+import messageApi from "#services/message.api.js";
+import { MESSAGE } from "./events.js";
 import logger from "#configs/logger.js";
 import emitToWorkflow from "./emit-to-workflow.js";
 
@@ -18,7 +18,7 @@ export const registerMessageHandlers = (socket: WorkflowSocket) => {
   // SEND MESSAGE
   socket.on(MESSAGE.SEND, async (message) => {
     try {
-      await messageController.addMessageGRPC(workflowId, message);
+      await messageApi.add(workflowId, message);
     } catch (err) {
       logger.error("message send error", { workflowId, err });
     }
@@ -30,7 +30,7 @@ export const registerMessageHandlers = (socket: WorkflowSocket) => {
     async (page: number, limit: number, callback: Function) => {
       try {
         const { messages, hasMore } =
-          await messageController.getAllMessagesGRPC(workflowId, page, limit);
+          await messageApi.getAll(workflowId, page, limit);
 
         callback({ messages, hasMore });
       } catch (err) {

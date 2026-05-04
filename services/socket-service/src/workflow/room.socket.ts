@@ -1,4 +1,4 @@
-import { roomController } from "#services/workflow-service/routes/workflow.grpc.js";
+import roomApi from "#services/room.api.js";
 import { ROOM } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
@@ -18,15 +18,15 @@ export const registerRoomHandlers = (socket: WorkflowSocket) => {
   if (!workflowId) return;
 
   socket.on(ROOM.ADD, (room) => {
-    roomController.addRoomGRPC(workflowId, room);
+    roomApi.add(workflowId, room);
   });
 
   socket.on(ROOM.REMOVE, (roomId) => {
-    roomController.removeRoomGRPC(workflowId, roomId);
+    roomApi.remove(roomId);
   });
 
   socket.on(ROOM.UPDATE, (roomId, room) => {
-    roomController.updateRoomGRPC(workflowId, roomId, room);
+    roomApi.update(roomId, room);
   });
 };
 

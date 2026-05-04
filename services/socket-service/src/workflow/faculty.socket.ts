@@ -1,4 +1,4 @@
-import { facultyController } from "#services/workflow-service/routes/workflow.grpc.js";
+import facultyApi from "#services/faculty.api.js";
 import { FACULTY } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
@@ -18,15 +18,15 @@ export const registerFacultyHandlers = (socket: WorkflowSocket) => {
   if (!workflowId) return;
 
   socket.on(FACULTY.ADD, (faculty) => {
-    facultyController.addFacultyGRPC(workflowId, faculty);
+    facultyApi.add(workflowId, faculty);
   });
 
   socket.on(FACULTY.UPDATE, (facultyId, faculty) => {
-    facultyController.updateFacultyGRPC(workflowId, facultyId, faculty);
+    facultyApi.update( facultyId, faculty);
   });
 
   socket.on(FACULTY.REMOVE, (facultyId) => {
-    facultyController.removeFacultyGRPC(workflowId, facultyId);
+    facultyApi.remove( facultyId);
   });
 };
 
@@ -46,11 +46,6 @@ export const facultyEmitter = {
 
   update(workflowId: string, facultyId: string, facultyData: any) {
     logger.info("emit faculty update", { workflowId, facultyId });
-    emitToWorkflow(
-      workflowId,
-      FACULTY.UPDATE,
-      facultyId,
-      facultyData,
-    );
+    emitToWorkflow(workflowId, FACULTY.UPDATE, facultyId, facultyData);
   },
 };

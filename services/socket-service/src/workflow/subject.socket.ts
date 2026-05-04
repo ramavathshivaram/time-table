@@ -1,8 +1,8 @@
-import { subjectController } from "#services/workflow-service/routes/workflow.grpc.js";
-import { WORKFLOW_EVENTS } from "./events.js";
+import { SUBJECT } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
 import emitToWorkflow from "./emit-to-workflow.js";
+import subjectApi from "#services/subject.api.js";
 
 interface SocketData {
   workflowId: string;
@@ -10,25 +10,20 @@ interface SocketData {
 
 type WorkflowSocket = Socket<{}, {}, {}, SocketData>;
 
-// ----------------------
-// LISTENERS
-// ----------------------
 export const registerSubjectHandlers = (socket: WorkflowSocket) => {
   const workflowId = socket.data.workflowId;
   if (!workflowId) return;
 
-  const { SUBJECT } = WORKFLOW_EVENTS;
-
   socket.on(SUBJECT.ADD, (subject) => {
-    subjectController.addSubjectGRPC(workflowId, subject);
+    subjectApi.add(workflowId, subject);
   });
 
   socket.on(SUBJECT.UPDATE, (subjectId, subject) => {
-    subjectController.updateSubjectGRPC(workflowId, subjectId, subject);
+    subjectApi.update( subjectId, subject);
   });
 
   socket.on(SUBJECT.REMOVE, (subjectId) => {
-    subjectController.removeSubjectGRPC(workflowId, subjectId);
+    subjectApi.remove( subjectId);
   });
 };
 
@@ -38,21 +33,16 @@ export const registerSubjectHandlers = (socket: WorkflowSocket) => {
 export const subjectEmitter = {
   add(workflowId: string, subject: any) {
     logger.info("emit subject add", { workflowId });
-    emitToWorkflow(workflowId, WORKFLOW_EVENTS.SUBJECT.ADD, subject);
+    emitToWorkflow(workflowId, SUBJECT.ADD, subject);
   },
 
   remove(workflowId: string, subjectId: string) {
     logger.info("emit subject remove", { workflowId, subjectId });
-    emitToWorkflow(workflowId, WORKFLOW_EVENTS.SUBJECT.REMOVE, subjectId);
+    emitToWorkflow(workflowId, SUBJECT.REMOVE, subjectId);
   },
 
   update(workflowId: string, subjectId: string, subjectData: any) {
     logger.info("emit subject update", { workflowId, subjectId });
-    emitToWorkflow(
-      workflowId,
-      WORKFLOW_EVENTS.SUBJECT.UPDATE,
-      subjectId,
-      subjectData,
-    );
+    emitToWorkflow(workflowId, SUBJECT.UPDATE, subjectId, subjectData);
   },
 };

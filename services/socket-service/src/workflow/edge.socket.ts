@@ -1,4 +1,4 @@
-import edgeApi from "#services/edge-api.js";
+import edgeApi from "#services/edge.api.js";
 import { EDGE } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";

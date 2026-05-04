@@ -1,4 +1,4 @@
-import nodeApi from "#services/node-api.js";
+import nodeApi from "#services/node.api.js";
 import { NODE } from "./events.js";
 import type { Socket } from "socket.io";
 import logger from "#configs/logger.js";
