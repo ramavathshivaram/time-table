@@ -34,7 +34,7 @@ export const authController = {
   }),
 
   logout: expressAsyncHandler(async (req: Request, res: Response) => {
-    const refreshToken = cookieService.remove(res, "refreshToken");
+    const refreshToken = cookieService.get(res, "refreshToken");
 
     await authService.logout(refreshToken);
 

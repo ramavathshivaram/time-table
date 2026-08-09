@@ -11,6 +11,8 @@ const envSchema = z.object({
     .min(1, "ORIGIN is required")
     .default("http://localhost:5173"),
 
+  BREVO_API_KEY: z.string().min(1, "BREVO_API_KEY is required"),
+
   JWT_SECRET_KEY: z.string().min(1, "JWT_SECRET_KEY is required"),
 
   REDIS_HOST: z.string().min(1, "REDIS_HOST is required").default("127.0.0.1"),

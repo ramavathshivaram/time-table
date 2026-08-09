@@ -9,19 +9,14 @@ import { LoginDto, RegisterDto } from "./types/auth.types.js";
 export const authService = {
   register: async (data: RegisterDto) => {
     let user;
-    try {
-      data.password = await passwordService.hash(data.password);
-      user = await userService.create(data);
-    } catch (err: any) {
-      if (err.code === 11000 && err.keyPattern?.email) {
-        throw new ApiError(400, "User with this email already exists");
-      }
-    }
+
+    data.password = await passwordService.hash(data.password);
+    user = await userService.create(data);
 
     const refreshToken = await sessionService.create(user._id);
     const accessToken = tokenService.generateAccessToken(user._id);
 
-    queueService.forgotPassword({ email, userName: user.userName });
+    queueService.forgotPassword({ email: user.email, userName: user.userName });
     return {
       user: user,
       refreshToken,
@@ -30,7 +25,9 @@ export const authService = {
   },
 
   login: async (data: LoginDto) => {
-    const user = await userService.findByEmail(data.email);
+    console.log(data);
+    const user = await userService.findByEmailWithPassword(data.email);
+    console.log(user);
 
     const isPasswordValid = await passwordService.compare(
       data.password,
@@ -56,6 +53,7 @@ export const authService = {
   },
 
   logout: async (refreshToken: string) => {
+    console.log(refreshToken);
     await sessionService.revoke(refreshToken);
   },
 

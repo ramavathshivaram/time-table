@@ -1,5 +1,6 @@
 import { sendEmail } from "#services/send-email.js";
 import loadHtml from "#utils/loadHtml.js";
+import env from "#configs/env.js";
 
 type ForgotPassword = {
   token: string;
@@ -11,12 +12,13 @@ type RegisterGreeting = {
 
 export const emailService = {
   forgotPassword: async (email: string, { token }: ForgotPassword) => {
-    const html = await loadHtml("email.otp.ejs", { token });
+    const resetUrl = `${env.ORIGIN_URL}/reset-password?token=${encodeURIComponent(token)}`;
+    const html = await loadHtml("email.forgot-password.ejs", { resetUrl });
     return await sendEmail(email, "Password Reset", html);
   },
 
   registerGreeting: async (email: string, { userName }: RegisterGreeting) => {
-    const html = await loadHtml("email.register.ejs", {
+    const html = await loadHtml("email.register-greeting.ejs", {
       userName,
       email,
     });

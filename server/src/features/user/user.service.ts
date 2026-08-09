@@ -1,19 +1,23 @@
-import { userReposistory } from "./user.reposistory.js";
+import { userRepository } from "./user.reposistory.js";
 
 export const userService = {
   create: async (user: any) => {
-    return await userReposistory.create(user);
+    return await userRepository.create(user);
   },
 
   findByEmail: async (email: string) => {
-    return await userReposistory.findByEmail(email);
+    return await userRepository.findByEmail(email);
+  },
+
+  findByEmailWithPassword: async (email: string) => {
+    return await userRepository.findByEmailWithPassword(email);
   },
 
   findById: async (id: string) => {
-    return await userReposistory.findById(id);
+    return await userRepository.findById(id);
   },
 
   updatePassword: async (userId: string, password: string) => {
-    return await userReposistory.updatePassword(userId, password);
+    return await userRepository.updatePassword(userId, password);
   },
 };

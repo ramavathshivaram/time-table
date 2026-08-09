@@ -12,16 +12,6 @@ const brevoApi = axios.create({
   timeout: 10000,
 });
 
-interface EmailPayload {
-  sender: {
-    name: string;
-    email: string;
-  };
-  to: { email: string }[];
-  subject: string;
-  htmlContent: string;
-}
-
 interface BrevoResponse {
   messageId: string;
 }
@@ -32,7 +22,7 @@ export const sendEmail = async (
   htmlContent: string,
 ): Promise<string> => {
   try {
-    const payload: EmailPayload = {
+    const payload = {
       sender: {
         name: "Time Table",
         email: "ramavathshiva6300@gmail.com",

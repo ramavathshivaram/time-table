@@ -2,7 +2,11 @@ import type { NextFunction, Request, Response } from "express";
 import { tokenService } from "#features/auth/services/token.service.js";
 import { errors } from "#utils/errors.js";
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -18,7 +22,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   try {
     const payload = tokenService.verifyAccessToken(token);
     req.userId = payload.sub;
-
+    console.log(req.userId);
     next();
   } catch (error) {
     return next(errors.forbidden());

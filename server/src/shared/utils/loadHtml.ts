@@ -10,7 +10,7 @@ const loadHtml = async (filePath: string, data = {}): Promise<string> => {
   try {
     const fullPath: string = path.join(
       __dirname,
-      "../../templates/" + filePath,
+      "../../../templates/" + filePath,
     );
 
     const html: string = await ejs.renderFile(fullPath, data, {
