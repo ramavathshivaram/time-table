@@ -12,7 +12,7 @@ type RegisterGreeting = {
 
 export const emailService = {
   forgotPassword: async (email: string, { token }: ForgotPassword) => {
-    const resetUrl = `${env.ORIGIN_URL}/reset-password?token=${encodeURIComponent(token)}`;
+    const resetUrl = `${env.ORIGIN_URL}/reset-password?token=${token}`;
     const html = await loadHtml("email.forgot-password.ejs", { resetUrl });
     return await sendEmail(email, "Password Reset", html);
   },

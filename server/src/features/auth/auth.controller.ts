@@ -34,8 +34,9 @@ export const authController = {
   }),
 
   logout: expressAsyncHandler(async (req: Request, res: Response) => {
-    const refreshToken = cookieService.get(res, "refreshToken");
+    const refreshToken = cookieService.get(req, "refreshToken");
 
+    console.log(refreshToken);
     await authService.logout(refreshToken);
 
     cookieService.remove(res, "refreshToken");
@@ -46,7 +47,7 @@ export const authController = {
   }),
 
   refresh: expressAsyncHandler(async (req: Request, res: Response) => {
-    const rToken = getCookie(req, "refreshToken");
+    const rToken = cookieService.get(req, "refreshToken");
 
     const { accessToken, refreshToken } = await authService.refresh(
       rToken as string,
@@ -79,8 +80,7 @@ export const authController = {
   }),
 
   resetPassword: expressAsyncHandler(async (req: Request, res: Response) => {
-    const { token } = req.query;
-    const { password } = req.body;
+    const { password, token } = req.body;
 
     await authService.resetPassword(token as string, password);
 

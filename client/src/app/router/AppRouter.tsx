@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
@@ -24,13 +25,15 @@ const AppRouter = () => {
           {/* Public routes */}
           {/* <Route element={<PublicRoute />}> */}
           <Route path="/" element={<LandingPage />} />
-          
+
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />
 
             <Route path="/register" element={<RegisterPage />} />
 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Route>
           {/* </Route> */}
 

@@ -1,7 +1,16 @@
+import React from "react";
 import { Bell } from "lucide-react";
+// import { formatDistanceToNow } from "date-fns";
+
+interface Notification {
+  _id: string;
+  title: string;
+  desc?: string;
+  createdAt: Date | string;
+}
 
 const Notifications = () => {
-  const notifications = [
+  const notifications: Notification[] = [
     {
       _id: "1",
       title: "New workflow created",
@@ -10,48 +19,59 @@ const Notifications = () => {
     },
     {
       _id: "2",
-      title: "New workflow created",
-      desc: "You have created a new workflow",
+      title: "Workflow updated",
+      desc: "Your workflow has been updated",
       createdAt: new Date(),
     },
     {
       _id: "3",
-      title: "New workflow created",
-      desc: "You have created a new workflow",
+      title: "Workflow published",
+      desc: "Your workflow is now available",
       createdAt: new Date(),
     },
   ];
 
   return (
-    <div className="w-full border rounded-sm shadow-sm bg-background">
+    <div>
       {/* Header */}
-      <div className="flex items-center gap-2 border-b px-4 py-2 font-medium">
-        <Bell size={16} />
-        Notifications {`(${notifications.length})`}
+      <div className="flex items-center justify-between border-b px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Bell className="size-4" />
+
+          <span className="text-sm font-semibold">Notifications</span>
+
+          {notifications.length > 0 && (
+            <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+              {notifications.length}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Content */}
       <div className="max-h-64 overflow-y-auto">
         {notifications.length === 0 ? (
-          <div className="p-4 text-xs text-muted-foreground text-center">
+          <div className="p-4 text-center text-xs text-muted-foreground">
             No new notifications
           </div>
         ) : (
-          notifications.map((n) => (
+          notifications.map((notification) => (
             <div
-              key={n._id}
-              className="px-3 py-2 border-b hover:bg-muted/40 transition cursor-pointer"
+              key={notification._id}
+              className="cursor-pointer border-b px-4 py-3 transition hover:bg-muted/40"
             >
-              <div className="text-sm font-medium">{n.title}</div>
+              <div className="text-sm font-medium">{notification.title}</div>
 
-              {n.desc && (
-                <div className="text-xs text-muted-foreground mt-1">
-                  {n.desc}
+              {notification.desc && (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {notification.desc}
                 </div>
               )}
 
-              <div className="text-[10px] text-muted-foreground mt-1">
-                {new Date(n.createdAt).toLocaleString()}
+              <div className="mt-1 text-[10px] text-muted-foreground">
+                {/* {formatDistanceToNow(new Date(notification.createdAt), {
+                  addSuffix: true,
+                })} */}
               </div>
             </div>
           ))

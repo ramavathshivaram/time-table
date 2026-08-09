@@ -12,8 +12,10 @@ const emailJob = async (job: Job) => {
     switch (job.name) {
       case "forgot-password":
         emailService.forgotPassword(email, job.data);
+        break;
       case "register-greeting":
         emailService.registerGreeting(email, job.data);
+        break;
 
       default:
         throw new UnrecoverableError(`Unknown email job type: ${job.name}`);

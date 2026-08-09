@@ -122,9 +122,7 @@ const generateForgotPasswordToken = async (userId: string): Promise<string> => {
 
   const key = `forgot-password:${token}`;
 
-  await redis.set(key, userId, {
-    EX: 60 * 60,
-  });
+  await redis.set(key, userId, "EX", 15 * 60 * 1000);
 
   return token;
 };

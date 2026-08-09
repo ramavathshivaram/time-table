@@ -60,13 +60,16 @@ export const authService = {
   forgotPassword: async (email: string) => {
     const user = await userService.findByEmail(email);
 
-    const token = tokenService.generatePasswordResetToken(user._id);
+    const token = await sessionService.generateForgotPasswordToken(user._id);
 
     queueService.forgotPassword({ email, token });
   },
 
   resetPassword: async (token: string, password: string) => {
-    const userId = sessionService.getUserIdFromPasswordResetToken(token);
+    const userId = await sessionService.getUserIdFromPasswordResetToken(token);
+
+    password = await passwordService.hash(password);
+
     await userService.updatePassword(userId, password);
   },
 

@@ -1,48 +1,19 @@
 import React from "react";
-import Profile from "./Profile";
-import { NavLink } from "react-router-dom";
-// import CreateWorkflowBtn from "./CreateWorkflowBtn";
-import { cn } from "@/shared/lib/utils.js";
 
-const links = [
-  { name: "Home", path: "/home" },
-  { name: "Templates", path: "/templates" },
-  { name: "About", path: "/about" },
-];
+import NavbarLogo from "./NavbarLogo";
+import NavbarLinks from "./NavbarLinks";
+import CreateWorkflowBtn from "./CreateWorkflowBtn";
+import Profile from "./Profile";
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400 bg-background/70 backdrop-blur-lg px-6 py-2 flex items-center justify-between">
-      {/* Logo */}
-      <NavLink
-        to="/"
-        className="roboto animate-pulse text-xl font-semibold tracking-tight flex items-center gap-2"
-      >
-        Intelli Schedule
-      </NavLink>
+    <nav className="flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
+      <NavbarLogo />
 
-      {/* Navigation */}
-      <ul className="hidden md:flex items-center gap-6 text-sm font-medium surface-muted py-2 px-4">
-        {links.map((link) => (
-          <li key={link.path}>
-            <NavLink
-              to={link.path}
-              className={({ isActive }) =>
-                cn(
-                  "relative transition-colors text-muted-foreground hover:text-foreground",
-                  isActive && "text-primary",
-                )
-              }
-            >
-              {link.name}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      <NavbarLinks />
 
-      {/* Right Section */}
       <div className="flex items-center gap-3">
-        {/* <CreateWorkflowBtn /> */}
+        <CreateWorkflowBtn />
         <Profile />
       </div>
     </nav>

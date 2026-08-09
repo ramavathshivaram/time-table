@@ -20,11 +20,17 @@ export const authApi = {
   googleRegister: (data: GoogleAuthRequest) =>
     httpClient.post("/auth/google-register", data),
 
-  logout: () => httpClient.post("/auth/logout"),
+  logout: () =>
+    httpClient.post("/auth/logout", {
+      withCredentials: true,
+    }),
 
   checkAuth: () => httpClient.get("/auth/me"),
 
-  refreshToken: () => httpClient.get("/auth/refresh"),
+  refreshToken: () =>
+    httpClient.get("/auth/refresh", {
+      withCredentials: true,
+    }),
 
   forgotPassword: (data: ForgotPasswordRequest) =>
     httpClient.post("/auth/forgot-password", data),

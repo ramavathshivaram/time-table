@@ -6,6 +6,7 @@ import { errorInterceptor, requestInterceptor } from "./interceptor";
 export const httpClient = axios.create({
   baseURL: env.backendUrl + "/api",
   timeout: 10000,
+  withCredentials: true,
 });
 
 httpClient.interceptors.request.use(requestInterceptor);

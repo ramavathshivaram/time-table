@@ -1,35 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useCreateWorkflow } from "@/hooks/react-query/workflow.query.js";
 import { ArrowUpRightIcon } from "lucide-react";
 
 import {
   CraftButton,
   CraftButtonLabel,
   CraftButtonIcon,
-} from "@/components/ui/craft-button";
+} from "@/shared/ui/craft-button";
 
 const CreateWorkflowBtn = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: createWorkflow, isPending } = useCreateWorkflow();
+  const isPending = false;
 
-  const handleCreate = async () => {
-    try {
-      const workflow = await createWorkflow();
-      navigate(`/workflow/${workflow.id}`);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleCreate = () => {
+    navigate("/workflow/create");
   };
 
   return (
-    <CraftButton
-      size="sm"
-      onClick={handleCreate}
-      disabled={isPending}
-      className="flex items-center gap-2"
-    >
+    <CraftButton size="sm" onClick={handleCreate} disabled={isPending}>
       <CraftButtonLabel>
         {isPending ? "Creating..." : "Create Workflow"}
       </CraftButtonLabel>
