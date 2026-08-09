@@ -4,7 +4,7 @@ import { env } from "@/app/config/env";
 import { errorInterceptor, requestInterceptor } from "./interceptor";
 
 export const httpClient = axios.create({
-  baseURL: env.backendUrl,
+  baseURL: env.backendUrl + "/api",
   timeout: 10000,
 });
 

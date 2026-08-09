@@ -9,7 +9,6 @@ import { tokenService } from "./token.service.js";
 interface SessionData {
   userId: string;
   refreshTokenHash: string;
-  expiresAt: number;
 }
 
 interface RotateSessionResult {
@@ -31,17 +30,17 @@ const create = async (userId: string): Promise<string> => {
 
   const refreshToken = tokenService.generateRefreshToken(sessionId);
 
-  const expiresAt = Date.now() + SESSION_TTL * 1000;
-
   const session: SessionData = {
     userId,
     refreshTokenHash: hashToken(refreshToken),
-    expiresAt,
   };
 
-  await redis.set(getSessionKey(sessionId), JSON.stringify(session), {
-    EX: SESSION_TTL,
-  });
+  await redis.set(
+    getSessionKey(sessionId),
+    JSON.stringify(session),
+    "EX",
+    SESSION_TTL,
+  );
 
   return refreshToken;
 };
@@ -101,9 +100,12 @@ const rotate = async (
     Math.ceil((session.expiresAt - Date.now()) / 1000),
   );
 
-  await redis.set(getSessionKey(sessionId), JSON.stringify(session), {
-    EX: remainingSeconds,
-  });
+  await redis.set(
+    getSessionKey(sessionId),
+    JSON.stringify(session),
+    "EX",
+    remainingSeconds,
+  );
 
   return {
     refreshToken: newRefreshToken,
@@ -111,12 +113,12 @@ const rotate = async (
 };
 
 const revoke = async (refreshToken: string): Promise<void> => {
-  const sessionId = tokenService.getSessionIdFromRefreshToken(refreshToken);
+  const [sessionId] = tokenService.getDataFromRefreshToken(refreshToken);
   await redis.del(getSessionKey(sessionId));
 };
 
 const generateForgotPasswordToken = async (userId: string): Promise<string> => {
-  const token = tokenService.generateForgotPasswordToken();
+  const token = tokenService.generatePasswordResetToken();
 
   const key = `forgot-password:${token}`;
 

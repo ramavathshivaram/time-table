@@ -1,7 +1,7 @@
 import { userService } from "#features/user/user.service.js";
 import ApiError from "#utils/ApiError.js";
 import { passwordService } from "./services/password.service.js";
-import { queueService } from "./services/queue.service.js";
+import { queueService } from "../../shared/services/queue.service.js";
 import { sessionService } from "./services/session.service.js";
 import { tokenService } from "./services/token.service.js";
 import { LoginDto, RegisterDto } from "./types/auth.types.js";
@@ -12,13 +12,16 @@ export const authService = {
     try {
       data.password = await passwordService.hash(data.password);
       user = await userService.create(data);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      if (err.code === 11000 && err.keyPattern?.email) {
+        throw new ApiError(400, "User with this email already exists");
+      }
     }
 
     const refreshToken = await sessionService.create(user._id);
     const accessToken = tokenService.generateAccessToken(user._id);
 
+    queueService.forgotPassword({ email, userName: user.userName });
     return {
       user: user,
       refreshToken,
@@ -29,6 +32,14 @@ export const authService = {
   login: async (data: LoginDto) => {
     const user = await userService.findByEmail(data.email);
 
+    const isPasswordValid = await passwordService.compare(
+      data.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new ApiError(401, "Invalid password");
+    }
     const accessToken = tokenService.generateAccessToken(user._id);
     const refreshToken = await sessionService.create(user._id);
 
@@ -49,8 +60,6 @@ export const authService = {
   },
 
   forgotPassword: async (email: string) => {
-    // TODO generate password reset token store it in redis and send it to user
-
     const user = await userService.findByEmail(email);
 
     const token = tokenService.generatePasswordResetToken(user._id);

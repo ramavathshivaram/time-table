@@ -30,7 +30,7 @@ const getDataFromRefreshToken = (refreshToken: string): string[] => {
   return refreshToken.split(".")!;
 };
 
-const generateForgotPasswordToken = (): string => {
+const generatePasswordResetToken = (): string => {
   return crypto.randomBytes(32).toString("base64url");
 };
 
@@ -40,5 +40,5 @@ export const tokenService = {
 
   getDataFromRefreshToken,
 
-  generateForgotPasswordToken,
+  generatePasswordResetToken,
 };

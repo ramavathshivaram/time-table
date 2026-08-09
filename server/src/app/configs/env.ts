@@ -6,7 +6,7 @@ const envSchema = z.object({
 
   NODE_ENV: z.enum(["development", "production"]).default("development"),
 
-  ORIGIN: z
+  ORIGIN_URL: z
     .string()
     .min(1, "ORIGIN is required")
     .default("http://localhost:5173"),
