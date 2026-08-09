@@ -1,37 +1,26 @@
 import type { NextFunction, Request, Response } from "express";
-import ApiError from "#utils/ApiError.js";
-import jwt, { type JwtPayload } from "jsonwebtoken";
-import env from "#configs/env.js";
-import { AccessToken } from "#features/auth/types/auth.types.js";
+import { tokenService } from "#features/auth/services/token.service.js";
+import { errors } from "#utils/errors.js";
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return next(new ApiError(403, "Access token missing or malformed"));
+    return next(errors.forbidden());
   }
 
   const token = authHeader.split(" ")[1];
 
   if (!token) {
-    return next(new ApiError(403, "Access token missing"));
+    return next(errors.forbidden());
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET_KEY as string);
-
-    if (typeof decoded === "string") {
-      return next(new ApiError(403, "Invalid token"));
-    }
-
-    const payload = decoded as AccessToken;
-
+    const payload = tokenService.verifyAccessToken(token);
     req.userId = payload.sub;
 
     next();
   } catch (error) {
-    return next(new ApiError(403, "Invalid or expired token"));
+    return next(errors.forbidden());
   }
 };
-
-export default authenticate;

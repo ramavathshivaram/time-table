@@ -1,6 +1,6 @@
 import express from "express";
 import { authController } from "./auth.controller.js";
-import { requestValidator } from "#utils/request-validator.js";
+import { requestValidator } from "#middlewares/request-validator.js";
 import { authSchema } from "./schemas/auth.schema.js";
 
 export const authRouter: express.Router = express.Router();

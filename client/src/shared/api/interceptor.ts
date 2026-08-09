@@ -1,13 +1,18 @@
 import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner";
 
+import { Token } from "@/features/auth/services/token.service";
+
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
 export const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-  // If authentication uses HTTP-only cookies,
-  // no Authorization header needs to be added here.
+  const token = Token.getToken();
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 };
 

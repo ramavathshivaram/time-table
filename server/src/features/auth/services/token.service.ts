@@ -26,6 +26,10 @@ const generateRefreshToken = (sessionId: string): string => {
   return `${sessionId}.${secret}`;
 };
 
+const verifyAccessToken = (token: string): AccessTokenPayload => {
+  return jwt.verify(token, env.JWT_SECRET_KEY) as AccessTokenPayload;
+};
+
 const getDataFromRefreshToken = (refreshToken: string): string[] => {
   return refreshToken.split(".")!;
 };
@@ -37,6 +41,8 @@ const generatePasswordResetToken = (): string => {
 export const tokenService = {
   generateAccessToken,
   generateRefreshToken,
+
+  verifyAccessToken,
 
   getDataFromRefreshToken,
 

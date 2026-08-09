@@ -3,7 +3,7 @@ import { Toaster } from "@/shared/ui/sonner";
 
 import { QueryProvider } from "./providers/QueryProvider";
 import { GoogleProvider } from "./providers/GoogleProvider";
-import { AppRouter } from "./router/AppRouter";
+import AppRouter from "./router/AppRouter";
 
 export default function App() {
   return (

@@ -1,49 +1,50 @@
-import { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-// import { ProtectedRoute } from "./ProtectedRoute";
-import { PublicRoute } from "./PublicRoute";
+import AuthInitializer from "./AuthInitializer";
+import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
-// import { MainLayout } from "@/layouts/MainLayout";
 import AuthLayout from "@/layouts/AuthLayout";
+import MainLayout from "@/layouts/MainLayout";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
-// const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
+const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
 
-// const HomePage = lazy(() => import("@/pages/HomePage"));
-// const TemplatesPage = lazy(() => import("@/pages/TemplatesPage"));
-// const WorkflowPage = lazy(() => import("@/pages/WorkflowPage"));
-// const LandingPage = lazy(() => import("@/pages/LandingPage"));
-// const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
+const LandingPage = lazy(() => import("@/pages/LandingPage"));
 
-export function AppRouter() {
+const HomePage = lazy(() => import("@/pages/HomePage"));
+
+const AppRouter = () => {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route element={<PublicRoute />}>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />  */}
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route element={<AuthInitializer />}>
+          {/* Public routes */}
+          <Route element={<PublicRoute />}>
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<LoginPage />} />
+
+              <Route path="/register" element={<RegisterPage />} />
+
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            </Route>
+          </Route>
+
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/home" element={<HomePage />} />
+            </Route>
+          </Route>
+
+          {/* Public landing page */}
+          <Route path="/" element={<LandingPage />} />
         </Route>
-      </Route>
-
-      {/* Public landing page */}
-      {/* <Route path="/" element={<LandingPage />} /> */}
-
-      {/* Protected routes */}
-      {/* <Route element={<ProtectedRoute />}>
-        <Route element={<MainLayout />}>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/templates" element={<TemplatesPage />} />
-        </Route>
-
-        <Route path="/workflow/:workflowId" element={<WorkflowPage />} />
-      </Route> */}
-
-      {/* 404 */}
-      {/* <Route path="*" element={<NotFoundPage />} /> */}
-    </Routes>
+      </Routes>
+    </Suspense>
   );
-}
+};
+
+export default AppRouter;

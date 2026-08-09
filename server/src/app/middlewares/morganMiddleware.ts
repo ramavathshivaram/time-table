@@ -10,11 +10,6 @@ const morganMiddleware = morgan((tokens: any, req: Request, res: Response) => {
   const route = req.route?.path || req.path;
   const url = tokens.url(req, res) || "";
   const contentLength = tokens.res(req, res, "content-length") || "0";
-  const labels = {
-    method,
-    route,
-    status: String(status),
-  };
 
   const logMessage = `${method} ${url} ${status} ${responseTime} ms - ${contentLength}`;
 

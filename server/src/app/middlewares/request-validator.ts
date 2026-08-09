@@ -1,7 +1,6 @@
+import { errors } from "#utils/errors.js";
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import type { ZodType } from "zod";
-
-import ApiError from "./ApiError.js";
 
 export const requestValidator = <T>(schema: ZodType<T>): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +9,7 @@ export const requestValidator = <T>(schema: ZodType<T>): RequestHandler => {
     if (!result.success) {
       const message = result.error.issues[0]?.message ?? "Validation failed";
 
-      throw new ApiError(400, message);
+      throw errors.badRequest(message);
     }
 
     req.body = result.data;

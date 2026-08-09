@@ -1,5 +1,5 @@
 import logger from "#configs/logger.js";
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 
 const notFoundRoute = (req: Request, res: Response) => {
   logger.warn({

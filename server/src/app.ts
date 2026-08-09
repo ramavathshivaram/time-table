@@ -10,9 +10,11 @@ import morganMiddleware from "#middlewares/morganMiddleware.js";
 import notFoundRoute from "#middlewares/notFoundRoute.js";
 import errorHandler from "#middlewares/errorHandler.js";
 import { authRouter } from "#features/auth/auth.routes.js";
+import { userRouter } from "#features/user/user.router.js";
+import { authenticate } from "#middlewares/authenticate.js";
 
 const corsOptions = {
-  origin: env.ORIGIN,
+  origin: env.ORIGIN_URL,
   credentials: true,
 };
 
@@ -36,6 +38,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", authenticate, userRouter);
 
 app.use(errorHandler);
 app.use(notFoundRoute);
