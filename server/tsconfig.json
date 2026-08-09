@@ -16,7 +16,16 @@
     "declaration": true,
 
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+
+    "paths": {
+      "#configs/*": ["./src/app/configs/*"],
+      "#middlewares/*": ["./src/app/middlewares/*"],
+      "#utils/*": ["./src/shared/utils/*"],
+      "#services/*": ["./src/shared/services/*"],
+      "#features/*": ["./src/features/*"],
+      "#types/*": ["./src/shared/types/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

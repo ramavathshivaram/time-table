@@ -1,5 +1,4 @@
 import env from "#configs/env.js";
-import type { Request, Response } from "express";
 
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -10,6 +9,7 @@ import compression from "compression";
 import morganMiddleware from "#middlewares/morganMiddleware.js";
 import notFoundRoute from "#middlewares/notFoundRoute.js";
 import errorHandler from "#middlewares/errorHandler.js";
+import { authRouter } from "#features/auth/auth.routes.js";
 
 const corsOptions = {
   origin: env.ORIGIN,
@@ -34,6 +34,8 @@ app.use(
     level: 6,
   }),
 );
+
+app.use("/api/auth", authRouter);
 
 app.use(errorHandler);
 app.use(notFoundRoute);

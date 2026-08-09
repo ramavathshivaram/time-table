@@ -1,13 +1,24 @@
 import express from "express";
+import { authController } from "./auth.controller.js";
+import { zodValidator } from "#utils/zodValidator.js";
+import { authSchema } from "./schemas/auth.schema.js";
 
-import localRouter from "./local/local.route.js";
-import forgotPasswordRouter from "./forgot-password/forgot-password.route.js";
-import authRouter from "./auth/auth.route.js";
+export const authRouter: express.Router = express.Router();
 
-const router: express.Router = express.Router();
+authRouter.post(
+  "/register",
+  zodValidator(authSchema.register),
+  authController.register,
+);
 
-router.use(localRouter);
-router.use(forgotPasswordRouter);
-router.use(authRouter);
+authRouter.post("/login", authController.login);
 
-export default router;
+authRouter.get("/me", authController.me);
+
+authRouter.post("/logout", authController.logout);
+
+authRouter.post("/forgot-password", authController.forgotPassword);
+
+authRouter.get("/refresh", authController.refresh);
+
+authRouter.post("/reset-password", authController.resetPassword);

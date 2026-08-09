@@ -16,14 +16,10 @@ const envSchema = z.object({
   REDIS_HOST: z.string().min(1, "REDIS_HOST is required").default("127.0.0.1"),
   REDIS_PORT: z.coerce.number().default(6379),
 
-  GROQ_API_KEY: z.string().min(1, "GROQ_API_KEY is required"),
-
-  BREVO_API_KEY: z.string().min(1, "BREVO_API_KEY is required"),
-
   MONGODB_URI: z
     .string()
     .min(1, "MONGODB_URI is required")
-    .default("mongodb://127.0.0.1:27017/note-book"),
+    .default("mongodb://127.0.0.1:27017/time-table"),
 });
 
 const parsed = envSchema.safeParse(process.env);
