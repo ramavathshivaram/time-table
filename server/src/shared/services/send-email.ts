@@ -26,7 +26,7 @@ interface BrevoResponse {
   messageId: string;
 }
 
-const sendEmail = async (
+export const sendEmail = async (
   toEmail: string,
   subject: string,
   htmlContent: string,
@@ -58,5 +58,3 @@ const sendEmail = async (
     throw error;
   }
 };
-
-export default sendEmail;

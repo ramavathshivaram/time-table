@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import ApiError from "#utils/ApiError.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import env from "#configs/env.js";
-import type { ITokenPayload } from "../types/type.js";
+import { AccessToken } from "#features/auth/types/auth.types.js";
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
@@ -24,9 +24,9 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
       return next(new ApiError(403, "Invalid token"));
     }
 
-    const payload = decoded as ITokenPayload;
+    const payload = decoded as AccessToken;
 
-    req.authId = payload.authId;
+    req.userId = payload.sub;
 
     next();
   } catch (error) {

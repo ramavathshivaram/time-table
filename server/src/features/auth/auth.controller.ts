@@ -19,15 +19,74 @@ export const authController = {
     });
   }),
 
-  login: expressAsyncHandler((req: Request, res: Response) => {}),
+  login: expressAsyncHandler(async (req: Request, res: Response) => {
+    const { user, accessToken, refreshToken } = await authService.login(
+      req.body,
+    );
 
-  logout: expressAsyncHandler((req: Request, res: Response) => {}),
+    cookieService.set(res, "refreshToken", refreshToken);
 
-  refresh: expressAsyncHandler((req: Request, res: Response) => {}),
+    res.status(200).json({
+      success: true,
+      user,
+      token: accessToken,
+    });
+  }),
 
-  me: expressAsyncHandler((req: Request, res: Response) => {}),
+  logout: expressAsyncHandler(async (req: Request, res: Response) => {
+    const refreshToken = cookieService.remove(res, "refreshToken");
 
-  forgotPassword: expressAsyncHandler((req: Request, res: Response) => {}),
+    await authService.logout(refreshToken);
 
-  resetPassword: expressAsyncHandler((req: Request, res: Response) => {}),
+    cookieService.remove(res, "refreshToken");
+
+    res.status(200).json({
+      success: true,
+    });
+  }),
+
+  refresh: expressAsyncHandler(async (req: Request, res: Response) => {
+    const rToken = getCookie(req, "refreshToken");
+
+    const { accessToken, refreshToken } = await authService.refresh(
+      rToken as string,
+    );
+
+    cookieService.set(res, "refreshToken", refreshToken);
+
+    res.status(200).json({
+      success: true,
+      token: accessToken,
+    });
+  }),
+
+  me: expressAsyncHandler(async (req: Request, res: Response) => {
+    const user = await authService.me(req.userId);
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  }),
+
+  forgotPassword: expressAsyncHandler(async (req: Request, res: Response) => {
+    await authService.forgotPassword(req.body.email);
+
+    res.status(200).json({
+      success: true,
+      message: "Check your email",
+    });
+  }),
+
+  resetPassword: expressAsyncHandler(async (req: Request, res: Response) => {
+    const { token } = req.query;
+    const { password } = req.body;
+
+    await authService.resetPassword(token as string, password);
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  }),
 };

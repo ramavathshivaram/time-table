@@ -15,23 +15,20 @@ export const authApi = {
   register: (data: RegisterRequest) => httpClient.post("/auth/register", data),
 
   googleLogin: (data: GoogleAuthRequest) =>
-    httpClient.post("/auth/google/login", data),
+    httpClient.post("/auth/google-login", data),
 
   googleRegister: (data: GoogleAuthRequest) =>
-    httpClient.post("/auth/google/register", data),
+    httpClient.post("/auth/google-register", data),
 
   logout: () => httpClient.post("/auth/logout"),
 
-  checkAuth: () => httpClient.get("/auth/check"),
+  checkAuth: () => httpClient.get("/auth/me"),
 
-  refreshToken: () => httpClient.get("/auth/refresh-token"),
+  refreshToken: () => httpClient.get("/auth/refresh"),
 
   forgotPassword: (data: ForgotPasswordRequest) =>
     httpClient.post("/auth/forgot-password", data),
 
   resetPassword: (data: ResetPasswordRequest) =>
     httpClient.post("/auth/reset-password", data),
-
-  verifyEmail: (data: VerifyEmailRequest) =>
-    httpClient.post("/auth/verify-email", data),
 };

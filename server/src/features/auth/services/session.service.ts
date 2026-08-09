@@ -66,11 +66,6 @@ const validate = async (
     return null;
   }
 
-  if (session.expiresAt <= Date.now()) {
-    await revoke(sessionId);
-    return null;
-  }
-
   const tokenHash = hashToken(refreshToken);
 
   const storedHash = Buffer.from(session.refreshTokenHash, "hex");
@@ -115,8 +110,36 @@ const rotate = async (
   };
 };
 
-const revoke = async (sessionId: string): Promise<void> => {
+const revoke = async (refreshToken: string): Promise<void> => {
+  const sessionId = tokenService.getSessionIdFromRefreshToken(refreshToken);
   await redis.del(getSessionKey(sessionId));
+};
+
+const generateForgotPasswordToken = async (userId: string): Promise<string> => {
+  const token = tokenService.generateForgotPasswordToken();
+
+  const key = `forgot-password:${token}`;
+
+  await redis.set(key, userId, {
+    EX: 60 * 60,
+  });
+
+  return token;
+};
+
+const getUserIdFromPasswordResetToken = async (
+  token: string,
+): Promise<string> => {
+  const key = `forgot-password:${token}`;
+
+  const userId = await redis.get(key);
+
+  if (!userId) {
+    throw new ApiError(400, "Invalid or expired token");
+  }
+
+  await redis.del(key);
+  return userId;
 };
 
 export const sessionService = {
@@ -125,4 +148,7 @@ export const sessionService = {
   validate,
   rotate,
   revoke,
+
+  generateForgotPasswordToken,
+  getUserIdFromPasswordResetToken,
 };

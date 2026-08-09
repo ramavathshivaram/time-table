@@ -24,7 +24,7 @@ const set = (
   return res.cookie(name, value, { ...baseCookieOptions, ...options });
 };
 
-const clear = (res: Response, name: string, options: CookieOptions = {}) => {
+const remove = (res: Response, name: string, options: CookieOptions = {}) => {
   if (!name) throw new ApiError(400, "Cookie name is required");
 
   return res.clearCookie(name, { ...baseCookieOptions, ...options });
@@ -46,6 +46,6 @@ const get = (req: Request, name: string) => {
 
 export const cookieService = {
   set,
-  clear,
+  remove,
   get,
 };

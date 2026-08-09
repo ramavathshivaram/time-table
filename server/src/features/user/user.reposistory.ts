@@ -21,4 +21,8 @@ export const userReposistory = {
   findByEmail: async (email: string) => {
     return await UserModel.findOne({ email: email.toLowerCase() });
   },
+
+  updatePassword: async (userId: string, password: string) => {
+    return await UserModel.updateOne({ _id: userId }, { $set: { password } });
+  },
 };
