@@ -5,10 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import { PublicRoute } from "./PublicRoute";
 
 // import { MainLayout } from "@/layouts/MainLayout";
-import { AuthLayout } from "@/layouts/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 
-// const LoginPage = lazy(() => import("@/pages/LoginPage"));
-// const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
+const LoginPage = lazy(() => import("@/pages/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
 // const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
 
 // const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -23,9 +23,9 @@ export function AppRouter() {
       {/* Public routes */}
       <Route element={<PublicRoute />}>
         <Route element={<AuthLayout />}>
-          {/* {/* <Route path="/login" element={<LoginPage />} /> */}
-          {/* <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />  */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />  */}
         </Route>
       </Route>
 

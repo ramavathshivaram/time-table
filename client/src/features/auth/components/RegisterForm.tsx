@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
@@ -14,28 +14,29 @@ import {
 } from "@/shared/ui/field";
 
 import { authService } from "@/features/auth/services/auth.service";
-import GoogleLoginBtn from "./GoogleLoginBtn";
+import GoogleRegisterBtn from "./GoogleRegisterBtn";
 
-interface LoginFormData {
+type RegisterFormData = {
+  userName: string;
   email: string;
   password: string;
-}
+};
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const navigate = useNavigate();
 
   const {
-    handleSubmit,
     register,
+    handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>();
+  } = useForm<RegisterFormData>();
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
-      await authService.login(data);
-      navigate("/home");
+      await authService.register(data);
+      navigate("/login");
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Registration failed:", error);
     }
   };
 
@@ -43,15 +44,29 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldSet>
         <FieldGroup>
-          {/* Email */}
+          <Field>
+            <FieldLabel htmlFor="username">User Name</FieldLabel>
+            <Input
+              id="userName"
+              placeholder="bob"
+              {...register("userName", {
+                required: "User Name is required",
+                minLength: {
+                  value: 3,
+                  message: "User Name must be at least 3 characters",
+                },
+              })}
+            />
+            {errors.userName && (
+              <FieldError>{errors.userName.message}</FieldError>
+            )}
+          </Field>
+
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
-
             <Input
               id="email"
-              type="email"
               placeholder="abc@example.com"
-              autoComplete="email"
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -60,27 +75,14 @@ const LoginForm = () => {
                 },
               })}
             />
-
             {errors.email && <FieldError>{errors.email.message}</FieldError>}
           </Field>
 
-          {/* Password */}
           <Field>
-            <div className="flex items-center justify-between">
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-
-              <Link
-                to="/forgot-password"
-                className="text-sm text-primary transition hover:underline"
-              >
-                Forgot Password
-              </Link>
-            </div>
-
+            <FieldLabel htmlFor="password">Password</FieldLabel>
             <Input
-              id="password"
               type="password"
-              autoComplete="current-password"
+              id="password"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -89,23 +91,23 @@ const LoginForm = () => {
                 },
               })}
             />
-
             {errors.password && (
               <FieldError>{errors.password.message}</FieldError>
             )}
           </Field>
         </FieldGroup>
       </FieldSet>
-
-      <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-        {isSubmitting ? "Logging in..." : "Login"}
+      <Button type="submit" className="w-full mt-5" disabled={isSubmitting}>
+        {isSubmitting ? "Registering..." : "Register"}
       </Button>
 
-      <FieldSeparator className="my-4 bg-transparent">OR</FieldSeparator>
+      <FieldSeparator className="my-4 col-span-full bg-transparent">
+        OR
+      </FieldSeparator>
 
-      <GoogleLoginBtn />
+      <GoogleRegisterBtn />
     </form>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-export default function AuthLayout() {
+const AuthLayout = () => {
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-md">
@@ -8,4 +8,6 @@ export default function AuthLayout() {
       </div>
     </main>
   );
-}
+};
+
+export default AuthLayout;

@@ -8,7 +8,6 @@ interface AuthState {
   isCheckingAuth: boolean;
 
   setUser: (user: User | null) => void;
-  setAuthenticated: (user: User) => void;
   setCheckingAuth: (value: boolean) => void;
   clearAuth: () => void;
 }
@@ -21,12 +20,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user) =>
     set({
       user,
-    }),
-
-  setAuthenticated: (user) =>
-    set({
-      user,
-      isAuthenticated: true,
+      isAuthenticated: !!user,
       isCheckingAuth: false,
     }),
 
