@@ -9,6 +9,7 @@ import MainLayout from "@/layouts/MainLayout";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import LoadingHeader from "../../shared/components/LoadingHeader";
 import NotFoundPage from "@/pages/NotFoundPage";
+import TimetableDesignerPage from "@/pages/TimetableDesignerPage";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
@@ -41,8 +42,10 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/timetables" element={<TimetablesPage />} />
-            {/* /timetables/:id
-              /timetables/:id/designer  */}
+            <Route
+              path="/timetables/designer"
+              element={<TimetableDesignerPage />}
+            />
           </Route>
         </Route>
 

@@ -14,7 +14,7 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <Card>
+    <Card className="w-full bg-muted/30">
       <CardHeader>
         <CardTitle className="text-2xl">Welcome Back</CardTitle>
 

@@ -39,7 +39,7 @@ const RecentTimetables = () => {
   }
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 bg-muted/40 p-3 rounded-xl">
       {/* Header */}
       <div className="flex items-center gap-2">
         <h2 className="text-lg font-semibold">Recent Timetables</h2>
@@ -50,7 +50,7 @@ const RecentTimetables = () => {
       </div>
 
       {/* List */}
-      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 scrollbar">
+      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto py-2 scrollbar">
         {data.map((timetable) => (
           <div key={timetable._id} className="shrink-0 snap-start">
             <RecentTimetableCard timetable={timetable} />

@@ -9,14 +9,15 @@ interface GetTimetablesParams {
 }
 
 export const timetableRepository = {
-  create: async ({ title, userId }: Partial<Timetable>) => {
+  create: async ({ title, userId, blueprintId }: Partial<Timetable>) => {
     try {
       return await TimetableModel.create({
         title,
         userId,
+        blueprintId,
       });
-    } catch {
-      throw errors.internal("Failed to create timetable");
+    } catch (err) {
+      throw errors.internal(err.message);
     }
   },
 

@@ -18,6 +18,10 @@ const Create = () => {
   const handleCreate = async () => {
     try {
       const timetable = await createTimetable();
+      if (timetable.stage === "incomplete") {
+        navigate(`/timetables/designer?timetableId=${timetable._id}`);
+        return;
+      }
 
       navigate(`/timetables/${timetable._id}`);
     } catch (error) {

@@ -1,9 +1,11 @@
+import { timetableBlueprintService } from "#features/timetable-blueprint/timetable-blueprint.service.js";
 import { timetableRepository } from "./timetable.reposistory.js";
 
 export const timetableService = {
   create: async ({ userId }: { userId: string }) => {
     const title = crypto.randomUUID().toString();
-    return await timetableRepository.create({ title, userId });
+    const blueprintId = await timetableBlueprintService.create();
+    return await timetableRepository.create({ title, userId, blueprintId });
   },
 
   getTimetables: async ({ userId, pageParam, query }: any) => {

@@ -63,14 +63,9 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
   /* ------------------ Edge Types ------------------ */
   const edgeTypes = useMemo(
     () => ({
-      bezier: (props) => (
-        <BezierEdge
-          {...props}
-          style={{ strokeWidth: 2 }}
-        />
-      ),
+      bezier: (props) => <BezierEdge {...props} style={{ strokeWidth: 2 }} />,
     }),
-    []
+    [],
   );
 
   return (
@@ -96,7 +91,6 @@ const WorkflowEditor = ({ initialWorkflowData, workflowId }) => {
         onInit={(instance) => (reactFlowInstanceRef.current = instance)}
         proOptions={{ hideAttribution: true }}
         fitView
-
         minZoom={0.5}
         maxZoom={1.5}
         snapToGrid

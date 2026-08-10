@@ -28,7 +28,7 @@ const RecentTimetableCard = ({ timetable }: RecentTimetableCardProps) => {
   return (
     <article
       onClick={handleOpen}
-      className="group relative w-64 cursor-pointer overflow-hidden rounded-2xl border border-border/50 bg-surface-muted/5 p-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="group relative w-64 cursor-pointer overflow-hidden rounded-2xl border border-border/50 bg-surface-muted/50 p-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       {/* Header */}
       <div className="flex items-start justify-between">

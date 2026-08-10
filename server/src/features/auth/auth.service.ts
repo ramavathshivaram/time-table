@@ -16,7 +16,10 @@ export const authService = {
     const { refreshToken } = await sessionService.create(user._id);
     const accessToken = tokenService.generateAccessToken(user._id);
 
-    queueService.forgotPassword({ email: user.email, userName: user.userName });
+    queueService.registerGreeting({
+      email: user.email,
+      userName: user.userName,
+    });
     return {
       user: user,
       refreshToken,

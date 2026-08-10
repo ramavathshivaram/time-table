@@ -19,6 +19,20 @@ const timetableSchema = new Schema(
       required: true,
       trim: true,
     },
+
+    stage: {
+      type: String,
+      enum: ["incomplete", "complete"],
+      default: "incomplete",
+      index: true,
+    },
+
+    blueprintId: {
+      type: Schema.Types.ObjectId,
+      ref: "TimetableBlueprint",
+      required: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
@@ -27,6 +41,6 @@ const timetableSchema = new Schema(
 
 export type Timetable = InferSchemaType<typeof timetableSchema>;
 
-export type timetableDocument = HydratedDocument<Timetable>;
+export type TimetableDocument = HydratedDocument<Timetable>;
 
-export const TimetableModel = model<Timetable>("Timetable", timetableSchema);
+export const TimetableModel = model("Timetable", timetableSchema);
