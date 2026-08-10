@@ -3,7 +3,7 @@ import Timetables from "@/features/timetables/components/Timetables";
 
 const TimetablesPage = () => {
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
+    <div className="px-6 space-y-6 max-w-6xl mx-auto">
       <RecentTimetables />
       <Timetables />
     </div>

@@ -8,3 +8,5 @@ timetableRouter.post("/create", timetableController.create);
 timetableRouter.get("/", timetableController.getTimetables);
 
 timetableRouter.get("/recent", timetableController.getRecentTimetables);
+
+timetableRouter.delete("/", timetableController.delete);

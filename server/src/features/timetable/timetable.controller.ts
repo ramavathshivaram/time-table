@@ -29,4 +29,10 @@ export const timetableController = {
     const timetables = await timetableService.getRecentTimetables(req.userId);
     res.status(200).json({ success: true, timetables });
   }),
+
+  delete: expressAsyncHandler(async (req, res) => {
+    const { timetableId } = req.query;
+    await timetableService.delete(timetableId);
+    res.status(200).json({ success: true, message: "Timetable deleted" });
+  }),
 };

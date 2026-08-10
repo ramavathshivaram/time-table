@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
 import type { Timetable } from "../types/timetable.types";
+import { useTimetableMutation } from "../hooks/timetable.query";
 
 interface TimetableCardProps {
   timetable: Timetable;
@@ -10,6 +11,7 @@ interface TimetableCardProps {
 
 const TimetableCard = ({ timetable }: TimetableCardProps) => {
   const navigate = useNavigate();
+  const { mutate: deleteTimetable } = useTimetableMutation.useDeleteTimetable();
 
   const createdAgo = formatDistanceToNow(new Date(timetable.createdAt), {
     addSuffix: true,
@@ -22,7 +24,7 @@ const TimetableCard = ({ timetable }: TimetableCardProps) => {
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
 
-    console.log("Delete", timetable._id);
+    deleteTimetable({ timetableId: timetable._id });
   };
 
   return (

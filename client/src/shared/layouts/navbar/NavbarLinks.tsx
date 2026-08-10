@@ -5,8 +5,8 @@ import { cn } from "@/shared/lib/utils";
 
 const links = [
   {
-    name: "Home",
-    path: "/home",
+    name: "Timetables",
+    path: "/timetables",
   },
   {
     name: "Templates",
@@ -31,7 +31,7 @@ const NavbarLinks = () => {
                   "relative rounded-md px-3 py-2 text-sm font-medium",
                   "text-muted-foreground transition-colors",
                   "hover:text-foreground",
-                  isActive && "bg-background text-foreground shadow-sm",
+                  isActive && "text-foreground shadow-sm",
                 )
               }
             >

@@ -20,4 +20,8 @@ export const timetableApi = {
 
     return data.timetables;
   },
+
+  delete: async (timetableId: string) => {
+    await httpClient.delete(`/timetable?timetableId=${timetableId}`);
+  },
 };

@@ -9,7 +9,7 @@ import {
 
 import { useTimetableMutation } from "@/features/timetables/hooks/timetable.query";
 
-const CreateTimetableBtn = () => {
+const Create = () => {
   const navigate = useNavigate();
 
   const { mutateAsync: createTimetable, isPending } =
@@ -28,7 +28,7 @@ const CreateTimetableBtn = () => {
   return (
     <CraftButton size="default" onClick={handleCreate} disabled={isPending}>
       <CraftButtonLabel>
-        {isPending ? "Creating..." : "Create Timetable"}
+        {isPending ? "Creating..." : "Create"}
       </CraftButtonLabel>
 
       <CraftButtonIcon>
@@ -38,4 +38,4 @@ const CreateTimetableBtn = () => {
   );
 };
 
-export default CreateTimetableBtn;
+export default Create;

@@ -2,7 +2,7 @@ import React from "react";
 
 import NavbarLogo from "./NavbarLogo";
 import NavbarLinks from "./NavbarLinks";
-import CreateWorkflowBtn from "./CreateWorkflowBtn";
+import CreateWorkflowBtn from "./Create";
 import Profile from "./Profile";
 
 const Navbar = () => {

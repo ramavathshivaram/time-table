@@ -46,8 +46,24 @@ const useGetRecentTimetables = () => {
   });
 };
 
+const useDeleteTimetable = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ timetableId }: { timetableId: string }) =>
+      timetableApi.delete(timetableId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["timetables"],
+      });
+    },
+  });
+};
+
 export const useTimetableMutation = {
   useCreateTimetable,
   useGetTimetables,
   useGetRecentTimetables,
+  useDeleteTimetable,
 };

@@ -20,4 +20,8 @@ export const timetableService = {
   getRecentTimetables: async (userId: string) => {
     return await timetableRepository.getRecentTimetables(userId, 5);
   },
+
+  delete: async (timetableId: string) => {
+    return await timetableRepository.delete(timetableId);
+  },
 };

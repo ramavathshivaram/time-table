@@ -53,4 +53,12 @@ export const timetableRepository = {
       throw errors.internal("Failed to get recent timetables");
     }
   },
+
+  delete: async (timetableId: string) => {
+    try {
+      return await TimetableModel.findByIdAndDelete(timetableId);
+    } catch {
+      throw errors.internal("Failed to delete timetable");
+    }
+  },
 };
