@@ -1,20 +1,33 @@
 import { BrowserRouter } from "react-router-dom";
+
 import { Toaster } from "@/shared/ui/sonner";
 
 import { QueryProvider } from "./providers/QueryProvider";
 import { GoogleProvider } from "./providers/GoogleProvider";
-import AppRouter from "./router/AppRouter";
+import ThemeProvider from "./providers/ThemeProvider";
 
-export default function App() {
+import AppRouter from "./router/AppRouter";
+import AuthProvider from "./providers/AuthProvider";
+import NavigationProvider from "./providers/NavigationProvider";
+
+const App = () => {
   return (
     <QueryProvider>
       <BrowserRouter>
-        <GoogleProvider>
-          <AppRouter />
+        <NavigationProvider>
+          <ThemeProvider>
+            <GoogleProvider>
+              <AuthProvider>
+                <AppRouter />
+              </AuthProvider>
 
-          <Toaster position="top-right" richColors duration={2000} />
-        </GoogleProvider>
+              <Toaster position="top-right" richColors duration={2000} />
+            </GoogleProvider>
+          </ThemeProvider>
+        </NavigationProvider>
       </BrowserRouter>
     </QueryProvider>
   );
-}
+};
+
+export default App;

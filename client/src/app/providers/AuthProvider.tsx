@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
 
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { authService } from "@/features/auth/services/auth.service";
 
-import LoadingHeader from "./LoadingHeader";
+import LoadingHeader from "../router/LoadingHeader";
 
-const AuthInitializer = () => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const AuthProvider = ({ children }: Props) => {
   const isCheckingAuth = useAuthStore((state) => state.isCheckingAuth);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ const AuthInitializer = () => {
     return <LoadingHeader />;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 };
 
-export default AuthInitializer;
+export default AuthProvider;

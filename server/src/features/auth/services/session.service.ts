@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 
 import redis from "#configs/redis.js";
 import { SESSION_TTL } from "#configs/constants.js";
-import ApiError from "#utils/ApiError.js";
+import { errors } from "#utils/errors.js";
 
 import { tokenService } from "./token.service.js";
 
@@ -11,7 +11,13 @@ interface SessionData {
   refreshTokenHash: string;
 }
 
+interface CreateSessionResult {
+  sessionId: string;
+  refreshToken: string;
+}
+
 interface RotateSessionResult {
+  userId: string;
   refreshToken: string;
 }
 
@@ -25,7 +31,7 @@ const hashToken = (token: string): string => {
   return crypto.createHash("sha256").update(token).digest("hex");
 };
 
-const create = async (userId: string): Promise<string> => {
+const create = async (userId: string): Promise<CreateSessionResult> => {
   const sessionId = crypto.randomUUID();
 
   const refreshToken = tokenService.generateRefreshToken(sessionId);
@@ -42,7 +48,10 @@ const create = async (userId: string): Promise<string> => {
     SESSION_TTL,
   );
 
-  return refreshToken;
+  return {
+    sessionId,
+    refreshToken,
+  };
 };
 
 const get = async (sessionId: string): Promise<SessionData | null> => {
@@ -58,62 +67,60 @@ const get = async (sessionId: string): Promise<SessionData | null> => {
 const validate = async (
   sessionId: string,
   refreshToken: string,
-): Promise<SessionData | null> => {
+): Promise<SessionData> => {
   const session = await get(sessionId);
 
   if (!session) {
-    return null;
+    throw errors.unauthorized("Session not found");
   }
-
-  const tokenHash = hashToken(refreshToken);
 
   const storedHash = Buffer.from(session.refreshTokenHash, "hex");
 
-  const providedHash = Buffer.from(tokenHash, "hex");
+  const providedHash = Buffer.from(hashToken(refreshToken), "hex");
 
   if (
     storedHash.length !== providedHash.length ||
     !crypto.timingSafeEqual(storedHash, providedHash)
   ) {
-    return null;
+    throw errors.unauthorized("Invalid refresh token");
   }
 
   return session;
 };
 
-const rotate = async (
-  sessionId: string,
-  refreshToken: string,
-): Promise<RotateSessionResult | null> => {
-  const session = await validate(sessionId, refreshToken);
+const rotate = async (refreshToken: string): Promise<RotateSessionResult> => {
+  const [sessionId] = tokenService.getDataFromRefreshToken(refreshToken);
 
-  if (!session) {
-    return null;
+  if (!sessionId) {
+    throw errors.unauthorized("Invalid refresh token");
   }
+
+  const session = await validate(sessionId, refreshToken);
 
   const newRefreshToken = tokenService.generateRefreshToken(sessionId);
 
   session.refreshTokenHash = hashToken(newRefreshToken);
 
-  const remainingSeconds = Math.max(
-    1,
-    Math.ceil((session.expiresAt - Date.now()) / 1000),
-  );
-
   await redis.set(
     getSessionKey(sessionId),
     JSON.stringify(session),
     "EX",
-    remainingSeconds,
+    SESSION_TTL,
   );
 
   return {
+    userId: session.userId,
     refreshToken: newRefreshToken,
   };
 };
 
 const revoke = async (refreshToken: string): Promise<void> => {
   const [sessionId] = tokenService.getDataFromRefreshToken(refreshToken);
+
+  if (!sessionId) {
+    return;
+  }
+
   await redis.del(getSessionKey(sessionId));
 };
 
@@ -122,7 +129,7 @@ const generateForgotPasswordToken = async (userId: string): Promise<string> => {
 
   const key = `forgot-password:${token}`;
 
-  await redis.set(key, userId, "EX", 15 * 60 * 1000);
+  await redis.set(key, userId, "EX", 15 * 60);
 
   return token;
 };
@@ -135,10 +142,12 @@ const getUserIdFromPasswordResetToken = async (
   const userId = await redis.get(key);
 
   if (!userId) {
-    throw new ApiError(400, "Invalid or expired token");
+    throw errors.badRequest("Invalid or expired token");
   }
 
+  // Make reset token single-use.
   await redis.del(key);
+
   return userId;
 };
 
@@ -148,7 +157,6 @@ export const sessionService = {
   validate,
   rotate,
   revoke,
-
   generateForgotPasswordToken,
   getUserIdFromPasswordResetToken,
 };

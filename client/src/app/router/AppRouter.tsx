@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import AuthInitializer from "./AuthInitializer";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -21,9 +20,8 @@ const AppRouter = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route element={<AuthInitializer />}>
-          {/* Public routes */}
-          {/* <Route element={<PublicRoute />}> */}
+        {/* Public routes */}
+        <Route element={<PublicRoute />}>
           <Route path="/" element={<LandingPage />} />
 
           <Route element={<AuthLayout />}>
@@ -35,13 +33,12 @@ const AppRouter = () => {
 
             <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Route>
-          {/* </Route> */}
+        </Route>
 
-          {/* Protected routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<MainLayout />}>
-              <Route path="/home" element={<HomePage />} />
-            </Route>
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<HomePage />} />
           </Route>
         </Route>
       </Routes>

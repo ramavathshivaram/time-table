@@ -35,6 +35,13 @@ const userSchema = new Schema(
       default: false,
     },
 
+    preferences: {
+      darkMode: {
+        type: Boolean,
+        default: false,
+      },
+    },
+
     avatar: {
       type: String,
       default: null,

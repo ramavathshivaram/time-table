@@ -2,6 +2,7 @@ import express from "express";
 import { authController } from "./auth.controller.js";
 import { requestValidator } from "#middlewares/request-validator.js";
 import { authSchema } from "./schemas/auth.schema.js";
+import { authenticate } from "#middlewares/authenticate.js";
 
 export const authRouter: express.Router = express.Router();
 
@@ -17,9 +18,9 @@ authRouter.post(
   authController.login,
 );
 
-authRouter.get("/me", authController.me);
+authRouter.get("/me", authenticate, authController.me);
 
-authRouter.post("/logout", authController.logout);
+authRouter.post("/logout", authenticate, authController.logout);
 
 authRouter.post(
   "/forgot-password",

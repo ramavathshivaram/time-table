@@ -2,6 +2,8 @@ import { authApi } from "../api/auth.api";
 import { useAuthStore } from "../store/auth.store";
 import { Token } from "./token.service";
 
+import { useUserStore } from "@/shared/user/user.store";
+
 import type {
   ForgotPasswordRequest,
   GoogleAuthRequest,
@@ -10,12 +12,27 @@ import type {
   ResetPasswordRequest,
   VerifyEmailRequest,
 } from "../types/auth.types";
+import type { User } from "@/shared/user/user.types";
+
+const setAuthenticatedUser = (user: User) => {
+  useUserStore.getState().setUser(user);
+
+  useAuthStore.getState().setAuthenticated();
+};
+
+const clearAuthentication = () => {
+  useUserStore.getState().clearUser();
+
+  useAuthStore.getState().clearAuth();
+
+  Token.clearToken();
+};
 
 export const authService = {
   login: async (data: LoginRequest) => {
     const { data: response } = await authApi.login(data);
 
-    useAuthStore.getState().setAuthenticated(response.user);
+    setAuthenticatedUser(response.user);
 
     Token.setToken(response.token);
 
@@ -25,7 +42,7 @@ export const authService = {
   register: async (data: RegisterRequest) => {
     const { data: response } = await authApi.register(data);
 
-    useAuthStore.getState().setAuthenticated(response.user);
+    setAuthenticatedUser(response.user);
 
     Token.setToken(response.token);
 
@@ -35,7 +52,7 @@ export const authService = {
   googleLogin: async (data: GoogleAuthRequest) => {
     const { data: response } = await authApi.googleLogin(data);
 
-    useAuthStore.getState().setAuthenticated(response.user);
+    setAuthenticatedUser(response.user);
 
     Token.setToken(response.token);
 
@@ -45,19 +62,11 @@ export const authService = {
   googleRegister: async (data: GoogleAuthRequest) => {
     const { data: response } = await authApi.googleRegister(data);
 
-    useAuthStore.getState().setAuthenticated(response.user);
+    setAuthenticatedUser(response.user);
 
     Token.setToken(response.token);
 
     return response;
-  },
-
-  logout: async () => {
-    await authApi.logout();
-
-    useAuthStore.getState().clearAuth();
-
-    Token.clearToken();
   },
 
   checkAuth: async () => {
@@ -66,11 +75,12 @@ export const authService = {
     try {
       const { data: response } = await authApi.checkAuth();
 
-      useAuthStore.getState().setAuthenticated(response.user);
+      setAuthenticatedUser(response.user);
 
       return response;
     } catch (error) {
-      useAuthStore.getState().clearAuth();
+      clearAuthentication();
+
       throw error;
     } finally {
       useAuthStore.getState().setCheckingAuth(false);
@@ -83,6 +93,14 @@ export const authService = {
     Token.setToken(response.token);
 
     return response;
+  },
+
+  logout: async () => {
+    try {
+      await authApi.logout();
+    } finally {
+      clearAuthentication();
+    }
   },
 
   forgotPassword: async (data: ForgotPasswordRequest) => {

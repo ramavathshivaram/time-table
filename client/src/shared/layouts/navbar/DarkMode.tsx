@@ -1,53 +1,31 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Moon, Sun } from "lucide-react";
-import { useUserStore } from "@/shared/user/user.store";
-// import { updateDarkModeApi } from "@/lib/apis/user.api.js";
+
+import { Switch } from "@/shared/ui/switch";
+import { usePreferencesStore } from "@/shared/preferences/preferences.store";
 
 const DarkMode = () => {
-  const darkMode = useUserStore((s) => s.darkMode);
-  const setDarkMode = useUserStore((s) => s.setDarkMode);
+  const darkMode = usePreferencesStore((state) => state.darkMode);
 
-  useEffect(() => {
-    const html = document.documentElement;
-
-    if (darkMode) {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = async () => {
-    const value = !darkMode;
-
-    setDarkMode(value);
-    // updateDarkModeApi({ darkMode: value });
-  };
+  const toggleDarkMode = usePreferencesStore((state) => state.toggleDarkMode);
 
   return (
-    <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-muted/50 transition">
+    <div className="flex items-center justify-between">
       {/* Label */}
-      <div className="flex items-center gap-2 text-sm font-medium">
-        {darkMode ? (
-          <Moon size={16} className="text-blue-500" />
-        ) : (
-          <Sun size={16} className="text-yellow-500" />
-        )}
+      <div className="flex items-center gap-2">
+        {darkMode ? <Moon className="size-4" /> : <Sun className="size-4" />}
 
-        <span>{darkMode ? "Dark Mode" : "Light Mode"}</span>
+        <span className="text-sm font-medium">
+          {darkMode ? "Dark Mode" : "Light Mode"}
+        </span>
       </div>
 
-      {/* Toggle Switch */}
-      <button
-        onClick={toggleDarkMode}
-        className={`relative w-12 h-6 rounded-full transition-colors duration-300
-        ${darkMode ? "bg-blue-600" : "bg-gray-300"}`}
-      >
-        <span
-          className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300
-          ${darkMode ? "translate-x-6" : "translate-x-0"}`}
-        />
-      </button>
+      {/* Toggle */}
+      <Switch
+        checked={darkMode}
+        onCheckedChange={toggleDarkMode}
+        aria-label="Toggle dark mode"
+      />
     </div>
   );
 };

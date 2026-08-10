@@ -1,12 +1,16 @@
-import { userApi } from "./user.api";
+import { usePreferencesStore } from "../preferences/preferences.store";
 import { useUserStore } from "./user.store";
 
 export const userService = {
-  getCurrentUser: async () => {
-    const { data: response } = await userApi.getCurrentUser();
+  setUser: async (user) => {
+    useUserStore.getState().setUser(user);
 
-    useUserStore.getState().setUser(response.user);
+    usePreferencesStore.getState().setPreferences(user.preferences);
+  },
 
-    return response.user;
+  clearUser: () => {
+    useUserStore.getState().clearUser();
+
+    usePreferencesStore.getState().resetPreferences();
   },
 };

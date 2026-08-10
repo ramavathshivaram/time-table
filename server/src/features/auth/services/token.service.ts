@@ -31,6 +31,7 @@ const verifyAccessToken = (token: string): AccessTokenPayload => {
 };
 
 const getDataFromRefreshToken = (refreshToken: string): string[] => {
+  if (!refreshToken) throw new Error("Refresh token not found");
   return refreshToken.split(".")!;
 };
 

@@ -13,7 +13,7 @@ export const authService = {
     data.password = await passwordService.hash(data.password);
     user = await userService.create(data);
 
-    const refreshToken = await sessionService.create(user._id);
+    const { refreshToken } = await sessionService.create(user._id);
     const accessToken = tokenService.generateAccessToken(user._id);
 
     queueService.forgotPassword({ email: user.email, userName: user.userName });
@@ -38,10 +38,13 @@ export const authService = {
       throw new ApiError(401, "Invalid password");
     }
     const accessToken = tokenService.generateAccessToken(user._id);
-    const refreshToken = await sessionService.create(user._id);
+    const { refreshToken } = await sessionService.create(user._id);
 
     return {
-      user,
+      user: {
+        userName: user.userName,
+        email: user.email,
+      },
       accessToken,
       refreshToken,
     };
@@ -74,13 +77,14 @@ export const authService = {
   },
 
   refresh: async (refreshToken: string) => {
-    const [sessionId, token] =
-      tokenService.getDataFromRefreshToken(refreshToken);
+    const { userId, refreshToken: newRefreshToken } =
+      await sessionService.rotate(refreshToken);
 
-    const newRefreshToken = await sessionService.rotate(sessionId, token);
+    const accessToken = tokenService.generateAccessToken(userId);
 
-    const accessToken = tokenService.generateAccessToken(sessionId);
-
-    return { accessToken, refreshToken: newRefreshToken };
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
   },
 };
