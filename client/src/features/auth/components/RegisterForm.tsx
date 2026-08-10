@@ -34,7 +34,7 @@ const RegisterForm = () => {
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
       await authService.register(data);
-      navigate("/login");
+      navigate("/timetables");
     } catch (error) {
       console.error("Registration failed:", error);
     }

@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import LoadingHeader from "../../shared/components/LoadingHeader";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
@@ -14,11 +15,11 @@ const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
 
 const LandingPage = lazy(() => import("@/pages/LandingPage"));
 
-const HomePage = lazy(() => import("@/pages/HomePage"));
+const TimetablesPage = lazy(() => import("@/pages/TimetablesPage"));
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingHeader />}>
       <Routes>
         {/* Public routes */}
         <Route element={<PublicRoute />}>
@@ -38,7 +39,9 @@ const AppRouter = () => {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/timetables" element={<TimetablesPage />} />
+            {/* /timetables/:id
+              /timetables/:id/designer  */}
           </Route>
         </Route>
       </Routes>

@@ -19,8 +19,6 @@ export const authenticate = (
     return next(errors.forbidden());
   }
 
-  console.log(token);
-
   try {
     const payload = tokenService.verifyAccessToken(token);
     req.userId = payload.sub;

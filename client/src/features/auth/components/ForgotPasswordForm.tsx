@@ -30,13 +30,12 @@ const ForgotPasswordForm = () => {
   const onSubmit: SubmitHandler<ForgotPasswordFormData> = async (data) => {
     try {
       await authService.forgotPassword(data);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error("ForgotPassword failed:", error);
     }
   };
 
-  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldSet>

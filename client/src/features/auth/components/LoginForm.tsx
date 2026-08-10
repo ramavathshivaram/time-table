@@ -33,7 +33,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       await authService.login(data);
-      navigate("/home");
+      navigate("/timetables");
     } catch (error) {
       console.error("Login failed:", error);
     }
