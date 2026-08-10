@@ -1,65 +1,103 @@
-import React from "react";
+import {
+  Bell,
+  ChevronRight,
+  LogOut,
+  Moon,
+  Settings,
+  UserRound,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/shared/ui/hover-card";
-
-import { Button } from "@/shared/ui/button";
-
-import { useUserStore } from "@/shared/user/user.store";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
 
 import ProfileAvatar from "./ProfileAvatar";
-import Notifications from "./Notifications";
-import DarkMode from "./DarkMode";
 import LogoutButton from "./LogoutButton";
+import { useUserStore } from "@/shared/user/user.store";
+import { usePreferencesStore } from "@/shared/preferences/preferences.store";
+import MenuItem from "./MenuItem";
+import MenuSection from "./MenuSection";
+import { navigationService } from "@/shared/services/navigation.service";
+import NotificationMenuItem from "./NotificationsMenuItem";
 
 const Profile = () => {
   const user = useUserStore((state) => state.user);
+  const darkMode = usePreferencesStore((state) => state.darkMode);
+  const toggleDarkMode = usePreferencesStore((state) => state.toggleDarkMode);
 
   return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full">
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <button className="rounded-full outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring">
           <ProfileAvatar />
-        </Button>
-      </HoverCardTrigger>
+        </button>
+      </DropdownMenuTrigger>
 
-      <HoverCardContent
-        side="bottom"
+      <DropdownMenuContent
         align="end"
-        className="w-80 overflow-hidden rounded-xl border bg-popover p-0 shadow-xl"
+        sideOffset={10}
+        className="w-80 overflow-hidden rounded-2xl border-border/60 bg-popover p-0 shadow-xl"
       >
-        {/* Profile Header */}
-        <div className="flex items-center gap-3 bg-muted/40 px-4 py-4">
+        {/* User */}
+        <div className="flex items-center gap-3 border-b border-border/50 px-4 py-4">
           <ProfileAvatar />
 
-          <div className="flex min-w-0 flex-col">
-            <span className="truncate text-sm font-semibold">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">
               {user?.userName ?? "Guest User"}
-            </span>
+            </p>
 
-            <span className="truncate text-xs text-muted-foreground">
+            <p className="truncate text-xs text-muted-foreground">
               {user?.email ?? "No email available"}
-            </span>
+            </p>
           </div>
         </div>
 
         {/* Notifications */}
-        <Notifications />
-
-        {/* Settings */}
-        <div className="flex flex-col gap-2 border-t px-4 py-3">
-          <DarkMode />
+        <div className="p-2">
+          <NotificationMenuItem unreadCount={3} />
         </div>
+
+        {/* Preferences */}
+        <MenuSection title="Preferences">
+          <MenuItem
+            icon={Moon}
+            label="Appearance"
+            value={darkMode ? "Dark" : "Light"}
+            onClick={toggleDarkMode}
+          />
+
+          <MenuItem
+            icon={SlidersHorizontal}
+            label="Preferences"
+            onClick={() => navigationService.navigate("/preferences")}
+          />
+        </MenuSection>
+
+        {/* Account */}
+        <MenuSection title="Account">
+          <MenuItem
+            icon={UserRound}
+            label="Profile"
+            onClick={() => navigationService.navigate("/profile")}
+          />
+
+          <MenuItem
+            icon={Settings}
+            label="Settings"
+            onClick={() => navigationService.navigate("/settings")}
+          />
+        </MenuSection>
 
         {/* Logout */}
-        <div className="border-t px-4 py-3">
+        <div className="border-t border-border/50 p-2">
           <LogoutButton />
         </div>
-      </HoverCardContent>
-    </HoverCard>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
