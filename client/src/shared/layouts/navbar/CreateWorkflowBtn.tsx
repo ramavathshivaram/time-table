@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowUpRightIcon } from "lucide-react";
 
@@ -8,19 +7,28 @@ import {
   CraftButtonIcon,
 } from "@/shared/ui/craft-button";
 
-const CreateWorkflowBtn = () => {
+import { useTimetableMutation } from "@/features/timetables/hooks/timetable.query";
+
+const CreateTimetableBtn = () => {
   const navigate = useNavigate();
 
-  const isPending = false;
+  const { mutateAsync: createTimetable, isPending } =
+    useTimetableMutation.useCreateTimetable();
 
-  const handleCreate = () => {
-    navigate("/workflow/create");
+  const handleCreate = async () => {
+    try {
+      const timetable = await createTimetable();
+
+      navigate(`/timetables/${timetable._id}`);
+    } catch (error) {
+      console.error("Failed to create timetable:", error);
+    }
   };
 
   return (
-    <CraftButton size="sm" onClick={handleCreate} disabled={isPending}>
+    <CraftButton size="default" onClick={handleCreate} disabled={isPending}>
       <CraftButtonLabel>
-        {isPending ? "Creating..." : "Create Workflow"}
+        {isPending ? "Creating..." : "Create Timetable"}
       </CraftButtonLabel>
 
       <CraftButtonIcon>
@@ -30,4 +38,4 @@ const CreateWorkflowBtn = () => {
   );
 };
 
-export default CreateWorkflowBtn;
+export default CreateTimetableBtn;

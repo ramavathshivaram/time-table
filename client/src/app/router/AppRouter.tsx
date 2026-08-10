@@ -8,6 +8,7 @@ import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import LoadingHeader from "../../shared/components/LoadingHeader";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
@@ -44,6 +45,8 @@ const AppRouter = () => {
               /timetables/:id/designer  */}
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

@@ -1,0 +1,53 @@
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import { timetableApi } from "../api/timetable.api";
+
+const useCreateTimetable = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: timetableApi.create,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["timetables"],
+      });
+    },
+  });
+};
+
+const useGetTimetables = (query: string) => {
+  return useInfiniteQuery({
+    queryKey: ["timetables", query],
+
+    queryFn: ({ pageParam }) => timetableApi.getTimetables(pageParam, query),
+
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < 20) {
+        return undefined;
+      }
+
+      return allPages.length + 1;
+    },
+  });
+};
+
+const useGetRecentTimetables = () => {
+  return useQuery({
+    queryKey: ["recent-timetables"],
+    queryFn: () => timetableApi.getRecentTimetables(),
+  });
+};
+
+export const useTimetableMutation = {
+  useCreateTimetable,
+  useGetTimetables,
+  useGetRecentTimetables,
+};

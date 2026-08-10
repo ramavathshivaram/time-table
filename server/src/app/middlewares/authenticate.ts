@@ -23,8 +23,6 @@ export const authenticate = (
     const payload = tokenService.verifyAccessToken(token);
     req.userId = payload.sub;
 
-    console.log(payload);
-    console.log(req.userId);
     next();
   } catch (error) {
     return next(errors.forbidden());
