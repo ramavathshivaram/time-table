@@ -1,4 +1,5 @@
 import { errors } from "#utils/errors.js";
+import { getRandomDescription } from "./services/descriptions.js";
 import { Timetable, TimetableModel } from "./timetable.model.js";
 
 interface GetTimetablesParams {
@@ -9,15 +10,18 @@ interface GetTimetablesParams {
 }
 
 export const timetableRepository = {
-  create: async ({ title, userId, blueprintId }: Partial<Timetable>) => {
+  create: async ({ title, userId, blueprintId }) => {
     try {
       return await TimetableModel.create({
         title,
         userId,
         blueprintId,
+        description: getRandomDescription(),
       });
-    } catch (err) {
-      throw errors.internal(err.message);
+    } catch (error) {
+      throw errors.internal(
+        error instanceof Error ? error.message : "Failed to create timetable",
+      );
     }
   },
 

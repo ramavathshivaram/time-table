@@ -63,6 +63,11 @@ const TimetableCard = ({ timetable }: TimetableCardProps) => {
         </button>
       </div>
 
+      {/* Description */}
+      <p className="mt-2 text-sm text-muted-foreground">
+        {timetable.description || "No description provided."}
+      </p>
+
       {/* Footer */}
       <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
         <span>{createdAgo.replace("about ", "")}</span>

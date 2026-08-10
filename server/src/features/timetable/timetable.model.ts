@@ -20,6 +20,12 @@ const timetableSchema = new Schema(
       trim: true,
     },
 
+    description: {
+      type: String,
+      trim: true,
+      maxlength: 200,
+    },
+
     stage: {
       type: String,
       enum: ["incomplete", "complete"],
