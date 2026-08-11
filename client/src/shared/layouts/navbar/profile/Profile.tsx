@@ -23,9 +23,7 @@ const Profile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <button className="rounded-full outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring">
-          <ProfileAvatar />
-        </button>
+        <ProfileAvatar />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent

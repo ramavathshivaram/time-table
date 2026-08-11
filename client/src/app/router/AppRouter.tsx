@@ -42,11 +42,12 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/timetables" element={<TimetablesPage />} />
-            <Route
-              path="/timetables/designer"
-              element={<TimetableDesignerPage />}
-            />
           </Route>
+
+          <Route
+            path="/timetables/designer"
+            element={<TimetableDesignerPage />}
+          />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
