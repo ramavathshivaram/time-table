@@ -20,7 +20,7 @@ const links = [
 
 const NavbarLinks = () => {
   return (
-    <nav aria-label="Main navigation" className="hidden md:block">
+    <nav aria-label="Main navigation">
       <ul className="flex items-center gap-1 rounded-lg bg-muted/50 p-1">
         {links.map((link) => (
           <li key={link.path}>

@@ -1,12 +1,4 @@
-import {
-  Bell,
-  ChevronRight,
-  LogOut,
-  Moon,
-  Settings,
-  UserRound,
-  SlidersHorizontal,
-} from "lucide-react";
+import { Moon, Settings, UserRound, SlidersHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
