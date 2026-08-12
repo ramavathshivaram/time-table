@@ -6,25 +6,9 @@ import {
   type OnConnectEnd,
 } from "@xyflow/react";
 
-import type { Edge, Node } from "../types";
+import type { Edge, Interactions, Node } from "../types";
 import { useDesignerStore } from "../store/designer.store";
 import { useCallback } from "react";
-
-type Interactions = {
-  nodes: Node[];
-  edges: Edge[];
-
-  onNodesChange: (changes: NodeChange[]) => void;
-  onEdgesChange: (changes: EdgeChange[]) => void;
-
-  onConnect: (connection: Connection) => void;
-
-  onNodeDoubleClick: (event: React.MouseEvent, node: Node) => void;
-
-  onConnectEnd: OnConnectEnd;
-
-  isValidConnection: IsValidConnection;
-};
 
 export const useDesignerInteractions = (): Interactions => {
   const nodes = useDesignerStore((s) => s.nodes);
