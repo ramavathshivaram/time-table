@@ -16,23 +16,23 @@ export const timetableData = {
       {
         id: "start-1",
         type: "start",
-        position: { x: 100, y: 300 },
+        position: { x: 100, y: 100 },
         data: {
           label: "Start",
         },
       },
       {
         id: "college-1",
-        type: "college",
-        position: { x: 350, y: 300 },
+        type: "institution",
+        position: { x: 100, y: 200 },
         data: {
           label: "PVPSIT",
         },
       },
       {
         id: "branch-1",
-        type: "branch",
-        position: { x: 600, y: 300 },
+        type: "program",
+        position: { x: 100, y: 300 },
         data: {
           label: "Computer Science & Engineering",
           type: "CSE",
@@ -40,8 +40,8 @@ export const timetableData = {
       },
       {
         id: "year-1",
-        type: "year",
-        position: { x: 900, y: 200 },
+        type: "academicYear",
+        position: { x: 100, y: 400 },
         data: {
           label: "3rd Year",
           type: "III",
@@ -50,7 +50,7 @@ export const timetableData = {
       {
         id: "section-1",
         type: "section",
-        position: { x: 1200, y: 200 },
+        position: { x: 100, y: 500 },
         data: {
           label: "Section A",
           type: "A",

@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { designerNodes } from "../../constants/designer-nodes";
+import { designerNodes } from "../../constants/designer-nodes.data";
 import DesignerNode from "./DesignerNode";
 
 const DefaultNode = ({ data, type, selected, isConnectable }) => {

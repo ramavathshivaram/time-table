@@ -6,18 +6,20 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
-import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import LoadingHeader from "../../shared/components/LoadingHeader";
-import NotFoundPage from "@/pages/NotFoundPage";
-import TimetableDesignerPage from "@/pages/TimetableDesignerPage";
+
+const LandingPage = lazy(() => import("@/pages/LandingPage"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
-
-const LandingPage = lazy(() => import("@/pages/LandingPage"));
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 const TimetablesPage = lazy(() => import("@/pages/TimetablesPage"));
+const TimetableDesignerPage = lazy(
+  () => import("@/pages/TimetableDesignerPage"),
+);
 
 const AppRouter = () => {
   return (

@@ -66,10 +66,7 @@ const DesignerCanvas = ({ timetableId }: Props) => {
       >
         <Background />
 
-        <DesignerPanels
-          timetableId={timetableId}
-          title={"Timetable Designer"}
-        />
+        <DesignerPanels />
       </ReactFlow>
     </div>
   );
