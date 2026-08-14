@@ -1,110 +1,95 @@
 import {
+  applyEdgeChanges,
+  applyNodeChanges,
+  useReactFlow,
   type Connection,
   type EdgeChange,
   type IsValidConnection,
   type NodeChange,
+  type NodeMouseHandler,
   type OnConnectEnd,
-  useReactFlow,
+  type Node as ReactFlowNode,
+  type Edge as ReactFlowEdge,
 } from "@xyflow/react";
 
-import type { Interactions, Node } from "../types";
+import { useCallback } from "react";
 
-import { useDesignerStore } from "../store/designer.store";
 import { useModalStore } from "../store/modal.store";
-
-import { useCallback, useMemo } from "react";
 
 import { nodeService } from "../services/node.service";
 import { edgeService } from "../services/edge.service";
 
-import {
-  generateEdgeId,
-  generateNodeId,
-} from "../utils/generate-ids";
+import { generateEdgeId, generateNodeId } from "../utils/generate-ids";
 
-import {
-  designerNodes,
-  NODE_HEIGHT,
-  NODE_WIDTH,
-} from "../constants";
+import { designerNodes, NODE_HEIGHT, NODE_WIDTH } from "../constants";
 
-export const useDesignerInteractions = (): Interactions => {
-  const { screenToFlowPosition } = useReactFlow();
+import type { Node } from "../types";
 
-  const nodes = useDesignerStore((s) => s.nodes);
-  const edges = useDesignerStore((s) => s.edges);
+interface Props {
+  setNodes: (nodes: ReactFlowNode[]) => void;
+  setEdges: (edges: ReactFlowEdge[]) => void;
+}
 
-  const openModal = useModalStore((s) => s.open);
+export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
+  const {
+    getNodes,
+    getEdges,
+    getNode,
+    addNodes,
+    addEdges,
+    screenToFlowPosition,
+  } = useReactFlow();
 
-  /*
-   * --------------------------------
-   * Fast node lookup
-   * --------------------------------
-   */
-
-  const nodeMap = useMemo(() => {
-    return Object.fromEntries(
-      nodes.map((node) => [node.id, node]),
-    );
-  }, [nodes]);
-
-  /*
-   * --------------------------------
-   * Node Changes
-   * --------------------------------
-   */
+  const openModal = useModalStore((state) => state.open);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
+      setNodes((nodes) => applyNodeChanges(changes, nodes));
+
       for (const change of changes) {
         switch (change.type) {
-          case "remove":
+          case "position": {
+            if (!change.position) break;
+
+            nodeService.update(change.id, {
+              position: change.position,
+            });
+
+            break;
+          }
+
+          case "remove": {
             nodeService.remove(change.id);
             break;
+          }
 
-          case "position":
-            if (change.position) {
-              nodeService.update(change.id, {
-                position: change.position,
-              });
-            }
+          case "select":
+            break;
+
+          default:
             break;
         }
       }
     },
-    [],
+    [setNodes],
   );
-
-  /*
-   * --------------------------------
-   * Edge Changes
-   * --------------------------------
-   */
 
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
+      setEdges((edges) => applyEdgeChanges(changes, edges));
+
       for (const change of changes) {
-        switch (change.type) {
-          case "remove":
-            edgeService.remove(change.id);
-            break;
+        if (change.type === "remove") {
+          edgeService.remove(change.id);
         }
       }
     },
-    [],
+    [setEdges],
   );
 
-  /*
-   * --------------------------------
-   * Cycle Detection
-   * --------------------------------
-   */
-
   const createsCycle = useCallback(
-    (
-      sourceId: string,
-      targetId: string,
-    ): boolean => {
+    (sourceId: string, targetId: string): boolean => {
+      const edges = getEdges();
       const visited = new Set<string>();
 
       const dfs = (nodeId: string): boolean => {
@@ -125,121 +110,62 @@ export const useDesignerInteractions = (): Interactions => {
 
       return dfs(targetId);
     },
-    [edges],
+    [getEdges],
   );
 
-  /*
-   * --------------------------------
-   * Connection Validation
-   * --------------------------------
-   */
+  const isValidConnection: IsValidConnection = useCallback(
+    (connection) => {
+      const { source, target } = connection;
 
-  const isValidConnection: IsValidConnection =
-    useCallback(
-      (connection) => {
-        const sourceNode =
-          nodeMap[connection.source];
+      if (!source || !target) {
+        return false;
+      }
 
-        const targetNode =
-          nodeMap[connection.target];
+      const sourceNode = getNode(source);
+      const targetNode = getNode(target);
 
-        /*
-         * Nodes must exist
-         */
+      if (!sourceNode || !targetNode) {
+        return false;
+      }
 
-        if (!sourceNode || !targetNode) {
-          return false;
-        }
+      if (source === target) {
+        return false;
+      }
 
-        /*
-         * Prevent self connection
-         */
+      const sourceConfig =
+        designerNodes[sourceNode.type as keyof typeof designerNodes];
 
-        if (sourceNode.id === targetNode.id) {
-          return false;
-        }
+      const targetConfig =
+        designerNodes[targetNode.type as keyof typeof designerNodes];
 
-        /*
-         * Source configuration
-         */
+      if (!sourceConfig || !targetConfig) {
+        return false;
+      }
 
-        const sourceConfig =
-          designerNodes[sourceNode.type as keyof typeof designerNodes];
+      if (!sourceConfig.allowedChildren.includes(targetNode.type as never)) {
+        return false;
+      }
 
-        if (!sourceConfig) {
-          return false;
-        }
+      const alreadyHasParent = getEdges().some(
+        (edge) => edge.target === target,
+      );
 
-        /*
-         * Target configuration
-         */
+      if (alreadyHasParent) {
+        return false;
+      }
 
-        const targetConfig =
-          designerNodes[targetNode.type as keyof typeof designerNodes];
+      if (targetConfig.allowedParent !== sourceNode.type) {
+        return false;
+      }
 
-        if (!targetConfig) {
-          return false;
-        }
+      if (createsCycle(source, target)) {
+        return false;
+      }
 
-        /*
-         * Check allowed child
-         */
-
-        if (
-          !sourceConfig.allowedChildren.includes(
-            targetNode.type as never,
-          )
-        ) {
-          return false;
-        }
-
-        /*
-         * Target can have only one parent
-         */
-
-        const alreadyHasParent = edges.some(
-          (edge) =>
-            edge.target === targetNode.id,
-        );
-
-        if (alreadyHasParent) {
-          return false;
-        }
-
-        /*
-         * Check parent rule
-         */
-
-        if (
-          targetConfig.allowedParent !==
-          sourceNode.type
-        ) {
-          return false;
-        }
-
-        /*
-         * Prevent cycles
-         */
-
-        if (
-          createsCycle(
-            sourceNode.id,
-            targetNode.id,
-          )
-        ) {
-          return false;
-        }
-
-        return true;
-      },
-      [nodeMap, edges, createsCycle],
-    );
-
-  /*
-   * --------------------------------
-   * Connect
-   * --------------------------------
-   */
+      return true;
+    },
+    [getNode, getEdges, createsCycle],
+  );
 
   const onConnect = useCallback(
     (connection: Connection) => {
@@ -247,26 +173,20 @@ export const useDesignerInteractions = (): Interactions => {
         return;
       }
 
-      edgeService.add({
+      const edge = {
         id: generateEdgeId(),
         ...connection,
         type: "bezier",
-      });
+      };
+
+      addEdges(edge);
+      edgeService.add(edge);
     },
-    [isValidConnection],
+    [addEdges, isValidConnection],
   );
 
-  /*
-   * --------------------------------
-   * Node Double Click
-   * --------------------------------
-   */
-
-  const onNodeDoubleClick = useCallback(
-    (
-      event: React.MouseEvent,
-      node: Node,
-    ) => {
+  const onNodeDoubleClick: NodeMouseHandler = useCallback(
+    (event, node) => {
       event.stopPropagation();
 
       if (node.type === "start") {
@@ -278,149 +198,69 @@ export const useDesignerInteractions = (): Interactions => {
     [openModal],
   );
 
-  /*
-   * --------------------------------
-   * Connect End
-   * --------------------------------
-   */
+  const onConnectEnd: OnConnectEnd = useCallback(
+    (_, connectionState) => {
+      if (connectionState.toNode || connectionState.toHandle) {
+        return;
+      }
 
-  const onConnectEnd: OnConnectEnd =
-    useCallback(
-      (_, connectionState) => {
-        /*
-         * Connection ended on an existing node.
-         *
-         * onConnect() handles that case.
-         */
+      const sourceNode = connectionState.fromNode;
 
-        if (
-          connectionState.toNode ||
-          connectionState.toHandle
-        ) {
-          return;
-        }
+      if (!sourceNode) {
+        return;
+      }
 
-        const sourceNode =
-          connectionState.fromNode;
+      const sourceConfig =
+        designerNodes[sourceNode.type as keyof typeof designerNodes];
 
-        if (!sourceNode) {
-          return;
-        }
+      if (!sourceConfig?.allowedChildren?.length) {
+        return;
+      }
 
-        /*
-         * Source configuration
-         */
+      const nextType = sourceConfig.allowedChildren[0];
 
-        const sourceConfig =
-          designerNodes[
-            sourceNode.type as keyof typeof designerNodes
-          ];
+      const nextConfig = designerNodes[nextType as keyof typeof designerNodes];
 
-        if (!sourceConfig) {
-          return;
-        }
+      if (!nextConfig) {
+        return;
+      }
 
-        /*
-         * Find allowed children
-         */
+      const position = screenToFlowPosition({
+        x: connectionState.pointer.x - NODE_WIDTH / 2,
+        y: connectionState.pointer.y - NODE_HEIGHT / 2,
+      });
 
-        const children =
-          sourceConfig.allowedChildren;
+      const node: Node = {
+        id: generateNodeId(),
+        type: nextType,
+        position,
+        data: {
+          ...nextConfig.defaultData,
+        },
+      };
 
-        if (
-          !children ||
-          children.length === 0
-        ) {
-          return;
-        }
+      const edge = {
+        id: generateEdgeId(),
+        source: sourceNode.id,
+        target: node.id,
+        type: "bezier",
+      };
 
-        /*
-         * Pick first child
-         *
-         * Later you can show a menu here
-         * if multiple children are allowed.
-         */
+      addNodes(node);
+      addEdges(edge);
 
-        const nextType = children[0];
-
-        const nextNodeConfig =
-          designerNodes[
-            nextType as keyof typeof designerNodes
-          ];
-
-        if (!nextNodeConfig) {
-          return;
-        }
-
-        /*
-         * Convert screen position
-         * → flow position
-         */
-
-        const position =
-          screenToFlowPosition({
-            x: connectionState.pointer.x,
-            y: connectionState.pointer.y,
-          });
-
-        /*
-         * Center node around pointer
-         */
-
-        position.x -= NODE_WIDTH / 2;
-        position.y -= NODE_HEIGHT / 2;
-
-        /*
-         * Generate ID
-         */
-
-        const newNodeId =
-          generateNodeId();
-
-        /*
-         * Create node
-         */
-
-        nodeService.add({
-          id: newNodeId,
-          type: nextType,
-          position,
-          data: nextNodeConfig.defaultData,
-        });
-
-        /*
-         * Create edge
-         */
-
-        edgeService.add({
-          id: generateEdgeId(),
-          source: sourceNode.id,
-          target: newNodeId,
-          type: "bezier",
-        });
-      },
-      [screenToFlowPosition],
-    );
-
-  /*
-   * --------------------------------
-   * Return
-   * --------------------------------
-   */
+      nodeService.add(node);
+      edgeService.add(edge);
+    },
+    [screenToFlowPosition, addNodes, addEdges],
+  );
 
   return {
-    nodes,
-    edges,
-
     onNodesChange,
     onEdgesChange,
-
     onConnect,
-
-    onNodeDoubleClick,
-
-    onConnectEnd,
-
     isValidConnection,
+    onNodeDoubleClick,
+    onConnectEnd,
   };
 };

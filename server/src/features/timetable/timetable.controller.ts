@@ -6,8 +6,6 @@ export const timetableController = {
     const userId = req.userId;
     const timetable = await timetableService.create({ userId });
 
-    console.log(timetable);
-
     res.status(201).json({ success: true, timetable });
   }),
 
@@ -21,7 +19,6 @@ export const timetableController = {
       query,
     });
 
-    console.log(timetables);
     res.status(200).json({ success: true, timetables });
   }),
 

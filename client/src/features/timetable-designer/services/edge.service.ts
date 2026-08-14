@@ -1,21 +1,23 @@
 import type { Edge } from "@xyflow/react";
 
-import { useDesignerStore } from "../store/designer.store";
-
 export const edgeService = {
-  add: (edge: Edge) => {
-    useDesignerStore.getState().addEdge(edge);
+  add: async (edge: Edge) => {
+    // POST /workflows/edges
+    console.log("Create edge on server", edge);
   },
 
-  addMany: (edges: Edge[]) => {
-    useDesignerStore.getState().addEdges(edges);
+  addMany: async (edges: Edge[]) => {
+    // POST /workflows/edges/bulk
+    console.log("Create edges on server", edges);
   },
 
-  remove: (id: string) => {
-    useDesignerStore.getState().removeEdge(id);
+  remove: async (id: string) => {
+    // DELETE /workflows/edges/:id
+    console.log("Delete edge on server", id);
   },
 
-  removeMany: (ids: string[]) => {
-    useDesignerStore.getState().removeEdges(ids);
+  removeMany: async (ids: string[]) => {
+    // DELETE /workflows/edges/bulk
+    console.log("Delete edges on server", ids);
   },
 };

@@ -2,7 +2,6 @@ import { ReactFlowProvider } from "@xyflow/react";
 
 import { timetableData } from "../../constants/timetable-data";
 import DesignerCanvas from "./DesignerCanvas";
-import { useDesignerStore } from "../../store/designer.store";
 import Modal from "../modals/Modal";
 
 interface Props {
@@ -10,15 +9,17 @@ interface Props {
 }
 
 const TimetableDesigner = ({ timetableId }: Props) => {
-  const init = useDesignerStore((s) => s.init);
-
-  init(timetableData.blueprint);
+  const data = timetableData.blueprint;
 
   return (
     <ReactFlowProvider>
       <div className="flex h-screen w-screen flex-col">
         <main className="relative flex-1">
-          <DesignerCanvas timetableId={timetableId} />
+          <DesignerCanvas
+            timetableId={timetableId}
+            initialNodes={data.nodes}
+            initialEdges={data.edges}
+          />
         </main>
 
         <Modal />

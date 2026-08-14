@@ -1,50 +1,69 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useReactFlow } from "@xyflow/react";
 
-import { useDesignerStore } from "../store/designer.store";
-
+import { generateEdgeId, generateNodeId } from "../utils/generate-ids";
 import { nodeService } from "../services/node.service";
 import { edgeService } from "../services/edge.service";
-import { generateEdgeId, generateNodeId } from "../utils/generate-ids";
-
 
 export const useDesignerControls = () => {
-  const { zoomIn, zoomOut, fitView } = useReactFlow();
-
-  const nodes = useDesignerStore((state) => state.nodes);
-
-  const edges = useDesignerStore((state) => state.edges);
-
-  const hasSelection = useMemo(
-    () => nodes.some((node) => node.selected),
-    [nodes],
-  );
-
-  // ---------------- Select All ----------------
+  const {
+    getNodes,
+    getEdges,
+    setNodes,
+    addNodes,
+    addEdges,
+    deleteElements,
+    zoomIn,
+    zoomOut,
+    fitView,
+  } = useReactFlow();
 
   const selectAll = useCallback(() => {
-    nodeService.updateMany({
-      selected: true,
-    });
-  }, []);
+    setNodes((nodes) =>
+      nodes.map((node) => ({
+        ...node,
+        selected: true,
+      })),
+    );
+  }, [setNodes]);
 
-  // ---------------- Delete Selected ----------------
+  const deleteSelected = useCallback(async () => {
+    const nodes = getNodes();
+    const edges = getEdges();
 
-  const deleteSelected = useCallback(() => {
-    const selectedIds = nodes
-      .filter((node) => node.selected)
-      .map((node) => node.id);
+    const selectedNodes = nodes.filter((node) => node.selected);
 
-    if (!selectedIds.length) {
+    const selectedNodeIds = new Set(selectedNodes.map((node) => node.id));
+
+    const selectedEdges = edges.filter(
+      (edge) =>
+        edge.selected ||
+        selectedNodeIds.has(edge.source) ||
+        selectedNodeIds.has(edge.target),
+    );
+
+    if (!selectedNodes.length && !selectedEdges.length) {
       return;
     }
 
-    nodeService.removeMany(selectedIds);
-  }, [nodes]);
+    await deleteElements({
+      nodes: selectedNodes,
+      edges: selectedEdges,
+    });
 
-  // ---------------- Duplicate ----------------
+    if (selectedNodes.length) {
+      await nodeService.removeMany(selectedNodes.map((node) => node.id));
+    }
+
+    if (selectedEdges.length) {
+      await edgeService.removeMany(selectedEdges.map((edge) => edge.id));
+    }
+  }, [getNodes, getEdges, deleteElements]);
 
   const duplicateSelected = useCallback(() => {
+    const nodes = getNodes();
+    const edges = getEdges();
+
     const selectedNodes = nodes.filter((node) => node.selected);
 
     if (!selectedNodes.length) {
@@ -61,12 +80,10 @@ export const useDesignerControls = () => {
       return {
         ...node,
         id: newId,
-
         position: {
           x: node.position.x + 40,
           y: node.position.y + 40,
         },
-
         selected: true,
       };
     });
@@ -75,58 +92,53 @@ export const useDesignerControls = () => {
       .filter((edge) => idMap.has(edge.source) && idMap.has(edge.target))
       .map((edge) => ({
         ...edge,
-
         id: generateEdgeId(),
-
         source: idMap.get(edge.source)!,
-
         target: idMap.get(edge.target)!,
+        selected: true,
       }));
 
-    // Deselect originals
-    nodeService.updateMany({
-      selected: false,
-    });
+    setNodes((nodes) =>
+      nodes.map((node) => ({
+        ...node,
+        selected: false,
+      })),
+    );
 
-    // Add duplicated nodes
+    addNodes(duplicatedNodes);
+
+    if (duplicatedEdges.length) {
+      addEdges(duplicatedEdges);
+    }
+
     nodeService.addMany(duplicatedNodes);
 
-    // Add duplicated edges
     if (duplicatedEdges.length) {
       edgeService.addMany(duplicatedEdges);
     }
-  }, [nodes, edges]);
+  }, [getNodes, getEdges, setNodes, addNodes, addEdges]);
 
-  // ---------------- Auto Arrange ----------------
-
-  const autoArrange = useCallback(() => {
-    // Dagre / ELK implementation
-  }, []);
-
-  // ---------------- Undo ----------------
+  const autoArrange = useCallback(() => {}, []);
 
   const undo = useCallback(() => {
     console.log("Undo");
   }, []);
 
-  // ---------------- Redo ----------------
-
   const redo = useCallback(() => {
     console.log("Redo");
   }, []);
 
+  const hasSelection = getNodes().some((node) => node.selected);
+
   return {
     hasSelection,
-
     selectAll,
     deleteSelected,
     duplicateSelected,
     autoArrange,
-
     zoomIn,
     zoomOut,
     fitView,
-
     undo,
     redo,
   };

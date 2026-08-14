@@ -1,6 +1,11 @@
 import "@xyflow/react/dist/style.css";
 
-import { Background, ReactFlow } from "@xyflow/react";
+import {
+  Background,
+  ReactFlow,
+  useEdgesState,
+  useNodesState,
+} from "@xyflow/react";
 
 import DesignerPanels from "../panels/DesignerPanels";
 
@@ -13,26 +18,48 @@ import {
   useNodeTypes,
 } from "../../hooks";
 
+import type { Edge, Node } from "../../types";
+
 interface Props {
   timetableId: string;
+  initialNodes: Node[];
+  initialEdges: Edge[];
 }
 
-const DesignerCanvas = ({ timetableId }: Props) => {
+const DesignerCanvas = ({ timetableId, initialNodes, initialEdges }: Props) => {
   const darkMode = usePreferencesStore((state) => state.darkMode);
 
+  /*
+   * React Flow owns local canvas state.
+   * Server data is only used as the initial snapshot.
+   */
+  const [nodes, setNodes] = useNodesState(initialNodes);
+
+  const [edges, setEdges] = useEdgesState(initialEdges);
+
+  /*
+   * Designer interactions
+   */
   const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
+    onNodesChange: handleNodesChange,
+    onEdgesChange: handleEdgesChange,
     onConnect,
     isValidConnection,
     onNodeDoubleClick,
     onConnectEnd,
-  } = useDesignerInteractions();
+  } = useDesignerInteractions({
+    setNodes,
+    setEdges,
+  });
 
+  /*
+   * Drag & Drop
+   */
   const { onDragOver, onDrop } = useDesignerDnD();
 
+  /*
+   * React Flow component mappings
+   */
   const nodeTypes = useNodeTypes();
   const edgeTypes = useEdgeTypes();
 
@@ -44,8 +71,8 @@ const DesignerCanvas = ({ timetableId }: Props) => {
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onNodesChange={handleNodesChange}
+        onEdgesChange={handleEdgesChange}
         onConnect={onConnect}
         isValidConnection={isValidConnection}
         onNodeDoubleClick={onNodeDoubleClick}

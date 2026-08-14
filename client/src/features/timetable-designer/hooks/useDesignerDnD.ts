@@ -1,51 +1,53 @@
-import { useCallback } from "react";
 import { useReactFlow } from "@xyflow/react";
-import { nodeService } from "../services/node.service";
-import { generateNodeId } from "../utils/generate-ids";
 import { NODE_HEIGHT, NODE_WIDTH } from "../constants";
-
-const DND_TYPE = "application/reactflow";
+import { generateNodeId } from "../utils/generate-ids";
+import { nodeService } from "../services/node.service";
 
 export const useDesignerDnD = () => {
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, addNodes } = useReactFlow();
 
-  const onDragStart = useCallback((e: React.DragEvent, nodeType: string) => {
-    e.dataTransfer.setData(DND_TYPE, nodeType);
-    e.dataTransfer.effectAllowed = "move";
-  }, []);
+  const onDragStart = (event: React.DragEvent, nodeType: string) => {
+    event.dataTransfer.setData("application/reactflow", nodeType);
 
-  const onDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
+    event.dataTransfer.effectAllowed = "move";
+  };
 
-    e.dataTransfer.dropEffect = "move";
-  }, []);
+  const onDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
 
-  const onDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
 
-      const nodeType = e.dataTransfer.getData(DND_TYPE);
+  const onDrop = (event: React.DragEvent) => {
+    event.preventDefault();
 
-      if (!nodeType) return;
+    const nodeType = event.dataTransfer.getData("application/reactflow");
 
-      const position = screenToFlowPosition({
-        x: e.clientX - NODE_WIDTH / 2,
-        y: e.clientY - NODE_HEIGHT / 2,
-      });
+    if (!nodeType) {
+      return;
+    }
 
-      const newNode = {
-        id: generateNodeId(),
-        type: nodeType,
-        position,
-        data: {
-          label: `New ${nodeType}`,
-        },
-      };
+    const position = screenToFlowPosition({
+      x: event.clientX - NODE_WIDTH / 2,
 
-      nodeService.add(newNode);
-    },
-    [screenToFlowPosition],
-  );
+      y: event.clientY - NODE_HEIGHT / 2,
+    });
+
+    const node = {
+      id: generateNodeId(),
+      type: nodeType,
+      position,
+      data: {
+        label: `New ${nodeType}`,
+      },
+    };
+
+    // Local
+    addNodes(node);
+
+    // Server
+    nodeService.add(node);
+  };
 
   return {
     onDragStart,

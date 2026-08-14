@@ -1,28 +1,28 @@
-import { useDesignerStore } from "../store/designer.store";
-import type { Node } from "../types";
+import type { Node } from "@xyflow/react";
 
 export const nodeService = {
-  add: (node: Node) => {
-    useDesignerStore.getState().addNode(node);
+  add: async (node: Node) => {
+    // POST /workflows/nodes
+    console.log("Create node on server", node);
   },
 
-  addMany: (nodes: Node[]) => {
-    useDesignerStore.getState().addNodes(nodes);
+  addMany: async (nodes: Node[]) => {
+    // POST /workflows/nodes/bulk
+    console.log("Create nodes on server", nodes);
   },
 
-  remove: (id: string) => {
-    useDesignerStore.getState().removeNode(id);
+  update: async (id: string, data: Partial<Node>) => {
+    // PATCH /workflows/nodes/:id
+    console.log("Update node on server", id, data);
   },
 
-  removeMany: (ids: string[]) => {
-    useDesignerStore.getState().removeNodes(ids);
+  remove: async (id: string) => {
+    // DELETE /workflows/nodes/:id
+    console.log("Delete node on server", id);
   },
 
-  update: (id: string, data: Partial<Node>) => {
-    useDesignerStore.getState().updateNode(id, data);
-  },
-
-  updateMany: (data: Partial<Node>) => {
-    useDesignerStore.getState().updateNodes(data);
+  removeMany: async (ids: string[]) => {
+    // DELETE /workflows/nodes/bulk
+    console.log("Delete nodes on server", ids);
   },
 };
