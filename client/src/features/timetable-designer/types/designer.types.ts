@@ -9,6 +9,7 @@ import type { IsValidConnection } from "@xyflow/system";
 export type Node = {
   id: string;
   type: string;
+  selected?: boolean;
   position: { x: number; y: number };
   data: { label: string; type?: string };
 };

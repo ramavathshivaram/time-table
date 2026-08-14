@@ -6,11 +6,23 @@ export const nodeService = {
     useDesignerStore.getState().addNode(node);
   },
 
+  addMany: (nodes: Node[]) => {
+    useDesignerStore.getState().addNodes(nodes);
+  },
+
   remove: (id: string) => {
     useDesignerStore.getState().removeNode(id);
   },
 
-  update: (id: string, nodeData: Partial<Node>) => {
-    useDesignerStore.getState().updateNode(id, nodeData);
+  removeMany: (ids: string[]) => {
+    useDesignerStore.getState().removeNodes(ids);
+  },
+
+  update: (id: string, data: Partial<Node>) => {
+    useDesignerStore.getState().updateNode(id, data);
+  },
+
+  updateMany: (data: Partial<Node>) => {
+    useDesignerStore.getState().updateNodes(data);
   },
 };

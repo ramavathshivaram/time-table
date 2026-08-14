@@ -1,4 +1,5 @@
 import type { Edge } from "@xyflow/react";
+
 import { useDesignerStore } from "../store/designer.store";
 
 export const edgeService = {
@@ -6,7 +7,15 @@ export const edgeService = {
     useDesignerStore.getState().addEdge(edge);
   },
 
+  addMany: (edges: Edge[]) => {
+    useDesignerStore.getState().addEdges(edges);
+  },
+
   remove: (id: string) => {
     useDesignerStore.getState().removeEdge(id);
+  },
+
+  removeMany: (ids: string[]) => {
+    useDesignerStore.getState().removeEdges(ids);
   },
 };

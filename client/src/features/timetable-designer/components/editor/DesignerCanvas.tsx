@@ -1,11 +1,11 @@
 import "@xyflow/react/dist/style.css";
 
-import { useRef } from "react";
 import { Background, ReactFlow } from "@xyflow/react";
 
 import DesignerPanels from "../panels/DesignerPanels";
 
 import { usePreferencesStore } from "@/shared/preferences/preferences.store";
+
 import {
   useDesignerDnD,
   useDesignerInteractions,
@@ -18,9 +18,19 @@ interface Props {
 }
 
 const DesignerCanvas = ({ timetableId }: Props) => {
-  const reactFlowInstanceRef = useRef<unknown>(null);
-  const darkMode = usePreferencesStore((s) => s.darkMode);
-  const interactions = useDesignerInteractions();
+  const darkMode = usePreferencesStore((state) => state.darkMode);
+
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    isValidConnection,
+    onNodeDoubleClick,
+    onConnectEnd,
+  } = useDesignerInteractions();
+
   const { onDragOver, onDrop } = useDesignerDnD();
 
   const nodeTypes = useNodeTypes();
@@ -30,25 +40,22 @@ const DesignerCanvas = ({ timetableId }: Props) => {
     <div className="absolute inset-0">
       <ReactFlow
         key={timetableId}
-        nodes={interactions.nodes}
-        edges={interactions.edges}
+        nodes={nodes}
+        edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodesChange={interactions.onNodesChange}
-        onEdgesChange={interactions.onEdgesChange}
-        onConnect={interactions.onConnect}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        isValidConnection={isValidConnection}
+        onNodeDoubleClick={onNodeDoubleClick}
+        onConnectEnd={onConnectEnd}
         onDragOver={onDragOver}
         onDrop={onDrop}
         colorMode={darkMode ? "dark" : "light"}
         deleteKeyCode={["Delete", "Backspace"]}
         selectionKeyCode={["Shift", "Meta"]}
         multiSelectionKeyCode={["Shift", "Control"]}
-        isValidConnection={interactions.isValidConnection}
-        onNodeDoubleClick={interactions.onNodeDoubleClick}
-        onConnectEnd={interactions.onConnectEnd}
-        onInit={(instance) => {
-          reactFlowInstanceRef.current = instance;
-        }}
         proOptions={{
           hideAttribution: true,
         }}

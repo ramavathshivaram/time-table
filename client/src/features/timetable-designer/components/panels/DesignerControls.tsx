@@ -1,4 +1,5 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
+
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 
@@ -10,27 +11,59 @@ import {
 } from "@/shared/ui/tooltip";
 
 import { cn } from "@/shared/lib/utils";
-import { controls } from "../../constants";
+
+import { designerControls } from "../../constants/designer-controls";
+import { useDesignerControls } from "../../hooks/useDesignerControls";
 
 const iconButtonClass =
   "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
 
 const DesignerControls = () => {
+  const {
+    hasSelection,
+    selectAll,
+    deleteSelected,
+    duplicateSelected,
+    autoArrange,
+    zoomIn,
+    zoomOut,
+    fitView,
+    undo,
+    redo,
+  } = useDesignerControls();
+
+  const actions = {
+    "select-all": selectAll,
+    delete: deleteSelected,
+    duplicate: duplicateSelected,
+    "auto-arrange": autoArrange,
+    "zoom-in": zoomIn,
+    "zoom-out": zoomOut,
+    "fit-view": fitView,
+    undo,
+    redo,
+  };
+
   return (
     <TooltipProvider delay={150}>
       <Card className="relative -top-2 flex items-center border p-1 shadow-md">
         <div className="flex flex-wrap items-center gap-2">
-          {controls.map((control) => {
+          {designerControls.map((control) => {
             const Icon = control.icon;
 
+            const disabled =
+              (control.id === "delete" || control.id === "duplicate") &&
+              !hasSelection;
+
             return (
-              <Tooltip key={control.label}>
+              <Tooltip key={control.id}>
                 <TooltipTrigger>
                   <Button
                     variant="outline"
                     size="icon"
+                    disabled={disabled}
                     className={cn(iconButtonClass, control.className)}
-                    onClick={control.onClick}
+                    onClick={actions[control.id]}
                   >
                     <Icon className="size-4" />
                   </Button>
