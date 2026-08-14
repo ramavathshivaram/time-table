@@ -3,6 +3,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { timetableData } from "../../constants/timetable-data";
 import DesignerCanvas from "./DesignerCanvas";
 import { useDesignerStore } from "../../store/designer.store";
+import Modal from "../modals/Modal";
 
 interface Props {
   timetableId: string;
@@ -20,7 +21,7 @@ const TimetableDesigner = ({ timetableId }: Props) => {
           <DesignerCanvas timetableId={timetableId} />
         </main>
 
-        {/* <Modal /> */}
+        <Modal />
       </div>
     </ReactFlowProvider>
   );

@@ -1,39 +1,38 @@
 import { Handle, Position } from "@xyflow/react";
 import { cn } from "@/shared/lib/utils";
 import { Card } from "@/shared/ui/card";
-import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
+
+import { designerNodes } from "../../constants";
+
+type DesignerNodeType = keyof typeof designerNodes;
 
 interface DesignerNodeProps {
-  icon?: LucideIcon;
-  iconColor?: string;
+  type: DesignerNodeType;
   label?: string;
   subLabel?: string;
   selected?: boolean;
-
   showSource?: boolean;
   showTarget?: boolean;
-
   sourceConnectable?: boolean;
   targetConnectable?: boolean;
-
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 const DesignerNode = ({
-  icon: Icon,
-  iconColor,
+  type,
   label,
   subLabel,
   selected,
-
   showSource = false,
   showTarget = false,
-
   sourceConnectable = true,
   targetConnectable = true,
-
   children,
 }: DesignerNodeProps) => {
+  const config = designerNodes[type];
+  const Icon = config.icon;
+
   return (
     <div className="group relative">
       {showTarget && (
@@ -52,22 +51,18 @@ const DesignerNode = ({
         )}
       >
         <div className="flex items-center gap-2">
-          {Icon && (
-            <div className="flex size-6 shrink-0 items-center justify-center rounded-sm border p-0.5">
-              <Icon className={cn("size-5", iconColor)} />
-            </div>
-          )}
+          <div className="flex size-6 shrink-0 items-center justify-center rounded-sm border p-0.5">
+            <Icon className={cn("size-5", config.color)} />
+          </div>
 
           <div className="flex min-w-0 flex-col">
             <span className="truncate text-sm font-semibold leading-none">
               {label || "Untitled"}
             </span>
 
-            {subLabel && (
-              <span className="text-[10px] text-muted-foreground">
-                {subLabel}
-              </span>
-            )}
+            <span className="text-[10px] text-muted-foreground">
+              {subLabel || config.title}
+            </span>
           </div>
         </div>
 

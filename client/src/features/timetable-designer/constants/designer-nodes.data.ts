@@ -5,6 +5,7 @@ export const designerNodes = {
     title: "Start",
     icon: Play,
     description: "Start timetable configuration",
+
     color: "text-green-500",
     bg: "bg-green-100",
 
@@ -22,6 +23,7 @@ export const designerNodes = {
     title: "Institution",
     icon: School,
     description: "Configure institution details",
+
     color: "text-blue-500",
     bg: "bg-blue-100",
 
@@ -42,6 +44,7 @@ export const designerNodes = {
     title: "Program",
     icon: GitBranch,
     description: "Configure academic program",
+
     color: "text-purple-500",
     bg: "bg-purple-100",
 
@@ -58,10 +61,11 @@ export const designerNodes = {
     },
   },
 
-  academicYear: {
+  "academic-year": {
     title: "Academic Year",
     icon: Calendar,
     description: "Configure academic year",
+
     color: "text-orange-500",
     bg: "bg-orange-100",
 
@@ -80,6 +84,7 @@ export const designerNodes = {
     title: "Section",
     icon: Layers,
     description: "Configure class section",
+
     color: "text-pink-500",
     bg: "bg-pink-100",
 

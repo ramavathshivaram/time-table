@@ -9,9 +9,10 @@ import {
 } from "@/shared/ui/tooltip";
 
 import { designerNodes } from "../../constants";
+import { useDesignerDnD } from "../../hooks";
 
 const NodePalette = () => {
-  const onDragStart = (event, type) => {};
+  const { onDragStart } = useDesignerDnD();
 
   return (
     <TooltipProvider delay={150}>

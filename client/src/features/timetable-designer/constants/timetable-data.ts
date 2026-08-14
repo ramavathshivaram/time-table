@@ -40,7 +40,7 @@ export const timetableData = {
       },
       {
         id: "year-1",
-        type: "academicYear",
+        type: "academic-year",
         position: { x: 100, y: 400 },
         data: {
           label: "3rd Year",

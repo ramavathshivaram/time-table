@@ -47,8 +47,6 @@ export const errorInterceptor = async (
       Token.clearToken();
       useAuthStore.getState().clearAuth();
 
-      toast.error("Session expired. Please login again.");
-
       navigationService.navigate("/login");
 
       return Promise.reject(error);

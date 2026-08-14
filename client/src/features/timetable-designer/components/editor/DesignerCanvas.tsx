@@ -20,15 +20,11 @@ interface Props {
 const DesignerCanvas = ({ timetableId }: Props) => {
   const reactFlowInstanceRef = useRef<unknown>(null);
   const darkMode = usePreferencesStore((s) => s.darkMode);
-
   const interactions = useDesignerInteractions();
   const { onDragOver, onDrop } = useDesignerDnD();
 
   const nodeTypes = useNodeTypes();
   const edgeTypes = useEdgeTypes();
-
-  console.log(interactions.nodes);
-  console.log(interactions.edges);
 
   return (
     <div className="absolute inset-0">

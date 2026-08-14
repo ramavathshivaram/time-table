@@ -12,9 +12,9 @@ export const useNodeTypes = (): NodeTypes => {
     () => ({
       start: StartNode,
       institution: InstitutionNode,
-      section: SectionNode,
       program: ProgramNode,
-      academicYear: AcademicYearNode,
+      "academic-year": AcademicYearNode,
+      section: SectionNode,
     }),
     [],
   );

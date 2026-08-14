@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Layers } from "lucide-react";
 import { useNodeConnections } from "@xyflow/react";
 
 import DesignerNode from "./DesignerNode";
@@ -9,17 +8,13 @@ const SectionNode = ({ data, selected }) => {
     handleType: "target",
   });
 
-  const hasParent = connections.length > 0;
-
   return (
     <DesignerNode
-      icon={Layers}
-      iconColor="text-pink-600"
+      type="section"
       label={data?.label}
-      subLabel="Section"
       selected={selected}
       showTarget
-      targetConnectable={!hasParent}
+      targetConnectable={connections.length === 0}
     />
   );
 };
