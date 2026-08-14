@@ -1,32 +1,43 @@
 import { create } from "zustand";
 
-type ModalData = Node | undefined;
+export type ModalType =
+  | "institution"
+  | "program"
+  | "academic-year"
+  | "section"
+  | "catalog";
+
+export type ModalData = {
+  id?: string;
+  type?: ModalType;
+};
 
 type ModalStore = {
   isOpen: boolean;
+  type: ModalType | null;
   data: ModalData | null;
-  type: string;
 
-  open: (type: string, data: ModalData) => void;
+  open: (type: ModalType, data?: ModalData) => void;
+
   close: () => void;
 };
 
 export const useModalStore = create<ModalStore>((set) => ({
   isOpen: false,
+  type: null,
   data: null,
-  type: "",
 
-  open: (type: string, data: ModalData) =>
+  open: (type, data = {}) =>
     set({
       isOpen: true,
-      data,
       type,
+      data,
     }),
 
   close: () =>
     set({
       isOpen: false,
+      type: null,
       data: null,
-      type: "",
     }),
 }));

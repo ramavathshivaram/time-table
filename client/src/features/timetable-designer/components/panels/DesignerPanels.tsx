@@ -4,6 +4,7 @@ import NodePalette from "./NodePalette";
 import GenerateSchedule from "./GenerateSchedule";
 import DesignerControls from "./DesignerControls";
 import TimetableTitle from "./TimetableTitle";
+import Catalog from "./Catalog";
 
 const DesignerPanels = () => {
   return (
@@ -26,11 +27,11 @@ const DesignerPanels = () => {
 
       {/* <Panel position="bottom-right">
         <AIChatBotWrapper />
-      </Panel>
+      </Panel> */}
 
       <Panel position="bottom-left">
-        <Resources />
-      </Panel> */}
+        <Catalog />
+      </Panel>
     </>
   );
 };

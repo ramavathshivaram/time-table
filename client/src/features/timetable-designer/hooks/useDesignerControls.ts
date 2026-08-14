@@ -4,6 +4,7 @@ import { useReactFlow } from "@xyflow/react";
 import { generateEdgeId, generateNodeId } from "../utils/generate-ids";
 import { nodeService } from "../services/node.service";
 import { edgeService } from "../services/edge.service";
+import useAutoArrange from "./useAutoArrange";
 
 export const useDesignerControls = () => {
   const {
@@ -17,6 +18,12 @@ export const useDesignerControls = () => {
     zoomOut,
     fitView,
   } = useReactFlow();
+
+  const autoArrange = useAutoArrange({
+    getNodes,
+    getEdges,
+    setNodes,
+  });
 
   const selectAll = useCallback(() => {
     setNodes((nodes) =>
@@ -117,8 +124,6 @@ export const useDesignerControls = () => {
       edgeService.addMany(duplicatedEdges);
     }
   }, [getNodes, getEdges, setNodes, addNodes, addEdges]);
-
-  const autoArrange = useCallback(() => {}, []);
 
   const undo = useCallback(() => {
     console.log("Undo");

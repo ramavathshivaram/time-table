@@ -8,6 +8,8 @@ import {
   type NodeChange,
   type NodeMouseHandler,
   type OnConnectEnd,
+  type Dispatch,
+  type SetStateAction,
   type Node as ReactFlowNode,
   type Edge as ReactFlowEdge,
 } from "@xyflow/react";
@@ -23,28 +25,22 @@ import { generateEdgeId, generateNodeId } from "../utils/generate-ids";
 
 import { designerNodes, NODE_HEIGHT, NODE_WIDTH } from "../constants";
 
-import type { Node } from "../types";
+import type { Node, Edge } from "../types";
 
 interface Props {
-  setNodes: (nodes: ReactFlowNode[]) => void;
-  setEdges: (edges: ReactFlowEdge[]) => void;
+  setNodes: Dispatch<SetStateAction<ReactFlowNode[]>>;
+  setEdges: Dispatch<SetStateAction<ReactFlowEdge[]>>[];
 }
 
 export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
-  const {
-    getNodes,
-    getEdges,
-    getNode,
-    addNodes,
-    addEdges,
-    screenToFlowPosition,
-  } = useReactFlow();
+  const { getEdges, getNode, addNodes, addEdges, screenToFlowPosition } =
+    useReactFlow();
 
   const openModal = useModalStore((state) => state.open);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      setNodes((nodes) => applyNodeChanges(changes, nodes));
+      setNodes((nodes: Node[]) => applyNodeChanges(changes, nodes));
 
       for (const change of changes) {
         switch (change.type) {
@@ -76,7 +72,7 @@ export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
 
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
-      setEdges((edges) => applyEdgeChanges(changes, edges));
+      setEdges((edges: Edge[]) => applyEdgeChanges(changes, edges));
 
       for (const change of changes) {
         if (change.type === "remove") {
@@ -193,7 +189,12 @@ export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
         return;
       }
 
-      openModal("node", node);
+      console.log("onNodeDoubleClick", node);
+
+      openModal(node.type as never, {
+        type: node.type as never,
+        id: node.id,
+      });
     },
     [openModal],
   );

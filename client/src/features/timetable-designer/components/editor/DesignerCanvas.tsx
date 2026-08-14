@@ -29,17 +29,10 @@ interface Props {
 const DesignerCanvas = ({ timetableId, initialNodes, initialEdges }: Props) => {
   const darkMode = usePreferencesStore((state) => state.darkMode);
 
-  /*
-   * React Flow owns local canvas state.
-   * Server data is only used as the initial snapshot.
-   */
   const [nodes, setNodes] = useNodesState(initialNodes);
 
   const [edges, setEdges] = useEdgesState(initialEdges);
 
-  /*
-   * Designer interactions
-   */
   const {
     onNodesChange: handleNodesChange,
     onEdgesChange: handleEdgesChange,
@@ -52,14 +45,8 @@ const DesignerCanvas = ({ timetableId, initialNodes, initialEdges }: Props) => {
     setEdges,
   });
 
-  /*
-   * Drag & Drop
-   */
   const { onDragOver, onDrop } = useDesignerDnD();
 
-  /*
-   * React Flow component mappings
-   */
   const nodeTypes = useNodeTypes();
   const edgeTypes = useEdgeTypes();
 

@@ -1,26 +1,20 @@
 import { create } from "zustand";
-import type { Designer, Node } from "../types";
-import type { Edge } from "@xyflow/react";
+import type { Designer, Faculty, Room, Subject, Message } from "../types";
 
 type DesignerState = {
+  faculties: Faculty[];
+  subjects: Subject[];
+  rooms: Room[];
+  messages: Message[];
+
   init: (data: Designer) => void;
 
-  addNode: (node: Node) => void;
-  addNodes: (nodes: Node[]) => void;
-  removeNode: (id: string) => void;
-  removeNodes: (ids: string[]) => void;
-  updateNode: (id: string, nodeData: Partial<Node>) => void;
-  updateNodes: (nodeData: Partial<Node>) => void;
-
-  addEdge: (edge: Edge) => void;
-  addEdges: (edges: Edge[]) => void;
-  removeEdge: (id: string) => void;
-  removeEdges: (ids: string[]) => void;
-} & Designer;
+  setFaculties: (faculties: Faculty[]) => void;
+  setSubjects: (subjects: Subject[]) => void;
+  setRooms: (rooms: Room[]) => void;
+};
 
 export const useDesignerStore = create<DesignerState>((set) => ({
-  nodes: [],
-  edges: [],
   faculties: [],
   subjects: [],
   rooms: [],
@@ -28,75 +22,14 @@ export const useDesignerStore = create<DesignerState>((set) => ({
 
   init: (data) =>
     set({
-      nodes: data.nodes,
-      edges: data.edges,
+      faculties: data.faculties,
+      subjects: data.subjects,
+      rooms: data.rooms,
     }),
 
-  // ---------------- Nodes ----------------
+  setFaculties: (faculties) => set({ faculties }),
 
-  addNode: (node) =>
-    set((state) => ({
-      nodes: [...state.nodes, node],
-    })),
+  setSubjects: (subjects) => set({ subjects }),
 
-  addNodes: (nodes) =>
-    set((state) => ({
-      nodes: [...state.nodes, ...nodes],
-    })),
-
-  removeNode: (id) =>
-    set((state) => ({
-      nodes: state.nodes.filter((node) => node.id !== id),
-    })),
-
-  removeNodes: (ids) => {
-    const idSet = new Set(ids);
-
-    set((state) => ({
-      nodes: state.nodes.filter((node) => !idSet.has(node.id)),
-      edges: state.edges.filter(
-        (edge) => !idSet.has(edge.source) && !idSet.has(edge.target),
-      ),
-    }));
-  },
-
-  updateNode: (id, nodeData) =>
-    set((state) => ({
-      nodes: state.nodes.map((node) =>
-        node.id === id ? { ...node, ...nodeData } : node,
-      ),
-    })),
-
-  updateNodes: (nodeData) =>
-    set((state) => ({
-      nodes: state.nodes.map((node) => ({
-        ...node,
-        ...nodeData,
-      })),
-    })),
-
-  // ---------------- Edges ----------------
-
-  addEdge: (edge) =>
-    set((state) => ({
-      edges: [...state.edges, edge],
-    })),
-
-  addEdges: (edges) =>
-    set((state) => ({
-      edges: [...state.edges, ...edges],
-    })),
-
-  removeEdge: (id) =>
-    set((state) => ({
-      edges: state.edges.filter((edge) => edge.id !== id),
-    })),
-
-  removeEdges: (ids) => {
-    const idSet = new Set(ids);
-
-    set((state) => ({
-      edges: state.edges.filter((edge) => !idSet.has(edge.id)),
-    }));
-  },
+  setRooms: (rooms) => set({ rooms }),
 }));

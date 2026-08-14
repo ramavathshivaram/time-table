@@ -58,7 +58,7 @@ const DesignerControls = () => {
             return (
               <Tooltip key={control.id}>
                 <TooltipTrigger>
-                  <Button
+                  <div
                     variant="outline"
                     size="icon"
                     disabled={disabled}
@@ -66,7 +66,7 @@ const DesignerControls = () => {
                     onClick={actions[control.id]}
                   >
                     <Icon className="size-4" />
-                  </Button>
+                  </div>
                 </TooltipTrigger>
 
                 <TooltipContent side="bottom">{control.label}</TooltipContent>

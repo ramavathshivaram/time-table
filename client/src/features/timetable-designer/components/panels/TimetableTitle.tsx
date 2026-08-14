@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
 const TimetableTitle = () => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("timetable 1");
   const [isEditing, setIsEditing] = useState(false);
 
   return isEditing ? (

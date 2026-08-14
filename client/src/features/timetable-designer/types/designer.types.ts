@@ -23,22 +23,42 @@ export type Edge = {
   type?: string;
 };
 
-export type Faculties = {
+export interface Faculty {
   id: string;
-};
-export type Subjects = {
+  name: string;
+  email: string;
+  subjects: string[];
+}
+
+export interface Subject {
   id: string;
-};
-export type Rooms = {
+  name: string;
+  code: string;
+  duration: number;
+  credits: number;
+  isLab: boolean;
+}
+
+export interface Room {
   id: string;
-};
-export type Messages = {
+  name: string;
+  roomNumber: string;
+  capacity: number;
+  floor: number;
+  isLab: boolean;
+}
+
+export interface Message {
   id: string;
-};
+  role: "system" | "user" | "assistant";
+  content: string;
+  createdAt: string;
+}
 
 export type Designer = {
-  nodes: Node[];
-  edges: Edge[];
+  faculties: Faculty[];
+  subjects: Subject[];
+  rooms: Room[];
 };
 
 export type Interactions = {
