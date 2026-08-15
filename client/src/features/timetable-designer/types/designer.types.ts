@@ -27,25 +27,72 @@ export interface Faculty {
   id: string;
   name: string;
   email: string;
-  subjects: string[];
+
+  employeeId?: string;
+  department?: string;
+  designation?: string;
+
+  subjectIds: string[];
+
+  availability?: {
+    workingDays: string[];
+    startTime: string;
+    endTime: string;
+
+    unavailableSlots: {
+      day: string;
+      startTime: string;
+      endTime: string;
+    }[];
+  };
 }
 
 export interface Subject {
   id: string;
   name: string;
   code: string;
+
   duration: number;
   credits: number;
+
   isLab: boolean;
+
+  weeklyPeriods: number;
+  periodsPerDay?: number;
+  consecutivePeriods?: number;
+
+  facultyIds: string[];
+
+  roomRequirements?: {
+    type: "classroom" | "laboratory" | "seminar-hall";
+    minimumCapacity?: number;
+    facilities: string[];
+  };
 }
 
 export interface Room {
   id: string;
   name: string;
   roomNumber: string;
+
   capacity: number;
   floor: number;
+
   isLab: boolean;
+
+  facilities: string[];
+
+  availability?: {
+    workingDays: string[];
+    startTime: string;
+    endTime: string;
+
+    unavailableSlots: {
+      day: string;
+      startTime: string;
+      endTime: string;
+    }[];
+  };
 }
 
 export interface Message {

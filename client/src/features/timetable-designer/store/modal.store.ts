@@ -5,7 +5,10 @@ export type ModalType =
   | "program"
   | "academic-year"
   | "section"
-  | "catalog";
+  | "catalog"
+  | "faculties"
+  | "subjects"
+  | "rooms";
 
 export type ModalData = {
   id?: string;

@@ -8,7 +8,6 @@ const InstitutionNode = ({ data, isConnectable, selected }) => {
       type="institution"
       label={data?.label}
       selected={selected}
-      showTarget
       showSource
       sourceConnectable={isConnectable}
     />

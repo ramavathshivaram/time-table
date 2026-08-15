@@ -14,7 +14,7 @@ type DesignerState = {
   setRooms: (rooms: Room[]) => void;
 };
 
-export const useDesignerStore = create<DesignerState>((set) => ({
+export const useDesignerStore = create<DesignerState>((set, get) => ({
   faculties: [],
   subjects: [],
   rooms: [],

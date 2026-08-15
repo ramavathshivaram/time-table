@@ -15,15 +15,6 @@ export const timetableData = {
   blueprint: {
     nodes: [
       {
-        id: "start-1",
-        type: "start",
-        position: { x: 100, y: 100 },
-        data: {
-          label: "Start",
-        },
-      },
-
-      {
         id: "institution-1",
         type: "institution",
         position: { x: 100, y: 220 },
@@ -182,13 +173,6 @@ export const timetableData = {
     ],
 
     edges: [
-      {
-        id: "edge-start-institution",
-        source: "start-1",
-        target: "institution-1",
-        type: "bezier",
-      },
-
       {
         id: "edge-institution-cse",
         source: "institution-1",
@@ -564,6 +548,20 @@ export const timetableData = {
       capacity: 65,
       floor: 1,
       isLab: false,
+      facilities: ["projector", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-2",
@@ -572,6 +570,20 @@ export const timetableData = {
       capacity: 65,
       floor: 1,
       isLab: false,
+      facilities: ["projector", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-3",
@@ -580,6 +592,20 @@ export const timetableData = {
       capacity: 70,
       floor: 1,
       isLab: false,
+      facilities: ["projector", "smart-board", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-4",
@@ -588,6 +614,20 @@ export const timetableData = {
       capacity: 70,
       floor: 1,
       isLab: false,
+      facilities: ["projector", "smart-board", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-5",
@@ -596,6 +636,20 @@ export const timetableData = {
       capacity: 60,
       floor: 2,
       isLab: false,
+      facilities: ["projector", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-6",
@@ -604,6 +658,20 @@ export const timetableData = {
       capacity: 60,
       floor: 2,
       isLab: false,
+      facilities: ["projector", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-7",
@@ -612,6 +680,20 @@ export const timetableData = {
       capacity: 65,
       floor: 2,
       isLab: false,
+      facilities: ["projector", "whiteboard", "wifi"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "room-8",
@@ -620,7 +702,29 @@ export const timetableData = {
       capacity: 120,
       floor: 2,
       isLab: false,
+      facilities: [
+        "projector",
+        "smart-board",
+        "microphone",
+        "audio-system",
+        "wifi",
+      ],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
+
+    // Labs
     {
       id: "lab-1",
       name: "DBMS Laboratory",
@@ -628,6 +732,20 @@ export const timetableData = {
       capacity: 60,
       floor: 1,
       isLab: true,
+      facilities: ["computers", "projector", "whiteboard", "wifi", "internet"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "lab-2",
@@ -636,6 +754,27 @@ export const timetableData = {
       capacity: 60,
       floor: 1,
       isLab: true,
+      facilities: [
+        "computers",
+        "gpu",
+        "projector",
+        "whiteboard",
+        "wifi",
+        "internet",
+      ],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "lab-3",
@@ -644,6 +783,27 @@ export const timetableData = {
       capacity: 60,
       floor: 2,
       isLab: true,
+      facilities: [
+        "computers",
+        "network-switches",
+        "routers",
+        "projector",
+        "wifi",
+        "internet",
+      ],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "lab-4",
@@ -652,6 +812,20 @@ export const timetableData = {
       capacity: 60,
       floor: 2,
       isLab: true,
+      facilities: ["computers", "projector", "whiteboard", "wifi", "internet"],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "lab-5",
@@ -660,6 +834,27 @@ export const timetableData = {
       capacity: 60,
       floor: 3,
       isLab: true,
+      facilities: [
+        "computers",
+        "projector",
+        "whiteboard",
+        "wifi",
+        "internet",
+        "cloud-access",
+      ],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "lab-6",
@@ -668,6 +863,27 @@ export const timetableData = {
       capacity: 60,
       floor: 3,
       isLab: true,
+      facilities: [
+        "computers",
+        "gpu",
+        "projector",
+        "whiteboard",
+        "wifi",
+        "internet",
+      ],
+      availability: {
+        workingDays: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
   ],
 

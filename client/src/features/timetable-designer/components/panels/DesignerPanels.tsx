@@ -1,10 +1,9 @@
 import { Panel } from "@xyflow/react";
 import React, { memo } from "react";
-import NodePalette from "./NodePalette";
 import GenerateSchedule from "./GenerateSchedule";
 import DesignerControls from "./DesignerControls";
 import TimetableTitle from "./TimetableTitle";
-import Catalog from "./Catalog";
+import DesignerPalette from "./DesignerPalette";
 
 const DesignerPanels = () => {
   return (
@@ -22,16 +21,12 @@ const DesignerPanels = () => {
       </Panel>
 
       <Panel position="top-left">
-        <NodePalette />
+        <DesignerPalette />
       </Panel>
 
       {/* <Panel position="bottom-right">
         <AIChatBotWrapper />
       </Panel> */}
-
-      <Panel position="bottom-left">
-        <Catalog />
-      </Panel>
     </>
   );
 };

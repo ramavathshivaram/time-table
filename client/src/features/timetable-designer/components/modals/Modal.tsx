@@ -4,11 +4,13 @@ import { Dialog, DialogContent } from "@/shared/ui/dialog";
 
 import { useModalStore } from "../../store/modal.store";
 
-import Catalog from "../catalog/Catalog";
 import InstitutionModal from "./InstitutionModal";
 import ProgramModal from "./ProgramModal";
 import AcademicYearModal from "./AcademicYearModal";
 import SectionModal from "./SectionModal";
+import Faculties from "./Faculties";
+import Subjects from "./Subjects";
+import Rooms from "./Rooms";
 
 const Modal = () => {
   const isOpen = useModalStore((s) => s.isOpen);
@@ -21,7 +23,10 @@ const Modal = () => {
     program: <ProgramModal data={data} />,
     "academic-year": <AcademicYearModal data={data} />,
     section: <SectionModal data={data} />,
-    catalog: <Catalog />,
+    faculties: <Faculties />,
+    subjects: <Subjects />,
+    rooms: <Rooms />,
+    default: null,
   };
 
   return (
@@ -33,8 +38,10 @@ const Modal = () => {
         }
       }}
     >
-      <DialogContent className="sm:max-w-md">
-        {type && modalContent[type]}
+      <DialogContent className="w-[95vw] max-w-2xl max-h-[85vh] max-h-4xl overflow-hidden px-2 py-5">
+        <div className="flex max-h-[85vh] flex-col">
+          {type && modalContent[type]}
+        </div>
       </DialogContent>
     </Dialog>
   );

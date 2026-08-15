@@ -1,24 +1,14 @@
-import { Play, School, GitBranch, Calendar, Layers } from "lucide-react";
+import {
+  School,
+  GitBranch,
+  Calendar,
+  Layers,
+  BookOpen,
+  DoorOpen,
+  Users,
+} from "lucide-react";
 
 export const designerNodes = {
-  start: {
-    title: "Start",
-    icon: Play,
-    description: "Start timetable configuration",
-
-    color: "text-green-500",
-    bg: "bg-green-100",
-
-    allowedParent: null,
-    allowedChildren: ["institution"],
-
-    modal: null,
-
-    defaultData: {
-      label: "Start",
-    },
-  },
-
   institution: {
     title: "Institution",
     icon: School,
@@ -27,7 +17,7 @@ export const designerNodes = {
     color: "text-blue-500",
     bg: "bg-blue-100",
 
-    allowedParent: "start",
+    allowedParent: null,
     allowedChildren: ["program"],
 
     modal: "institution",
@@ -99,3 +89,24 @@ export const designerNodes = {
     },
   },
 } as const;
+
+export const catalogItems = [
+  {
+    type: "faculties",
+    title: "Faculties",
+    icon: Users,
+    color: "text-blue-500",
+  },
+  {
+    type: "subjects",
+    title: "Subjects",
+    icon: BookOpen,
+    color: "text-purple-500",
+  },
+  {
+    type: "rooms",
+    title: "Rooms",
+    icon: DoorOpen,
+    color: "text-orange-500",
+  },
+];
