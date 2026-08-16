@@ -17,38 +17,40 @@ type SubjectFormData = {
   name: string;
   code: string;
   duration: number;
-  credits: number;
   isLab: boolean;
   weeklyPeriods: number;
   periodsPerDay: number;
   consecutivePeriods: number;
+  roomType: "classroom" | "laboratory" | "seminar-hall";
+  minimumCapacity: number;
 };
 
-const EditSubjectForm = ({
-  subjectId,
-  onCancel,
-  onSave,
-}: Props) => {
-  const subject =
-    subjectService.getById(subjectId);
+const EditSubjectForm = ({ subjectId, onCancel, onSave }: Props) => {
+  const subject = subjectService.getById(subjectId);
 
-  const { register, handleSubmit } =
-    useForm<SubjectFormData>({
-      defaultValues: subject
-        ? {
-            name: subject.name,
-            code: subject.code,
-            duration: subject.duration,
-            credits: subject.credits,
-            isLab: subject.isLab,
-            weeklyPeriods: subject.weeklyPeriods,
-            periodsPerDay:
-              subject.periodsPerDay ?? 1,
-            consecutivePeriods:
-              subject.consecutivePeriods ?? 1,
-          }
-        : undefined,
-    });
+  const { register, handleSubmit } = useForm<SubjectFormData>({
+    defaultValues: subject
+      ? {
+          name: subject.name,
+          code: subject.code,
+          duration: subject.duration,
+
+          isLab: subject.labDetails.isLab,
+
+          weeklyPeriods: subject.weeklyPeriods,
+
+          periodsPerDay: subject.periodsPerDay ?? 1,
+
+          consecutivePeriods: subject.consecutivePeriods ?? 1,
+
+          roomType:
+            subject.roomRequirements?.type ??
+            (subject.labDetails.isLab ? "laboratory" : "classroom"),
+
+          minimumCapacity: subject.roomRequirements?.minimumCapacity ?? 60,
+        }
+      : undefined,
+  });
 
   if (!subject) {
     return null;
@@ -64,22 +66,23 @@ const EditSubjectForm = ({
 
       duration: data.duration,
 
-      credits: data.credits,
+      labDetails: {
+        isLab: data.isLab,
 
-      isLab: data.isLab,
+        ...(data.isLab && {
+          weeklyPeriods: data.weeklyPeriods,
+        }),
+      },
 
       weeklyPeriods: data.weeklyPeriods,
 
       periodsPerDay: data.periodsPerDay,
 
-      consecutivePeriods:
-        data.consecutivePeriods,
+      consecutivePeriods: data.consecutivePeriods,
 
       roomRequirements: {
-        ...subject.roomRequirements,
-        type: data.isLab
-          ? "laboratory"
-          : "classroom",
+        type: data.roomType,
+        minimumCapacity: data.minimumCapacity,
       },
     });
 
@@ -87,48 +90,42 @@ const EditSubjectForm = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="p-3"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="p-3">
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-semibold">
-            Edit Subject
-          </h3>
+          <h3 className="text-sm font-semibold">Edit Subject</h3>
 
           <p className="text-[11px] text-muted-foreground">
             Update subject configuration.
           </p>
         </div>
 
+        {/* Subject Name */}
         <div className="space-y-1.5">
-          <Label htmlFor="edit-subject-name">
-            Subject Name
-          </Label>
+          <Label htmlFor="edit-subject-name">Subject Name</Label>
 
           <Input
             id="edit-subject-name"
+            placeholder="e.g. Database Management Systems"
             {...register("name")}
           />
         </div>
 
+        {/* Subject Code */}
         <div className="space-y-1.5">
-          <Label htmlFor="edit-subject-code">
-            Subject Code
-          </Label>
+          <Label htmlFor="edit-subject-code">Subject Code</Label>
 
           <Input
             id="edit-subject-code"
+            placeholder="e.g. CS301"
             {...register("code")}
           />
         </div>
 
+        {/* Duration + Capacity */}
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label htmlFor="edit-duration">
-              Duration (minutes)
-            </Label>
+            <Label htmlFor="edit-duration">Duration (minutes)</Label>
 
             <Input
               id="edit-duration"
@@ -141,26 +138,23 @@ const EditSubjectForm = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="edit-credits">
-              Credits
-            </Label>
+            <Label htmlFor="edit-minimum-capacity">Minimum Capacity</Label>
 
             <Input
-              id="edit-credits"
+              id="edit-minimum-capacity"
               type="number"
-              min={0}
-              {...register("credits", {
+              min={1}
+              {...register("minimumCapacity", {
                 valueAsNumber: true,
               })}
             />
           </div>
         </div>
 
+        {/* Weekly + Daily */}
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label htmlFor="edit-weekly-periods">
-              Weekly Periods
-            </Label>
+            <Label htmlFor="edit-weekly-periods">Weekly Periods</Label>
 
             <Input
               id="edit-weekly-periods"
@@ -173,9 +167,7 @@ const EditSubjectForm = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="edit-periods-per-day">
-              Periods / Day
-            </Label>
+            <Label htmlFor="edit-periods-per-day">Periods / Day</Label>
 
             <Input
               id="edit-periods-per-day"
@@ -188,10 +180,9 @@ const EditSubjectForm = ({
           </div>
         </div>
 
+        {/* Consecutive */}
         <div className="space-y-1.5">
-          <Label htmlFor="edit-consecutive-periods">
-            Consecutive Periods
-          </Label>
+          <Label htmlFor="edit-consecutive-periods">Consecutive Periods</Label>
 
           <Input
             id="edit-consecutive-periods"
@@ -203,6 +194,24 @@ const EditSubjectForm = ({
           />
         </div>
 
+        {/* Room Type */}
+        <div className="space-y-1.5">
+          <Label htmlFor="edit-room-type">Required Room Type</Label>
+
+          <select
+            id="edit-room-type"
+            {...register("roomType")}
+            className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+          >
+            <option value="classroom">Classroom</option>
+
+            <option value="laboratory">Laboratory</option>
+
+            <option value="seminar-hall">Seminar Hall</option>
+          </select>
+        </div>
+
+        {/* Lab */}
         <div className="flex items-center gap-2">
           <input
             id="edit-is-lab"
@@ -211,21 +220,14 @@ const EditSubjectForm = ({
             className="size-4 rounded border"
           />
 
-          <Label
-            htmlFor="edit-is-lab"
-            className="cursor-pointer text-sm"
-          >
+          <Label htmlFor="edit-is-lab" className="cursor-pointer text-sm">
             Laboratory Subject
           </Label>
         </div>
 
+        {/* Actions */}
         <div className="flex justify-end gap-2 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onCancel}
-          >
+          <Button type="button" variant="outline" size="sm" onClick={onCancel}>
             Cancel
           </Button>
 

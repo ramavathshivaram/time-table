@@ -28,16 +28,12 @@ export interface Faculty {
   name: string;
   email: string;
 
-  employeeId?: string;
   department?: string;
-  designation?: string;
 
   subjectIds: string[];
 
   availability?: {
     workingDays: string[];
-    startTime: string;
-    endTime: string;
 
     unavailableSlots: {
       day: string;
@@ -53,20 +49,19 @@ export interface Subject {
   code: string;
 
   duration: number;
-  credits: number;
 
-  isLab: boolean;
+  labDetails: {
+    isLab: boolean;
+    weeklyPeriods?: number;
+  };
 
   weeklyPeriods: number;
   periodsPerDay?: number;
   consecutivePeriods?: number;
 
-  facultyIds: string[];
-
   roomRequirements?: {
     type: "classroom" | "laboratory" | "seminar-hall";
     minimumCapacity?: number;
-    facilities: string[];
   };
 }
 
@@ -78,21 +73,7 @@ export interface Room {
   capacity: number;
   floor: number;
 
-  isLab: boolean;
-
-  facilities: string[];
-
-  availability?: {
-    workingDays: string[];
-    startTime: string;
-    endTime: string;
-
-    unavailableSlots: {
-      day: string;
-      startTime: string;
-      endTime: string;
-    }[];
-  };
+  type: "classroom" | "laboratory" | "seminar-hall";
 }
 
 export interface Message {

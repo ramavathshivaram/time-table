@@ -20,7 +20,7 @@ type RoomFormData = {
   roomNumber: string;
   capacity: number;
   floor: number;
-  isLab: boolean;
+  type: Room["type"];
 };
 
 const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
@@ -33,7 +33,7 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
           roomNumber: room.roomNumber,
           capacity: room.capacity,
           floor: room.floor,
-          isLab: room.isLab,
+          type: room.type,
         }
       : undefined,
   });
@@ -49,7 +49,7 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
       roomNumber: data.roomNumber.trim(),
       capacity: data.capacity,
       floor: data.floor,
-      isLab: data.isLab,
+      type: data.type,
     };
 
     roomService.update(roomId, updatedRoom);
@@ -64,7 +64,7 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
           <h3 className="text-sm font-semibold">Edit Room</h3>
 
           <p className="text-[11px] text-muted-foreground">
-            Update classroom or laboratory details.
+            Update room details.
           </p>
         </div>
 
@@ -116,17 +116,18 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            id="room-is-lab"
-            type="checkbox"
-            {...register("isLab")}
-            className="size-4 rounded border"
-          />
+        <div className="space-y-1.5">
+          <Label htmlFor="room-type">Room Type</Label>
 
-          <Label htmlFor="room-is-lab" className="cursor-pointer text-sm">
-            Laboratory
-          </Label>
+          <select
+            id="room-type"
+            {...register("type")}
+            className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+          >
+            <option value="classroom">Classroom</option>
+            <option value="laboratory">Laboratory</option>
+            <option value="seminar-hall">Seminar Hall</option>
+          </select>
         </div>
 
         <div className="flex justify-end gap-2 pt-2">

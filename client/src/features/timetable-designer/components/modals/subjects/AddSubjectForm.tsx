@@ -16,30 +16,28 @@ type SubjectFormData = {
   name: string;
   code: string;
   duration: number;
-  credits: number;
   isLab: boolean;
   weeklyPeriods: number;
   periodsPerDay: number;
   consecutivePeriods: number;
+  roomType: "classroom" | "laboratory" | "seminar-hall";
+  minimumCapacity: number;
 };
 
-const AddSubjectForm = ({
-  onSave,
-  onCancel,
-}: Props) => {
-  const { register, handleSubmit } =
-    useForm<SubjectFormData>({
-      defaultValues: {
-        name: "",
-        code: "",
-        duration: 60,
-        credits: 3,
-        isLab: false,
-        weeklyPeriods: 4,
-        periodsPerDay: 1,
-        consecutivePeriods: 1,
-      },
-    });
+const AddSubjectForm = ({ onSave, onCancel }: Props) => {
+  const { register, handleSubmit } = useForm<SubjectFormData>({
+    defaultValues: {
+      name: "",
+      code: "",
+      duration: 60,
+      isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      roomType: "classroom",
+      minimumCapacity: 60,
+    },
+  });
 
   const onSubmit = (data: SubjectFormData) => {
     const subject: Subject = {
@@ -51,9 +49,12 @@ const AddSubjectForm = ({
 
       duration: data.duration,
 
-      credits: data.credits,
-
-      isLab: data.isLab,
+      labDetails: {
+        isLab: data.isLab,
+        ...(data.isLab && {
+          weeklyPeriods: data.weeklyPeriods,
+        }),
+      },
 
       weeklyPeriods: data.weeklyPeriods,
 
@@ -61,13 +62,9 @@ const AddSubjectForm = ({
 
       consecutivePeriods: data.consecutivePeriods,
 
-      facultyIds: [],
-
       roomRequirements: {
-        type: data.isLab
-          ? "laboratory"
-          : "classroom",
-        facilities: [],
+        type: data.roomType,
+        minimumCapacity: data.minimumCapacity,
       },
     };
 
@@ -77,15 +74,10 @@ const AddSubjectForm = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="p-3"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="p-3">
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-semibold">
-            Add Subject
-          </h3>
+          <h3 className="text-sm font-semibold">Add Subject</h3>
 
           <p className="text-[11px] text-muted-foreground">
             Create a theory subject or laboratory.
@@ -93,9 +85,7 @@ const AddSubjectForm = ({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="subject-name">
-            Subject Name
-          </Label>
+          <Label htmlFor="subject-name">Subject Name</Label>
 
           <Input
             id="subject-name"
@@ -105,9 +95,7 @@ const AddSubjectForm = ({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="subject-code">
-            Subject Code
-          </Label>
+          <Label htmlFor="subject-code">Subject Code</Label>
 
           <Input
             id="subject-code"
@@ -118,9 +106,7 @@ const AddSubjectForm = ({
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label htmlFor="subject-duration">
-              Duration (minutes)
-            </Label>
+            <Label htmlFor="subject-duration">Duration (minutes)</Label>
 
             <Input
               id="subject-duration"
@@ -133,15 +119,13 @@ const AddSubjectForm = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="subject-credits">
-              Credits
-            </Label>
+            <Label htmlFor="minimum-capacity">Minimum Capacity</Label>
 
             <Input
-              id="subject-credits"
+              id="minimum-capacity"
               type="number"
-              min={0}
-              {...register("credits", {
+              min={1}
+              {...register("minimumCapacity", {
                 valueAsNumber: true,
               })}
             />
@@ -150,9 +134,7 @@ const AddSubjectForm = ({
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label htmlFor="weekly-periods">
-              Weekly Periods
-            </Label>
+            <Label htmlFor="weekly-periods">Weekly Periods</Label>
 
             <Input
               id="weekly-periods"
@@ -165,9 +147,7 @@ const AddSubjectForm = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="periods-per-day">
-              Periods / Day
-            </Label>
+            <Label htmlFor="periods-per-day">Periods / Day</Label>
 
             <Input
               id="periods-per-day"
@@ -181,9 +161,7 @@ const AddSubjectForm = ({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="consecutive-periods">
-            Consecutive Periods
-          </Label>
+          <Label htmlFor="consecutive-periods">Consecutive Periods</Label>
 
           <Input
             id="consecutive-periods"
@@ -195,6 +173,20 @@ const AddSubjectForm = ({
           />
         </div>
 
+        <div className="space-y-1.5">
+          <Label htmlFor="room-type">Required Room Type</Label>
+
+          <select
+            id="room-type"
+            {...register("roomType")}
+            className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+          >
+            <option value="classroom">Classroom</option>
+            <option value="laboratory">Laboratory</option>
+            <option value="seminar-hall">Seminar Hall</option>
+          </select>
+        </div>
+
         <div className="flex items-center gap-2">
           <input
             id="subject-is-lab"
@@ -203,21 +195,13 @@ const AddSubjectForm = ({
             className="size-4 rounded border"
           />
 
-          <Label
-            htmlFor="subject-is-lab"
-            className="cursor-pointer text-sm"
-          >
+          <Label htmlFor="subject-is-lab" className="cursor-pointer text-sm">
             Laboratory Subject
           </Label>
         </div>
 
         <div className="flex justify-end gap-2 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onCancel}
-          >
+          <Button type="button" variant="outline" size="sm" onClick={onCancel}>
             Cancel
           </Button>
 

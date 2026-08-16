@@ -17,7 +17,7 @@ type RoomFormData = {
   roomNumber: string;
   capacity: number;
   floor: number;
-  isLab: boolean;
+  type: Room["type"];
 };
 
 const AddRoomForm = ({ onSave, onCancel }: Props) => {
@@ -27,7 +27,7 @@ const AddRoomForm = ({ onSave, onCancel }: Props) => {
       roomNumber: "",
       capacity: 60,
       floor: 1,
-      isLab: false,
+      type: "classroom",
     },
   });
 
@@ -38,21 +38,7 @@ const AddRoomForm = ({ onSave, onCancel }: Props) => {
       roomNumber: data.roomNumber.trim(),
       capacity: data.capacity,
       floor: data.floor,
-      isLab: data.isLab,
-      facilities: [],
-      availability: {
-        workingDays: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        startTime: "09:00",
-        endTime: "16:30",
-        unavailableSlots: [],
-      },
+      type: data.type,
     };
 
     roomService.add(room);
@@ -66,7 +52,7 @@ const AddRoomForm = ({ onSave, onCancel }: Props) => {
           <h3 className="text-sm font-semibold">Add Room</h3>
 
           <p className="text-[11px] text-muted-foreground">
-            Create a classroom or laboratory.
+            Create a classroom, laboratory, or seminar hall.
           </p>
         </div>
 
@@ -118,17 +104,18 @@ const AddRoomForm = ({ onSave, onCancel }: Props) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            id="isLab"
-            type="checkbox"
-            {...register("isLab")}
-            className="size-4 rounded border"
-          />
+        <div className="space-y-1.5">
+          <Label htmlFor="type">Room Type</Label>
 
-          <Label htmlFor="isLab" className="cursor-pointer text-sm">
-            Laboratory
-          </Label>
+          <select
+            id="type"
+            {...register("type")}
+            className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+          >
+            <option value="classroom">Classroom</option>
+            <option value="laboratory">Laboratory</option>
+            <option value="seminar-hall">Seminar Hall</option>
+          </select>
         </div>
 
         <div className="flex justify-end gap-2 pt-2">

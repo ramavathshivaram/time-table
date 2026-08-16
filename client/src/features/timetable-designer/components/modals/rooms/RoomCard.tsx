@@ -1,11 +1,11 @@
 import { memo } from "react";
 import {
   ChevronRight,
-  Clock3,
   DoorOpen,
   FlaskConical,
   Layers3,
   MoreHorizontal,
+  Presentation,
   Users,
 } from "lucide-react";
 
@@ -20,74 +20,77 @@ interface Props {
 }
 
 const RoomCard = ({ room, onEdit }: Props) => {
-  const handleDelete = async (roomId: Room["id"]) => {
+  const handleDelete = async (roomId: string) => {
     await roomService.remove(roomId);
   };
+
+  const config = {
+    classroom: {
+      label: "Classroom",
+      icon: DoorOpen,
+      iconClass: "text-blue-500 bg-blue-500/10",
+      badgeClass: "text-blue-500 bg-blue-500/10",
+    },
+    laboratory: {
+      label: "Laboratory",
+      icon: FlaskConical,
+      iconClass: "text-violet-500 bg-violet-500/10",
+      badgeClass: "text-violet-500 bg-violet-500/10",
+    },
+    "seminar-hall": {
+      label: "Seminar Hall",
+      icon: Presentation,
+      iconClass: "text-orange-500 bg-orange-500/10",
+      badgeClass: "text-orange-500 bg-orange-500/10",
+    },
+  }[room.type];
+
+  const Icon = config.icon;
 
   return (
     <div
       onClick={() => onEdit(room.id)}
-      className="group relative flex cursor-pointer items-center gap-3 rounded-md border px-2.5 py-2 transition-colors hover:border-border hover:bg-muted/40"
+      className="group flex cursor-pointer items-center gap-3 rounded-lg border bg-background px-3 py-2.5 transition-all hover:border-muted-foreground/30 hover:bg-muted/30 hover:shadow-sm"
     >
       <div
-        className={`flex size-8 shrink-0 items-center justify-center rounded-md ${
-          room.isLab
-            ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
-            : "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-        }`}
+        className={`flex size-9 shrink-0 items-center justify-center rounded-md ${config.iconClass}`}
       >
-        {room.isLab ? <FlaskConical size={15} /> : <DoorOpen size={15} />}
+        <Icon className="size-4" />
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate text-xs font-medium">{room.name}</p>
+          <p className="truncate text-xs font-semibold">{room.name}</p>
 
           <span
-            className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-medium ${
-              room.isLab
-                ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
-                : "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-            }`}
+            className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${config.badgeClass}`}
           >
-            {room.isLab ? "LAB" : "ROOM"}
+            {room.type === "laboratory"
+              ? "LAB"
+              : room.type === "seminar-hall"
+                ? "HALL"
+                : "ROOM"}
           </span>
         </div>
 
-        <div className="mt-1 flex items-center gap-2 text-[10px] text-muted-foreground">
-          <span>{room.roomNumber || "No number"}</span>
-
-          <span className="text-border">•</span>
+        <div className="mt-1.5 flex items-center gap-3 text-[10px] text-muted-foreground">
+          <span className="font-medium text-foreground/70">
+            {room.roomNumber || "No number"}
+          </span>
 
           <span className="flex items-center gap-1">
-            <Users size={10} />
+            <Users className="size-3" />
             {room.capacity}
           </span>
 
-          <span className="text-border">•</span>
-
           <span className="flex items-center gap-1">
-            <Layers3 size={10} />F{room.floor}
+            <Layers3 className="size-3" />
+            Floor {room.floor}
           </span>
-        </div>
-
-        <div className="mt-1.5 flex items-center gap-2">
-          {room.facilities.length > 0 && (
-            <span className="text-[9px] text-muted-foreground">
-              {room.facilities.length} facilities
-            </span>
-          )}
-
-          {room.availability && (
-            <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
-              <Clock3 size={9} />
-              {room.availability.startTime}–{room.availability.endTime}
-            </span>
-          )}
         </div>
       </div>
 
-      <div className="flex items-center gap-0.5">
+      <div className="flex shrink-0 items-center">
         <Button
           variant="ghost"
           size="icon"
@@ -97,13 +100,10 @@ const RoomCard = ({ room, onEdit }: Props) => {
             handleDelete(room.id);
           }}
         >
-          <MoreHorizontal size={14} />
+          <MoreHorizontal className="size-3.5" />
         </Button>
 
-        <ChevronRight
-          size={14}
-          className="text-muted-foreground/50 transition-transform group-hover:translate-x-0.5"
-        />
+        <ChevronRight className="size-4 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5" />
       </div>
     </div>
   );

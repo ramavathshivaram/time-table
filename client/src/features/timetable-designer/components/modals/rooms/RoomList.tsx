@@ -1,31 +1,32 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 
 import RoomCard from "./RoomCard";
 
 import { roomService } from "@/features/timetable-designer/services/room.service";
 import { Input } from "@/shared/ui/input";
 
-type props = {
-  onEdit: (room: Room) => void;
+type Props = {
+  onEdit: (roomId: string) => void;
 };
 
-const RoomList = ({ onEdit }: props) => {
+const RoomList = ({ onEdit }: Props) => {
   const [query, setQuery] = useState("");
 
   const filteredRooms = roomService.getAll(query);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
-      <div className="flex items-center gap-2">
-        <Input
-          placeholder="Search room..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+    <div className="flex h-[70vh] flex-col gap-3">
+      <Input
+        placeholder="Search room..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+
+      <div className="flex flex-col h-full gap-2 overflow-y-auto">
+        {filteredRooms.map((room) => (
+          <RoomCard key={room.id} room={room} onEdit={onEdit} />
+        ))}
       </div>
-      {filteredRooms.map((room) => (
-        <RoomCard key={room.id} room={room} onEdit={onEdit} />
-      ))}
     </div>
   );
 };

@@ -13,9 +13,7 @@ interface Props {
 const SubjectList = ({ onEdit }: Props) => {
   const [query, setQuery] = useState("");
 
-  const subjects = useDesignerStore(
-    (state) => state.subjects,
-  );
+  const subjects = useDesignerStore((state) => state.subjects);
 
   const filteredSubjects = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -32,7 +30,7 @@ const SubjectList = ({ onEdit }: Props) => {
   }, [subjects, query]);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3">
+    <div className="flex h-[70vh] flex-col gap-3">
       <Input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
@@ -42,18 +40,12 @@ const SubjectList = ({ onEdit }: Props) => {
 
       <div className="scrollbar min-h-0 flex-1 space-y-2 overflow-y-auto">
         {filteredSubjects.map((subject) => (
-          <SubjectCard
-            key={subject.id}
-            subject={subject}
-            onEdit={onEdit}
-          />
+          <SubjectCard key={subject.id} subject={subject} onEdit={onEdit} />
         ))}
 
         {!filteredSubjects.length && (
           <div className="py-8 text-center text-xs text-muted-foreground">
-            {query
-              ? "No subjects found"
-              : "No subjects yet"}
+            {query ? "No subjects found" : "No subjects yet"}
           </div>
         )}
       </div>
