@@ -1,14 +1,44 @@
+import type { Room } from "../types";
+import { useDesignerStore } from "../store/designer.store";
+
 export const roomService = {
-  add: async (room) => {
-    // API call
+  getAll: (query = ""): Room[] => {
+    const rooms = useDesignerStore.getState().getRooms();
+
+    const search = query.trim().toLowerCase();
+
+    if (!search) {
+      return rooms;
+    }
+
+    return rooms.filter(
+      (room) =>
+        room.name.toLowerCase().includes(search) ||
+        room.roomNumber.toLowerCase().includes(search),
+    );
+  },
+
+  getById: (roomId: string) => {
+    return useDesignerStore.getState().getRoom(roomId);
+  },
+
+  add: async (room: Room) => {
+    useDesignerStore.getState().addRoom(room);
+
+    // TODO: API
     return room;
   },
 
-  update: async (id, data) => {
-    // API call
+  update: async (roomId: string, roomData: Room) => {
+    useDesignerStore.getState().updateRoom(roomId, roomData);
+
+    // TODO: API
+    return roomData;
   },
 
-  remove: async (id) => {
-    // API call
+  remove: async (roomId: string) => {
+    useDesignerStore.getState().removeRoom(roomId);
+
+    // TODO: API
   },
 };

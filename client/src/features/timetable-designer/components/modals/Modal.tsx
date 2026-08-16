@@ -10,7 +10,7 @@ import AcademicYearModal from "./AcademicYearModal";
 import SectionModal from "./SectionModal";
 import Faculties from "./Faculties";
 import Subjects from "./Subjects";
-import Rooms from "./Rooms";
+import Rooms from "./rooms/Rooms";
 
 const Modal = () => {
   const isOpen = useModalStore((s) => s.isOpen);

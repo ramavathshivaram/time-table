@@ -12,6 +12,13 @@ type DesignerState = {
   setFaculties: (faculties: Faculty[]) => void;
   setSubjects: (subjects: Subject[]) => void;
   setRooms: (rooms: Room[]) => void;
+
+  // ROOMS
+  getRooms: () => Room[];
+  getRoom: (roomId: string) => Room | undefined;
+  addRoom: (room: Room) => void;
+  removeRoom: (roomId: string) => void;
+  updateRoom: (roomId: string, roomData: Room) => void;
 };
 
 export const useDesignerStore = create<DesignerState>((set, get) => ({
@@ -32,4 +39,15 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   setSubjects: (subjects) => set({ subjects }),
 
   setRooms: (rooms) => set({ rooms }),
+
+  // ROOMS
+  getRooms: () => get().rooms,
+  getRoom: (roomId) => get().rooms.find((r) => r.id === roomId),
+  addRoom: (room) => set((state) => ({ rooms: [...state.rooms, room] })),
+  removeRoom: (roomId) =>
+    set((state) => ({ rooms: state.rooms.filter((r) => r.id !== roomId) })),
+  updateRoom: (roomId, roomData) =>
+    set((state) => ({
+      rooms: state.rooms.map((r) => (r.id === roomId ? roomData : r)),
+    })),
 }));
