@@ -15,9 +15,7 @@ export const facultyService = {
       (faculty) =>
         faculty.name.toLowerCase().includes(search) ||
         faculty.email.toLowerCase().includes(search) ||
-        faculty.employeeId?.toLowerCase().includes(search) ||
-        faculty.department?.toLowerCase().includes(search) ||
-        faculty.designation?.toLowerCase().includes(search),
+        faculty.department?.toLowerCase().includes(search),
     );
   },
 
@@ -32,6 +30,7 @@ export const facultyService = {
   },
 
   update: async (id: string, data: Partial<Faculty>) => {
+    console.log("Update faculty on server", id, data);
     useDesignerStore.getState().updateFaculty(id, data);
   },
 

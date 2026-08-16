@@ -29,14 +29,12 @@ const FacultyList = ({ onAdd, onEdit }: Props) => {
       (faculty) =>
         faculty.name.toLowerCase().includes(query) ||
         faculty.email.toLowerCase().includes(query) ||
-        faculty.employeeId?.toLowerCase().includes(query) ||
-        faculty.department?.toLowerCase().includes(query) ||
-        faculty.designation?.toLowerCase().includes(query),
+        faculty.department?.toLowerCase().includes(query),
     );
   }, [faculties, search]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div className="flex h-[70vh] flex-col">
       <div className="shrink-0 space-y-3 border-b pb-3">
         <div className="flex items-center justify-between">
           <div>

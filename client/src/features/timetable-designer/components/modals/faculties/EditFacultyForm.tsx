@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
 
 import { useDesignerStore } from "../../../store/designer.store";
 import { facultyService } from "../../../services/faculty.service";
+
+import SelectSubjectIds from "../common/SelectSubjectIds";
 
 interface Props {
   facultyId: string;
@@ -16,53 +19,41 @@ interface Props {
 type FacultyFormData = {
   name: string;
   email: string;
-  employeeId: string;
   department: string;
-  designation: string;
+  unavailablePeriods: number;
 };
 
 const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
   const faculty = useDesignerStore((state) => state.getFaculty(facultyId));
 
+  const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<FacultyFormData>({
     defaultValues: {
-      name: "",
-      email: "",
-      employeeId: "",
-      department: "",
-      designation: "",
+      name: faculty?.name,
+      email: faculty?.email,
+      department: faculty?.department,
+      unavailablePeriods: faculty?.unavailablePeriods,
     },
   });
-
-  useEffect(() => {
-    if (!faculty) return;
-
-    reset({
-      name: faculty.name,
-      email: faculty.email,
-      employeeId: faculty.employeeId ?? "",
-      department: faculty.department ?? "",
-      designation: faculty.designation ?? "",
-    });
-  }, [faculty, reset]);
-
-  if (!faculty) {
-    return null;
-  }
 
   const onSubmit = async (data: FacultyFormData) => {
     await facultyService.update(facultyId, {
       ...faculty,
+
       name: data.name.trim(),
+
       email: data.email.trim(),
-      employeeId: data.employeeId.trim() || undefined,
+
       department: data.department.trim() || undefined,
-      designation: data.designation.trim() || undefined,
+
+      subjectIds: selectedSubjectIds,
+
+      unavailablePeriods: data.unavailablePeriods,
     });
 
     onSave();
@@ -71,6 +62,7 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-3">
       <div className="space-y-4">
+        {/* Header */}
         <div>
           <h3 className="text-sm font-semibold">Edit Faculty</h3>
 
@@ -79,11 +71,13 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
           </p>
         </div>
 
+        {/* Name */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">Name</label>
+          <Label htmlFor="edit-faculty-name">Name</Label>
 
           <Input
-            placeholder="Faculty name"
+            id="edit-faculty-name"
+            placeholder="e.g. Dr. Rajesh Kumar"
             {...register("name", {
               required: "Name is required",
             })}
@@ -96,12 +90,14 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
           )}
         </div>
 
+        {/* Email */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">Email</label>
+          <Label htmlFor="edit-faculty-email">Email</Label>
 
           <Input
+            id="edit-faculty-email"
             type="email"
-            placeholder="Faculty email"
+            placeholder="e.g. rajesh@pvpsit.ac.in"
             {...register("email", {
               required: "Email is required",
             })}
@@ -114,26 +110,57 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Employee ID</label>
-
-            <Input placeholder="FAC001" {...register("employeeId")} />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Designation</label>
-
-            <Input placeholder="Professor" {...register("designation")} />
-          </div>
-        </div>
-
+        {/* Department */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">Department</label>
+          <Label htmlFor="edit-faculty-department">Department</Label>
 
-          <Input placeholder="Department" {...register("department")} />
+          <Input
+            id="edit-faculty-department"
+            placeholder="e.g. Computer Science & Engineering"
+            {...register("department")}
+          />
         </div>
 
+        {/* Subjects */}
+        <div className="space-y-1.5">
+          <Label>Subjects</Label>
+
+          <SelectSubjectIds
+            initialSelectedIds={faculty?.subjectIds}
+            setSelectedSubjectIds={setSelectedSubjectIds}
+          />
+        </div>
+
+        {/* Unavailable Periods */}
+        <div className="space-y-1.5">
+          <Label htmlFor="unavailable-periods">Unavailable Periods</Label>
+
+          <Input
+            id="unavailable-periods"
+            type="number"
+            min={0}
+            placeholder="e.g. 2"
+            {...register("unavailablePeriods", {
+              valueAsNumber: true,
+              min: {
+                value: 0,
+                message: "Unavailable periods cannot be negative",
+              },
+            })}
+          />
+
+          {errors.unavailablePeriods && (
+            <p className="text-[10px] text-destructive">
+              {errors.unavailablePeriods.message}
+            </p>
+          )}
+
+          <p className="text-[10px] text-muted-foreground">
+            Number of periods when this faculty member cannot be scheduled.
+          </p>
+        </div>
+
+        {/* Actions */}
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="outline" size="sm" onClick={onCancel}>
             Cancel
@@ -148,4 +175,4 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
   );
 };
 
-export default EditFacultyForm;
+export default memo(EditFacultyForm);

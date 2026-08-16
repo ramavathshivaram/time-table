@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
 
 import type { Faculty } from "../../../types";
 import { facultyService } from "../../../services/faculty.service";
+
+import SelectSubjectIds from "../common/SelectSubjectIds";
 
 interface Props {
   onSave: () => void;
@@ -14,12 +18,13 @@ interface Props {
 type FacultyFormData = {
   name: string;
   email: string;
-  employeeId: string;
   department: string;
-  designation: string;
+  unavailablePeriods: number;
 };
 
 const AddFacultyForm = ({ onSave, onCancel }: Props) => {
+  const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
+
   const {
     register,
     handleSubmit,
@@ -28,39 +33,27 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
     defaultValues: {
       name: "",
       email: "",
-      employeeId: "",
       department: "Computer Science & Engineering",
-      designation: "",
+      unavailablePeriods: 0,
     },
   });
 
-  const onSubmit = (data: FacultyFormData) => {
+  const onSubmit = async (data: FacultyFormData) => {
     const faculty: Faculty = {
       id: crypto.randomUUID(),
+
       name: data.name.trim(),
+
       email: data.email.trim(),
-      employeeId: data.employeeId.trim() || undefined,
+
       department: data.department.trim() || undefined,
-      designation: data.designation.trim() || undefined,
 
-      subjectIds: [],
+      subjectIds: selectedSubjectIds,
 
-      availability: {
-        workingDays: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        startTime: "09:00",
-        endTime: "16:30",
-        unavailableSlots: [],
-      },
+      unavailablePeriods: data.unavailablePeriods,
     };
 
-    facultyService.add(faculty);
+    await facultyService.add(faculty);
 
     onSave();
   };
@@ -68,23 +61,22 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-3">
       <div className="space-y-4">
+        {/* Header */}
         <div>
-          <h3 className="text-sm font-semibold">
-            Add Faculty
-          </h3>
+          <h3 className="text-sm font-semibold">Add Faculty</h3>
 
           <p className="text-[11px] text-muted-foreground">
-            Create a faculty member.
+            Create a faculty member and assign subjects.
           </p>
         </div>
 
+        {/* Name */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">
-            Name
-          </label>
+          <Label htmlFor="faculty-name">Name</Label>
 
           <Input
-            placeholder="Faculty name"
+            id="faculty-name"
+            placeholder="e.g. Dr. Rajesh Kumar"
             {...register("name", {
               required: "Name is required",
             })}
@@ -97,14 +89,14 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
           )}
         </div>
 
+        {/* Email */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">
-            Email
-          </label>
+          <Label htmlFor="faculty-email">Email</Label>
 
           <Input
+            id="faculty-email"
             type="email"
-            placeholder="Faculty email"
+            placeholder="e.g. rajesh@pvpsit.ac.in"
             {...register("email", {
               required: "Email is required",
             })}
@@ -117,48 +109,56 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">
-              Employee ID
-            </label>
-
-            <Input
-              placeholder="FAC001"
-              {...register("employeeId")}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">
-              Designation
-            </label>
-
-            <Input
-              placeholder="Professor"
-              {...register("designation")}
-            />
-          </div>
-        </div>
-
+        {/* Department */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">
-            Department
-          </label>
+          <Label htmlFor="faculty-department">Department</Label>
 
           <Input
-            placeholder="Department"
+            id="faculty-department"
+            placeholder="e.g. Computer Science & Engineering"
             {...register("department")}
           />
         </div>
 
+        {/* Subjects */}
+        <div className="space-y-1.5">
+          <Label>Subjects</Label>
+
+          <SelectSubjectIds setSelectedSubjectIds={setSelectedSubjectIds} />
+        </div>
+
+        {/* Unavailable Periods */}
+        <div className="space-y-1.5">
+          <Label htmlFor="unavailable-periods">Unavailable Periods</Label>
+
+          <Input
+            id="unavailable-periods"
+            type="number"
+            min={0}
+            placeholder="e.g. 2"
+            {...register("unavailablePeriods", {
+              valueAsNumber: true,
+              min: {
+                value: 0,
+                message: "Unavailable periods cannot be negative",
+              },
+            })}
+          />
+
+          {errors.unavailablePeriods && (
+            <p className="text-[10px] text-destructive">
+              {errors.unavailablePeriods.message}
+            </p>
+          )}
+
+          <p className="text-[10px] text-muted-foreground">
+            Number of periods when this faculty member cannot be scheduled.
+          </p>
+        </div>
+
+        {/* Actions */}
         <div className="flex justify-end gap-2 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onCancel}
-          >
+          <Button type="button" variant="outline" size="sm" onClick={onCancel}>
             Cancel
           </Button>
 

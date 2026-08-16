@@ -32,15 +32,7 @@ export interface Faculty {
 
   subjectIds: string[];
 
-  availability?: {
-    workingDays: string[];
-
-    unavailableSlots: {
-      day: string;
-      startTime: string;
-      endTime: string;
-    }[];
-  };
+  unavailablePeriods: number;
 }
 
 export interface Subject {
