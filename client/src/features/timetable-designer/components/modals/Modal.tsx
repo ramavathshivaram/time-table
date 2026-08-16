@@ -8,8 +8,8 @@ import InstitutionModal from "./InstitutionModal";
 import ProgramModal from "./ProgramModal";
 import AcademicYearModal from "./AcademicYearModal";
 import SectionModal from "./SectionModal";
-import Faculties from "./Faculties";
-import Subjects from "./Subjects";
+import Faculties from "./faculties/Faculties";
+import Subjects from "./subjects/Subjects";
 import Rooms from "./rooms/Rooms";
 
 const Modal = () => {
@@ -18,7 +18,7 @@ const Modal = () => {
   const type = useModalStore((s) => s.type);
   const close = useModalStore((s) => s.close);
 
-  const modalContent = {
+  const modalContent: Record<string, React.ReactNode> = {
     institution: <InstitutionModal data={data} />,
     program: <ProgramModal data={data} />,
     "academic-year": <AcademicYearModal data={data} />,

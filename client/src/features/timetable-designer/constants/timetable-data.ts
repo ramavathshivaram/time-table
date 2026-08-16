@@ -20,9 +20,33 @@ export const timetableData = {
         position: { x: 100, y: 220 },
         data: {
           label: "PVPSIT",
-          timings: "09:00 - 17:00",
-          lunch: "13:00 - 14:00",
-          programs: 1,
+
+          name: "Prasad V. Potluri Siddhartha Institute of Technology",
+          code: "PVPSIT",
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
         },
       },
 
@@ -32,10 +56,39 @@ export const timetableData = {
         position: { x: 100, y: 340 },
         data: {
           label: "Computer Science & Engineering",
-          type: "CSE",
-          timings: "09:00 - 17:00",
-          faculty: 18,
-          subjects: 12,
+
+          name: "Computer Science & Engineering",
+          code: "CSE",
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -45,8 +98,40 @@ export const timetableData = {
         position: { x: 100, y: 460 },
         data: {
           label: "1st Year",
-          type: "I",
-          semesters: 2,
+
+          name: "1st Year",
+          year: 1,
+          semester: 1,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -56,8 +141,39 @@ export const timetableData = {
         position: { x: 0, y: 580 },
         data: {
           label: "Section A",
-          type: "A",
+
+          name: "Section A",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -67,8 +183,39 @@ export const timetableData = {
         position: { x: 200, y: 580 },
         data: {
           label: "Section B",
-          type: "B",
+
+          name: "Section B",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -78,8 +225,39 @@ export const timetableData = {
         position: { x: 400, y: 580 },
         data: {
           label: "Section C",
-          type: "C",
+
+          name: "Section C",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -89,8 +267,40 @@ export const timetableData = {
         position: { x: 100, y: 720 },
         data: {
           label: "2nd Year",
-          type: "II",
-          semesters: 2,
+
+          name: "2nd Year",
+          year: 2,
+          semester: 3,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -100,8 +310,36 @@ export const timetableData = {
         position: { x: 0, y: 840 },
         data: {
           label: "Section A",
-          type: "A",
+          name: "Section A",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -111,8 +349,36 @@ export const timetableData = {
         position: { x: 200, y: 840 },
         data: {
           label: "Section B",
-          type: "B",
+          name: "Section B",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -122,8 +388,36 @@ export const timetableData = {
         position: { x: 400, y: 840 },
         data: {
           label: "Section C",
-          type: "C",
+          name: "Section C",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -133,8 +427,40 @@ export const timetableData = {
         position: { x: 100, y: 980 },
         data: {
           label: "3rd Year",
-          type: "III",
-          semesters: 2,
+
+          name: "3rd Year",
+          year: 3,
+          semester: 5,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -144,8 +470,36 @@ export const timetableData = {
         position: { x: 0, y: 1100 },
         data: {
           label: "Section A",
-          type: "A",
+          name: "Section A",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -155,8 +509,36 @@ export const timetableData = {
         position: { x: 200, y: 1100 },
         data: {
           label: "Section B",
-          type: "B",
+          name: "Section B",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
 
@@ -166,8 +548,36 @@ export const timetableData = {
         position: { x: 400, y: 1100 },
         data: {
           label: "Section C",
-          type: "C",
+          name: "Section C",
           strength: 60,
+
+          time: {
+            startTime: "09:00",
+            endTime: "17:00",
+            periodDuration: 60,
+            numberOfPeriods: 7,
+            workingDays: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            breaks: [
+              {
+                type: "lunch",
+                startTime: "13:00",
+                endTime: "14:00",
+              },
+            ],
+          },
+
+          resources: {
+            facultyIds: [],
+            subjectIds: [],
+            roomIds: [],
+          },
         },
       },
     ],
@@ -186,14 +596,12 @@ export const timetableData = {
         target: "cse-year-1",
         type: "bezier",
       },
-
       {
         id: "edge-cse-year-2",
         source: "program-cse",
         target: "cse-year-2",
         type: "bezier",
       },
-
       {
         id: "edge-cse-year-3",
         source: "program-cse",
@@ -207,14 +615,12 @@ export const timetableData = {
         target: "cse-year-1-section-a",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y1-b",
         source: "cse-year-1",
         target: "cse-year-1-section-b",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y1-c",
         source: "cse-year-1",
@@ -228,14 +634,12 @@ export const timetableData = {
         target: "cse-year-2-section-a",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y2-b",
         source: "cse-year-2",
         target: "cse-year-2-section-b",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y2-c",
         source: "cse-year-2",
@@ -249,14 +653,12 @@ export const timetableData = {
         target: "cse-year-3-section-a",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y3-b",
         source: "cse-year-3",
         target: "cse-year-3-section-b",
         type: "bezier",
       },
-
       {
         id: "edge-cse-y3-c",
         source: "cse-year-3",
@@ -274,6 +676,15 @@ export const timetableData = {
       duration: 60,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-1"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-2",
@@ -282,6 +693,15 @@ export const timetableData = {
       duration: 60,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-2"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-3",
@@ -290,6 +710,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-3"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-4",
@@ -298,6 +727,15 @@ export const timetableData = {
       duration: 60,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-4"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-5",
@@ -306,6 +744,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-5"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-6",
@@ -314,6 +761,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-6"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-7",
@@ -322,6 +778,15 @@ export const timetableData = {
       duration: 60,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-7"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-8",
@@ -330,6 +795,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-8"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-9",
@@ -338,6 +812,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-1"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "projector", "internet"],
+      },
     },
     {
       id: "sub-10",
@@ -346,6 +829,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-2"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "networking-equipment", "internet"],
+      },
     },
     {
       id: "sub-11",
@@ -354,6 +846,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-4"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "gpu", "internet"],
+      },
     },
     {
       id: "sub-12",
@@ -362,6 +863,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-5"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "internet"],
+      },
     },
     {
       id: "sub-13",
@@ -370,6 +880,15 @@ export const timetableData = {
       duration: 60,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 4,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-9"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-14",
@@ -378,6 +897,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-10"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-15",
@@ -386,6 +914,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-11"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
     {
       id: "sub-16",
@@ -394,6 +931,15 @@ export const timetableData = {
       duration: 60,
       credits: 3,
       isLab: false,
+      weeklyPeriods: 3,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-12"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector", "internet"],
+      },
     },
     {
       id: "sub-17",
@@ -402,6 +948,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-9"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "gpu", "internet"],
+      },
     },
     {
       id: "sub-18",
@@ -410,6 +965,15 @@ export const timetableData = {
       duration: 120,
       credits: 2,
       isLab: true,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-6"],
+      roomRequirements: {
+        type: "laboratory",
+        minimumCapacity: 30,
+        facilities: ["computers", "internet"],
+      },
     },
     {
       id: "sub-19",
@@ -418,6 +982,15 @@ export const timetableData = {
       duration: 120,
       credits: 4,
       isLab: false,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 2,
+      facultyIds: ["fac-13"],
+      roomRequirements: {
+        type: "seminar-hall",
+        minimumCapacity: 60,
+        facilities: ["projector", "internet"],
+      },
     },
     {
       id: "sub-20",
@@ -426,6 +999,15 @@ export const timetableData = {
       duration: 60,
       credits: 2,
       isLab: false,
+      weeklyPeriods: 2,
+      periodsPerDay: 1,
+      consecutivePeriods: 1,
+      facultyIds: ["fac-14"],
+      roomRequirements: {
+        type: "classroom",
+        minimumCapacity: 60,
+        facilities: ["projector"],
+      },
     },
   ],
 
@@ -434,109 +1016,373 @@ export const timetableData = {
       id: "fac-1",
       name: "Dr. Rajesh Kumar",
       email: "rajesh.kumar@pvpsit.ac.in",
-      subjects: ["sub-1", "sub-9"],
+      employeeId: "FAC001",
+      department: "Computer Science & Engineering",
+      designation: "Professor",
+      subjectIds: ["sub-1", "sub-9"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Wednesday",
+            startTime: "13:00",
+            endTime: "14:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-2",
       name: "Dr. Priya Sharma",
       email: "priya.sharma@pvpsit.ac.in",
-      subjects: ["sub-2", "sub-10"],
+      employeeId: "FAC002",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-2", "sub-10"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Monday",
+            startTime: "12:00",
+            endTime: "13:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-3",
       name: "Prof. Anil Kumar",
       email: "anil.kumar@pvpsit.ac.in",
-      subjects: ["sub-3"],
+      employeeId: "FAC003",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-3"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Tuesday",
+            startTime: "10:00",
+            endTime: "11:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-4",
       name: "Dr. Sneha Reddy",
       email: "sneha.reddy@pvpsit.ac.in",
-      subjects: ["sub-4", "sub-11"],
+      employeeId: "FAC004",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-4", "sub-11"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Thursday",
+            startTime: "14:00",
+            endTime: "15:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-5",
-      name: "Dr. Ravi Teja",
-      email: "ravi.teja@pvpsit.ac.in",
-      subjects: ["sub-5", "sub-12"],
+      name: "Dr. Kiran Rao",
+      email: "kiran.rao@pvpsit.ac.in",
+      employeeId: "FAC005",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-5", "sub-12"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-6",
-      name: "Prof. Kiran Rao",
-      email: "kiran.rao@pvpsit.ac.in",
-      subjects: ["sub-6", "sub-18"],
+      name: "Prof. Vivek Reddy",
+      email: "vivek.reddy@pvpsit.ac.in",
+      employeeId: "FAC006",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-6", "sub-18"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Friday",
+            startTime: "11:00",
+            endTime: "12:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-7",
-      name: "Dr. Mahesh Babu",
-      email: "mahesh.babu@pvpsit.ac.in",
-      subjects: ["sub-7"],
+      name: "Dr. Suresh Babu",
+      email: "suresh.babu@pvpsit.ac.in",
+      employeeId: "FAC007",
+      department: "Computer Science & Engineering",
+      designation: "Professor",
+      subjectIds: ["sub-7"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-8",
-      name: "Dr. Lakshmi Devi",
-      email: "lakshmi.devi@pvpsit.ac.in",
-      subjects: ["sub-8"],
+      name: "Dr. Meena Devi",
+      email: "meena.devi@pvpsit.ac.in",
+      employeeId: "FAC008",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-8"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Wednesday",
+            startTime: "10:00",
+            endTime: "11:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-9",
       name: "Dr. Arjun Varma",
       email: "arjun.varma@pvpsit.ac.in",
-      subjects: ["sub-13", "sub-17"],
+      employeeId: "FAC009",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-13", "sub-17"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Tuesday",
+            startTime: "13:00",
+            endTime: "14:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-10",
-      name: "Prof. Swathi Rao",
-      email: "swathi.rao@pvpsit.ac.in",
-      subjects: ["sub-14"],
+      name: "Prof. Kavitha Rao",
+      email: "kavitha.rao@pvpsit.ac.in",
+      employeeId: "FAC010",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-14"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-11",
-      name: "Dr. Naveen Kumar",
-      email: "naveen.kumar@pvpsit.ac.in",
-      subjects: ["sub-15"],
+      name: "Dr. Naveen Reddy",
+      email: "naveen.reddy@pvpsit.ac.in",
+      employeeId: "FAC011",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-15"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Thursday",
+            startTime: "10:00",
+            endTime: "11:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-12",
-      name: "Prof. Harsha Vardhan",
-      email: "harsha@pvpsit.ac.in",
-      subjects: ["sub-16"],
+      name: "Prof. Rahul Verma",
+      email: "rahul.verma@pvpsit.ac.in",
+      employeeId: "FAC012",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-16"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-13",
-      name: "Dr. Anusha Reddy",
-      email: "anusha.reddy@pvpsit.ac.in",
-      subjects: ["sub-17"],
+      name: "Dr. Mahesh Babu",
+      email: "mahesh.babu@pvpsit.ac.in",
+      employeeId: "FAC013",
+      department: "Computer Science & Engineering",
+      designation: "Professor",
+      subjectIds: ["sub-19"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Monday",
+            startTime: "09:00",
+            endTime: "10:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-14",
-      name: "Prof. Suresh Babu",
-      email: "suresh.babu@pvpsit.ac.in",
-      subjects: ["sub-18"],
+      name: "Dr. Lakshmi Prasad",
+      email: "lakshmi.prasad@pvpsit.ac.in",
+      employeeId: "FAC014",
+      department: "Humanities",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-20"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-15",
-      name: "Dr. Venkatesh Rao",
-      email: "venkatesh.rao@pvpsit.ac.in",
-      subjects: ["sub-19"],
+      name: "Dr. Harish Chandra",
+      email: "harish.chandra@pvpsit.ac.in",
+      employeeId: "FAC015",
+      department: "Computer Science & Engineering",
+      designation: "Professor",
+      subjectIds: ["sub-1", "sub-7"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Friday",
+            startTime: "14:00",
+            endTime: "15:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-16",
-      name: "Prof. Divya Sri",
-      email: "divya.sri@pvpsit.ac.in",
-      subjects: ["sub-20"],
+      name: "Dr. Swathi Rao",
+      email: "swathi.rao@pvpsit.ac.in",
+      employeeId: "FAC016",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-4", "sub-13"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
     {
       id: "fac-17",
-      name: "Dr. Pavan Kumar",
-      email: "pavan.kumar@pvpsit.ac.in",
-      subjects: ["sub-1", "sub-7"],
+      name: "Prof. Ramesh Kumar",
+      email: "ramesh.kumar@pvpsit.ac.in",
+      employeeId: "FAC017",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-5", "sub-8"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Tuesday",
+            startTime: "14:00",
+            endTime: "15:00",
+          },
+        ],
+      },
     },
     {
       id: "fac-18",
-      name: "Prof. Meghana Rao",
-      email: "meghana.rao@pvpsit.ac.in",
-      subjects: ["sub-5", "sub-6"],
+      name: "Dr. Pooja Sharma",
+      email: "pooja.sharma@pvpsit.ac.in",
+      employeeId: "FAC018",
+      department: "Computer Science & Engineering",
+      designation: "Associate Professor",
+      subjectIds: ["sub-2", "sub-10"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
+    },
+    {
+      id: "fac-19",
+      name: "Dr. Ajay Kumar",
+      email: "ajay.kumar@pvpsit.ac.in",
+      employeeId: "FAC019",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-6", "sub-16"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [
+          {
+            day: "Wednesday",
+            startTime: "15:00",
+            endTime: "16:00",
+          },
+        ],
+      },
+    },
+    {
+      id: "fac-20",
+      name: "Dr. Deepika Reddy",
+      email: "deepika.reddy@pvpsit.ac.in",
+      employeeId: "FAC020",
+      department: "Computer Science & Engineering",
+      designation: "Assistant Professor",
+      subjectIds: ["sub-14", "sub-15"],
+      availability: {
+        workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        startTime: "09:00",
+        endTime: "16:30",
+        unavailableSlots: [],
+      },
     },
   ],
 
