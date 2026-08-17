@@ -14,10 +14,14 @@ export const timetableData = {
 
   blueprint: {
     nodes: [
+      // ============================================================
+      // INSTITUTION
+      // ============================================================
+
       {
         id: "institution-1",
         type: "institution",
-        position: { x: 100, y: 220 },
+        position: { x: 100, y: 100 },
 
         data: {
           label: "PVPSIT",
@@ -25,7 +29,6 @@ export const timetableData = {
           time: {
             startTime: "09:00",
             endTime: "17:00",
-
             numberOfPeriods: 7,
 
             workingDays: [
@@ -47,10 +50,15 @@ export const timetableData = {
           },
         },
       },
+
+      // ============================================================
+      // PROGRAM
+      // ============================================================
+
       {
         id: "program-cse",
         type: "program",
-        position: { x: 100, y: 340 },
+        position: { x: 100, y: 300 },
 
         data: {
           label: "Computer Science & Engineering",
@@ -79,27 +87,82 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: [
+              "fac-1",
+              "fac-2",
+              "fac-3",
+              "fac-4",
+              "fac-5",
+              "fac-6",
+              "fac-7",
+              "fac-8",
+              "fac-9",
+              "fac-10",
+              "fac-11",
+              "fac-12",
+              "fac-13",
+              "fac-14",
+            ],
+
+            subjectIds: [
+              "subject-1",
+              "subject-2",
+              "subject-3",
+              "subject-4",
+              "subject-5",
+              "subject-6",
+              "subject-7",
+              "subject-8",
+              "subject-9",
+              "subject-10",
+              "subject-11",
+              "subject-12",
+              "subject-13",
+              "subject-14",
+              "subject-15",
+              "subject-16",
+              "subject-17",
+              "subject-18",
+              "subject-19",
+              "subject-20",
+            ],
+
+            roomIds: [
+              "room-1",
+              "room-2",
+              "room-3",
+              "room-4",
+              "room-5",
+              "room-6",
+              "room-7",
+              "room-8",
+              "lab-1",
+              "lab-2",
+              "lab-3",
+              "lab-4",
+              "lab-5",
+              "lab-6",
+            ],
           },
         },
       },
+
+      // ============================================================
+      // 1ST YEAR
+      // ============================================================
+
       {
         id: "cse-year-1",
         type: "academic-year",
-        position: { x: 100, y: 460 },
+        position: { x: 100, y: 500 },
+
         data: {
           label: "1st Year",
-
-          name: "1st Year",
           year: 1,
-          semester: 1,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -121,27 +184,29 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-3", "fac-4"],
+
+            subjectIds: ["subject-1", "subject-2", "subject-3", "subject-4"],
+
+            roomIds: ["room-1", "room-2", "room-3"],
           },
         },
       },
 
+      // 1A
       {
         id: "cse-year-1-section-a",
         type: "section",
-        position: { x: 0, y: 580 },
+        position: { x: 0, y: 700 },
+
         data: {
           label: "Section A",
-
-          name: "Section A",
+          section: "A",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -163,27 +228,29 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-3", "fac-4"],
+
+            subjectIds: ["subject-1", "subject-2", "subject-3", "subject-4"],
+
+            roomIds: ["room-1"],
           },
         },
       },
 
+      // 1B
       {
         id: "cse-year-1-section-b",
         type: "section",
-        position: { x: 200, y: 580 },
+        position: { x: 300, y: 700 },
+
         data: {
           label: "Section B",
-
-          name: "Section B",
+          section: "B",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -205,27 +272,29 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-3", "fac-4"],
+
+            subjectIds: ["subject-1", "subject-2", "subject-3", "subject-4"],
+
+            roomIds: ["room-2"],
           },
         },
       },
 
+      // 1C
       {
         id: "cse-year-1-section-c",
         type: "section",
-        position: { x: 400, y: 580 },
+        position: { x: 600, y: 700 },
+
         data: {
           label: "Section C",
-
-          name: "Section C",
+          section: "C",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -247,28 +316,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-3", "fac-4"],
+
+            subjectIds: ["subject-1", "subject-2", "subject-3", "subject-4"],
+
+            roomIds: ["room-3"],
           },
         },
       },
+
+      // ============================================================
+      // 2ND YEAR
+      // ============================================================
 
       {
         id: "cse-year-2",
         type: "academic-year",
-        position: { x: 100, y: 720 },
+        position: { x: 100, y: 900 },
+
         data: {
           label: "2nd Year",
-
-          name: "2nd Year",
           year: 2,
-          semester: 3,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -290,27 +362,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-5", "fac-6", "fac-7", "fac-8"],
+
+            subjectIds: ["subject-5", "subject-6", "subject-7", "subject-8"],
+
+            roomIds: ["room-4", "room-5", "room-6", "room-7"],
           },
         },
       },
 
+      // 2A
       {
         id: "cse-year-2-section-a",
         type: "section",
-        position: { x: 0, y: 840 },
+        position: { x: 0, y: 1100 },
+
         data: {
           label: "Section A",
-          name: "Section A",
+          section: "A",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -319,6 +395,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -329,27 +406,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-5", "fac-6", "fac-7", "fac-8"],
+
+            subjectIds: ["subject-5", "subject-6", "subject-7", "subject-8"],
+
+            roomIds: ["room-4"],
           },
         },
       },
 
+      // 2B
       {
         id: "cse-year-2-section-b",
         type: "section",
-        position: { x: 200, y: 840 },
+        position: { x: 300, y: 1100 },
+
         data: {
           label: "Section B",
-          name: "Section B",
+          section: "B",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -358,6 +439,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -368,27 +450,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-5", "fac-6", "fac-7", "fac-8"],
+
+            subjectIds: ["subject-5", "subject-6", "subject-7", "subject-8"],
+
+            roomIds: ["room-5"],
           },
         },
       },
 
+      // 2C
       {
         id: "cse-year-2-section-c",
         type: "section",
-        position: { x: 400, y: 840 },
+        position: { x: 600, y: 1100 },
+
         data: {
           label: "Section C",
-          name: "Section C",
+          section: "C",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -397,6 +483,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -407,28 +494,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-5", "fac-6", "fac-7", "fac-8"],
+
+            subjectIds: ["subject-5", "subject-6", "subject-7", "subject-8"],
+
+            roomIds: ["room-6"],
           },
         },
       },
+
+      // ============================================================
+      // 3RD YEAR
+      // ============================================================
 
       {
         id: "cse-year-3",
         type: "academic-year",
-        position: { x: 100, y: 980 },
+        position: { x: 100, y: 1300 },
+
         data: {
           label: "3rd Year",
-
-          name: "3rd Year",
           year: 3,
-          semester: 5,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -450,27 +540,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-4", "fac-5"],
+
+            subjectIds: ["subject-9", "subject-10", "subject-11", "subject-12"],
+
+            roomIds: ["lab-1", "lab-2", "lab-3", "lab-4"],
           },
         },
       },
 
+      // 3A
       {
         id: "cse-year-3-section-a",
         type: "section",
-        position: { x: 0, y: 1100 },
+        position: { x: 0, y: 1500 },
+
         data: {
           label: "Section A",
-          name: "Section A",
+          section: "A",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -479,6 +573,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -489,27 +584,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-4", "fac-5"],
+
+            subjectIds: ["subject-9", "subject-10", "subject-11", "subject-12"],
+
+            roomIds: ["lab-1", "lab-2", "lab-3", "lab-4"],
           },
         },
       },
 
+      // 3B
       {
         id: "cse-year-3-section-b",
         type: "section",
-        position: { x: 200, y: 1100 },
+        position: { x: 300, y: 1500 },
+
         data: {
           label: "Section B",
-          name: "Section B",
+          section: "B",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -518,6 +617,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -528,27 +628,31 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-4", "fac-5"],
+
+            subjectIds: ["subject-9", "subject-10", "subject-11", "subject-12"],
+
+            roomIds: ["lab-1", "lab-2", "lab-3", "lab-4"],
           },
         },
       },
 
+      // 3C
       {
         id: "cse-year-3-section-c",
         type: "section",
-        position: { x: 400, y: 1100 },
+        position: { x: 600, y: 1500 },
+
         data: {
           label: "Section C",
-          name: "Section C",
+          section: "C",
           strength: 60,
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
+
             workingDays: [
               "Monday",
               "Tuesday",
@@ -557,6 +661,7 @@ export const timetableData = {
               "Friday",
               "Saturday",
             ],
+
             breaks: [
               {
                 type: "lunch",
@@ -567,9 +672,11 @@ export const timetableData = {
           },
 
           resources: {
-            facultyIds: [],
-            subjectIds: [],
-            roomIds: [],
+            facultyIds: ["fac-1", "fac-2", "fac-4", "fac-5"],
+
+            subjectIds: ["subject-9", "subject-10", "subject-11", "subject-12"],
+
+            roomIds: ["lab-1", "lab-2", "lab-3", "lab-4"],
           },
         },
       },
@@ -577,83 +684,83 @@ export const timetableData = {
 
     edges: [
       {
-        id: "edge-institution-cse",
+        id: "edge-institution-program",
         source: "institution-1",
         target: "program-cse",
         type: "bezier",
       },
 
       {
-        id: "edge-cse-year-1",
+        id: "edge-program-year-1",
         source: "program-cse",
         target: "cse-year-1",
         type: "bezier",
       },
       {
-        id: "edge-cse-year-2",
+        id: "edge-program-year-2",
         source: "program-cse",
         target: "cse-year-2",
         type: "bezier",
       },
       {
-        id: "edge-cse-year-3",
+        id: "edge-program-year-3",
         source: "program-cse",
         target: "cse-year-3",
         type: "bezier",
       },
 
       {
-        id: "edge-cse-y1-a",
+        id: "edge-year-1-section-a",
         source: "cse-year-1",
         target: "cse-year-1-section-a",
         type: "bezier",
       },
       {
-        id: "edge-cse-y1-b",
+        id: "edge-year-1-section-b",
         source: "cse-year-1",
         target: "cse-year-1-section-b",
         type: "bezier",
       },
       {
-        id: "edge-cse-y1-c",
+        id: "edge-year-1-section-c",
         source: "cse-year-1",
         target: "cse-year-1-section-c",
         type: "bezier",
       },
 
       {
-        id: "edge-cse-y2-a",
+        id: "edge-year-2-section-a",
         source: "cse-year-2",
         target: "cse-year-2-section-a",
         type: "bezier",
       },
       {
-        id: "edge-cse-y2-b",
+        id: "edge-year-2-section-b",
         source: "cse-year-2",
         target: "cse-year-2-section-b",
         type: "bezier",
       },
       {
-        id: "edge-cse-y2-c",
+        id: "edge-year-2-section-c",
         source: "cse-year-2",
         target: "cse-year-2-section-c",
         type: "bezier",
       },
 
       {
-        id: "edge-cse-y3-a",
+        id: "edge-year-3-section-a",
         source: "cse-year-3",
         target: "cse-year-3-section-a",
         type: "bezier",
       },
       {
-        id: "edge-cse-y3-b",
+        id: "edge-year-3-section-b",
         source: "cse-year-3",
         target: "cse-year-3-section-b",
         type: "bezier",
       },
       {
-        id: "edge-cse-y3-c",
+        id: "edge-year-3-section-c",
         source: "cse-year-3",
         target: "cse-year-3-section-c",
         type: "bezier",
@@ -663,7 +770,7 @@ export const timetableData = {
 
   subjects: [
     {
-      id: "sub-1",
+      id: "subject-1",
       name: "Database Management Systems",
       code: "CS301",
       duration: 60,
@@ -679,7 +786,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-2",
+      id: "subject-2",
       name: "Computer Networks",
       code: "CS302",
       duration: 60,
@@ -695,7 +802,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-3",
+      id: "subject-3",
       name: "Software Engineering",
       code: "CS303",
       duration: 60,
@@ -711,7 +818,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-4",
+      id: "subject-4",
       name: "Artificial Intelligence",
       code: "CS304",
       duration: 60,
@@ -727,7 +834,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-5",
+      id: "subject-5",
       name: "Web Technologies",
       code: "CS305",
       duration: 60,
@@ -743,7 +850,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-6",
+      id: "subject-6",
       name: "Cloud Computing",
       code: "CS306",
       duration: 60,
@@ -759,7 +866,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-7",
+      id: "subject-7",
       name: "Operating Systems",
       code: "CS307",
       duration: 60,
@@ -775,7 +882,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-8",
+      id: "subject-8",
       name: "Compiler Design",
       code: "CS308",
       duration: 60,
@@ -791,7 +898,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-9",
+      id: "subject-9",
       name: "DBMS Laboratory",
       code: "CS351",
       duration: 120,
@@ -808,7 +915,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-10",
+      id: "subject-10",
       name: "Computer Networks Laboratory",
       code: "CS352",
       duration: 120,
@@ -825,7 +932,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-11",
+      id: "subject-11",
       name: "AI Laboratory",
       code: "CS353",
       duration: 120,
@@ -842,7 +949,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-12",
+      id: "subject-12",
       name: "Web Technologies Laboratory",
       code: "CS354",
       duration: 120,
@@ -859,7 +966,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-13",
+      id: "subject-13",
       name: "Machine Learning",
       code: "CS309",
       duration: 60,
@@ -875,7 +982,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-14",
+      id: "subject-14",
       name: "Data Mining",
       code: "CS310",
       duration: 60,
@@ -891,7 +998,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-15",
+      id: "subject-15",
       name: "Cyber Security",
       code: "CS311",
       duration: 60,
@@ -907,7 +1014,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-16",
+      id: "subject-16",
       name: "DevOps",
       code: "CS312",
       duration: 60,
@@ -923,7 +1030,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-17",
+      id: "subject-17",
       name: "Machine Learning Laboratory",
       code: "CS355",
       duration: 120,
@@ -940,7 +1047,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-18",
+      id: "subject-18",
       name: "Cloud Computing Laboratory",
       code: "CS356",
       duration: 120,
@@ -957,7 +1064,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-19",
+      id: "subject-19",
       name: "Project",
       code: "CS399",
       duration: 120,
@@ -973,7 +1080,7 @@ export const timetableData = {
       },
     },
     {
-      id: "sub-20",
+      id: "subject-20",
       name: "Professional Ethics",
       code: "HU301",
       duration: 60,

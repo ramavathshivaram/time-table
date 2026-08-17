@@ -1,12 +1,10 @@
 import { memo } from "react";
-import { CalendarDays, Clock3 } from "lucide-react";
 
 import DesignerNode from "./DesignerNode";
-import { NodeInfo } from "./NodeInfo";
 
 interface AcademicYearNodeProps {
   data: {
-    name?: string;
+    label?: string;
     year?: number;
     semester?: number;
 
@@ -30,25 +28,13 @@ const AcademicYearNode = ({
   return (
     <DesignerNode
       type="academic-year"
-      label={data?.name}
+      label={data?.label}
       subLabel={data?.year ? `Year ${data.year}` : "Academic Year"}
       selected={selected}
       showTarget
       showSource
       sourceConnectable={isConnectable}
-    >
-      <div className="space-y-1.5">
-        {data?.semester && (
-          <NodeInfo icon={CalendarDays}>Semester {data.semester}</NodeInfo>
-        )}
-
-        {data?.time?.startTime && data?.time?.endTime && (
-          <NodeInfo icon={Clock3}>
-            {data.time.startTime} – {data.time.endTime}
-          </NodeInfo>
-        )}
-      </div>
-    </DesignerNode>
+    ></DesignerNode>
   );
 };
 

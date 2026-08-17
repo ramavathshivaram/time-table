@@ -30,7 +30,7 @@ const DesignerPalette = () => {
                     <div
                       draggable
                       onDragStart={(event) => onDragStart(event, type)}
-                      className="flex cursor-grab items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted active:cursor-grabbing"
+                      className="flex cursor-grab border-b items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted active:cursor-grabbing"
                     >
                       <div className="rounded-md p-0.5">
                         <Icon className={`size-7 ${node.color}`} />
@@ -54,7 +54,7 @@ const DesignerPalette = () => {
                   <TooltipTrigger>
                     <div
                       onClick={() => handleOpenModal(item.type)}
-                      className="flex cursor-pointer items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted"
+                      className="flex cursor-pointer border-b items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted"
                     >
                       <div className="rounded-md p-0.5">
                         <Icon className={`size-7 ${item.color}`} />

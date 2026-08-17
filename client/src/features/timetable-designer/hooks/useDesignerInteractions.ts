@@ -189,8 +189,6 @@ export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
         return;
       }
 
-      console.log("onNodeDoubleClick", node);
-
       openModal(node.type as never, {
         type: node.type as never,
         id: node.id,

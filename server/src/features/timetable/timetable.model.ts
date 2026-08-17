@@ -28,7 +28,7 @@ const timetableSchema = new Schema(
 
     stage: {
       type: String,
-      enum: ["incomplete", "complete"],
+      enum: ["incomplete", "editing", "complete"],
       default: "incomplete",
       index: true,
     },
