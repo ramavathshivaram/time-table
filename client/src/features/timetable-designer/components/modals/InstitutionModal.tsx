@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useReactFlow } from "@xyflow/react";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
 
 import {
   DialogHeader,
@@ -14,6 +15,7 @@ import {
 
 import { useModalStore } from "../../store/modal.store";
 import { nodeService } from "../../services/node.service";
+import type { Institution } from "../../types/node.types";
 
 interface Props {
   data: {
@@ -21,107 +23,113 @@ interface Props {
   } | null;
 }
 
+type BreakType = "lunch" | "short-break";
+type InstitutionData = Institution["data"];
+
 type InstitutionFormData = {
-  name: string;
-  code: string;
+  label: string;
+
   startTime: string;
   endTime: string;
-  periodDuration: number;
   numberOfPeriods: number;
-  workingDays: string;
-  lunchStartTime: string;
-  lunchEndTime: string;
+
+  workingDays: string[];
+
+  breaks: {
+    type: BreakType;
+    startTime: string;
+    endTime: string;
+  }[];
 };
+
+const WORKING_DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const DEFAULT_BREAKS: InstitutionFormData["breaks"] = [
+  {
+    type: "lunch",
+    startTime: "13:00",
+    endTime: "14:00",
+  },
+];
 
 const InstitutionModal = ({ data }: Props) => {
   const close = useModalStore((state) => state.close);
 
   const { getNode } = useReactFlow();
 
-  const institution = data?.id ? getNode(data.id) : undefined;
+  const institution = (data?.id ? getNode(data.id)?.data : undefined) as
+    | InstitutionData
+    | undefined;
 
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<InstitutionFormData>({
     defaultValues: {
-      name: "",
-      code: "",
-      startTime: "09:00",
-      endTime: "16:30",
-      periodDuration: 60,
-      numberOfPeriods: 7,
-      workingDays: "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
-      lunchStartTime: "13:00",
-      lunchEndTime: "14:00",
+      label: institution?.label ?? "",
+
+      startTime: institution?.time?.startTime ?? "09:00",
+      endTime: institution?.time?.endTime ?? "16:30",
+      numberOfPeriods: institution?.time?.numberOfPeriods ?? 7,
+
+      workingDays: institution?.time?.workingDays ?? WORKING_DAYS,
+
+      breaks: DEFAULT_BREAKS,
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "breaks",
   });
 
   useEffect(() => {
     if (!institution) return;
 
-    const data = institution.data;
-
-    const lunchBreak = data?.time?.breaks?.find(
-      (item: any) => item.type === "lunch",
-    );
-
     reset({
-      name: data?.name ?? data?.label ?? "",
-      code: data?.code ?? "",
+      label: institution.label ?? "",
 
-      startTime: data?.time?.startTime ?? "09:00",
+      startTime: institution.time?.startTime ?? "09:00",
 
-      endTime: data?.time?.endTime ?? "16:30",
+      endTime: institution.time?.endTime ?? "16:30",
 
-      periodDuration: data?.time?.periodDuration ?? 60,
-
-      numberOfPeriods: data?.time?.numberOfPeriods ?? 7,
+      numberOfPeriods: institution.time?.numberOfPeriods ?? 7,
 
       workingDays:
-        data?.time?.workingDays?.join(",") ??
-        "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
+        institution.time?.workingDays?.length > 0
+          ? institution.time.workingDays
+          : WORKING_DAYS,
 
-      lunchStartTime: lunchBreak?.startTime ?? "13:00",
-
-      lunchEndTime: lunchBreak?.endTime ?? "14:00",
+      breaks:
+        institution.time?.breaks?.length > 0
+          ? institution.time.breaks
+          : DEFAULT_BREAKS,
     });
   }, [institution, reset]);
 
   const handleUpdate = (formData: InstitutionFormData) => {
     if (!data?.id) return;
 
-    const workingDays = formData.workingDays
-      .split(",")
-      .map((day) => day.trim())
-      .filter(Boolean);
-
     nodeService.update(data.id, {
       data: {
-        ...institution?.data,
-
-        label: formData.name,
-
-        name: formData.name,
-        code: formData.code,
+        label: formData.label.trim(),
 
         time: {
           startTime: formData.startTime,
           endTime: formData.endTime,
-          periodDuration: formData.periodDuration,
           numberOfPeriods: formData.numberOfPeriods,
-
-          workingDays,
-
-          breaks: [
-            {
-              type: "lunch",
-              startTime: formData.lunchStartTime,
-              endTime: formData.lunchEndTime,
-            },
-          ],
+          workingDays: formData.workingDays,
+          breaks: formData.breaks,
         },
       },
     });
@@ -132,9 +140,7 @@ const InstitutionModal = ({ data }: Props) => {
   return (
     <form onSubmit={handleSubmit(handleUpdate)}>
       <DialogHeader>
-        <DialogTitle>
-          {institution?.data?.name || institution?.data?.label || "Institution"}
-        </DialogTitle>
+        <DialogTitle>{institution?.label || "Institution"}</DialogTitle>
 
         <DialogDescription>
           Configure institution timetable settings.
@@ -142,120 +148,222 @@ const InstitutionModal = ({ data }: Props) => {
       </DialogHeader>
 
       <div className="space-y-4 py-4">
+        {/* Institution Name */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium">Institution Name</label>
+          <Label htmlFor="institution-label">Institution Name</Label>
 
           <Input
-            placeholder="Institution name"
-            {...register("name", {
+            id="institution-label"
+            placeholder="e.g. PVPSIT"
+            {...register("label", {
               required: "Institution name is required",
             })}
           />
 
-          {errors.name && (
+          {errors.label && (
             <p className="text-[10px] text-destructive">
-              {errors.name.message}
+              {errors.label.message}
             </p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium">Institution Code</label>
-
-          <Input
-            placeholder="PVPSIT"
-            {...register("code", {
-              required: "Institution code is required",
-            })}
-          />
-
-          {errors.code && (
-            <p className="text-[10px] text-destructive">
-              {errors.code.message}
-            </p>
-          )}
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Start Time</label>
-
-            <Input
-              type="time"
-              {...register("startTime", {
-                required: true,
-              })}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">End Time</label>
-
-            <Input
-              type="time"
-              {...register("endTime", {
-                required: true,
-              })}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Period Duration</label>
-
-            <Input
-              type="number"
-              min={1}
-              {...register("periodDuration", {
-                valueAsNumber: true,
-                required: true,
-              })}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium">Number of Periods</label>
-
-            <Input
-              type="number"
-              min={1}
-              {...register("numberOfPeriods", {
-                valueAsNumber: true,
-                required: true,
-              })}
-            />
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium">Working Days</label>
-
-          <Input
-            placeholder="Monday,Tuesday,Wednesday..."
-            {...register("workingDays", {
-              required: "Working days are required",
-            })}
-          />
-        </div>
-
+        {/* Working Time */}
         <div className="space-y-2">
-          <label className="text-xs font-medium">Lunch Break</label>
+          <Label>Working Time</Label>
 
           <div className="grid grid-cols-2 gap-3">
-            <Input type="time" {...register("lunchStartTime")} />
+            <div className="space-y-1">
+              <Label
+                htmlFor="institution-start-time"
+                className="text-[10px] text-muted-foreground"
+              >
+                Start Time
+              </Label>
 
-            <Input type="time" {...register("lunchEndTime")} />
+              <Input
+                id="institution-start-time"
+                type="time"
+                {...register("startTime", {
+                  required: "Start time is required",
+                })}
+              />
+            </div>
+
+            <div className="space-y-1">
+              <Label
+                htmlFor="institution-end-time"
+                className="text-[10px] text-muted-foreground"
+              >
+                End Time
+              </Label>
+
+              <Input
+                id="institution-end-time"
+                type="time"
+                {...register("endTime", {
+                  required: "End time is required",
+                })}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Number of Periods */}
+        <div className="space-y-1.5">
+          <Label htmlFor="number-of-periods">Number of Periods</Label>
+
+          <Input
+            id="number-of-periods"
+            type="number"
+            min={1}
+            {...register("numberOfPeriods", {
+              valueAsNumber: true,
+              required: "Number of periods is required",
+              min: {
+                value: 1,
+                message: "At least one period is required",
+              },
+            })}
+          />
+
+          {errors.numberOfPeriods && (
+            <p className="text-[10px] text-destructive">
+              {errors.numberOfPeriods.message}
+            </p>
+          )}
+        </div>
+
+        {/* Working Days */}
+        <div className="space-y-2">
+          <Label>Working Days</Label>
+
+          <div className="grid grid-cols-3 gap-2">
+            {WORKING_DAYS.map((day) => (
+              <label
+                key={day}
+                className="flex cursor-pointer items-center gap-2 rounded-md border px-2 py-2 text-xs"
+              >
+                <input
+                  type="checkbox"
+                  value={day}
+                  {...register("workingDays")}
+                  className="size-3.5"
+                />
+
+                <span>{day}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Breaks */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Breaks</Label>
+
+              <p className="text-[10px] text-muted-foreground">
+                Configure lunch and short breaks.
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                append({
+                  type: "short-break",
+                  startTime: "11:00",
+                  endTime: "11:15",
+                })
+              }
+            >
+              Add Break
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            {fields.map((field, index) => (
+              <div key={field.id} className="rounded-md border p-3">
+                <div className="grid grid-cols-[1fr_1fr_1fr_auto] items-end gap-2">
+                  {/* Type */}
+                  <div className="space-y-1">
+                    <Label className="text-[10px] text-muted-foreground">
+                      Type
+                    </Label>
+
+                    <select
+                      {...register(`breaks.${index}.type`)}
+                      className="h-9 w-full rounded-md border bg-background px-2 text-xs"
+                    >
+                      <option value="lunch">Lunch</option>
+
+                      <option value="short-break">Short Break</option>
+                    </select>
+                  </div>
+
+                  {/* Start */}
+                  <div className="space-y-1">
+                    <Label className="text-[10px] text-muted-foreground">
+                      Start
+                    </Label>
+
+                    <Input
+                      type="time"
+                      {...register(`breaks.${index}.startTime`, {
+                        required: "Start time is required",
+                      })}
+                    />
+                  </div>
+
+                  {/* End */}
+                  <div className="space-y-1">
+                    <Label className="text-[10px] text-muted-foreground">
+                      End
+                    </Label>
+
+                    <Input
+                      type="time"
+                      {...register(`breaks.${index}.endTime`, {
+                        required: "End time is required",
+                      })}
+                    />
+                  </div>
+
+                  {/* Remove */}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => remove(index)}
+                    className="h-9 w-9 text-muted-foreground hover:text-destructive"
+                  >
+                    ×
+                  </Button>
+                </div>
+              </div>
+            ))}
+
+            {fields.length === 0 && (
+              <div className="rounded-md border border-dashed py-5 text-center">
+                <p className="text-xs text-muted-foreground">
+                  No breaks configured
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       <DialogFooter>
-        <Button type="button" variant="outline" onClick={close}>
-          Cancel
-        </Button>
+        <div className="flex items-center justify-end gap-2">
+          <Button type="button" variant="outline" onClick={close}>
+            Cancel
+          </Button>
 
-        <Button type="submit">Save</Button>
+          <Button type="submit">Save</Button>
+        </div>
       </DialogFooter>
     </form>
   );

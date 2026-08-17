@@ -18,7 +18,7 @@ const DesignerPalette = () => {
 
   return (
     <TooltipProvider delay={150}>
-      <div className="group relative -left-2 top-15 transition-all duration-150 hover:w-full">
+      <div className="group relative -left-2 top-15 transition-all space-y-5 duration-150 hover:w-full">
         <Card className="flex h-full flex-col gap-2 p-1">
           <div className="flex flex-col space-y-1">
             {Object.entries(designerNodes).map(([type, node]) => {
@@ -30,7 +30,7 @@ const DesignerPalette = () => {
                     <div
                       draggable
                       onDragStart={(event) => onDragStart(event, type)}
-                      className="flex cursor-grab items-center gap-2 rounded-lg border p-1 shadow-sm transition-all hover:bg-muted active:cursor-grabbing"
+                      className="flex cursor-grab items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted active:cursor-grabbing"
                     >
                       <div className="rounded-md p-0.5">
                         <Icon className={`size-7 ${node.color}`} />
@@ -43,30 +43,29 @@ const DesignerPalette = () => {
               );
             })}
           </div>
+        </Card>
+        <Card className="flex h-full flex-col gap-2 p-1">
+          <div className="flex flex-col space-y-1">
+            {catalogItems.map((item) => {
+              const Icon = item.icon;
 
-          <div className="border-t pt-2">
-            <div className="flex flex-col space-y-1">
-              {catalogItems.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <Tooltip key={item.type}>
-                    <TooltipTrigger>
-                      <div
-                        onClick={() => handleOpenModal(item.type)}
-                        className="flex cursor-pointer items-center gap-2 rounded-lg border p-1 shadow-sm transition-all hover:bg-muted"
-                      >
-                        <div className="rounded-md p-0.5">
-                          <Icon className={`size-7 ${item.color}`} />
-                        </div>
+              return (
+                <Tooltip key={item.type}>
+                  <TooltipTrigger>
+                    <div
+                      onClick={() => handleOpenModal(item.type)}
+                      className="flex cursor-pointer items-center gap-2 rounded-lg p-1 shadow-sm transition-all hover:bg-muted"
+                    >
+                      <div className="rounded-md p-0.5">
+                        <Icon className={`size-7 ${item.color}`} />
                       </div>
-                    </TooltipTrigger>
+                    </div>
+                  </TooltipTrigger>
 
-                    <TooltipContent side="right">{item.title}</TooltipContent>
-                  </Tooltip>
-                );
-              })}
-            </div>
+                  <TooltipContent side="right">{item.title}</TooltipContent>
+                </Tooltip>
+              );
+            })}
           </div>
         </Card>
       </div>

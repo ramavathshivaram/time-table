@@ -1,6 +1,4 @@
 import { memo } from "react";
-
-import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 
 import {
@@ -16,7 +14,7 @@ import { designerControls } from "../../constants/designer-controls";
 import { useDesignerControls } from "../../hooks/useDesignerControls";
 
 const iconButtonClass =
-  "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all duration-200";
+  "h-9 w-9 p-0 flex items-center justify-center rounded-md transition-all hover:bg-muted duration-200";
 
 const DesignerControls = () => {
   const {
@@ -59,8 +57,6 @@ const DesignerControls = () => {
               <Tooltip key={control.id}>
                 <TooltipTrigger>
                   <div
-                    variant="outline"
-                    size="icon"
                     disabled={disabled}
                     className={cn(iconButtonClass, control.className)}
                     onClick={actions[control.id]}

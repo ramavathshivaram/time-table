@@ -7,8 +7,8 @@ import { Label } from "@/shared/ui/label";
 
 import type { Faculty } from "../../../types";
 import { facultyService } from "../../../services/faculty.service";
-
-import SelectSubjectIds from "../common/SelectSubjectIds";
+import SelectResourceIds from "../common/SelectResourceIds";
+import { subjectService } from "@/features/timetable-designer/services/subject.service";
 
 interface Props {
   onSave: () => void;
@@ -124,7 +124,21 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
         <div className="space-y-1.5">
           <Label>Subjects</Label>
 
-          <SelectSubjectIds setSelectedSubjectIds={setSelectedSubjectIds} />
+          <SelectResourceIds
+            getAll={subjectService.getAll}
+            initialSelectedIds={[...selectedSubjectIds]}
+            setSelectedIds={setSelectedSubjectIds}
+            placeholder="Search subjects..."
+            renderMeta={(subject) => (
+              <>
+                {subject.code}
+
+                {" • "}
+
+                {subject.labDetails?.isLab ? "Laboratory" : "Theory"}
+              </>
+            )}
+          />
         </div>
 
         {/* Unavailable Periods */}

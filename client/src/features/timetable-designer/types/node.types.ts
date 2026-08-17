@@ -1,103 +1,76 @@
-export interface Institution {
-  id: string;
-  name: string;
-  code: string;
+interface Time {
+  startTime?: string;
+  endTime?: string;
+  numberOfPeriods?: number;
 
-  time: {
+  workingDays?: string[];
+
+  breaks?: {
+    type: "lunch" | "short-break";
     startTime: string;
     endTime: string;
-    periodDuration: number;
-    numberOfPeriods: number;
+  }[];
+}
 
-    workingDays: string[];
+interface Resources {
+  facultyIds?: string[];
+  subjectIds?: string[];
+  roomIds?: string[];
+}
 
-    breaks: {
-      type: "lunch" | "short-break";
-      startTime: string;
-      endTime: string;
-    }[];
+interface Position {
+  x: number;
+  y: number;
+}
+
+export interface Institution {
+  id: string;
+  position?: { x: number; y: number };
+  data: {
+    label: string;
+
+    time: Time;
   };
 }
 
 export interface Program {
   id: string;
-  name: string;
-  code: string;
+  position?: Position;
 
-  time?: {
-    startTime?: string;
-    endTime?: string;
-    periodDuration?: number;
-    numberOfPeriods?: number;
+  data: {
+    label: string;
 
-    workingDays?: string[];
-
-    breaks?: {
-      type: "lunch" | "short-break";
-      startTime: string;
-      endTime: string;
-    }[];
-  };
-
-  resources?: {
-    facultyIds?: string[];
-    subjectIds?: string[];
-    roomIds?: string[];
+    time?: Time;
+    resources?: Resources;
   };
 }
 
 export interface AcademicYear {
   id: string;
-  name: string;
+  position?: Position;
 
-  year: number;
-  semester: number;
+  data: {
+    label: string;
 
-  time?: {
-    startTime?: string;
-    endTime?: string;
-    periodDuration?: number;
-    numberOfPeriods?: number;
+    year: number;
 
-    workingDays?: string[];
+    time?: Time;
 
-    breaks?: {
-      type: "lunch" | "short-break";
-      startTime: string;
-      endTime: string;
-    }[];
-  };
-
-  resources?: {
-    facultyIds?: string[];
-    subjectIds?: string[];
-    roomIds?: string[];
+    resources?: Resources;
   };
 }
 
 export interface Section {
   id: string;
-  name: string;
-  strength: number;
+  position?: Position;
 
-  time?: {
-    startTime?: string;
-    endTime?: string;
-    periodDuration?: number;
-    numberOfPeriods?: number;
+  data: {
+    label: string;
+    section: string;
+    strength: number;
 
-    workingDays?: string[];
+    time?: Time;
 
-    breaks?: {
-      type: "lunch" | "short-break";
-      startTime: string;
-      endTime: string;
-    }[];
-  };
-
-  resources?: {
-    facultyIds?: string[];
-    subjectIds?: string[];
-    roomIds?: string[];
+    resources?: Resources;
   };
 }

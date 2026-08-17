@@ -1,21 +1,25 @@
 import { memo } from "react";
-import { CalendarDays, Clock3 } from "lucide-react";
 
 import DesignerNode from "./DesignerNode";
-import { NodeInfo } from "./NodeInfo";
 
 interface InstitutionNodeProps {
   data: {
-    name?: string;
-    code?: string;
+    label: string;
+
     time?: {
       startTime?: string;
       endTime?: string;
-      periodDuration?: number;
       numberOfPeriods?: number;
       workingDays?: string[];
+
+      breaks?: {
+        type: "lunch" | "short-break";
+        startTime: string;
+        endTime: string;
+      }[];
     };
   };
+
   isConnectable?: boolean;
   selected?: boolean;
 }
@@ -25,36 +29,16 @@ const InstitutionNode = ({
   isConnectable,
   selected,
 }: InstitutionNodeProps) => {
+  const time = data.time;
+
   return (
     <DesignerNode
       type="institution"
-      label={data?.name}
-      subLabel={data?.code}
+      label={data.label}
       selected={selected}
       showSource
       sourceConnectable={isConnectable}
-    >
-      <div className="space-y-1.5">
-        {data?.time?.startTime && data?.time?.endTime && (
-          <NodeInfo icon={Clock3}>
-            {data.time.startTime} – {data.time.endTime}
-          </NodeInfo>
-        )}
-
-        {data?.time?.periodDuration && (
-          <NodeInfo icon={Clock3}>
-            {data.time.periodDuration} min × {data.time.numberOfPeriods ?? 0}{" "}
-            periods
-          </NodeInfo>
-        )}
-
-        {data?.time?.workingDays && (
-          <NodeInfo icon={CalendarDays}>
-            {data.time.workingDays.length} working days
-          </NodeInfo>
-        )}
-      </div>
-    </DesignerNode>
+    ></DesignerNode>
   );
 };
 

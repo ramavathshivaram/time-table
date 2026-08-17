@@ -8,7 +8,8 @@ import { Label } from "@/shared/ui/label";
 import { useDesignerStore } from "../../../store/designer.store";
 import { facultyService } from "../../../services/faculty.service";
 
-import SelectSubjectIds from "../common/SelectSubjectIds";
+import { subjectService } from "@/features/timetable-designer/services/subject.service";
+import SelectResourceIds from "../common/SelectResourceIds";
 
 interface Props {
   facultyId: string;
@@ -125,9 +126,20 @@ const EditFacultyForm = ({ facultyId, onSave, onCancel }: Props) => {
         <div className="space-y-1.5">
           <Label>Subjects</Label>
 
-          <SelectSubjectIds
+          <SelectResourceIds
+            getAll={subjectService.getAll}
             initialSelectedIds={faculty?.subjectIds}
-            setSelectedSubjectIds={setSelectedSubjectIds}
+            setSelectedIds={setSelectedSubjectIds}
+            placeholder="Search subjects..."
+            renderMeta={(subject) => (
+              <>
+                {subject.code}
+
+                {" • "}
+
+                {subject.labDetails?.isLab ? "Laboratory" : "Theory"}
+              </>
+            )}
           />
         </div>
 

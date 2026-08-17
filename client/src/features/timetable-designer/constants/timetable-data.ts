@@ -18,16 +18,14 @@ export const timetableData = {
         id: "institution-1",
         type: "institution",
         position: { x: 100, y: 220 },
+
         data: {
           label: "PVPSIT",
-
-          name: "Prasad V. Potluri Siddhartha Institute of Technology",
-          code: "PVPSIT",
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
+
             numberOfPeriods: 7,
 
             workingDays: [
@@ -49,21 +47,17 @@ export const timetableData = {
           },
         },
       },
-
       {
         id: "program-cse",
         type: "program",
         position: { x: 100, y: 340 },
+
         data: {
           label: "Computer Science & Engineering",
-
-          name: "Computer Science & Engineering",
-          code: "CSE",
 
           time: {
             startTime: "09:00",
             endTime: "17:00",
-            periodDuration: 60,
             numberOfPeriods: 7,
 
             workingDays: [
@@ -91,7 +85,6 @@ export const timetableData = {
           },
         },
       },
-
       {
         id: "cse-year-1",
         type: "academic-year",

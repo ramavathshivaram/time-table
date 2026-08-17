@@ -1,53 +1,41 @@
 import { memo, useState } from "react";
 
-import { Button } from "@/shared/ui/button";
-
 import RoomList from "./RoomList";
 import AddRoomForm from "./AddRoomForm";
 import EditRoomForm from "./EditRoomForm";
 
 const Rooms = () => {
-  const [type, setType] = useState<"list" | "add-form" | "edit-form">("list");
-  const [roomId, setRoomId] = useState<string | null>(null);
+  const [view, setView] = useState<"list" | "add" | "edit">("list");
+  const [roomId, setRoomId] = useState("");
+
+  const handleEdit = (id: string) => {
+    setRoomId(id);
+    setView("edit");
+  };
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {type === "list" && (
-        <>
-          <div className="flex items-center justify-between border-b pb-3">
-            <h2 className="text-sm font-semibold">Rooms</h2>
-
-            <Button size="sm" onClick={() => setType("add-form")}>
-              Add Room
-            </Button>
-          </div>
-
-          <RoomList
-            onEdit={(room_id) => {
-              setRoomId(room_id);
-              setType("edit-form");
-            }}
-          />
-        </>
+      {view === "list" && (
+        <RoomList onAdd={() => setView("add")} onEdit={handleEdit} />
       )}
 
-      {type === "add-form" && (
+      {view === "add" && (
         <AddRoomForm
-          onCancel={() => setType("list")}
-          onSave={() => setType("list")}
+          onCancel={() => setView("list")}
+          onSave={() => setView("list")}
         />
       )}
 
-      {type === "edit-form" && roomId && (
+      {view === "edit" && (
         <EditRoomForm
           roomId={roomId}
           onCancel={() => {
-            setRoomId(null);
-            setType("list");
+            setRoomId("");
+            setView("list");
           }}
           onSave={() => {
-            setRoomId(null);
-            setType("list");
+            setRoomId("");
+            setView("list");
           }}
         />
       )}

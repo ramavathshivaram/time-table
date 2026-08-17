@@ -20,9 +20,7 @@ export const facultyService = {
   },
 
   getById: async (id: string) => {
-    const faculty = useDesignerStore.getState().getFaculty(id);
-
-    return faculty;
+    return useDesignerStore.getState().getFaculty(id);
   },
 
   add: async (faculty: Faculty) => {
@@ -30,13 +28,10 @@ export const facultyService = {
   },
 
   update: async (id: string, data: Partial<Faculty>) => {
-    console.log("Update faculty on server", id, data);
     useDesignerStore.getState().updateFaculty(id, data);
   },
 
   remove: async (id: string) => {
-    // TODO: API request
-
     useDesignerStore.getState().removeFaculty(id);
 
     return id;
