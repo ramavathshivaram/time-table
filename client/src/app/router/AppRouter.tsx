@@ -15,6 +15,7 @@ const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import SocketProvider from "../providers/SocketProvider";
 
 const TimetablesPage = lazy(() => import("@/pages/TimetablesPage"));
 const TimetableDesignerPage = lazy(
@@ -48,7 +49,11 @@ const AppRouter = () => {
 
           <Route
             path="/timetables/designer"
-            element={<TimetableDesignerPage />}
+            element={
+              <SocketProvider>
+                <TimetableDesignerPage />
+              </SocketProvider>
+            }
           />
         </Route>
 
