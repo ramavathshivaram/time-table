@@ -1,3 +1,4 @@
+import { facultyService } from "./faculty/faculty.service.js";
 import { roomService } from "./room/room.service.js";
 import { subjectService } from "./subject/subject.service.js";
 import { timetableDesignerRepository } from "./timetable-designer.repository.js";
@@ -23,13 +24,17 @@ export const timetableDesignerService = {
       timetableDesigner._id.toString(),
     );
 
+    const faculties = await facultyService.getAll(
+      timetableDesigner._id.toString(),
+    );
+
     return {
       ...timetableDesigner,
 
       nodes: timetableDesigner.nodes ?? [],
       edges: timetableDesigner.edges ?? [],
 
-      faculties: timetableDesigner.faculties ?? [],
+      faculties: faculties ?? [],
       subjects: subjects ?? [],
       rooms: rooms ?? [],
     };

@@ -2,7 +2,7 @@ import { Worker, Job, UnrecoverableError } from "bullmq";
 
 import redis from "#configs/redis.js";
 import logger from "#configs/logger.js";
-import { subjectProcessor } from "./subject.processor.js";
+import { subjectProcessor } from "#features/timetable-designer/subject/subject.processor.js";
 
 const subjectJob = async (job: Job) => {
   try {

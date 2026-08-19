@@ -49,14 +49,9 @@ export const subjectRepository = {
   // UPDATE
   // -----------------------------------------
 
-  updateById: async (
-    designerId: string,
-    id: string,
-    data: Partial<Subject>,
-  ) => {
+  updateById: async (id: string, data: Partial<Subject>) => {
     return SubjectModel.findOneAndUpdate(
       {
-        designerId,
         id,
       },
       {
@@ -73,9 +68,8 @@ export const subjectRepository = {
   // DELETE
   // -----------------------------------------
 
-  deleteById: async (designerId: string, id: string) => {
+  deleteById: async (id: string) => {
     const result = await SubjectModel.deleteOne({
-      designerId,
       id,
     });
 

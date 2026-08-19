@@ -1,5 +1,6 @@
-import { Room } from "#features/timetable-designer/room/room.model.js";
-import { roomRepository } from "#features/timetable-designer/room/room.repository.js";
+import { Room } from "./room.model.js";
+import { roomRepository } from "./room.repository.js";
+
 
 export const roomProcessor = {
   add: async (room: Room) => {

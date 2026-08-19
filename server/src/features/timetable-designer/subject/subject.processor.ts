@@ -1,5 +1,5 @@
-import { Subject } from "#features/timetable-designer/subject/subject.model.js";
-import { subjectRepository } from "#features/timetable-designer/subject/subject.repository.js";
+import { Subject } from "./subject.model.js";
+import { subjectRepository } from "./subject.repository.js";
 
 export const subjectProcessor = {
   add: async (subject: Subject) => {

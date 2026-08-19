@@ -25,7 +25,7 @@ const SectionNode = ({ data, isConnectable, selected }: SectionNodeProps) => {
       subLabel="Section"
       selected={selected}
       showTarget
-      showSource
+      showSource={false}
       sourceConnectable={isConnectable}
     ></DesignerNode>
   );

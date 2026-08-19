@@ -1,8 +1,9 @@
-import { useDesignerStore } from "../store/designer.store";
 import type { Faculty } from "../types";
+import { useDesignerStore } from "../store/designer.store";
+import { facultySocket } from "../socket/faculty.socket";
 
 export const facultyService = {
-  getAll: async (query: string = "") => {
+  getAll: (query = ""): Faculty[] => {
     const faculties = useDesignerStore.getState().getFaculties();
 
     const search = query.trim().toLowerCase();
@@ -19,21 +20,35 @@ export const facultyService = {
     );
   },
 
-  getById: async (id: string) => {
-    return useDesignerStore.getState().getFaculty(id);
+  getById: (facultyId: string) => {
+    return useDesignerStore.getState().getFaculty(facultyId);
   },
 
   add: async (faculty: Faculty) => {
     useDesignerStore.getState().addFaculty(faculty);
+
+    facultySocket.create(useDesignerStore.getState().designerId, faculty);
+
+    return faculty;
   },
 
-  update: async (id: string, data: Partial<Faculty>) => {
-    useDesignerStore.getState().updateFaculty(id, data);
+  update: async (facultyId: string, data: Partial<Faculty>) => {
+    useDesignerStore.getState().updateFaculty(facultyId, data);
+
+    facultySocket.update(
+      useDesignerStore.getState().designerId,
+      facultyId,
+      data,
+    );
+
+    return data;
   },
 
-  remove: async (id: string) => {
-    useDesignerStore.getState().removeFaculty(id);
+  remove: async (facultyId: string) => {
+    useDesignerStore.getState().removeFaculty(facultyId);
 
-    return id;
+    facultySocket.delete(useDesignerStore.getState().designerId, facultyId);
+
+    return facultyId;
   },
 };

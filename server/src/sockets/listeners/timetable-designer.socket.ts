@@ -1,45 +1,29 @@
 import type { Server, Socket } from "socket.io";
 
-import logger from "#configs/logger.js";
-
 import { timetableDesignerService } from "#features/timetable-designer/timetable-designer.service.js";
+import { asyncSocketHandler } from "../lib/async-socket-handler.js";
+import { errors } from "#utils/errors.js";
 
 export const registerTimetableDesignerListeners = (
   io: Server,
   socket: Socket,
 ) => {
-  socket.on("timetable-designer:get", async (payload, callback) => {
-    try {
+  socket.on(
+    "timetable-designer:get",
+    asyncSocketHandler("timetable-designer:get", async (payload, callback) => {
       const { timetableId } = payload;
 
       if (!timetableId) {
-        callback?.({
-          success: false,
-          message: "Timetable ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Missing timetableId");
       }
 
       const timetableDesigner =
         await timetableDesignerService.getOrCreate(timetableId);
 
-      console.log(timetableDesigner);
-
-      callback?.({
+      callback({
         success: true,
         data: timetableDesigner,
       });
-    } catch (error) {
-      logger.error("timetable-designer:get failed", error);
-
-      callback?.({
-        success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Failed to get timetable designer",
-      });
-    }
-  });
+    }),
+  );
 };

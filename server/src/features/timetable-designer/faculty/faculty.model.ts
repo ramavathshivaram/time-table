@@ -8,7 +8,7 @@ const facultySchema = new Schema(
       unique: true,
       index: true,
     },
-    
+
     designerId: {
       type: String,
       required: true,
@@ -50,6 +50,6 @@ const facultySchema = new Schema(
   },
 );
 
-export type FacultyDocument = InferSchemaType<typeof facultySchema>;
+export type Faculty = InferSchemaType<typeof facultySchema>;
 
 export const FacultyModel = model("Faculty", facultySchema);

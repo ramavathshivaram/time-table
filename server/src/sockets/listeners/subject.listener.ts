@@ -1,80 +1,43 @@
 import type { Server, Socket } from "socket.io";
 
-import logger from "#configs/logger.js";
 import { subjectService } from "#features/timetable-designer/subject/subject.service.js";
+import { asyncSocketHandler } from "../lib/async-socket-handler.js";
+import { errors } from "#utils/errors.js";
 
 export const registerSubjectListeners = (io: Server, socket: Socket) => {
-  // -----------------------------------------
-  // CREATE
-  // -----------------------------------------
-
-  socket.on("subject:create", async (payload, callback) => {
-    try {
-      logger.info(`subject:create | socket=${socket.id}`);
-
+  socket.on(
+    "subject:create",
+    asyncSocketHandler("subject:create", async (payload, callback) => {
       const { designerId, subject } = payload;
 
       if (!designerId) {
-        callback?.({
-          success: false,
-          message: "Designer ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Designer ID is required");
       }
 
       if (!subject) {
-        callback?.({
-          success: false,
-          message: "Subject data is required",
-        });
-
-        return;
+        throw errors.badRequest("Subject is required");
       }
 
       const createdSubject = await subjectService.create(designerId, subject);
 
-      callback?.({
+      callback({
         success: true,
         data: createdSubject,
       });
-    } catch (error) {
-      logger.error("subject:create failed", error);
+    }),
+  );
 
-      callback?.({
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to create subject",
-      });
-    }
-  });
-
-  // -----------------------------------------
-  // UPDATE
-  // -----------------------------------------
-
-  socket.on("subject:update", async (payload, callback) => {
-    try {
-      logger.info(`subject:update | socket=${socket.id}`);
-
+  socket.on(
+    "subject:update",
+    asyncSocketHandler("subject:update", async (payload, callback) => {
       const { designerId, subjectId, data } = payload;
 
       if (!designerId) {
-        callback?.({
-          success: false,
-          message: "Designer ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Designer ID is required");
       }
 
       if (!subjectId) {
-        callback?.({
-          success: false,
-          message: "Subject ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Subject ID is required");
       }
 
       const updatedSubject = await subjectService.update(
@@ -84,82 +47,41 @@ export const registerSubjectListeners = (io: Server, socket: Socket) => {
       );
 
       if (!updatedSubject) {
-        callback?.({
-          success: false,
-          message: "Subject not found",
-        });
-
-        return;
+        throw errors.internal("Failed to update subject");
       }
 
-      callback?.({
+      callback({
         success: true,
         data: updatedSubject,
       });
-    } catch (error) {
-      logger.error("subject:update failed", error);
+    }),
+  );
 
-      callback?.({
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to update subject",
-      });
-    }
-  });
-
-  // -----------------------------------------
-  // DELETE
-  // -----------------------------------------
-
-  socket.on("subject:delete", async (payload, callback) => {
-    try {
-      logger.info(`subject:delete | socket=${socket.id}`);
-
+  socket.on(
+    "subject:delete",
+    asyncSocketHandler("subject:delete", async (payload, callback) => {
       const { designerId, subjectId } = payload;
 
       if (!designerId) {
-        callback?.({
-          success: false,
-          message: "Designer ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Designer ID is required");
       }
 
       if (!subjectId) {
-        callback?.({
-          success: false,
-          message: "Subject ID is required",
-        });
-
-        return;
+        throw errors.badRequest("Subject ID is required");
       }
 
       const deleted = await subjectService.delete(designerId, subjectId);
 
       if (!deleted) {
-        callback?.({
-          success: false,
-          message: "Subject not found",
-        });
-
-        return;
+        throw errors.internal("Failed to delete subject");
       }
 
-      callback?.({
+      callback({
         success: true,
         data: {
           subjectId,
         },
       });
-    } catch (error) {
-      logger.error("subject:delete failed", error);
-
-      callback?.({
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to delete subject",
-      });
-    }
-  });
+    }),
+  );
 };
