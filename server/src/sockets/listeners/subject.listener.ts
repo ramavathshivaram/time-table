@@ -7,7 +7,7 @@ import { errors } from "#utils/errors.js";
 export const registerSubjectListeners = (io: Server, socket: Socket) => {
   socket.on(
     "subject:create",
-    asyncSocketHandler("subject:create", async (payload, callback) => {
+    asyncSocketHandler("subject:create", async (payload) => {
       const { designerId, subject } = payload;
 
       if (!designerId) {
@@ -18,18 +18,13 @@ export const registerSubjectListeners = (io: Server, socket: Socket) => {
         throw errors.badRequest("Subject is required");
       }
 
-      const createdSubject = await subjectService.create(designerId, subject);
-
-      callback({
-        success: true,
-        data: createdSubject,
-      });
+      return subjectService.create(designerId, subject);
     }),
   );
 
   socket.on(
     "subject:update",
-    asyncSocketHandler("subject:update", async (payload, callback) => {
+    asyncSocketHandler("subject:update", async (payload) => {
       const { designerId, subjectId, data } = payload;
 
       if (!designerId) {
@@ -50,16 +45,13 @@ export const registerSubjectListeners = (io: Server, socket: Socket) => {
         throw errors.internal("Failed to update subject");
       }
 
-      callback({
-        success: true,
-        data: updatedSubject,
-      });
+      return updatedSubject;
     }),
   );
 
   socket.on(
     "subject:delete",
-    asyncSocketHandler("subject:delete", async (payload, callback) => {
+    asyncSocketHandler("subject:delete", async (payload) => {
       const { designerId, subjectId } = payload;
 
       if (!designerId) {
@@ -76,12 +68,9 @@ export const registerSubjectListeners = (io: Server, socket: Socket) => {
         throw errors.internal("Failed to delete subject");
       }
 
-      callback({
-        success: true,
-        data: {
-          subjectId,
-        },
-      });
+      return {
+        subjectId,
+      };
     }),
   );
 };

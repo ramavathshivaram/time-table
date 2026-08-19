@@ -10,7 +10,7 @@ export const registerTimetableDesignerListeners = (
 ) => {
   socket.on(
     "timetable-designer:get",
-    asyncSocketHandler("timetable-designer:get", async (payload, callback) => {
+    asyncSocketHandler("timetable-designer:get", async (payload) => {
       const { timetableId } = payload;
 
       if (!timetableId) {
@@ -20,10 +20,7 @@ export const registerTimetableDesignerListeners = (
       const timetableDesigner =
         await timetableDesignerService.getOrCreate(timetableId);
 
-      callback({
-        success: true,
-        data: timetableDesigner,
-      });
+      return timetableDesigner;
     }),
   );
 };

@@ -26,7 +26,6 @@ export const roomService = {
   add: async (room: Room) => {
     useDesignerStore.getState().addRoom(room);
 
-    // TODO: API
     roomSocket.create(useDesignerStore.getState().designerId, room);
     return room;
   },
@@ -34,7 +33,6 @@ export const roomService = {
   update: async (roomId: string, roomData: Room) => {
     useDesignerStore.getState().updateRoom(roomId, roomData);
 
-    // TODO: API
     roomSocket.update(useDesignerStore.getState().designerId, roomId, roomData);
     return roomData;
   },
@@ -42,7 +40,6 @@ export const roomService = {
   remove: async (roomId: string) => {
     useDesignerStore.getState().removeRoom(roomId);
 
-    // TODO: API
     roomSocket.delete(useDesignerStore.getState().designerId, roomId);
   },
 };

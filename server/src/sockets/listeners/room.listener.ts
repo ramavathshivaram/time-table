@@ -7,21 +7,16 @@ import { errors } from "#utils/errors.js";
 export const registerRoomListeners = (io: Server, socket: Socket) => {
   socket.on(
     "room:create",
-    asyncSocketHandler("room:create", async (payload, callback) => {
+    asyncSocketHandler("room:create", async (payload) => {
       const { designerId, room } = payload;
 
-      const createdRoom = await roomService.create(designerId, room);
-
-      callback({
-        success: true,
-        data: createdRoom,
-      });
+      return roomService.create(designerId, room);
     }),
   );
 
   socket.on(
     "room:update",
-    asyncSocketHandler("room:update", async (payload, callback) => {
+    asyncSocketHandler("room:update", async (payload) => {
       const { designerId, roomId, data } = payload;
 
       const updatedRoom = await roomService.update(designerId, roomId, data);
@@ -30,16 +25,13 @@ export const registerRoomListeners = (io: Server, socket: Socket) => {
         throw errors.internal("Failed to update room");
       }
 
-      callback({
-        success: true,
-        data: updatedRoom,
-      });
+      return updatedRoom;
     }),
   );
 
   socket.on(
     "room:delete",
-    asyncSocketHandler("room:delete", async (payload, callback) => {
+    asyncSocketHandler("room:delete", async (payload) => {
       const { designerId, roomId } = payload;
 
       const deleted = await roomService.delete(designerId, roomId);
@@ -48,12 +40,7 @@ export const registerRoomListeners = (io: Server, socket: Socket) => {
         throw errors.internal("Failed to delete room");
       }
 
-      callback({
-        success: true,
-        data: {
-          roomId,
-        },
-      });
+      return { roomId };
     }),
   );
 };

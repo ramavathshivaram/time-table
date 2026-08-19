@@ -8,10 +8,9 @@ export interface SocketResponse<T = unknown> {
 
 export type SocketCallback<T = unknown> = (response: SocketResponse<T>) => void;
 
-export type SocketHandler<TPayload, TResult = unknown> = (
+export type SocketHandler<TPayload, TResult> = (
   payload: TPayload,
-  callback: SocketCallback<TResult>,
-) => Promise<void>;
+) => Promise<TResult>;
 
 export const asyncSocketHandler = <TPayload, TResult = unknown>(
   event: string,
@@ -19,11 +18,20 @@ export const asyncSocketHandler = <TPayload, TResult = unknown>(
 ) => {
   return async (payload: TPayload, callback: SocketCallback<TResult>) => {
     try {
-      logger.info(`${event}`);
+      logger.info(event);
 
-      await handler(payload, callback);
+      const data = await handler(payload);
+
+      callback({
+        success: true,
+        data,
+      });
     } catch (error) {
-      logger.error(`${event} | error=${error}`);
+      logger.error(
+        `${event} | error=${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
 
       callback?.({
         success: false,
