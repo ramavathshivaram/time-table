@@ -21,7 +21,7 @@ const queue = new Queue("room", {
 
 export const roomQueue = {
   add: async (designerId: string, room: Room) => {
-    return queue.add("add", {
+    return queue.add("create", {
       designerId,
       room,
     });

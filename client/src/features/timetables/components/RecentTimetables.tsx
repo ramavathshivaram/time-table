@@ -39,20 +39,20 @@ const RecentTimetables = () => {
   }
 
   return (
-    <section className="space-y-4 bg-muted/40 p-3 rounded-xl">
+    <section className="space-y-2">
       {/* Header */}
       <div className="flex items-center gap-2">
         <h2 className="text-lg font-semibold">Recent Timetables</h2>
 
-        <span className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">
+        <span className="rounded-md  px-2 py-1 text-xs text-muted-foreground">
           {data.length} recent
         </span>
       </div>
 
       {/* List */}
-      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto py-2 scrollbar">
+      <div className="flex snap-x snap-mandatory bg-muted/20 rounded-xl gap-3 overflow-x-auto px-2 scrollbar">
         {data.map((timetable) => (
-          <div key={timetable._id} className="shrink-0 snap-start">
+          <div key={timetable._id} className="shrink-0 snap-start p-2">
             <RecentTimetableCard timetable={timetable} />
           </div>
         ))}

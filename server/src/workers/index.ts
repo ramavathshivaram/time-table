@@ -6,8 +6,9 @@ import workerEventHandlers from "./workerEventHandlers.js";
 
 import emailWorker from "./email/email.worker.js";
 import roomWorker from "./room/room.worker.js";
+import subjectWorker from "./subject/subject.worker.js";
 
-const workerFactories = [emailWorker, roomWorker];
+const workerFactories = [emailWorker, roomWorker, subjectWorker];
 
 let workers: Worker[] = [];
 

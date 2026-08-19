@@ -2,32 +2,33 @@ import { Worker, Job, UnrecoverableError } from "bullmq";
 
 import redis from "#configs/redis.js";
 import logger from "#configs/logger.js";
+import { subjectProcessor } from "./subject.processor.js";
 
-import { roomProcessor } from "./room.processor.js";
-
-const roomJob = async (job: Job) => {
+const subjectJob = async (job: Job) => {
   try {
     switch (job.name) {
       case "create":
-        roomProcessor.add(job.data.room);
+        await subjectProcessor.add(job.data.subject);
         break;
+
       case "update":
-        roomProcessor.update(job.data.room);
+        await subjectProcessor.update(job.data.subject);
         break;
+
       case "remove":
-        roomProcessor.remove(job.data.id);
+        await subjectProcessor.remove(job.data.id);
         break;
 
       default:
-        throw new UnrecoverableError(`Unknown room job type: ${job.name}`);
+        throw new UnrecoverableError(`Unknown subject job type: ${job.name}`);
     }
   } catch (error: any) {
     const status = error?.response?.status;
 
-    logger.error("room job failed", {
+    logger.error("subject job failed", {
       jobId: job.id,
       jobName: job.name,
-      room: job.data,
+      subject: job.data,
       status,
       attemptsMade: job.attemptsMade,
       message: error?.message,
@@ -38,16 +39,18 @@ const roomJob = async (job: Job) => {
   }
 };
 
-const createroomWorker = () =>
-  new Worker("room", roomJob, {
+const createSubjectWorker = () =>
+  new Worker("subject", subjectJob, {
     connection: redis,
     concurrency: 10,
+
     removeOnComplete: {
       age: 0,
     },
+
     removeOnFail: {
       count: 100,
     },
   });
 
-export default createroomWorker;
+export default createSubjectWorker;

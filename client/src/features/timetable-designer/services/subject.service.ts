@@ -1,5 +1,6 @@
 import type { Subject } from "../types";
 import { useDesignerStore } from "../store/designer.store";
+import { subjectSocket } from "../socket/subject.socket";
 
 export const subjectService = {
   getAll: (query = ""): Subject[] => {
@@ -25,20 +26,24 @@ export const subjectService = {
   add: async (subject: Subject) => {
     useDesignerStore.getState().addSubject(subject);
 
-    // TODO: API
+    subjectSocket.create(useDesignerStore.getState().designerId, subject);
     return subject;
   },
 
-  update: async (subjectId: string, subjectData: Subject) => {
-    useDesignerStore.getState().updateSubject(subjectId, subjectData);
+  update: async (subjectId: string, subject: Subject) => {
+    useDesignerStore.getState().updateSubject(subjectId, subject);
 
-    // TODO: API
-    return subjectData;
+    subjectSocket.update(
+      useDesignerStore.getState().designerId,
+      subjectId,
+      subject,
+    );
+    return subject;
   },
 
   remove: async (subjectId: string) => {
     useDesignerStore.getState().removeSubject(subjectId);
 
-    // TODO: API
+    subjectSocket.delete(useDesignerStore.getState().designerId, subjectId);
   },
 };
