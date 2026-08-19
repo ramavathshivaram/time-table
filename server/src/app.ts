@@ -6,9 +6,9 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 
-import morganMiddleware from "#middlewares/morganMiddleware.js";
-import notFoundRoute from "#middlewares/notFoundRoute.js";
-import errorHandler from "#middlewares/errorHandler.js";
+import { httpLogger } from "#middlewares/http-logger.js";
+import { routeNotFound } from "#middlewares/route-not-found.js";
+import { errorHandler } from "#middlewares/error-handler.js";
 
 import { authenticate } from "#middlewares/authenticate.js";
 
@@ -27,7 +27,7 @@ app.set("view engine", "ejs");
 app.set("trust proxy", 1);
 
 //! Middlewares
-app.use(morganMiddleware);
+app.use(httpLogger);
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "1mb" }));
@@ -45,6 +45,6 @@ app.use("/api/user", authenticate, userRouter);
 app.use("/api/timetable", authenticate, timetableRouter);
 
 app.use(errorHandler);
-app.use(notFoundRoute);
+app.use(routeNotFound);
 
 export default app;

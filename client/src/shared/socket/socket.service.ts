@@ -1,4 +1,5 @@
 import { env } from "@/app/config/env";
+import { Token } from "@/features/auth/services/token.service";
 import { io, type Socket } from "socket.io-client";
 
 class SocketService {
@@ -13,9 +14,25 @@ class SocketService {
   }
 
   connect() {
-    if (!this.socket.connected) {
-      this.socket.connect();
+    if (this.socket.connected) return;
+
+    this.socket.auth = {
+      token: Token.getToken(),
+    };
+
+    this.socket.connect();
+  }
+
+  reconnect() {
+    if (this.socket.connected) {
+      this.socket.disconnect();
     }
+
+    this.socket.auth = {
+      token: Token.getToken(),
+    };
+
+    this.socket.connect();
   }
 
   disconnect() {
@@ -24,8 +41,22 @@ class SocketService {
     }
   }
 
+  updateToken() {
+    this.socket.auth = {
+      token: Token.getToken(),
+    };
+  }
+
   getSocket() {
     return this.socket;
+  }
+
+  get connected() {
+    return this.socket.connected;
+  }
+
+  get active() {
+    return this.socket.active;
   }
 }
 

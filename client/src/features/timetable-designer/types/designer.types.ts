@@ -76,6 +76,7 @@ export interface Message {
 }
 
 export type Designer = {
+  designerId: string;
   faculties: Faculty[];
   subjects: Subject[];
   rooms: Room[];

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { ArrowUpRightIcon } from "lucide-react";
 
 import {
@@ -8,22 +7,24 @@ import {
 } from "@/shared/ui/craft-button";
 
 import { useTimetableMutation } from "@/features/timetables/hooks/timetable.query";
+import { navigationService } from "@/shared/services/navigation.service";
 
 const Create = () => {
-  const navigate = useNavigate();
-
   const { mutateAsync: createTimetable, isPending } =
     useTimetableMutation.useCreateTimetable();
 
   const handleCreate = async () => {
     try {
-      const timetable = await createTimetable();
+      const timetable = await createTimetable(null);
+
       if (timetable.stage === "incomplete") {
-        navigate(`/timetables/designer?timetableId=${timetable._id}`);
+        navigationService.navigate(
+          `/timetables/designer?timetableId=${timetable._id}`,
+        );
         return;
       }
 
-      navigate(`/timetables/${timetable._id}`);
+      navigationService.navigate(`/timetables/${timetable._id}`);
     } catch (error) {
       console.error("Failed to create timetable:", error);
     }

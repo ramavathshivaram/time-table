@@ -10,12 +10,11 @@ interface GetTimetablesParams {
 }
 
 export const timetableRepository = {
-  create: async ({ title, userId, blueprintId }) => {
+  create: async ({ title, userId }) => {
     try {
       return await TimetableModel.create({
         title,
         userId,
-        blueprintId,
         description: getRandomDescription(),
       });
     } catch (error) {

@@ -5,6 +5,11 @@ const DAY = 24 * HOUR;
 
 export const ACCESS_TOKEN_EXPIRES_IN = 15 * MINUTE;
 
-export const REFRESH_TOKEN_EXPIRES_IN = 30 * DAY;
+export const REFRESH_TOKEN_EXPIRES_IN = 7 * DAY;
 
 export const SESSION_TTL = 7 * DAY;
+
+export const BREVO_URL = "https://api.brevo.com/v3";
+export const BREVO_EMAIL = "ramavathshiva6300@gmail.com";
+
+export const DESIGNER_TTL = HOUR;

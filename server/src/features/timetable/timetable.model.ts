@@ -32,13 +32,6 @@ const timetableSchema = new Schema(
       default: "incomplete",
       index: true,
     },
-
-    blueprintId: {
-      type: Schema.Types.ObjectId,
-      ref: "TimetableBlueprint",
-      required: true,
-      index: true,
-    },
   },
   {
     timestamps: true,

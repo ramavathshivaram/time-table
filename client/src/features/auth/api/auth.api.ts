@@ -6,7 +6,6 @@ import type {
   LoginRequest,
   RegisterRequest,
   ResetPasswordRequest,
-  VerifyEmailRequest,
 } from "../types/auth.types";
 
 export const authApi = {
@@ -28,7 +27,7 @@ export const authApi = {
   checkAuth: () => httpClient.get("/auth/me"),
 
   refreshToken: () =>
-    httpClient.get("/auth/refresh", {
+    httpClient.post("/auth/refresh", null, {
       withCredentials: true,
     }),
 

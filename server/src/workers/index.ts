@@ -4,9 +4,10 @@ import { Worker } from "bullmq";
 
 import workerEventHandlers from "./workerEventHandlers.js";
 
-import emailWorker from "./email.worker.js";
+import emailWorker from "./email/email.worker.js";
+import roomWorker from "./room/room.worker.js";
 
-const workerFactories = [emailWorker];
+const workerFactories = [emailWorker, roomWorker];
 
 let workers: Worker[] = [];
 

@@ -10,7 +10,6 @@ import type {
   LoginRequest,
   RegisterRequest,
   ResetPasswordRequest,
-  VerifyEmailRequest,
 } from "../types/auth.types";
 import type { User } from "@/shared/user/user.types";
 
@@ -111,12 +110,6 @@ export const authService = {
 
   resetPassword: async (data: ResetPasswordRequest) => {
     const { data: response } = await authApi.resetPassword(data);
-
-    return response;
-  },
-
-  verifyEmail: async (data: VerifyEmailRequest) => {
-    const { data: response } = await authApi.verifyEmail(data);
 
     return response;
   },

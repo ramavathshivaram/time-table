@@ -28,9 +28,7 @@ export const authService = {
   },
 
   login: async (data: LoginDto) => {
-    console.log(data);
     const user = await userService.findByEmailWithPassword(data.email);
-    console.log(user);
 
     const isPasswordValid = await passwordService.compare(
       data.password,
@@ -59,7 +57,6 @@ export const authService = {
   },
 
   logout: async (refreshToken: string) => {
-    console.log(refreshToken);
     await sessionService.revoke(refreshToken);
   },
 

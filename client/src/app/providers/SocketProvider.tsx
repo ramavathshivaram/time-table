@@ -3,6 +3,9 @@ import { useEffect, type ReactNode } from "react";
 import { socketService } from "@/shared/socket/socket.service";
 import { useSocketStore } from "@/shared/socket/socket.store";
 import ConnectingScreen from "@/shared/components/ConnectingScreen";
+import { toast } from "sonner";
+import { authService } from "@/features/auth/services/auth.service";
+import { navigationService } from "@/shared/services/navigation.service";
 
 interface Props {
   children: ReactNode;
@@ -21,9 +24,28 @@ const SocketProvider = ({ children }: Props) => {
 
     const handleDisconnect = () => {
       setStatus("disconnected");
+      // navigationService.navigate("/timetables");
     };
 
-    const handleConnectError = () => {
+    const handleConnectError = async (err: Error) => {
+      console.error("Socket connection error:", err);
+
+      if (err.message === "Forbidden") {
+        try {
+          await authService.refreshToken();
+
+          socketService.updateToken();
+          socketService.connect();
+
+          return;
+        } catch {
+          toast.error("Session expired. Please login again.");
+          setStatus("disconnected");
+          return;
+        }
+      }
+
+      toast.error(err.message);
       setStatus("reconnecting");
     };
 

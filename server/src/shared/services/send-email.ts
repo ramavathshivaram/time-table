@@ -1,9 +1,10 @@
 import axios from "axios";
 import logger from "#configs/logger.js";
 import env from "#configs/env.js";
+import { BREVO_EMAIL, BREVO_URL } from "#configs/constants.js";
 
 const brevoApi = axios.create({
-  baseURL: "https://api.brevo.com/v3",
+  baseURL: BREVO_URL,
   headers: {
     "api-key": env.BREVO_API_KEY,
     "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export const sendEmail = async (
     const payload = {
       sender: {
         name: "Time Table",
-        email: "ramavathshiva6300@gmail.com",
+        email: BREVO_EMAIL,
       },
       to: [{ email: toEmail }],
       subject,

@@ -27,7 +27,3 @@ export interface ResetPasswordRequest {
   token: string;
   password: string;
 }
-
-export interface VerifyEmailRequest {
-  token: string;
-}

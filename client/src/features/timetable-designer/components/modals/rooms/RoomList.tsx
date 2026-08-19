@@ -69,7 +69,7 @@ const RoomList = ({ onAdd, onEdit }: Props) => {
 
       {/* List */}
       <div className="scrollbar min-h-0 flex-1 overflow-y-auto py-3">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2">
           {filteredRooms.map((room) => (
             <RoomCard key={room.id} room={room} onEdit={onEdit} />
           ))}
