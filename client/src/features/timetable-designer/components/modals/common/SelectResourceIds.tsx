@@ -16,10 +16,6 @@ interface Props<T extends Resource> {
 
   placeholder?: string;
 
-  /**
-   * Optional secondary information shown below
-   * the resource name.
-   */
   renderMeta?: (resource: T) => ReactNode;
 }
 
@@ -45,6 +41,11 @@ const SelectResourceIds = <T extends Resource>({
     let cancelled = false;
 
     const loadSelectedResources = async () => {
+      if (initialSelectedIds.length === 0) {
+        setSelectedResources([]);
+        return;
+      }
+
       const allResources = await getAll("");
 
       if (cancelled) return;
@@ -64,7 +65,7 @@ const SelectResourceIds = <T extends Resource>({
     return () => {
       cancelled = true;
     };
-  }, [getAll, initialSelectedIds]);
+  }, [getAll, initialSelectedIds.join("|")]);
 
   /*
    * Load search results
@@ -102,13 +103,6 @@ const SelectResourceIds = <T extends Resource>({
     };
   }, [query, getAll]);
 
-  /*
-   * Notify parent whenever selection changes
-   */
-  useEffect(() => {
-    setSelectedIds(selectedResources.map((resource) => resource.id));
-  }, [selectedResources, setSelectedIds]);
-
   const isSelected = (resourceId: string) => {
     return selectedResources.some((resource) => resource.id === resourceId);
   };
@@ -118,16 +112,24 @@ const SelectResourceIds = <T extends Resource>({
       const exists = current.some((item) => item.id === resource.id);
 
       if (exists) {
-        return current.filter((item) => item.id !== resource.id);
+        const next = current.filter((item) => item.id !== resource.id);
+
+        setSelectedIds(next.map((item) => item.id));
+
+        return next;
       }
 
-      return [
+      const next = [
         ...current,
         {
           id: resource.id,
           name: resource.name,
         },
       ];
+
+      setSelectedIds(next.map((item) => item.id));
+
+      return next;
     });
 
     setQuery("");
@@ -135,18 +137,18 @@ const SelectResourceIds = <T extends Resource>({
   };
 
   const handleRemove = (resourceId: string) => {
-    setSelectedResources((current) =>
-      current.filter((resource) => resource.id !== resourceId),
-    );
+    setSelectedResources((current) => {
+      const next = current.filter((resource) => resource.id !== resourceId);
+
+      setSelectedIds(next.map((resource) => resource.id));
+
+      return next;
+    });
   };
 
   return (
     <div className="space-y-3">
       <div className="relative">
-        {/* ===================================================== */}
-        {/* Selected Resources */}
-        {/* ===================================================== */}
-
         <div className="flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border bg-background px-2 py-1.5 focus-within:ring-1 focus-within:ring-ring">
           {selectedResources.map((resource) => (
             <div
@@ -165,10 +167,6 @@ const SelectResourceIds = <T extends Resource>({
             </div>
           ))}
 
-          {/* ================================================= */}
-          {/* Search */}
-          {/* ================================================= */}
-
           <input
             type="text"
             value={query}
@@ -179,10 +177,6 @@ const SelectResourceIds = <T extends Resource>({
             className="min-w-32 flex-1 bg-transparent px-1 py-1 text-sm outline-none placeholder:text-muted-foreground"
           />
         </div>
-
-        {/* ===================================================== */}
-        {/* Search Results */}
-        {/* ===================================================== */}
 
         {query.trim() && (
           <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-md border bg-popover p-1 shadow-md">

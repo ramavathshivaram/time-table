@@ -12,15 +12,11 @@ const facultyJob = async (job: Job) => {
         break;
 
       case "update":
-        await facultyProcessor.update(
-          job.data.designerId,
-          job.data.id,
-          job.data.data,
-        );
+        await facultyProcessor.update(job.data.faculty);
         break;
 
       case "delete":
-        await facultyProcessor.remove(job.data.designerId, job.data.id);
+        await facultyProcessor.remove(job.data.facultyId);
         break;
 
       default:

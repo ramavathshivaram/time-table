@@ -1,28 +1,25 @@
 import type { Node } from "@xyflow/react";
 
+import { nodeSocket } from "../socket/node.socket";
+
 export const nodeService = {
-  add: async (node: Node) => {
-    // POST /workflows/nodes
-    console.log("Create node on server", node);
+  add: (designerId: string, node: Node) => {
+    return nodeSocket.create(designerId, node);
   },
 
-  addMany: async (nodes: Node[]) => {
-    // POST /workflows/nodes/bulk
-    console.log("Create nodes on server", nodes);
+  addMany: (designerId: string, nodes: Node[]) => {
+    return nodeSocket.createMany(designerId, nodes);
   },
 
-  update: async (id: string, data: Partial<Node>) => {
-    // PATCH /workflows/nodes/:id
-    console.log("Update node on server", id, data);
+  update: (designerId: string, nodeId: string, data: Partial<Node>) => {
+    return nodeSocket.update(designerId, nodeId, data);
   },
 
-  remove: async (id: string) => {
-    // DELETE /workflows/nodes/:id
-    console.log("Delete node on server", id);
+  remove: (designerId: string, nodeId: string) => {
+    return nodeSocket.delete(designerId, nodeId);
   },
 
-  removeMany: async (ids: string[]) => {
-    // DELETE /workflows/nodes/bulk
-    console.log("Delete nodes on server", ids);
+  removeMany: (designerId: string, nodeIds: string[]) => {
+    return nodeSocket.deleteMany(designerId, nodeIds);
   },
 };

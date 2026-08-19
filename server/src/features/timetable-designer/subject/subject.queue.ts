@@ -35,12 +35,8 @@ export const subjectQueue = {
   // UPDATE
   // -----------------------------------------
 
-  update: async (designerId: string, id: string, data: Partial<Subject>) => {
-    return queue.add("update", {
-      designerId,
-      id,
-      data,
-    });
+  update: async (subject: Partial<Subject>) => {
+    return queue.add("update", {subject});
   },
 
   // -----------------------------------------

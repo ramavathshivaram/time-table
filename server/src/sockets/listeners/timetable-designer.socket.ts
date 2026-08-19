@@ -20,6 +20,8 @@ export const registerTimetableDesignerListeners = (
       const timetableDesigner =
         await timetableDesignerService.getOrCreate(timetableId);
 
+      console.log(timetableDesigner);
+
       return timetableDesigner;
     }),
   );

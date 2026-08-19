@@ -75,10 +75,7 @@ const subjectSchema = new Schema(
         min: 1,
       },
     },
-  },
-  {
-    timestamps: true,
-  },
+  }
 );
 
 export type Subject = InferSchemaType<typeof subjectSchema>;

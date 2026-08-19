@@ -27,18 +27,15 @@ export const facultyQueue = {
     });
   },
 
-  update: async (designerId: string, id: string, data: Partial<Faculty>) => {
+  update: async (faculty: Partial<Faculty>) => {
     return queue.add("update", {
-      designerId,
-      id,
-      data,
+      faculty,
     });
   },
 
-  remove: async (designerId: string, id: string) => {
+  remove: async (facultyId: string) => {
     return queue.add("delete", {
-      designerId,
-      id,
+      facultyId,
     });
   },
 };

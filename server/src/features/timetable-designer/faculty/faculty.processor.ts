@@ -6,11 +6,11 @@ export const facultyProcessor = {
     await facultyRepository.create(faculty);
   },
 
-  update: async (designerId: string, id: string, data: Partial<Faculty>) => {
-    await facultyRepository.updateById(designerId, id, data);
+  update: async (faculty: Partial<Faculty>) => {
+    await facultyRepository.updateById(faculty.id!, faculty);
   },
 
-  remove: async (designerId: string, id: string) => {
-    await facultyRepository.deleteById(designerId, id);
+  remove: async (facultyId: string) => {
+    await facultyRepository.deleteById(facultyId);
   },
 };

@@ -126,15 +126,13 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
 
           <SelectResourceIds
             getAll={subjectService.getAll}
-            initialSelectedIds={[...selectedSubjectIds]}
+            initialSelectedIds={selectedSubjectIds}
             setSelectedIds={setSelectedSubjectIds}
             placeholder="Search subjects..."
             renderMeta={(subject) => (
               <>
                 {subject.code}
-
                 {" • "}
-
                 {subject.labDetails?.isLab ? "Laboratory" : "Theory"}
               </>
             )}

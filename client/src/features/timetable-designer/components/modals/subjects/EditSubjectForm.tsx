@@ -107,7 +107,9 @@ const EditSubjectForm = ({ subjectId, onCancel, onSave }: Props) => {
           <Input
             id="edit-subject-name"
             placeholder="e.g. Database Management Systems"
-            {...register("name")}
+            {...register("name", {
+              required: true,
+            })}
           />
         </div>
 
@@ -118,7 +120,9 @@ const EditSubjectForm = ({ subjectId, onCancel, onSave }: Props) => {
           <Input
             id="edit-subject-code"
             placeholder="e.g. CS301"
-            {...register("code")}
+            {...register("code", {
+              required: true,
+            })}
           />
         </div>
 

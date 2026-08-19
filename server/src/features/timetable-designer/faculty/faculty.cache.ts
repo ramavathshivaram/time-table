@@ -112,7 +112,7 @@ export const facultyCache = {
       .expire(redisKey, DESIGNER_TTL)
       .exec();
 
-    await facultyQueue.update(designerId, id, data);
+    await facultyQueue.update(updatedFaculty);
 
     return updatedFaculty;
   },

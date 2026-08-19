@@ -74,7 +74,9 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
           <Input
             id="room-name"
             placeholder="e.g. CSE Classroom 1"
-            {...register("name")}
+            {...register("name",{
+              required: "Room name is required",
+            })}
           />
         </div>
 
@@ -84,7 +86,9 @@ const EditRoomForm = ({ roomId, onCancel, onSave }: Props) => {
           <Input
             id="room-number"
             placeholder="e.g. CSE-101"
-            {...register("roomNumber")}
+            {...register("roomNumber", {
+              required: "Room number is required",
+            })}
           />
         </div>
 

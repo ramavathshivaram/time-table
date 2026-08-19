@@ -8,8 +8,15 @@ import emailWorker from "./email/email.worker.js";
 import roomWorker from "./room.worker.js";
 import subjectWorker from "./subject.worker.js";
 import facultyWorker from "./faculty.worker.js";
+import nodeWorker from "./node.worker.js";
 
-const workerFactories = [emailWorker, roomWorker, subjectWorker, facultyWorker];
+const workerFactories = [
+  emailWorker,
+  roomWorker,
+  subjectWorker,
+  facultyWorker,
+  nodeWorker,
+];
 
 let workers: Worker[] = [];
 

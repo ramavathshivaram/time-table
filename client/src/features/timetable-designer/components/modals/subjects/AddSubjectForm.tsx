@@ -74,23 +74,24 @@ const AddSubjectForm = ({ onSave, onCancel }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-3">
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-sm font-semibold">Add Subject</h3>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="pb-2">
+        <h3 className="font-semibold">Add Subject</h3>
 
-          <p className="text-[11px] text-muted-foreground">
-            Create a theory subject or laboratory.
-          </p>
-        </div>
-
+        <p className="text-sm text-muted-foreground">
+          Create a theory subject or laboratory.
+        </p>
+      </div>
+      <div className="space-y-4 overflow-y-auto scrollbar h-full">
         <div className="space-y-1.5">
           <Label htmlFor="subject-name">Subject Name</Label>
 
           <Input
             id="subject-name"
             placeholder="e.g. Database Management Systems"
-            {...register("name")}
+            {...register("name", {
+              required: "Subject name is required",
+            })}
           />
         </div>
 
@@ -100,7 +101,9 @@ const AddSubjectForm = ({ onSave, onCancel }: Props) => {
           <Input
             id="subject-code"
             placeholder="e.g. CS301"
-            {...register("code")}
+            {...register("code", {
+              required: "Subject code is required",
+            })}
           />
         </div>
 

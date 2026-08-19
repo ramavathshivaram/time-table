@@ -129,7 +129,7 @@ export const subjectCache = {
       .expire(redisKey, DESIGNER_TTL)
       .exec();
 
-    await subjectQueue.update(designerId, id, data);
+    await subjectQueue.update(updatedSubject);
 
     return updatedSubject;
   },

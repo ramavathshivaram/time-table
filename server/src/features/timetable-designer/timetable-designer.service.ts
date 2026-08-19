@@ -1,14 +1,14 @@
+import { edgeService } from "./edge/edge.service.js";
 import { facultyService } from "./faculty/faculty.service.js";
+import { nodeService } from "./node/node.service.js";
 import { roomService } from "./room/room.service.js";
 import { subjectService } from "./subject/subject.service.js";
+
 import { timetableDesignerRepository } from "./timetable-designer.repository.js";
 
 export const timetableDesignerService = {
   create: async (timetableId: string) => {
-    const timetableDesigner =
-      await timetableDesignerRepository.create(timetableId);
-
-    return timetableDesigner;
+    return timetableDesignerRepository.create(timetableId);
   },
 
   get: async (timetableId: string) => {
@@ -19,24 +19,25 @@ export const timetableDesignerService = {
       return null;
     }
 
-    const rooms = await roomService.getAll(timetableDesigner._id.toString());
-    const subjects = await subjectService.getAll(
-      timetableDesigner._id.toString(),
-    );
+    const designerId = timetableDesigner._id.toString();
 
-    const faculties = await facultyService.getAll(
-      timetableDesigner._id.toString(),
-    );
+    const [rooms, subjects, faculties, nodes, edges] = await Promise.all([
+      roomService.getAll(designerId),
+      subjectService.getAll(designerId),
+      facultyService.getAll(designerId),
+      nodeService.getAll(designerId),
+      edgeService.getAll(designerId),
+    ]);
 
     return {
       ...timetableDesigner,
 
-      nodes: timetableDesigner.nodes ?? [],
-      edges: timetableDesigner.edges ?? [],
-
-      faculties: faculties ?? [],
-      subjects: subjects ?? [],
       rooms: rooms ?? [],
+      subjects: subjects ?? [],
+      faculties: faculties ?? [],
+
+      nodes: nodes ?? [],
+      edges: edges ?? [],
     };
   },
 
