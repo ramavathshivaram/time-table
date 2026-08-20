@@ -6,6 +6,7 @@ import { Label } from "@/shared/ui/label";
 
 import type { Room } from "../../../types";
 import { roomService } from "@/features/timetable-designer/services/room.service";
+import { generateRoomId } from "@/features/timetable-designer/utils/generate-ids";
 
 interface Props {
   onSave: () => void;
@@ -33,7 +34,7 @@ const AddRoomForm = ({ onSave, onCancel }: Props) => {
 
   const onSubmit = (data: RoomFormData) => {
     const room: Room = {
-      id: crypto.randomUUID(),
+      id: generateRoomId(),
       name: data.name.trim() || "New Room",
       roomNumber: data.roomNumber.trim(),
       capacity: data.capacity,

@@ -1,25 +1,33 @@
 import type { Node } from "@xyflow/react";
 
 import { nodeSocket } from "../socket/node.socket";
+import { useDesignerStore } from "../store/designer.store";
 
 export const nodeService = {
-  add: (designerId: string, node: Node) => {
-    return nodeSocket.create(designerId, node);
+  add: (node: Node) => {
+    return nodeSocket.create(useDesignerStore.getState().designerId, node);
   },
 
-  addMany: (designerId: string, nodes: Node[]) => {
-    return nodeSocket.createMany(designerId, nodes);
+  addMany: (nodes: Node[]) => {
+    return nodeSocket.createMany(useDesignerStore.getState().designerId, nodes);
   },
 
-  update: (designerId: string, nodeId: string, data: Partial<Node>) => {
-    return nodeSocket.update(designerId, nodeId, data);
+  update: (nodeId: string, data: Partial<Node>) => {
+    return nodeSocket.update(
+      useDesignerStore.getState().designerId,
+      nodeId,
+      data,
+    );
   },
 
-  remove: (designerId: string, nodeId: string) => {
-    return nodeSocket.delete(designerId, nodeId);
+  remove: (nodeId: string) => {
+    return nodeSocket.delete(useDesignerStore.getState().designerId, nodeId);
   },
 
-  removeMany: (designerId: string, nodeIds: string[]) => {
-    return nodeSocket.deleteMany(designerId, nodeIds);
+  removeMany: (nodeIds: string[]) => {
+    return nodeSocket.deleteMany(
+      useDesignerStore.getState().designerId,
+      nodeIds,
+    );
   },
 };

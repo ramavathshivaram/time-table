@@ -10,8 +10,9 @@ import {
   registerRoomListeners,
   registerSubjectListeners,
   registerTimetableDesignerListeners,
+  registerNodeListeners,
+  registerEdgeListeners
 } from "./listeners/index.js";
-import { registerNodeListeners } from "./listeners/node.listener.js";
 
 export const registerSocket = (io: Server) => {
   io.use(socketAuth);
@@ -24,14 +25,11 @@ export const registerSocket = (io: Server) => {
     socketRegistry.setSocketId(userId, socket.id);
 
     registerTimetableDesignerListeners(io, socket);
-
-    registerFacultyListeners(io, socket);
-
-    registerRoomListeners(io, socket);
-
     registerNodeListeners(io, socket);
-
+    registerEdgeListeners(io, socket);
+    registerFacultyListeners(io, socket);
     registerSubjectListeners(io, socket);
+    registerRoomListeners(io, socket);
 
     socket.on("disconnect", (reason) => {
       logger.info(`Socket disconnected: ${socket.id} | reason=${reason}`);

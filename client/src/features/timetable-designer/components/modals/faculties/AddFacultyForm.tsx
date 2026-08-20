@@ -9,6 +9,7 @@ import type { Faculty } from "../../../types";
 import { facultyService } from "../../../services/faculty.service";
 import SelectResourceIds from "../common/SelectResourceIds";
 import { subjectService } from "@/features/timetable-designer/services/subject.service";
+import { generateFacultyId } from "@/features/timetable-designer/utils/generate-ids";
 
 interface Props {
   onSave: () => void;
@@ -40,7 +41,7 @@ const AddFacultyForm = ({ onSave, onCancel }: Props) => {
 
   const onSubmit = async (data: FacultyFormData) => {
     const faculty: Faculty = {
-      id: crypto.randomUUID(),
+      id: generateFacultyId(),
 
       name: data.name.trim(),
 

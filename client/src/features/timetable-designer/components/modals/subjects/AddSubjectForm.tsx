@@ -6,6 +6,7 @@ import { Label } from "@/shared/ui/label";
 
 import type { Subject } from "../../../types";
 import { subjectService } from "../../../services/subject.service";
+import { generateSubjectId } from "@/features/timetable-designer/utils/generate-ids";
 
 interface Props {
   onSave: () => void;
@@ -41,7 +42,7 @@ const AddSubjectForm = ({ onSave, onCancel }: Props) => {
 
   const onSubmit = (data: SubjectFormData) => {
     const subject: Subject = {
-      id: crypto.randomUUID(),
+      id: generateSubjectId(),
 
       name: data.name.trim() || "New Subject",
 
