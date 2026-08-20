@@ -18,6 +18,10 @@ authRouter.post(
   authController.login,
 );
 
+authRouter.post("/google-login", authController.googleLogin);
+
+authRouter.post("/google-register", authController.googleRegister);
+
 authRouter.get("/me", authenticate, authController.me);
 
 authRouter.post("/logout", authenticate, authController.logout);

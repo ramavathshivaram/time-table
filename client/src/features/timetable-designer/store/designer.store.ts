@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { Designer, Faculty, Room, Subject, Message } from "../types";
 
 type DesignerState = {
+  timetableId: string;
   designerId: string;
   faculties: Faculty[];
   subjects: Subject[];
@@ -37,6 +38,7 @@ type DesignerState = {
 };
 
 export const useDesignerStore = create<DesignerState>((set, get) => ({
+  timetableId: "",
   designerId: "",
   faculties: [],
   subjects: [],
@@ -45,6 +47,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
 
   init: (data) =>
     set({
+      timetableId: data.timetableId,
       designerId: data.designerId,
       faculties: data.faculties,
       subjects: data.subjects,

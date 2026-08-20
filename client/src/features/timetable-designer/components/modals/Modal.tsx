@@ -40,8 +40,8 @@ const Modal = () => {
         }
       }}
     >
-      <DialogContent className="w-[95vw] max-w-4xl max-h-[85vh] max-h-4xl overflow-hidden">
-        <div className="flex max-h-[85vh] flex-col pt-6">
+      <DialogContent className="w-[95vw] max-w-5xl max-h-[85vh] max-h-4xl overflow-hidden">
+        <div className="flex w-full max-h-[85vh] flex-col pt-6">
           {type && modalContent[type]}
         </div>
       </DialogContent>

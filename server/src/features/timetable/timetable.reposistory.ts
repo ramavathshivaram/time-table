@@ -58,6 +58,24 @@ export const timetableRepository = {
     }
   },
 
+  get: async (timetableId: string) => {
+    try {
+      return await TimetableModel.findById(timetableId);
+    } catch {
+      throw errors.internal("Failed to get timetable");
+    }
+  },
+
+  update: async (timetableId: string, data: any) => {
+    try {
+      return await TimetableModel.findByIdAndUpdate(timetableId, data, {
+        new: true,
+      });
+    } catch {
+      throw errors.internal("Failed to update timetable");
+    }
+  },
+
   delete: async (timetableId: string) => {
     try {
       return await TimetableModel.findByIdAndDelete(timetableId);

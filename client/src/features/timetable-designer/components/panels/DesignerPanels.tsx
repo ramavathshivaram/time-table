@@ -20,9 +20,8 @@ const DesignerPanels = () => {
 
       <Panel position="top-right">
         <div className="flex items-center gap-2">
-          <TemplatePanel />
-
           <GenerateSchedule />
+          <TemplatePanel />
         </div>
       </Panel>
 

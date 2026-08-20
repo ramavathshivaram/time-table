@@ -3,6 +3,8 @@ import expressAsyncHandler from "express-async-handler";
 
 import { authService } from "./auth.service.js";
 import { cookieService } from "./services/cookie.service.js";
+import { googleService } from "./services/google.service.js";
+import { errors } from "#utils/errors.js";
 
 export const authController = {
   register: expressAsyncHandler(async (req: Request, res: Response) => {
@@ -23,6 +25,51 @@ export const authController = {
     const { user, accessToken, refreshToken } = await authService.login(
       req.body,
     );
+
+    cookieService.set(res, "refreshToken", refreshToken);
+
+    res.status(200).json({
+      success: true,
+      user,
+      token: accessToken,
+    });
+  }),
+
+  googleLogin: expressAsyncHandler(async (req: Request, res: Response) => {
+    const { googleToken } = req.body;
+
+    if (!googleToken) {
+      throw errors.badRequest("Google token is required");
+    }
+
+    const googleUser = await googleService.verifyAccessToken(googleToken);
+
+    const { user, accessToken, refreshToken } = await authService.googleLogin({
+      email: googleUser.email,
+    });
+
+    cookieService.set(res, "refreshToken", refreshToken);
+
+    res.status(200).json({
+      success: true,
+      user,
+      token: accessToken,
+    });
+  }),
+
+  googleRegister: expressAsyncHandler(async (req: Request, res: Response) => {
+    const { googleToken } = req.body;
+
+    if (!googleToken) {
+      throw errors.badRequest("Google token is required");
+    }
+
+    const googleUser = await googleService.verifyAccessToken(googleToken);
+
+    const { user, accessToken, refreshToken } =
+      await authService.googleRegister({
+        email: googleUser.email,
+      });
 
     cookieService.set(res, "refreshToken", refreshToken);
 

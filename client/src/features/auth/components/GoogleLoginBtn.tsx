@@ -14,10 +14,10 @@ const GoogleLoginBtn = () => {
     onSuccess: async (tokenResponse) => {
       try {
         await authService.googleLogin({
-          accessToken: tokenResponse.access_token,
+          googleToken: tokenResponse.access_token,
         });
 
-        navigate("/home");
+        navigate("/timetables");
       } catch (error) {
         console.error("Google login failed:", error);
       }
@@ -35,8 +35,6 @@ const GoogleLoginBtn = () => {
       onClick={() => handleLogin()}
       className="flex w-full items-center justify-center gap-3 border border-gray-300 transition-all duration-200 hover:bg-gray-50 hover:shadow-sm"
     >
-      <img src={googleLogo} alt="Google" className="h-5 w-5" />
-
       <span>Continue with Google</span>
     </Button>
   );

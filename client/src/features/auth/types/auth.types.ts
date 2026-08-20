@@ -16,7 +16,7 @@ export interface RegisterRequest {
 }
 
 export interface GoogleAuthRequest {
-  accessToken: string;
+  googleToken: string;
 }
 
 export interface ForgotPasswordRequest {

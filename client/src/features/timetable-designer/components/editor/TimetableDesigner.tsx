@@ -46,9 +46,8 @@ const TimetableDesigner = ({ timetableId }: Props) => {
 
         setTimetableData(data);
 
-        console.log(data);
-
         init({
+          timetableId,
           designerId: data._id,
           faculties: data.faculties,
           subjects: data.subjects,

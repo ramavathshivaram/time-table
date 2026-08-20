@@ -51,6 +51,44 @@ export const authService = {
     };
   },
 
+  googleLogin: async (data: any) => {
+    const user = await userService.findByEmail(data.email);
+
+    const accessToken = tokenService.generateAccessToken(user._id);
+    const { refreshToken } = await sessionService.create(user._id);
+
+    return {
+      user: {
+        userName: user.userName,
+        email: user.email,
+      },
+      accessToken,
+      refreshToken,
+    };
+  },
+
+  googleRegister: async (data: any) => {
+    let user;
+
+    data.password = await passwordService.hash(
+      passwordService.generatePassword(),
+    );
+    user = await userService.create(data);
+
+    const { refreshToken } = await sessionService.create(user._id);
+    const accessToken = tokenService.generateAccessToken(user._id);
+
+    queueService.registerGreeting({
+      email: user.email,
+      userName: user.userName,
+    });
+    return {
+      user: user,
+      refreshToken,
+      accessToken,
+    };
+  },
+
   me: async (userId: string) => {
     const user = await userService.findById(userId);
     return user;

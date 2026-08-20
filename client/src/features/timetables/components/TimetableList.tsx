@@ -52,7 +52,7 @@ const TimetableList = ({ query }: TimetableListProps) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full overflow-y-auto scrollbar">
       {/* Timetable Grid */}
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {timetables.map((timetable) => (

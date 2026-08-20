@@ -76,6 +76,7 @@ export interface Message {
 }
 
 export type Designer = {
+  timetableId: string;
   designerId: string;
   faculties: Faculty[];
   subjects: Subject[];

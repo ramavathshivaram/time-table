@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const SALT_ROUNDS = 10;
 
@@ -10,4 +11,6 @@ export const passwordService = {
   compare: (password: string, hashedPassword: string): Promise<boolean> => {
     return bcrypt.compare(password, hashedPassword);
   },
+
+  generatePassword: () => crypto.randomBytes(8).toString().toString(),
 };
