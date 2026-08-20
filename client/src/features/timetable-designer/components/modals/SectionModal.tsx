@@ -70,7 +70,7 @@ const DEFAULT_BREAKS: SectionFormData["breaks"] = [
 const SectionModal = ({ data }: Props) => {
   const close = useModalStore((state) => state.close);
 
-  const { getNode } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
 
   const section = (data?.id ? getNode(data.id)?.data : undefined) as
     | Section["data"]
@@ -173,41 +173,53 @@ const SectionModal = ({ data }: Props) => {
   const handleUpdate = (formData: SectionFormData) => {
     if (!data?.id) return;
 
-    nodeService.update(data.id, {
-      data: {
-        ...section,
+    const updatedData = {
+      ...section,
 
-        label: formData.label.trim(),
+      label: formData.label.trim(),
 
-        section: formData.section.trim(),
+      section: formData.section.trim(),
 
-        strength: formData.strength,
+      strength: formData.strength,
 
-        time: {
-          ...section?.time,
+      time: {
+        ...section?.time,
 
-          startTime: formData.startTime,
-
-          endTime: formData.endTime,
-
-          numberOfPeriods: formData.numberOfPeriods,
-
-          workingDays: formData.workingDays,
-
-          breaks: formData.breaks,
-        },
-
-        resources: {
-          ...section?.resources,
-
-          facultyIds: selectedFacultyIds,
-
-          subjectIds: selectedSubjectIds,
-
-          roomIds: selectedRoomIds,
-        },
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        numberOfPeriods: formData.numberOfPeriods,
+        workingDays: formData.workingDays,
+        breaks: formData.breaks,
       },
+
+      resources: {
+        ...section?.resources,
+
+        facultyIds: selectedFacultyIds,
+        subjectIds: selectedSubjectIds,
+        roomIds: selectedRoomIds,
+      },
+    };
+
+    // Backend
+    nodeService.update(data.id, {
+      data: updatedData,
     });
+
+    // React Flow
+    setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === data.id
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                ...updatedData,
+              },
+            }
+          : node,
+      ),
+    );
 
     close();
   };

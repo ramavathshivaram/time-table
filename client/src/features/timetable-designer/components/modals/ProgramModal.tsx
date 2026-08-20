@@ -68,7 +68,7 @@ const DEFAULT_BREAKS: ProgramFormData["breaks"] = [
 const ProgramModal = ({ data }: Props) => {
   const close = useModalStore((state) => state.close);
 
-  const { getNode } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
 
   const program = (data?.id ? getNode(data.id)?.data : undefined) as
     | Program["data"]
@@ -163,37 +163,46 @@ const ProgramModal = ({ data }: Props) => {
   const handleUpdate = (formData: ProgramFormData) => {
     if (!data?.id) return;
 
-    nodeService.update(data.id, {
-      data: {
-        ...program,
+    const updatedData = {
+      ...program,
 
-        label: formData.label.trim(),
+      label: formData.label.trim(),
 
-        time: {
-          ...program?.time,
+      time: {
+        ...program?.time,
 
-          startTime: formData.startTime,
-
-          endTime: formData.endTime,
-
-          numberOfPeriods: formData.numberOfPeriods,
-
-          workingDays: formData.workingDays,
-
-          breaks: formData.breaks,
-        },
-
-        resources: {
-          ...program?.resources,
-
-          facultyIds: selectedFacultyIds,
-
-          subjectIds: selectedSubjectIds,
-
-          roomIds: selectedRoomIds,
-        },
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        numberOfPeriods: formData.numberOfPeriods,
+        workingDays: formData.workingDays,
+        breaks: formData.breaks,
       },
+
+      resources: {
+        ...program?.resources,
+
+        facultyIds: selectedFacultyIds,
+        subjectIds: selectedSubjectIds,
+        roomIds: selectedRoomIds,
+      },
+    };
+
+    // Backend
+    nodeService.update(data.id, {
+      data: updatedData,
     });
+
+    // React Flow
+    setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === data.id
+          ? {
+              ...node,
+              data: updatedData,
+            }
+          : node,
+      ),
+    );
 
     close();
   };

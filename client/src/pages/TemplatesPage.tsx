@@ -1,11 +1,12 @@
-import React from 'react'
+import Templates from "@/features/template/components/Templates";
+import React from "react";
 
-const Templates = () => {
+const TemplatesPage = () => {
   return (
-    <div>
-      
+    <div className="px-6 space-y-6 max-w-6xl mx-auto">
+      <Templates />
     </div>
-  )
-}
+  );
+};
 
-export default Templates
+export default TemplatesPage;

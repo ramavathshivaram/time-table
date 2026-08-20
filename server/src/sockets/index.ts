@@ -11,8 +11,9 @@ import {
   registerSubjectListeners,
   registerTimetableDesignerListeners,
   registerNodeListeners,
-  registerEdgeListeners
+  registerEdgeListeners,
 } from "./listeners/index.js";
+import { registerTemplateListeners } from "./listeners/template.listener.js";
 
 export const registerSocket = (io: Server) => {
   io.use(socketAuth);
@@ -30,6 +31,7 @@ export const registerSocket = (io: Server) => {
     registerFacultyListeners(io, socket);
     registerSubjectListeners(io, socket);
     registerRoomListeners(io, socket);
+    registerTemplateListeners(io, socket);
 
     socket.on("disconnect", (reason) => {
       logger.info(`Socket disconnected: ${socket.id} | reason=${reason}`);

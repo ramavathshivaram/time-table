@@ -11,6 +11,7 @@ import SectionModal from "./SectionModal";
 import Faculties from "./faculties/Faculties";
 import Subjects from "./subjects/Subjects";
 import Rooms from "./rooms/Rooms";
+import TemplateModal from "./TemplateModal";
 
 const Modal = () => {
   const isOpen = useModalStore((s) => s.isOpen);
@@ -26,6 +27,7 @@ const Modal = () => {
     faculties: <Faculties />,
     subjects: <Subjects />,
     rooms: <Rooms />,
+    template: <TemplateModal />,
     default: null,
   };
 

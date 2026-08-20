@@ -8,7 +8,8 @@ export type ModalType =
   | "catalog"
   | "faculties"
   | "subjects"
-  | "rooms";
+  | "rooms"
+  | "template";
 
 export type ModalData = {
   id?: string;

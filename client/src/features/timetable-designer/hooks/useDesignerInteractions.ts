@@ -47,9 +47,11 @@ export const useDesignerInteractions = ({ setNodes, setEdges }: Props) => {
           case "position": {
             if (!change.position) break;
 
-            nodeService.update(change.id, {
-              position: change.position,
-            });
+            if (!change.dragging) {
+              nodeService.update(change.id, {
+                position: change.position,
+              });
+            }
 
             break;
           }

@@ -21,6 +21,7 @@ const TimetablesPage = lazy(() => import("@/pages/TimetablesPage"));
 const TimetableDesignerPage = lazy(
   () => import("@/pages/TimetableDesignerPage"),
 );
+const TemplatesPage = lazy(() => import("@/pages/TemplatesPage"));
 
 const AppRouter = () => {
   return (
@@ -32,11 +33,8 @@ const AppRouter = () => {
 
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />
-
             <Route path="/register" element={<RegisterPage />} />
-
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-
             <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Route>
         </Route>
@@ -45,6 +43,7 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/timetables" element={<TimetablesPage />} />
+            <Route path="/templates" element={<TemplatesPage />} />
           </Route>
 
           <Route

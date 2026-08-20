@@ -70,7 +70,7 @@ const DEFAULT_BREAKS: AcademicYearFormData["breaks"] = [
 const AcademicYearModal = ({ data }: Props) => {
   const close = useModalStore((state) => state.close);
 
-  const { getNode } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
 
   const academicYear = (data?.id ? getNode(data.id)?.data : undefined) as
     | AcademicYear["data"]
@@ -163,45 +163,54 @@ const AcademicYearModal = ({ data }: Props) => {
     setSelectedRoomIds(academicYear.resources?.roomIds ?? []);
   }, [academicYear, reset]);
 
-  /*
-   * Submit
-   */
   const handleUpdate = (formData: AcademicYearFormData) => {
     if (!data?.id) return;
 
-    nodeService.update(data.id, {
-      data: {
-        ...academicYear,
+    const updatedData = {
+      ...academicYear,
 
-        label: formData.label.trim(),
+      label: formData.label.trim(),
 
-        year: formData.year,
+      year: formData.year,
 
-        time: {
-          ...academicYear?.time,
+      time: {
+        ...academicYear?.time,
 
-          startTime: formData.startTime,
-
-          endTime: formData.endTime,
-
-          numberOfPeriods: formData.numberOfPeriods,
-
-          workingDays: formData.workingDays,
-
-          breaks: formData.breaks,
-        },
-
-        resources: {
-          ...academicYear?.resources,
-
-          facultyIds: selectedFacultyIds,
-
-          subjectIds: selectedSubjectIds,
-
-          roomIds: selectedRoomIds,
-        },
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        numberOfPeriods: formData.numberOfPeriods,
+        workingDays: formData.workingDays,
+        breaks: formData.breaks,
       },
+
+      resources: {
+        ...academicYear?.resources,
+
+        facultyIds: selectedFacultyIds,
+        subjectIds: selectedSubjectIds,
+        roomIds: selectedRoomIds,
+      },
+    };
+
+    // Backend
+    nodeService.update(data.id, {
+      data: updatedData,
     });
+
+    // React Flow
+    setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === data.id
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                ...updatedData,
+              },
+            }
+          : node,
+      ),
+    );
 
     close();
   };

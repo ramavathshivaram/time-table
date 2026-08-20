@@ -1,0 +1,43 @@
+import { Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+
+const AITypingIndicator = () => {
+  return (
+    <div className="flex items-center gap-2 py-2">
+      <div
+        className="
+          flex size-7
+          items-center justify-center
+          rounded-lg
+          border bg-muted/40
+        "
+      >
+        <Sparkles className="size-3.5 text-primary" />
+      </div>
+
+      <div className="flex items-center gap-1">
+        {[0, 1, 2].map((item) => (
+          <motion.span
+            key={item}
+            animate={{
+              opacity: [0.3, 1, 0.3],
+              y: [0, -2, 0],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: item * 0.15,
+            }}
+            className="size-1.5 rounded-full bg-muted-foreground"
+          />
+        ))}
+      </div>
+
+      <span className="text-[10px] text-muted-foreground">
+        Analyzing timetable...
+      </span>
+    </div>
+  );
+};
+
+export default AITypingIndicator;

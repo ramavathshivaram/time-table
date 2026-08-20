@@ -7,3 +7,4 @@ export const generateEdgeId = () => generateId("edge");
 export const generateRoomId = () => generateId("room");
 export const generateSubjectId = () => generateId("subject");
 export const generateFacultyId = () => generateId("faculty");
+export const generateTemplateId = () => generateId("template");

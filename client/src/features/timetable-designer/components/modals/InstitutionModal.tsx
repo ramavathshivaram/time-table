@@ -62,7 +62,7 @@ const DEFAULT_BREAKS: InstitutionFormData["breaks"] = [
 const InstitutionModal = ({ data }: Props) => {
   const close = useModalStore((state) => state.close);
 
-  const { getNode } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
 
   const institution = (data?.id ? getNode(data.id)?.data : undefined) as
     | InstitutionData
@@ -120,19 +120,37 @@ const InstitutionModal = ({ data }: Props) => {
   const handleUpdate = (formData: InstitutionFormData) => {
     if (!data?.id) return;
 
-    nodeService.update(data.id, {
-      data: {
-        label: formData.label.trim(),
+    const updatedData = {
+      label: formData.label.trim(),
 
-        time: {
-          startTime: formData.startTime,
-          endTime: formData.endTime,
-          numberOfPeriods: formData.numberOfPeriods,
-          workingDays: formData.workingDays,
-          breaks: formData.breaks,
-        },
+      time: {
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        numberOfPeriods: formData.numberOfPeriods,
+        workingDays: formData.workingDays,
+        breaks: formData.breaks,
       },
+    };
+
+    // Backend
+    nodeService.update(data.id, {
+      data: updatedData,
     });
+
+    // React Flow local state
+    setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === data.id
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                ...updatedData,
+              },
+            }
+          : node,
+      ),
+    );
 
     close();
   };

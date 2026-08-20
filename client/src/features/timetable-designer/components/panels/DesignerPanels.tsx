@@ -4,6 +4,8 @@ import GenerateSchedule from "./GenerateSchedule";
 import DesignerControls from "./DesignerControls";
 import TimetableTitle from "./TimetableTitle";
 import DesignerPalette from "./DesignerPalette";
+import TemplatePanel from "./TemplatePanel";
+import AIAssistant from "./ai-assistant/AIAssistant";
 
 const DesignerPanels = () => {
   return (
@@ -17,16 +19,20 @@ const DesignerPanels = () => {
       </Panel>
 
       <Panel position="top-right">
-        <GenerateSchedule />
+        <div className="flex items-center gap-2">
+          <TemplatePanel />
+
+          <GenerateSchedule />
+        </div>
       </Panel>
 
       <Panel position="top-left">
         <DesignerPalette />
       </Panel>
 
-      {/* <Panel position="bottom-right">
-        <AIChatBotWrapper />
-      </Panel> */}
+      <Panel position="bottom-right">
+        <AIAssistant />
+      </Panel>
     </>
   );
 };

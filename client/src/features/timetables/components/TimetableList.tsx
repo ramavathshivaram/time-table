@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { useTimetableMutation } from "@/features/timetables/hooks/timetable.query";
 
 import TimetableCard from "./TimetableCard";
+import TimetableCardSkeleton from "./TimetableCardSkeleton";
 
 interface TimetableListProps {
   query: string;
@@ -27,11 +28,11 @@ const TimetableList = ({ query }: TimetableListProps) => {
   const timetables = data?.pages.flat() ?? [];
 
   if (status === "pending") {
-    return (
-      <div className="py-10 text-center text-sm text-muted-foreground">
-        Loading timetables...
-      </div>
-    );
+    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TimetableCardSkeleton key={index} />
+      ))}
+    </div>;
   }
 
   if (status === "error") {
@@ -62,8 +63,10 @@ const TimetableList = ({ query }: TimetableListProps) => {
       {/* Infinite Scroll Trigger */}
       <div ref={ref} className="flex justify-center py-4">
         {isFetchingNextPage && (
-          <div className="animate-pulse text-sm text-muted-foreground">
-            Loading more...
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <TimetableCardSkeleton key={index} />
+            ))}
           </div>
         )}
 
