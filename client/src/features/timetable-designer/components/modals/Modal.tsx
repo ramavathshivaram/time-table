@@ -13,40 +13,35 @@ import Subjects from "./subjects/Subjects";
 import Rooms from "./rooms/Rooms";
 import TemplateModal from "./TemplateModal";
 
-const Modal = () => {
-  const isOpen = useModalStore((s) => s.isOpen);
-  const data = useModalStore((s) => s.data);
-  const type = useModalStore((s) => s.type);
-  const close = useModalStore((s) => s.close);
+const modalComponents = {
+  institution: InstitutionModal,
+  program: ProgramModal,
+  "academic-year": AcademicYearModal,
+  section: SectionModal,
+  faculties: Faculties,
+  subjects: Subjects,
+  rooms: Rooms,
+  template: TemplateModal,
+} as const;
 
-  const modalContent: Record<string, React.ReactNode> = {
-    institution: <InstitutionModal data={data} />,
-    program: <ProgramModal data={data} />,
-    "academic-year": <AcademicYearModal data={data} />,
-    section: <SectionModal data={data} />,
-    faculties: <Faculties />,
-    subjects: <Subjects />,
-    rooms: <Rooms />,
-    template: <TemplateModal />,
-    default: null,
-  };
+const Modal = () => {
+  const { isOpen, data, type, close } = useModalStore();
+
+  const Component = type ? modalComponents[type] : null;
 
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open) {
-          close();
-        }
+        if (!open) close();
       }}
     >
-      <DialogContent className="w-[95vw] max-w-5xl max-h-[85vh] max-h-4xl overflow-hidden">
+      <DialogContent className="w-[95vw] max-w-5xl max-h-[85vh] overflow-hidden">
         <div className="flex w-full max-h-[85vh] flex-col pt-6">
-          {type && modalContent[type]}
+          {Component && <Component data={data} />}
         </div>
       </DialogContent>
     </Dialog>
   );
 };
-
 export default memo(Modal);

@@ -29,7 +29,6 @@ const InstitutionNode = ({
   isConnectable,
   selected,
 }: InstitutionNodeProps) => {
-  const time = data.time;
 
   return (
     <DesignerNode

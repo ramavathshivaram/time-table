@@ -2,6 +2,7 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
 import { CalendarDays, Clock3, Sparkles } from "lucide-react";
 import { navigationService } from "@/shared/services/navigation.service";
+import GetStartedButton from "@/shared/components/GetStartedButton";
 
 const LandingPage = () => {
   return (
@@ -36,12 +37,9 @@ const LandingPage = () => {
             </p>
 
             <div className="flex gap-4">
-              <Button
-                size="lg"
+              <GetStartedButton
                 onClick={() => navigationService.navigate("/login")}
-              >
-                Get Started
-              </Button>
+              />
 
               <Button variant="outline" size="lg">
                 Learn More

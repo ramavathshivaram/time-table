@@ -1,6 +1,7 @@
 import { memo } from "react";
 
 import DesignerNode from "./DesignerNode";
+import { BookOpen, DoorOpen, User } from "lucide-react";
 
 interface AcademicYearNodeProps {
   data: {
@@ -13,6 +14,12 @@ interface AcademicYearNodeProps {
       endTime?: string;
       periodDuration?: number;
       numberOfPeriods?: number;
+    };
+
+    resources?: {
+      facultyIds?: string[];
+      subjectIds?: string[];
+      roomIds?: string[];
     };
   };
 
@@ -34,7 +41,24 @@ const AcademicYearNode = ({
       showTarget
       showSource
       sourceConnectable={isConnectable}
-    ></DesignerNode>
+    >
+      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1">
+          <User size={15} />
+          <span>{data.resources?.facultyIds?.length ?? 0}</span>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <BookOpen size={15} />
+          <span>{data.resources?.subjectIds?.length ?? 0}</span>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <DoorOpen size={15} />
+          <span>{data.resources?.roomIds?.length ?? 0}</span>
+        </div>
+      </div>
+    </DesignerNode>
   );
 };
 

@@ -75,7 +75,7 @@ const DesignerNode = ({
         </div>
 
         {/* Content */}
-        {children && <div className="mt-1.5 border-t pt-1.5">{children}</div>}
+        {children && <div className="-mt-2 border-t pt-1">{children}</div>}
       </Card>
 
       {/* Source */}
@@ -84,7 +84,7 @@ const DesignerNode = ({
           type="source"
           position={Position.Bottom}
           isConnectable={sourceConnectable}
-          className="!size-2 !border-2 !border-background !bg-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+          className="size-2! !border-2 !border-background !bg-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
         />
       )}
     </div>

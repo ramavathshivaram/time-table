@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import dagre from "dagre";
 import { nodeService } from "../services/node.service";
+import { NODE_HEIGHT, NODE_WIDTH } from "../constants";
 
 const useAutoArrange = ({ getNodes, getEdges, setNodes }) => {
   return useCallback(() => {
@@ -15,13 +16,13 @@ const useAutoArrange = ({ getNodes, getEdges, setNodes }) => {
 
     graph.setGraph({
       rankdir: "TB",
-      ranksep: 100,
-      nodesep: 50,
+      ranksep: NODE_WIDTH,
+      nodesep: NODE_HEIGHT,
     });
 
     nodes.forEach((node) => {
-      const width = node.measured?.width || 150;
-      const height = node.measured?.height || 50;
+      const width = node.measured?.width || NODE_WIDTH;
+      const height = node.measured?.height || NODE_HEIGHT;
 
       graph.setNode(node.id, {
         width,
@@ -36,8 +37,8 @@ const useAutoArrange = ({ getNodes, getEdges, setNodes }) => {
     dagre.layout(graph);
 
     const arrangedNodes = nodes.map((node) => {
-      const width = node.measured?.width || 150;
-      const height = node.measured?.height || 50;
+      const width = node.measured?.width || NODE_WIDTH;
+      const height = node.measured?.height || NODE_HEIGHT;
 
       const position = graph.node(node.id);
 
