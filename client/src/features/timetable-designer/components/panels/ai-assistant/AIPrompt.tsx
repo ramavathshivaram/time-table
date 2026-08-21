@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 
 import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
-
-import { generateMessageId } from "@/features/timetable-designer/utils/generate-ids";
 import { messageService } from "@/features/timetable-designer/services/message.service";
-import type { Message } from "@/features/timetable-designer/types";
 import { useMessageStore } from "@/features/timetable-designer/store/message.store";
 
 const AIPrompt = () => {
@@ -31,14 +28,7 @@ const AIPrompt = () => {
 
     if (!content || isLoading) return;
 
-    const newMessage: Message = {
-      id: generateMessageId(),
-      role: "user",
-      content,
-      createdAt: new Date().toISOString(),
-    };
-
-    messageService.send(newMessage);
+    messageService.send(content);
 
     setMessage("");
 

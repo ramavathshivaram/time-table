@@ -1,34 +1,18 @@
-import { generateMessageId } from "#utils/generate-ids.js";
-
-import { messageEmitter } from "./message.emiter.js";
+import { messageCache } from "./message.cache.js";
+import { Message } from "./message.model.js";
 
 export const messageService = {
-  async create(userId: string, designerId: string, message: string) {
-    console.log("message", message);
+  async create(message: Partial<Message>) {
+    await messageCache.push(message.designerId as string, message);
 
-    const messageId = generateMessageId();
+    return message;
+  },
 
-    await messageEmitter.start(userId, {
-      messageId,
-    });
+  async update(designerId: string, messageId: string, content: string) {
+    await messageCache.update(designerId, messageId, content);
+  },
 
-    let seq = 0;
-
-    const interval = setInterval(async () => {
-      await messageEmitter.token(userId, {
-        messageId,
-        content: "Hello ",
-        seq: seq++,
-        timestamp: Date.now(),
-      });
-    }, 50);
-
-    setTimeout(async () => {
-      clearInterval(interval);
-
-      await messageEmitter.finish(userId, {
-        messageId,
-      });
-    }, 5000);
+  async get(designerId: string, page = 1) {
+    return messageCache.get(designerId, page);
   },
 };

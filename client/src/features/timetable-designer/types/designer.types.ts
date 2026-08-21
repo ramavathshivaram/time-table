@@ -70,6 +70,7 @@ export interface Room {
 
 export interface Message {
   id: string;
+  designerId: string;
   role: "system" | "user" | "assistant";
   content: string;
   createdAt: string;

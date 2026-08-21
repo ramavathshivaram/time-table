@@ -8,6 +8,7 @@ import { useDesignerStore } from "../../store/designer.store";
 import { timetableDesignerSocket } from "../../socket/timetable-designer.socket";
 
 import type { Node, Edge, Faculty, Subject, Room } from "../../types";
+import { useMessageStore } from "../../store/message.store";
 
 interface Props {
   timetableId: string;
@@ -30,6 +31,7 @@ const TimetableDesigner = ({ timetableId }: Props) => {
   const [error, setError] = useState<string | null>(null);
 
   const init = useDesignerStore((state) => state.init);
+  const messageClear = useMessageStore((state) => state.clear);
 
   useEffect(() => {
     let cancelled = false;
@@ -72,8 +74,9 @@ const TimetableDesigner = ({ timetableId }: Props) => {
 
     return () => {
       cancelled = true;
+      messageClear();
     };
-  }, [timetableId, init]);
+  }, [timetableId, init, messageClear]);
 
   if (loading) {
     return (
