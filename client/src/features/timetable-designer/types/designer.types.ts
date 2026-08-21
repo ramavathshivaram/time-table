@@ -73,6 +73,8 @@ export interface Message {
   role: "system" | "user" | "assistant";
   content: string;
   createdAt: string;
+  seq?: number;
+  timestamp?: number;
 }
 
 export type Designer = {

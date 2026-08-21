@@ -8,12 +8,16 @@ import AIHeader from "./AIHeader";
 import AIConversation from "./AIConversation";
 import AIPrompt from "./AIPrompt";
 import AISuggestions from "./AISuggestions";
+import { useMessageListeners } from "@/features/timetable-designer/hooks/useMessageListeners";
 
 interface Props {
   onClose: () => void;
 }
 
 const AIAssistantPanel = ({ onClose }: Props) => {
+  useMessageListeners();
+
+  
   return (
     <motion.div
       initial={{

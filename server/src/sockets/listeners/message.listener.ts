@@ -2,7 +2,7 @@ import type { Server, Socket } from "socket.io";
 
 import { asyncSocketHandler } from "../lib/async-socket-handler.js";
 import { errors } from "#utils/errors.js";
-import { messageService } from "#features/timetable-designer/message.service.js";
+import { messageService } from "#features/timetable-designer/message/message.service.js";
 
 export const registerMessageListeners = (io: Server, socket: Socket) => {
   socket.on(
@@ -14,7 +14,11 @@ export const registerMessageListeners = (io: Server, socket: Socket) => {
         throw errors.badRequest("Designer ID is required");
       }
 
-      return messageService.create(designerId, message);
+      return messageService.create(
+        socket.data.user.userId,
+        designerId,
+        message,
+      );
     }),
   );
 };
