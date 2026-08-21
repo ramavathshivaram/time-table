@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Designer, Faculty, Room, Subject, Message } from "../types";
+import type { Designer, Faculty, Room, Subject } from "../types";
 
 type DesignerState = {
   timetableId: string;
@@ -7,7 +7,6 @@ type DesignerState = {
   faculties: Faculty[];
   subjects: Subject[];
   rooms: Room[];
-  messages: Message[];
 
   init: (data: Designer) => void;
 
@@ -43,7 +42,6 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   faculties: [],
   subjects: [],
   rooms: [],
-  messages: [],
 
   init: (data) =>
     set({

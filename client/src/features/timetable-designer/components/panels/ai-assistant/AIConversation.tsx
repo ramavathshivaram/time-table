@@ -4,69 +4,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import AIMessage from "./AIMessage";
 import AITypingIndicator from "./AITypingIndicator";
 
-interface Message {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-}
+import { useMessageStore } from "@/features/timetable-designer/store/message.store";
+import type { Message } from "@/features/timetable-designer/types";
 
 const AIConversation = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const messages: Message[] = [
-    {
-      id: "1",
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: "2",
-      role: "user",
-      content: "Generate timetable for CSE 3rd Year Section A.",
-    },
-    {
-      id: "3",
-      role: "assistant",
-      content: "Generating timetable for CSE 3rd Year Section A...",
-    },
-    {
-      id: "4",
-      role: "user",
-      content: "Generate timetable for CSE 3rd Year Section B.",
-    },
-    {
-      id: "5",
-      role: "assistant",
-      content: "Generating timetable for CSE 3rd Year Section B...",
-    },
-    {
-      id: "1",
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-    {
-      id: "2",
-      role: "user",
-      content: "Generate timetable for CSE 3rd Year Section A.",
-    },
-    {
-      id: "3",
-      role: "assistant",
-      content: "Generating timetable for CSE 3rd Year Section A...",
-    },
-    {
-      id: "4",
-      role: "user",
-      content: "Generate timetable for CSE 3rd Year Section B.",
-    },
-    {
-      id: "5",
-      role: "assistant",
-      content: "Generating timetable for CSE 3rd Year Section B...",
-    },
-  ];
-
-  const isLoading = false;
+  const messages = useMessageStore((state) => state.messages);
+  const isLoading = useMessageStore((state) => state.isLoading);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
@@ -80,21 +25,12 @@ const AIConversation = () => {
         {!messages.length && !isLoading && <EmptyConversation />}
 
         <AnimatePresence initial={false}>
-          {messages.map((message) => (
+          {messages.map((message: Message) => (
             <motion.div
               key={message.id}
-              initial={{
-                opacity: 0,
-                y: 8,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: -8,
-              }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
             >
               <AIMessage role={message.role} content={message.content} />
             </motion.div>
@@ -106,29 +42,9 @@ const AIConversation = () => {
         <div ref={bottomRef} />
       </div>
 
-      {/* Top fade */}
-      <div
-        className="
-          pointer-events-none
-          absolute inset-x-0 top-0
-          h-8
-          bg-gradient-to-b
-          from-background
-          to-transparent
-        "
-      />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-background to-transparent" />
 
-      {/* Bottom fade */}
-      <div
-        className="
-          pointer-events-none
-          absolute inset-x-0 bottom-0
-          h-8
-          bg-gradient-to-t
-          from-background
-          to-transparent
-        "
-      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background to-transparent" />
     </div>
   );
 };
@@ -136,14 +52,7 @@ const AIConversation = () => {
 const EmptyConversation = () => {
   return (
     <div className="flex h-full min-h-[240px] flex-col items-center justify-center text-center">
-      <div
-        className="
-          flex size-11
-          items-center justify-center
-          rounded-xl
-          border bg-muted/40
-        "
-      >
+      <div className="flex size-11 items-center justify-center rounded-xl border bg-muted/40">
         ✨
       </div>
 

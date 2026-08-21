@@ -30,17 +30,9 @@ const DesignerCanvas = ({ timetableId, initialNodes, initialEdges }: Props) => {
   const darkMode = usePreferencesStore((state) => state.darkMode);
 
   const [nodes, setNodes] = useNodesState(initialNodes);
-
   const [edges, setEdges] = useEdgesState(initialEdges);
 
-  const {
-    onNodesChange: handleNodesChange,
-    onEdgesChange: handleEdgesChange,
-    onConnect,
-    isValidConnection,
-    onNodeDoubleClick,
-    onConnectEnd,
-  } = useDesignerInteractions({
+  const interactions = useDesignerInteractions({
     setNodes,
     setEdges,
   });
@@ -58,12 +50,12 @@ const DesignerCanvas = ({ timetableId, initialNodes, initialEdges }: Props) => {
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodesChange={handleNodesChange}
-        onEdgesChange={handleEdgesChange}
-        onConnect={onConnect}
-        isValidConnection={isValidConnection}
-        onNodeDoubleClick={onNodeDoubleClick}
-        onConnectEnd={onConnectEnd}
+        onNodesChange={interactions.onNodesChange}
+        onEdgesChange={interactions.onEdgesChange}
+        onConnect={interactions.onConnect}
+        isValidConnection={interactions.isValidConnection}
+        onNodeDoubleClick={interactions.onNodeDoubleClick}
+        onConnectEnd={interactions.onConnectEnd}
         onDragOver={onDragOver}
         onDrop={onDrop}
         colorMode={darkMode ? "dark" : "light"}

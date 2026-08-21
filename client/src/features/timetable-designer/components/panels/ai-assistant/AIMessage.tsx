@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import { cn } from "@/shared/lib/utils";
 
 interface Props {
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "system";
   content: string;
 }
 

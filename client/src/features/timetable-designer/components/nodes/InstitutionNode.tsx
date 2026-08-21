@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { CalendarDays, Clock3, Coffee, Timer } from "lucide-react";
+
 import DesignerNode from "./DesignerNode";
 
 interface InstitutionNodeProps {
@@ -29,6 +31,7 @@ const InstitutionNode = ({
   isConnectable,
   selected,
 }: InstitutionNodeProps) => {
+  const time = data.time;
 
   return (
     <DesignerNode
@@ -37,7 +40,23 @@ const InstitutionNode = ({
       selected={selected}
       showSource
       sourceConnectable={isConnectable}
-    ></DesignerNode>
+    >
+      {time && (
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Clock3 size={13} />
+            <span>
+              {time.startTime ?? "--:--"} - {time.endTime ?? "--:--"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <Timer size={13} />
+            <span>{time.numberOfPeriods ?? 0}</span>
+          </div>
+        </div>
+      )}
+    </DesignerNode>
   );
 };
 

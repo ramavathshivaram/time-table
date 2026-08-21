@@ -34,16 +34,7 @@ const AIAssistantPanel = ({ onClose }: Props) => {
       transition={{
         duration: 0.2,
       }}
-      className="
-        flex h-[min(680px,calc(100vh-120px))]
-        w-[380px]
-        flex-col
-        overflow-hidden
-        rounded-2xl
-        border border-border
-        bg-background
-        shadow-2xl
-      "
+      className="flex h-[min(680px,calc(100vh-120px))] w-[380px] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
     >
       {/* Header */}
       <div className="relative">
@@ -53,22 +44,16 @@ const AIAssistantPanel = ({ onClose }: Props) => {
           variant="ghost"
           size="icon"
           onClick={onClose}
-          className="
-            absolute right-2 top-2
-            size-8 rounded-lg
-          "
+          className="absolute right-2 top-2 size-8 rounded-lg"
         >
           <X className="size-4" />
         </Button>
       </div>
 
-      {/* Conversation */}
       <AIConversation />
 
-      {/* Suggestions */}
       <AISuggestions />
 
-      {/* Prompt */}
       <AIPrompt />
     </motion.div>
   );

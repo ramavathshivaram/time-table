@@ -5,12 +5,17 @@ import { motion } from "framer-motion";
 import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 
+import { generateMessageId } from "@/features/timetable-designer/utils/generate-ids";
+import { messageService } from "@/features/timetable-designer/services/message.service";
+import type { Message } from "@/features/timetable-designer/types";
+import { useMessageStore } from "@/features/timetable-designer/store/message.store";
+
 const AIPrompt = () => {
   const [message, setMessage] = useState("");
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isLoading = useMessageStore((state) => state.isLoading);
 
-  const isLoading = false;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -18,34 +23,46 @@ const AIPrompt = () => {
     if (!textarea) return;
 
     textarea.style.height = "auto";
-
     textarea.style.height = `${Math.min(textarea.scrollHeight, 140)}px`;
   }, [message]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = () => {
     const content = message.trim();
 
     if (!content || isLoading) return;
 
-    console.log("AI Prompt:", content);
+    const newMessage: Message = {
+      id: generateMessageId(),
+      role: "user",
+      content,
+      createdAt: new Date().toISOString(),
+    };
+
+    messageService.send(newMessage);
 
     setMessage("");
+
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus();
+    });
+  };
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSubmit();
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
+    if (event.key !== "Enter" || event.shiftKey) return;
 
-      handleSubmit(event as unknown);
-    }
+    event.preventDefault();
+    handleSubmit();
   };
 
   return (
     <div className="border-t border-border bg-background p-3">
       <motion.form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         initial={{
           opacity: 0,
           y: 6,
@@ -57,14 +74,7 @@ const AIPrompt = () => {
       >
         <div
           className={cn(
-            `
-              flex items-end
-              overflow-hidden
-              rounded-xl
-              border border-border
-              bg-card
-              transition-colors
-            `,
+            "flex items-end overflow-hidden rounded-xl border border-border bg-card transition-colors",
             "focus-within:border-primary/30",
           )}
         >
@@ -81,15 +91,7 @@ const AIPrompt = () => {
             rows={1}
             placeholder="Ask about your timetable..."
             className="
-              max-h-[140px]
-              min-h-[42px]
-              flex-1
-              resize-none
-              bg-transparent
-              px-2.5 py-2.5
-              text-xs
-              outline-none
-              placeholder:text-muted-foreground
+              min-h-[42px] max-h-[140px] flex-1 resize-none bg-transparent px-2.5 py-2.5 text-xs outline-none placeholder:text-muted-foreground
             "
           />
 
@@ -98,9 +100,7 @@ const AIPrompt = () => {
               type="submit"
               size="icon"
               disabled={!message.trim() || isLoading}
-              className="
-                size-8 rounded-lg
-              "
+              className="size-8 rounded-lg"
             >
               {isLoading ? (
                 <Loader2 className="size-3.5 animate-spin" />
